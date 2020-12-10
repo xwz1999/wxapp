@@ -1,0 +1,85 @@
+<template>
+	<view>
+		<view class="goods">
+			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goods.id" class="goods-item bg-white flex justify-between" v-for="(item,index) in goods" :key="index">
+				<image class="goods-pic" :src="IMAGE_URL+item.goods.mainPhotoUrl" mode="aspectFill"></image>
+				<view class="goods-con flex-sub flex flex-direction justify-between clear">
+					<view class="">
+						<view class="goods-name two-line">{{item.goods.goodsName}}</view>
+						<view class="des text-hidden">{{item.goods.description}}</view>
+					</view>
+					<view class="flex justify-between align-end">
+						<view class="goods-rice text-red ">￥{{item.goods.discountPrice}}</view>
+						<button class="cu-btn line-red round" hover-stop-propagation @tap.stop="delGoods(index,item.goods.id)" style="height: 60rpx;">删除</button>
+					</view>
+				</view>
+			</navigator>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				goods:[],
+				IMAGE_URL:this.IMAGE_URL
+			};
+		},
+		onLoad() {
+			this.getCollections()
+		},
+		methods:{
+			getCollections(){
+				this.$u.post('/api/v1/goods/favorite/list',{
+					userID:uni.getStorageSync("userInfo").id
+				}).then(res => {
+					console.log(res.data);
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.goods = res.data.data
+				});
+			},
+			delGoods(index,id){
+				this.$u.post('/api/v1/goods/favorites/cancel',{
+					userID:uni.getStorageSync("userInfo").id,
+					goodsId:id
+				}).then(res => {
+					console.log(res.data);
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.goods.splice(index,1)
+					uni.showToast({
+						title:"删除成功"
+					})
+				});
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.goods-item{
+		padding: 20rpx;
+		border-bottom: 1rpx solid #f1f1f1;
+		&:last-child{
+			margin-bottom: 200rpx;
+		}
+		.goods-pic{
+			width: 200rpx;
+			height: 200rpx;
+			margin-right: 20rpx;
+			border-radius: 10rpx;
+		}
+		.des{
+			font-size: 24rpx;
+			color: #AAAAAA;
+			line-height: 50rpx;
+		}
+	}
+	
+</style>
