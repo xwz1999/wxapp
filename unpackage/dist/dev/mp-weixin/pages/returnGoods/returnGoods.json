@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "",
-  "enablePullDownRefresh": false,
-  "navigationBarBackgroundColor": "#C92219",
-  "navigationBarTextStyle": "white",
-  "usingComponents": {
-    "u-popup": "/uview-ui/components/u-popup/u-popup"
-  }
-}

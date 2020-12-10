@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "优惠券",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-tabs": "/uview-ui/components/u-tabs/u-tabs",
-    "u-button": "/uview-ui/components/u-button/u-button"
-  }
-}

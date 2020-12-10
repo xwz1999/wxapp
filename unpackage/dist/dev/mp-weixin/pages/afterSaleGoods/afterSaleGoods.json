@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "售后商品",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-tabs": "/uview-ui/components/u-tabs/u-tabs"
-  }
-}

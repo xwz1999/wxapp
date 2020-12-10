@@ -1,1 +1,0 @@
-<view><view class="padding"><button data-event-opts="{{[['tap',[['chooseImage',['$event']]]]]}}" class="bg-gradual-blue" bindtap="__e">上传图片</button></view></view>

@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "开具发票",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-radio-group": "/uview-ui/components/u-radio-group/u-radio-group",
-    "u-radio": "/uview-ui/components/u-radio/u-radio",
-    "u-popup": "/uview-ui/components/u-popup/u-popup"
-  }
-}
