@@ -1,0 +1,121 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/makeDynamic/makeDynamic",
+    "pages/goodsDetail/goodsDetail",
+    "pages/withdraw/withdraw",
+    "pages/withdrawProgress/withdrawProgress",
+    "pages/shop/shop",
+    "pages/myMoney/myMoney",
+    "pages/inviteMakeShop/inviteMakeShop",
+    "pages/login/login",
+    "pages/mine/mine",
+    "pages/authentication/authentication",
+    "pages/myInfo/myInfo",
+    "pages/myInfo/updateContent",
+    "pages/orders/orders",
+    "pages/realname/realname",
+    "pages/writelogistics/writelogistics",
+    "pages/afterSaleDetail/afterSaleDetail",
+    "pages/chooseAftersaleType/chooseAftersaleType",
+    "pages/returnGoods/returnGoods",
+    "pages/afterSaleGoods/afterSaleGoods",
+    "pages/orderPay/orderPay",
+    "pages/selfBuy/selfBuy",
+    "pages/address/index",
+    "pages/address/addSite",
+    "pages/search/search",
+    "pages/mobileLogin/mobileLogin",
+    "pages/orderDetail/orderDetail",
+    "pages/confirmOrder/confirmOrder",
+    "pages/cart/cart",
+    "pages/addInfoSuccess/addInfoSuccess",
+    "pages/settings/settings",
+    "pages/userInfo/userInfo",
+    "pages/myInvite/myInvite",
+    "pages/teamEarnings/teamEarnings",
+    "pages/shareGetMoney/shareGetMoney",
+    "pages/myEarnings/myEarnings",
+    "pages/whiteInfo/whiteInfo",
+    "pages/coupons/coupons",
+    "pages/withdrawRecord/withdrawRecord",
+    "pages/location/location",
+    "pages/results/results",
+    "pages/find/find",
+    "pages/webview/webview",
+    "pages/myCollect/myCollect",
+    "pages/setPassword/setPassword",
+    "pages/paySuccess/paySuccess",
+    "pages/feedback/feedback",
+    "pages/logisticsList/logisticsList",
+    "pages/logisticsDetail/logisticsDetail",
+    "pages/withdrawResult/withdrawResult"
+  ],
+  "subPackages": [
+    {
+      "root": "packageA",
+      "pages": [
+        "classify/classify",
+        "hotRanking/hotRanking",
+        "invoice/invoice",
+        "invoiceTitle/invoiceTitle",
+        "addInvoiceTitle/addInvoiceTitle",
+        "buyInvoice/buyInvoice",
+        "invoiceHistory/invoiceHistory",
+        "addInvoiceSuccess/addInvoiceSuccess",
+        "addInvoice/addInvoice",
+        "invoiceDetail/invoiceDetail"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#C92219",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/logo.png",
+        "selectedIconPath": "static/logo.png",
+        "text": "特卖"
+      },
+      {
+        "pagePath": "pages/find/find",
+        "iconPath": "static/logo.png",
+        "selectedIconPath": "static/logo.png",
+        "text": "发现"
+      },
+      {
+        "pagePath": "pages/shop/shop",
+        "iconPath": "static/logo.png",
+        "selectedIconPath": "static/logo.png",
+        "text": "店铺"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "iconPath": "static/logo.png",
+        "selectedIconPath": "static/logo.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "iconPath": "static/logo.png",
+        "selectedIconPath": "static/logo.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {
+    "goods-list": "/components/goodsList",
+    "order-goods": "/components/orderGoods",
+    "dynamics": "/components/dynamics",
+    "large-image-list": "/components/largeImageList"
+  }
+}

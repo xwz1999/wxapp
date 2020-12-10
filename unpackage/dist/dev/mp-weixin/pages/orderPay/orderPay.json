@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "订单支付",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-keyboard": "/uview-ui/components/u-keyboard/u-keyboard",
+    "u-message-input": "/uview-ui/components/u-message-input/u-message-input",
+    "u-modal": "/uview-ui/components/u-modal/u-modal"
+  }
+}

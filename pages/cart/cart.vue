@@ -21,7 +21,7 @@
 							<view class="flex align-center" style="height: 200rpx;">
 								<text :class="goods.goodsChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkGoods(shopIndex,goodsIndex)"></text>
 							</view>
-							<navigator :url="'/packageA/goodsDetail/goodsDetail?id='+goods.goodsId" class="cart-goods-pic bg-img" :style="'background-image: url('+ IMAGE_URL+goods.mainPhotoUrl+');'"></navigator>
+							<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId" class="cart-goods-pic bg-img" :style="'background-image: url('+ IMAGE_URL+goods.mainPhotoUrl+');'"></navigator>
 							<view class="cart-goods-msg flex-sub">
 								<view class="msg-top flex flex-direction justify-between clear align-start">
 									<view class="">

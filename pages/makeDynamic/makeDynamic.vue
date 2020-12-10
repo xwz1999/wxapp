@@ -11,7 +11,7 @@
 				<view class="">(最多{{maxLength}}张)</view>
 			</view>
 		</view>
-		<view class="padding">
+		<view class="" style="padding: 25rpx;">
 			<button class="bg-red text-white" @tap="submit">发布</button>
 		</view>
 	</view>
@@ -23,7 +23,7 @@
 			return {
 				IMAGE_URL: this.IMAGE_URL,
 				images: [],
-				maxLength: 5,
+				maxLength: 9,
 				goodsId: 0,
 				content: ""
 			};
@@ -124,8 +124,8 @@
 
 <style lang="scss">
 	.placeholder {
-		padding: 25rpx;
-		margin: 20rpx;
+		padding: 22rpx;
+		margin: 25rpx;
 		width: 700rpx;
 		line-height: 40rpx;
 	}
@@ -134,15 +134,15 @@
 		margin: 25rpx;
 
 		&>view {
-			width: 128rpx;
-			height: 128rpx;
+			width: 160rpx;
+			height: 160rpx;
 			border-radius: 10rpx;
-			margin-right: 15rpx;
-			margin-bottom: 15rpx;
+			margin-right: 20rpx;
+			margin-bottom: 20rpx;
 			font-size: 20rpx;
 			color: #AAAAAA;
 
-			&:nth-child(5n) {
+			&:nth-child(4n) {
 				margin-right: 0;
 			}
 		}
@@ -150,6 +150,7 @@
 		.upload {
 			border: 1rpx solid #DDDDDD;
 			box-sizing: border-box;
+			background-color: #FFFFFF;
 		}
 
 		.image-item {

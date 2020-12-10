@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "团队收益",
+  "enablePullDownRefresh": false,
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-navbar": "/uview-ui/components/u-navbar/u-navbar"
+  }
+}

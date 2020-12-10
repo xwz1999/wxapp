@@ -27,8 +27,7 @@
 									<view class="dots-box"><text style="font-size: 32rpx;">{{current+1}}</text>/{{goodsDetail.mainPhotos.length}}</view>
 								</view>
 
-								<view class="banner-con">
-									<image :src="IMAGE_URL+'/photo/FhNoUtBF0LtApK3LnX9k6RE9FK5v.png'" style="width: 100%;" mode="widthFix"></image>
+								<view class="banner-con bg-img" :style="'background-image: url('+IMAGE_URL+'/photo/FhNoUtBF0LtApK3LnX9k6RE9FK5v.png);'">
 									<view class="pic-con">
 										<view class="flex quan-top">
 											<view class="quan">20元优惠券</view>
@@ -648,7 +647,8 @@
 	.banner-con {
 		position: relative;
 		margin-top: -80rpx;
-
+		height: 212rpx;
+		background-color: transparent;
 		.pic-con {
 			position: absolute;
 			bottom: 20rpx;

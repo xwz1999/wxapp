@@ -143,7 +143,7 @@
 			},
 			chooseImage() {
 				uni.chooseImage({
-					count: this.maxLength, //默认9
+					count: this.maxLength-this.images.length, 
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					success: (res) => {
 						console.log(res.tempFilePaths);
