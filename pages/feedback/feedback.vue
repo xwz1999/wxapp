@@ -1,8 +1,8 @@
 <template>
 	<view>
-		<view class="padding">
+		<!-- <view class="padding">
 			<button class="bg-gradual-blue" @tap="chooseImage">上传图片</button>
-		</view>
+		</view> -->
 	</view>
 </template>
 

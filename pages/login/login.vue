@@ -1,11 +1,7 @@
 <template>
 	<view>
-		<!-- <view class="flex justify-end" style="font-size: 32rpx;padding: 0 30rpx;">
-			<view class="">手机号登录</view>
-		</view> -->
 		<view class="logo-box flex flex-direction align-center">
 			<image src="../../static/logo.png" mode="widthFix"></image>
-			<!-- <image :src="IMAGE_URL+'/default/officaillogo-1.png'" mode="widthFix"></image> -->
 			<view class="">享受指尖的购物乐趣</view>
 		</view>
 		<view class="btn-box">
@@ -14,8 +10,7 @@
 				<text class="cuIcon-mobilefill"></text>
 				<view class="">手机登录</view>
 			</button>
-			<button class="wxlogin-btn text-white shadow flex justify-center cu-btn lg block" style="background-color: #1AB663;"
-			 open-type="getUserInfo" @tap="wxLogin" @getuserinfo="getInfo">
+			<button class="wxlogin-btn text-white shadow flex justify-center cu-btn lg block" style="background-color: #1AB663;" open-type="getUserInfo" @getuserinfo="wxLogin">
 				<text class="cuIcon-weixin"></text>
 				<view class="">微信登录</view>
 			</button>
@@ -33,14 +28,6 @@
 			};
 		},
 		methods: {
-			getInfo() {
-				uni.getUserInfo({
-					provider: 'weixin',
-					success: function(infoRes) {
-						console.log('用户昵称为：' + infoRes.userInfo.nickName);
-					}
-				});
-			},
 			toMobileLogin() {
 				uni.navigateTo({
 					url: "../mobileLogin/mobileLogin"
@@ -50,35 +37,41 @@
 				// uni.navigateTo({
 				// 	url:"../whiteInfo/whiteInfo"
 				// })
+				uni.showLoading({
+					title:"登陆中"
+				})
 				uni.login({
 					provider: 'weixin',
 					success: (loginRes) => {
 						console.log(loginRes);
 						let code = loginRes.code
-					
-						
-						this.$u.get('https://api.weixin.qq.com/sns/jscode2session?appid=wxf95835be72b5373c&secret=1153b31349a1791f56bd542181beeab1&js_code='+code+'&grant_type=authorization_code').then(res=>{
-							console.log(res)
-						})
-						
-						
-						return
-						this.$u.post('/api/v1/users/profile/wx/login', {
-							code: code,
-							wxType:"recook-weapp"
-						}).then(res => {
-							console.log(res);
-							if (res.code == 1000) {
-								uni.switchTab({
-									url: "../index/index",
-									success: () => {
-										uni.showToast({
-											title: "登录成功"
+						 uni.getUserInfo({
+						      provider: 'weixin',
+						      success:  (infoRes)=> {
+						        console.log(infoRes);
+								let encryptedData = infoRes.encryptedData
+								let iv = infoRes.iv
+								// return
+								this.$u.post('/api/v1/users/profile/wx/mini/loginv2', {
+									code: code,
+									encryptedData:encryptedData,
+									iv:iv,
+									wxType:"recook-weapp"
+								}).then(res => {
+									console.log(res);
+									if(res.data.code=="SUCCESS"){
+										uni.reLaunch({
+											url:"../index/index"
+										})
+									}else{
+										uni.navigateTo({
+											url:"../mobileLogin/mobileLogin"
 										})
 									}
-								})
-							}
-						});
+								});
+						      }
+						    });
+						
 					}
 				});
 				return
@@ -110,7 +103,7 @@
 		width: 100%;
 
 		button {
-			margin: 20rpx;
+			margin: 20rpx 30rpx;
 			border-radius: 44rpx;
 			height: 88rpx;
 			line-height: 88rpx;

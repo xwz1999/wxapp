@@ -2,7 +2,6 @@
 	<view class="content">
 		<view class="header-box">
 			<view class="blur-bg">
-				<!-- <image :src="bgImage" style="width: 100%;transform: scale(20);" mode="widthFix"></image> -->
 				<view class="blur-bg-con" :style="'background-image: url('+bgImage+');'"></view>
 			</view>
 			<view class="search-box flex justify-between text-white">
@@ -12,10 +11,11 @@
 				</view>
 				<view class="search-con flex-sub flex text-white">
 					<text class="cuIcon-search"></text>
-					<input type="text" class="flex-sub" v-model="keyword" confirm-type="search" placeholder="请输入关键字" placeholder-class="placeholder" @confirm="toSearch" />
+					<input type="text" class="flex-sub" v-model="keyword" confirm-type="search" placeholder="请输入关键字" placeholder-class="placeholder"
+					 @confirm="toSearch" />
 				</view>
 				<view class="icon-box flex">
-					<u-icon name="server-fill"></u-icon>
+					<!-- <u-icon name="server-fill"></u-icon> -->
 					<u-icon name="scan" @tap="scan"></u-icon>
 				</view>
 			</view>
@@ -33,9 +33,10 @@
 				</view>
 			</view>
 			<!-- 轮播图 -->
-			<swiper class="swiper-box screen-swiper square-dot" :circular="true" :autoplay="true" interval="5000" duration="500" @change="changeSwiper">
+			<swiper class="swiper-box screen-swiper square-dot" :circular="true" :autoplay="true" interval="5000" duration="500"
+			 @change="changeSwiper">
 				<swiper-item v-for="(item,index) in swipers" :key="index">
-					<image :src="IMAGE_URL+item.url" mode="aspectFill"></image>
+					<image :src="item.url" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -45,24 +46,26 @@
 			 scroll-with-animation>
 				<view class="cu-item" v-for="(item,index) in cateList" :key="index" @tap="toClassify(index,item.id)">
 					<view class="flex flex-direction justify-center align-center" style="height: 90rpx;">
-						<image src="../../static/index/icon02.png" mode="widthFix"></image>
+						<image :src="item.icon" mode="widthFix"></image>
 						<view class="" style="font-size: 22rpx;">{{item.name}}</view>
 					</view>
 				</view>
 			</scroll-view>
 			<view class="flex flex-direction justify-center align-center" style="width: 100rpx;" @tap="toClassify()">
-				<image src="../../static/index/icon.png" mode="widthFix"></image>
+				<image src="/static/index/icon.png" mode="widthFix"></image>
 				<view class="" style="font-size: 22rpx;">分类</view>
 			</view>
 		</view>
 
-
-		<view class="classify-box bg-white flex justify-around">
-			<view class="cla-item text-center" v-for="(item,index) in options" :key="index" @tap="toPage(item.page)">
-				<image src="../../static/logo.png" mode="widthFix"></image>
-				<view class="cla-txt">{{item.text}}</view>
+		<template>
+			<view class="classify-box bg-white flex justify-around">
+				<view class="cla-item text-center" v-for="(item,index) in options" :key="index" @tap="toPage(index,item.page)">
+					<image :src="item.icon" mode="widthFix"></image>
+					<view class="cla-txt">{{item.text}}</view>
+				</view>
 			</view>
-		</view>
+		</template>
+		
 
 
 		<!-- 四张海报活动入口 -->
@@ -97,9 +100,28 @@
 			<!-- 商品列表组件 -->
 			<template v-if="goodsList.length!=0">
 				<goods-list :goodsList="goodsList"></goods-list>
-				<u-loadmore status="nomore" margin-bottom="40"/>
+				<u-loadmore status="nomore" margin-bottom="40" />
 			</template>
 		</view>
+
+
+		<u-popup v-model="isShow" mode="bottom" border-radius="15">
+			<view class="share-box flex justify-between">
+				<view class="flex-sub flex justify-center">
+					<button class="flex flex-direction justify-center align-center" open-type="share" @tap="hideModel">
+						<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
+						<view class="txt">微信好友</view>
+					</button>
+				</view>
+				<view class="flex-sub flex justify-center">
+					<button class="flex flex-direction justify-center align-center" @tap="postShare">
+						<image class="share-icon" src="/static/mine/post.png" mode="widthFix"></image>
+						<view class="txt">二维码海报</view>
+					</button>
+				</view>
+			</view>
+			<view class="cancle" @tap="hideModel">取消</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -111,27 +133,58 @@
 				nowIndex: -1, //当前的时段
 				scrollLeft: 0,
 				goodsList: null,
-				keyword:"",
-				swipers:[],
-				options: [{
+				keyword: "",
+				swipers: [],
+				options:[],
+				options1: [{
 						text: "瑞库制品",
-						page: "/packageA/hotRanking/hotRanking?fromView=ruiku"
+						page: "/pages/hotRanking/hotRanking?fromView=ruiku",
+						icon: "/static/index/index01.png"
 					},
 					{
 						text: "家居生活",
-						page: "/packageA/hotRanking/hotRanking?fromView=jiaju"
+						page: "/pages/hotRanking/hotRanking?fromView=jiaju",
+						icon: "/static/index/index01.png"
 					},
 					{
 						text: "数码家电",
-						page: "/packageA/hotRanking/hotRanking?fromView=shuma"
+						page: "/pages/hotRanking/hotRanking?fromView=shuma",
+						icon: "/static/index/index01.png"
 					},
 					{
 						text: "热销榜单",
-						page: "/packageA/hotRanking/hotRanking?fromView=rexiao"
+						page: "/pages/hotRanking/hotRanking?fromView=rexiao",
+						icon: "/static/index/index04.png"
 					},
 					{
 						text: "全部分类",
-						page: "/packageA/classify/classify"
+						page: "/pages/classify/classify",
+						icon: "/static/index/index05.png"
+					},
+				],
+				options2: [{
+						text: "我的权益",
+						page: "/pages/myEquity/myEquity",
+						icon: "/static/index/index01.png"
+					},
+					{
+						text: "一键邀请",
+						icon: "/static/index/index02.png"
+					},
+					{
+						text: "我的店铺",
+						page: "/pages/shop/shop",
+						icon: "/static/index/index03.png"
+					},
+					{
+						text: "热销榜单",
+						page: "/pages/hotRanking/hotRanking?fromView=rexiao",
+						icon: "/static/index/index04.png"
+					},
+					{
+						text: "全部分类",
+						page: "/pages/classify/classify",
+						icon: "/static/index/index05.png"
 					},
 				],
 				posts: null,
@@ -139,39 +192,44 @@
 				promotionId: null,
 				promotion: [],
 				cateList: [],
-				bgImage:"",
-				icons:[
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-					"../../static/index/icon02.png",
-				]
+				bgImage: "",
+				isShow:false,
+				roleLevel:500
 			}
 		},
 		onLoad() {
+			if(uni.getStorageSync("userInfo").roleLevel){
+				this.roleLevel = uni.getStorageSync("userInfo").roleLevel
+			}
+			if(this.roleLevel==500){
+				this.options = this.options1
+			}else{
+				this.options = this.options2
+			}
 			this.getSwiper()
 			this.getCateList()
 			this.getPost()
 			this.getActivity()
 		},
+		watch:{
+			isShow:function(val){
+				if(val){
+					uni.hideTabBar()
+				}else{
+					uni.showTabBar()
+				}
+			}
+		},
 		methods: {
-			changeSwiper(e){
+			postShare(){
+				this.$u.toast("功能暂未开放，敬请期待~");
+			},
+			hideModel(){
+				this.isShow = false
+			},
+			changeSwiper(e) {
 				let index = e.detail.current
-				this.bgImage = this.IMAGE_URL+ this.swipers[index].url
+				this.bgImage = this.swipers[index].url
 			},
 			getSwiper() {
 				this.$u.post('/api/v1/diamond_show/list').then(res => {
@@ -181,7 +239,10 @@
 						return
 					}
 					this.swipers = res.data.data
-					this.bgImage = this.IMAGE_URL+ this.swipers[0].url
+					this.swipers.map(item => {
+						item.url = this.IMAGE_URL + item.url
+					})
+					this.bgImage = this.swipers[0].url
 				});
 			},
 			// 获取三个特卖入口图片
@@ -219,7 +280,7 @@
 						}
 						//凌晨有段时间不会满足上面的条件故加了下面的判断
 						// console.log(i,nowTime >= new Date(this.promotion[i].endTime),nowTime <= new Date(this.promotion[i+1].startTime))
-						if ( nowTime <= new Date(this.promotion[i].startTime)) {
+						if (nowTime <= new Date(this.promotion[i].startTime)) {
 							this.promotionId = this.promotion[i].id
 							this.nowIndex = this.TabCur = i
 							this.scrollLeft = (i - 2) * 75
@@ -237,6 +298,74 @@
 						return
 					}
 					this.cateList = res.data.data
+					for (let i = 0; i < this.cateList.length; i++) {
+						switch (this.cateList[i].name) {
+							case "分类":
+								this.cateList[i].icon = "/static/index/icon.png"
+								break;
+							case "医疗保健":
+								this.cateList[i].icon = "/static/index/icon01.png"
+								break;
+							case "休闲美食":
+								this.cateList[i].icon = "/static/index/icon02.png"
+								break;
+							case "美妆护肤":
+								this.cateList[i].icon = "/static/index/icon03.png"
+								break;
+							case "母婴用品":
+								this.cateList[i].icon = "/static/index/icon04.png"
+								break;
+							case "鞋靴箱包":
+								this.cateList[i].icon = "/static/index/icon05.png"
+								break;
+							case "图文教育":
+								this.cateList[i].icon = "/static/index/icon06.png"
+								break;
+							case "个护清洁":
+								this.cateList[i].icon = "/static/index/icon07.png"
+								break;
+							case "服饰内衣":
+								this.cateList[i].icon = "/static/index/icon08.png"
+								break;
+							case "日用百货":
+								this.cateList[i].icon = "/static/index/icon09.png"
+								break;
+							case "家用电器":
+								this.cateList[i].icon = "/static/index/icon10.png"
+								break;
+							case "有机食品":
+								this.cateList[i].icon = "/static/index/icon11.png"
+								break;
+							case "家具饰品":
+								this.cateList[i].icon = "/static/index/icon12.png"
+								break;
+							case "进口专区":
+								this.cateList[i].icon = "/static/index/icon13.png"
+								break;
+							case "会员专享":
+								this.cateList[i].icon = "/static/index/icon14.png"
+								break;
+							case "手机数码":
+								this.cateList[i].icon = "/static/index/icon15.png"
+								break;
+							case "柴米油盐":
+								this.cateList[i].icon = "/static/index/icon16.png"
+								break;
+							case "运动旅行":
+								this.cateList[i].icon = "/static/index/icon17.png"
+								break;
+							case "蔬果生鲜":
+								this.cateList[i].icon = "/static/index/icon18.png"
+								break;
+							case "酒饮冲调":
+								this.cateList[i].icon = "/static/index/icon19.png"
+								break;
+							default:
+								this.cateList[i].icon = "/static/index/icon19.png"
+								break;
+						}
+
+					}
 				});
 			},
 			// 获取首页抢购活动商品列表
@@ -289,22 +418,43 @@
 				console.log(index, id)
 				if (id) {
 					uni.navigateTo({
-						url: "/packageA/classify/classify?index=" + index + "&id=" + id
+						url: "/pages/classify/classify?index=" + index + "&id=" + id
 					})
 				} else {
 					uni.navigateTo({
-						url: "/packageA/classify/classify"
+						url: "/pages/classify/classify"
 					})
 				}
 			},
-			toPage(url) {
-				uni.navigateTo({
-					url: url
-				})
+			toPage(idx, url) {
+				if(this.roleLevel==500){
+					uni.navigateTo({
+						url: url
+					})
+				}else{
+					switch (idx) {
+						case 0:
+							this.$u.toast("功能暂未开放，敬请期待~");
+							return;
+						case 1:
+							this.isShow = true
+							break;
+						case 2:
+							uni.switchTab({
+								url:"../shop/shop"
+							})
+							return;
+						default:
+							break;
+					}
+					uni.navigateTo({
+						url: url
+					})
+				}
 			},
 			toSearch() {
 				uni.navigateTo({
-					url: "../search/search?keyword="+this.keyword,
+					url: "../search/search?keyword=" + this.keyword,
 					success: () => {
 						this.keyword = ""
 					}
@@ -319,24 +469,25 @@
 		height: 600rpx;
 		padding-top: 180rpx;
 		position: relative;
-		background-color: rgba(0,0,0,0.5);
-		background-image: linear-gradient(rgba(255,255,255,0),rgba(255,255,255,0.7));
-		.blur-bg{
+		background-color: rgba(0, 0, 0, 0.5);
+		background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7));
+
+		.blur-bg {
 			position: absolute;
 			top: 0;
 			width: 100%;
 			height: 100%;
 			overflow: hidden;
 			z-index: -10;
-			
-			.blur-bg-con{
+
+			.blur-bg-con {
 				width: 100%;
 				height: 100%;
 				filter: blur(100rpx);
 				transform: scale(1.5);
 			}
 		}
-		
+
 		.location {
 			max-width: 200rpx;
 			font-size: 32rpx;
@@ -451,4 +602,31 @@
 		}
 
 	}
+	.share-box{
+		padding: 50rpx 0;
+		.share-icon{
+			width: 80rpx;
+			height: 80rpx;
+			border-radius: 50%;
+			margin-bottom: 10rpx;
+		}
+		.txt{
+			font-size: 26rpx;
+		}
+		button{
+			border: 0;
+			padding: 0;
+			background-color: #FFFFFF;
+			line-height: normal;
+		}
+		button::after{
+			content: none;
+		}
+	}
+	.cancle{
+		border-top: 1rpx solid #f1f1f1;
+		line-height: 90rpx;
+		text-align: center;
+	}
+	
 </style>

@@ -1,11 +1,11 @@
 <template>
 	<view class="">
-		<view class="flex justify-between align-start bg-white" style="margin: 20rpx;padding: 20rpx;">
+		<view class="flex justify-between align-start bg-white" style="margin: 25rpx;padding: 20rpx;">
 			<textarea class="flex-sub textarea" v-model="content" />
 			<text class="cuIcon-roundclosefill" @tap="clearContent"></text>
 		</view>
-		<view class="padding">
-			<button class="bg-red text-white" @tap="update">确认</button>
+		<view style="margin: 0 25rpx;">
+			<button class="bg-red cu-btn text-white lg block" @tap="update">确认</button>
 		</view>
 	</view>
 </template>

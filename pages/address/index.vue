@@ -1,6 +1,10 @@
 <template>
 	<view>
-		<view class="address-box">
+		<view class="null flex flex-direction justify-center align-center" v-if="isNull" style="width: 100vw;height: 80vh;">
+			<image :src="STATIC_URL+'null04.png'" style="width: 300rpx;" mode="widthFix"></image>
+			<view  style="font-size: 24rpx;color: #AAAAAA;margin-top: 10rpx;">暂无地址</view>
+		</view>
+		<view class="address-box" v-else>
 			<view class="item bg-white" v-for="(item,index) in siteList" :key="index" @tap="chooseAddress(item)">
 				<view class="add-con">
 					<view class="flex text-black" style="line-height: 80rpx;">
@@ -36,7 +40,9 @@
 		data() {
 			return {
 				siteList: [],
-				fromPage:null
+				fromPage:null,
+				isNull:false,
+				STATIC_URL:this.STATIC_URL
 			};
 		},
 		computed: {
@@ -143,6 +149,9 @@
 						return
 					}
 					this.siteList = res.data.data
+					if(this.siteList.length==0){
+						this.isNull = true
+					}
 				});
 			},
 			toAddSite(site) {

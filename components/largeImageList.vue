@@ -1,9 +1,10 @@
 <template name="largeImageList">
 	<view class="goods-container flex flex-wrap justify-between">
 		<view class="goods-item bg-white" v-for="(item,index) in goodsList" :key="index">
-			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" class="goods-pic bg-img" :style="'background-image: url('+IMAGE_URL+item.mainPhotoUrl+');'">
+			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" class="goods-pic bg-img">
+				<image :src="IMAGE_URL+item.mainPhotoUrl" lazy-load style="height: 100%;width: 100%;" mode="aspectFill"></image>
 				<view class="goods-mask flex justify-center" v-if="item.inventory==0">
-					<image :src="IMAGE_URL+'/photo/Fh8qb3ZRiBz4xpL5-FHf8pRUnGhc.png'" mode="widthFix"></image>
+					<image :src="STATIC_URL+'sale_out.png'" mode="widthFix"></image>
 				</view>
 			</navigator>
 			<view class="goods-name-box">

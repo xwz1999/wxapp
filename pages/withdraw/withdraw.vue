@@ -39,7 +39,7 @@
 				个工作日到账，实际到账时间以落地处理结果为准。
 			</view>
 			<button class="btn bg-red cu-btn block lg" @tap="withdraw">申请提现</button>
-			<view class="center-bottom">
+			<view class="center-bottom flex align-center">
 				<text :class="isAgree?'cuIcon-squarecheckfill text-red':'cuIcon-square'" @tap="setAgree"></text>
 				请同意<text class="text-red">《共享经济合作伙伴协议》</text>后进行提现
 			</view>
@@ -69,7 +69,7 @@
 		<u-popup v-model="showTipModel" mode="center" border-radius="10" :mask-close-able="false">
 			<view class="tip-model">
 				<view class="bg-box text-center text-white">
-					<image :src="IMAGE_URL+'/photo/FgK4QGjlD2rezZf6176t_fvkjWb0.png'" style="width: 100%;" mode="widthFix"></image>
+					<image :src="STATIC_URL+'wd-bg.png'" style="width: 100%;" mode="widthFix"></image>
 					<view class="bg-con flex flex-direction justify-center">
 						<view style="font-size: 32rpx;">谨记小助手提示</view>
 						<view style="font-size: 36rpx;margin-top: 20rpx;">大幅提升提现成功率</view>
@@ -116,7 +116,7 @@
 	export default {
 		data() {
 			return {
-				IMAGE_URL: this.IMAGE_URL,
+				STATIC_URL: this.STATIC_URL,
 				canWithdrawn: true, //是否认证
 				showPwdModel: false,
 				password: '',
@@ -419,13 +419,13 @@
 		}
 
 		.intro {
-			font-size: 22rpx;
-			color: #AAAAAA;
+			font-size: 24rpx;
+			color: #999999;
 		}
 
 		.center-bottom {
 			font-size: 24rpx;
-			color: #aaa;
+			color: #999999;
 			line-height: 60rpx;
 		}
 	}

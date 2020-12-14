@@ -3,10 +3,10 @@
 	<view class="goods-box">
 		<view class="goods-item" v-for="(item,index) in goodsList" :key="index">
 			<view class="goods-item-con bg-white flex justify-between">
-				<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" class="goods-pic bg-img clear" v-if="item.mainPhotoUrl"
-				 :style="'background-image: url('+IMAGE_URL+item.mainPhotoUrl+');'">
+				<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" class="goods-pic bg-img clear" v-if="item.mainPhotoUrl">
+				 <image :src="IMAGE_URL+item.mainPhotoUrl" lazy-load style="height: 100%;width: 100%;" mode="aspectFill"></image>
 					<view class="goods-mask flex justify-center" v-if="item.inventory==0">
-						<image :src="IMAGE_URL+'/photo/Fh8qb3ZRiBz4xpL5-FHf8pRUnGhc.png'" mode="widthFix"></image>
+						<image :src="STATIC_URL+'sale_out.png'" mode="widthFix"></image>
 					</view>
 				</navigator>
 				<view class="goods-msg flex-sub clear flex flex-direction justify-between">
@@ -14,7 +14,7 @@
 						<view class="goods-name two-line">{{item.goodsName}}</view>
 						<view class="goods-key-box text-hidden">{{item.description}}</view>
 						<view class="shop-msg flex align-center">
-							<view class="shop-logo bg-img" v-if="item.brandImg" :style="'background-image: url('+IMAGE_URL+item.brandImg+');'"></view>
+							<image class="shop-logo bg-img" lazy-load :src="IMAGE_URL+item.brandImg" v-if="item.brandImg" mode="aspectFill"></image>
 							<view class="shop-name text-red text-hidden" style="font-size: 24rpx;">{{item.brandName}}</view>
 						</view>
 					</view>
@@ -65,6 +65,7 @@
 		name: "goodsList",
 		data() {
 			return {
+				STATIC_URL:this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL
 			}
 		},

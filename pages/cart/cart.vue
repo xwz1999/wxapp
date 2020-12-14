@@ -1,73 +1,80 @@
 <template>
 	<view>
-		<template v-if="cartGoods.length==0">
-			<view class="text-center">购物车空了！！</view>
-		</template>
-		<template v-else>
-			<view class="cart-top flex justify-between bg-white">
-				<view class=""></view>
-				<view class="" @tap="editCart">{{isEdit?'取消编辑':'编辑商品'}}</view>
-			</view>
-			<view class="" style="height: 80rpx;"></view>
-			<view class="cart-shop-box">
-				<view class="cart-shop-item bg-white" v-for="(shop,shopIndex) in cartGoods" :key="shopIndex">
-					<view class="shop-name-box flex align-center">
-						<text :class="shop.shopChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkShop(shopIndex)"></text>
-						<image class="shop-logo" :src="IMAGE_URL+shop.brandLogo" mode="widthFix"></image>
-						<view class="shop-name">{{shop.brandName}}</view>
-					</view>
-					<view class="cart-goods-box">
-						<view class="cart-goods-item flex justify-between align-start" v-for="(goods,goodsIndex) in shop.children" :key="goodsIndex">
-							<view class="flex align-center" style="height: 200rpx;">
-								<text :class="goods.goodsChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkGoods(shopIndex,goodsIndex)"></text>
-							</view>
-							<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId" class="cart-goods-pic bg-img" :style="'background-image: url('+ IMAGE_URL+goods.mainPhotoUrl+');'"></navigator>
-							<view class="cart-goods-msg flex-sub">
-								<view class="msg-top flex flex-direction justify-between clear align-start">
-									<view class="">
-										<view class="cart-goods-name">{{goods.goodsName}}</view>
-										<text class="cart-goods-spec">{{goods.skuName}}</text>
-									</view>
-									<view class="text-red tip">赚{{goods.commission}}</view>
+		<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;" v-if="showLoading">
+			<image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image>
+		</view>
+		<view class="" v-else>
+			<template v-if="cartGoods.length==0">
+				<view class="flex flex-direction justify-center align-center" style="width: 100vw;height:80vh;">
+					<image :src="STATIC_URL+'null02.png'" style="width: 300rpx;" mode="widthFix"></image>
+					<view class="text-center" style="color: #AAAAAA;font-size: 26rpx;margin-top: 10rpx;">购物车空了,快去逛逛吧~</view>
+				</view>
+			</template>
+			<template v-else>
+				<view class="cart-top flex justify-between bg-white">
+					<view class=""></view>
+					<view class="" @tap="editCart">{{isEdit?'取消编辑':'编辑商品'}}</view>
+				</view>
+				<view class="" style="height: 80rpx;"></view>
+				<view class="cart-shop-box">
+					<view class="cart-shop-item bg-white" v-for="(shop,shopIndex) in cartGoods" :key="shopIndex">
+						<view class="shop-name-box flex align-center">
+							<text :class="shop.shopChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkShop(shopIndex)"></text>
+							<image class="shop-logo" :src="IMAGE_URL+shop.brandLogo" mode="widthFix"></image>
+							<view class="shop-name">{{shop.brandName}}</view>
+						</view>
+						<view class="cart-goods-box">
+							<view class="cart-goods-item flex justify-between align-start" v-for="(goods,goodsIndex) in shop.children" :key="goodsIndex">
+								<view class="flex align-center" style="height: 200rpx;">
+									<text :class="goods.goodsChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkGoods(shopIndex,goodsIndex)"></text>
 								</view>
-								<view class="msg-bottom flex justify-between" style="line-height: 50rpx;padding-top: 15rpx;">
-									<view class="flex">
-										<text class="text-red" style="font-size: 30rpx;">¥{{goods.price}}</text>
-										<text style="text-decoration: line-through;font-size: 20rpx;margin-left: 5rpx;color: #898989;">¥{{goods.originalPrice}}</text>
+								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId" class="cart-goods-pic bg-img" :style="'background-image: url('+ IMAGE_URL+goods.mainPhotoUrl+');'"></navigator>
+								<view class="cart-goods-msg flex-sub">
+									<view class="msg-top flex flex-direction justify-between clear align-start">
+										<view class="">
+											<view class="cart-goods-name">{{goods.goodsName}}</view>
+											<text class="cart-goods-spec">{{goods.skuName}}</text>
+										</view>
+										<view class="text-red tip">赚{{goods.commission}}</view>
 									</view>
-									<!-- 用change事件初次加载会请求多次 -->
-									<u-number-box v-model="goods.quantity" :min="1" :input-width="72" :size="24" @change="changeNum(goods.shoppingTrolleyId,goods.quantity)"></u-number-box>
-
+									<view class="msg-bottom flex justify-between" style="line-height: 50rpx;padding-top: 15rpx;">
+										<view class="flex">
+											<text class="text-red" style="font-size: 30rpx;">¥{{goods.price}}</text>
+											<text style="text-decoration: line-through;font-size: 20rpx;margin-left: 5rpx;color: #898989;">¥{{goods.originalPrice}}</text>
+										</view>
+										<!-- 用change事件初次加载会请求多次 -->
+										<u-number-box v-model="goods.quantity" :min="1" :input-width="72" :size="24" @change="changeNum(goods.shoppingTrolleyId,goods.quantity)"></u-number-box>
+			
+									</view>
 								</view>
 							</view>
 						</view>
 					</view>
 				</view>
-			</view>
-
-
-			<view class="cart-bottom bg-white flex justify-between align-center">
-				<view class="all-select-box flex align-center" @tap="selectAll">
-					<text :class="allChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'"></text>
-					<view style="font-size: 28rpx;margin-left: 10rpx;">全选</view>
-				</view>
-				<view class="flex align-center">
-
-					<view class="" style="margin-right: 30rpx;">
-						<template v-if="isEdit">
-							<view class="">已选择{{totalNum}}件商品</view>
-						</template>
-						<template v-else>
-							<view style="font-size: 28rpx;">合计：￥{{totalPrice}}</view>
-							<view class="text-red" style="font-size: 18rpx;">赚{{totalCommission}}</view>
-						</template>
+			
+			
+				<view class="cart-bottom bg-white flex justify-between align-center">
+					<view class="all-select-box flex align-center" @tap="selectAll">
+						<text :class="allChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'"></text>
+						<view style="font-size: 28rpx;margin-left: 10rpx;">全选</view>
 					</view>
-					<button v-if="isEdit" class="cu-btn text-white round bg-red" @tap="delGoods">删除</button>
-					<button v-else class="cu-btn text-white round bg-red" @tap="creatCartOrder">结算({{totalNum}})</button>
+					<view class="flex align-center">
+			
+						<view class="" style="margin-right: 30rpx;">
+							<template v-if="isEdit">
+								<view class="">已选择{{totalNum}}件商品</view>
+							</template>
+							<template v-else>
+								<view style="font-size: 28rpx;">合计：￥{{totalPrice}}</view>
+								<view class="text-red" style="font-size: 18rpx;">赚{{totalCommission}}</view>
+							</template>
+						</view>
+						<button v-if="isEdit" class="cu-btn text-white round bg-red" @tap="delGoods">删除</button>
+						<button v-else class="cu-btn text-white round bg-red" @tap="creatCartOrder">结算({{totalNum}})</button>
+					</view>
 				</view>
-			</view>
-		</template>
-
+			</template>
+		</view>
 	</view>
 </template>
 
@@ -78,11 +85,13 @@
 				allChecked: false,
 				cartGoods: [],
 				IMAGE_URL: this.IMAGE_URL,
+				STATIC_URL:this.STATIC_URL,
 				isEdit: false,
 				totalPrice: 0,
 				totalNum: 0,
 				selectGoodsIds: [],
-				totalCommission: 0
+				totalCommission: 0,
+				showLoading:true
 			};
 		},
 		onShow() {
@@ -112,6 +121,7 @@
 					UserID: uni.getStorageSync("userInfo").id
 				}).then(res => {
 					console.log(res.data);
+					this.showLoading = false
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
@@ -344,13 +354,13 @@
 				margin-top: 10rpx;
 				display: inline-block;
 				line-height: 40rpx;
-				border-radius: 5rpx;
+				border-radius: 10rpx;
 			}
 
 			.tip {
 				color: #CC1B4F;
 				font-size: 18rpx;
-				border-radius: 2rpx;
+				border-radius: 5rpx;
 				border: 1rpx solid #CC1B4F;
 				line-height: 28rpx;
 				padding: 0 8rpx;

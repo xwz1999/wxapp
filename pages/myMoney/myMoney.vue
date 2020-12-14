@@ -17,7 +17,7 @@
 			</picker>
 		</view>
 		<view class="flex-sub bg-white clear" style="position: relative;">
-			<view class="mask" v-if="isShow"></view>
+			<view class="mask" v-if="isShow" @tap="hideMask"></view>
 			<view class="type-box bg-white flex justify-between flex-wrap" :class="isShow?'move':''">
 				<view class="type-item" :class="currentType==index?'active':''" v-for="(item,index) in types" :key="index" @tap="chooseType(index)">{{item}}</view>
 			</view>
@@ -32,7 +32,7 @@
 					</view>
 				</view>
 				<view class="null flex justify-center flex-direction align-center" style="height: 100%;" v-else>
-					<image :src="IMAGE_URL+'/photo/FkdR-m8xwYqKqxa9i547PHEmtK7r.png'" style="width: 300rpx;" mode="widthFix"></image>
+					<image :src="STATIC_URL+'null01.png'" style="width: 300rpx;" mode="widthFix"></image>
 					<view style="font-size: 24rpx;color: #DDDDDD;">暂无数据</view>
 				</view>
 			</scroll-view>
@@ -45,7 +45,7 @@
 	export default {
 		data() {
 			return {
-				IMAGE_URL:this.IMAGE_URL,
+				STATIC_URL:this.STATIC_URL,
 				end_time: "",
 				time: "",
 				data: {
@@ -179,7 +179,7 @@
 
 		.type-item {
 			width: 220rpx;
-			line-height: 60rpx;
+			line-height: 70rpx;
 			margin: 10rpx 0;
 			text-align: center;
 			background-color: #F1F1F1;

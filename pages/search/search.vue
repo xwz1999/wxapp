@@ -14,7 +14,7 @@
 			<view class="flex-sub" @tap="chooseItem(0)">综合</view>
 			<view class="flex-sub flex justify-center" @tap="chooseItem(1)">价格<text :class="flag1?'cuIcon-triangledownfill':'cuIcon-triangleupfill'"></text></view>
 			<view class="flex-sub flex justify-center" @tap="chooseItem(2)">销量<text :class="flag2?'cuIcon-triangledownfill':'cuIcon-triangleupfill'"></text></view>
-			<view class="flex-sub flex justify-center" @tap="changePlain">排列<view class="iconfont" :class="isBlock?'icontubiao_liebiaopailie':'iconpailie'"></view></view>
+			<view class="flex-sub flex justify-center icon" @tap="changePlain">排列<text :class="isBlock?'cuIcon-list':'cuIcon-apps'"></text></view>
 		</view>
 		<scroll-view class="flex-sub" scroll-y="true" style="height: 0;" @scrolltolower="getGoodsList">
 			<view class="goods-box">
@@ -82,14 +82,14 @@
 					this.flag2 = true
 					this.flag1 = !this.flag1
 					this.flag1?this.order="desc":this.order="asc"
-					this.$u.toast(this.flag1?"价格降序":"价格升序");
+					// this.$u.toast(this.flag1?"价格降序":"价格升序");
 				}
 				if (i == 2) {
 					this.requestUrl = "/api/v1/goods/sales/list"
 					this.flag1 = true
 					this.flag2 = !this.flag2
 					this.flag2?this.order="desc":this.order="asc"
-					this.$u.toast(this.flag2?"销量降序":"销量升序");
+					// this.$u.toast(this.flag2?"销量降序":"销量升序");
 				}
 				this.page = 0
 				this.stopLoad = false
@@ -163,12 +163,10 @@
 
 	.nav-top {
 		line-height: 80rpx;
-
-		text {
-			font-size: 36rpx;
-		}
-		.iconfont{
-			font-size: 26rpx;
+		.icon{
+			text{
+				font-size: 30rpx;
+			}
 		}
 	}
 	

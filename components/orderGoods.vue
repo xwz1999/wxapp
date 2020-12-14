@@ -2,7 +2,9 @@
 	<view class="goods-box">
 		<view v-for="(item,index) in goodsList" :key="index">
 			<view class="goods-item flex">
-				<navigator class="goods-pic bg-img" :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" :style="'background-image: url('+IMAGE_URL+item.mainPhotoUrl+');'" hover-stop-propagation></navigator>
+				<navigator class="goods-pic bg-img"  :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" hover-stop-propagation @tap.stop="">
+					<image :src="IMAGE_URL+item.mainPhotoUrl" lazy-load style="height: 100%;width: 100%;" mode="aspectFill"></image>
+				</navigator>
 				<view class="goods-con flex-sub flex flex-direction justify-between">
 					<view class="">
 						<view class="goods-name two-line">{{item.goodsName}}</view>
@@ -112,7 +114,7 @@
 				background-color: #EFF1F6;
 				font-size: 20rpx;
 				padding: 0 10rpx;
-				border-radius: 8rpx;
+				border-radius: 10rpx;
 				color: #aaa;
 			}
 		}

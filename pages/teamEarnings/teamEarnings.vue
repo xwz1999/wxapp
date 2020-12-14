@@ -3,7 +3,7 @@
 		<u-navbar :title="title" :background="{backgroundColor: '#16182B'}" back-icon-color="#fff" title-color="#fff"
 		 :border-bottom="false"></u-navbar>
 		<view class="total-box">
-			<view class="total-box-con bg-img" :style="'background-image: url('+IMAGE_URL+'/photo/FqgMOAhPeB9Xg7__8fZFYI-8Oerl.png);'">
+			<view class="total-box-con bg-img" :style="'background-image: url('+STATIC_URL+'bg.png);'">
 				<view class="con-box flex flex-direction justify-between">
 					<view>
 						<view class="text">预估收益(瑞币)</view>
@@ -29,7 +29,7 @@
 		</view>
 		<scroll-view class="flex-sub scroll" scroll-y="true">
 			<view class="null flex justify-center flex-direction align-center" v-if="list.length==0">
-				<image :src="IMAGE_URL+'/photo/FkdR-m8xwYqKqxa9i547PHEmtK7r.png'" style="width: 300rpx;" mode="widthFix"></image>
+				<image :src="STATIC_URL+'null01.png'" style="width: 300rpx;" mode="widthFix"></image>
 				<view style="font-size: 24rpx;color: #DDDDDD;">暂无业绩，请耐心等待</view>
 			</view>
 			<view v-else>
@@ -77,7 +77,7 @@
 	export default {
 		data() {
 			return {
-				IMAGE_URL:this.IMAGE_URL,
+				STATIC_URL:this.STATIC_URL,
 				title: "团队收益",
 				end_time: "",
 				time: "",

@@ -70,7 +70,7 @@
 		background-position: center;
 		background-size: cover;
 		background-repeat: no-repeat;
-		background-color: #f1f1f1;
+		background-color: #F5F5F5;	
 	}
 
 	image {

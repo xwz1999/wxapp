@@ -46,7 +46,7 @@
 					<view>可用:￥{{preOrderMsg.coinStatus.coin}}</view>
 					<view>本次可抵￥{{preOrderMsg.coinTotalAmount | toFixed(2)}}</view>
 				</view>
-				<u-switch v-model="preOrderMsg.coinStatus.isUseCoin" active-color="red" inactive-color="#F5F5F5" size="36" @change="changeUseCoin"></u-switch>
+				<u-switch v-model="preOrderMsg.coinStatus.isUseCoin" :disabled="!preOrderMsg.coinStatus.isEnable" active-color="red" inactive-color="#F5F5F5" size="36" @change="changeUseCoin"></u-switch>
 			</view>
 			<!-- <view class="item flex justify-between">
 				<view class="">余额</view>

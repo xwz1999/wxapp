@@ -1,12 +1,17 @@
 <template>
 	<view>
-		<view class="null flex flex-direction justify-center align-center" v-if="isNull">
-			<image :src="IMAGE_URL+'/photo/FkdR-m8xwYqKqxa9i547PHEmtK7r.png'" style="width: 300rpx;" mode="widthFix"></image>
-			<view style="font-size: 24rpx;color: #DDDDDD;margin-top: 10rpx;">暂无内容</view>
+		<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;" v-if="showLoading">
+			<image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image>
 		</view>
 		<view class="" v-else>
-			<dynamics :list="dynamics" :showGoodsLink="true"></dynamics>
-			<u-loadmore :status="loadStatus" margin-bottom="40" margin-top="20" />
+			<view class="null flex flex-direction justify-center align-center" v-if="isNull">
+				<image :src="STATIC_URL+'null01.png'" style="width: 300rpx;" mode="widthFix"></image>
+				<view style="font-size: 24rpx;color: #DDDDDD;margin-top: 10rpx;">暂无内容</view>
+			</view>
+			<view class="" v-else>
+				<dynamics :list="dynamics" :showGoodsLink="true"></dynamics>
+				<u-loadmore :status="loadStatus" margin-bottom="40" margin-top="20" />
+			</view>
 		</view>
 	</view>
 </template>
@@ -15,12 +20,13 @@
 	export default {
 		data() {
 			return {
-				IMAGE_URL:this.IMAGE_URL,
+				STATIC_URL:this.STATIC_URL,
 				page: 0,
 				dynamics: [],
 				stopLoad:false,
 				loadStatus: "loadmore", //触底加载状态,
-				isNull:false
+				isNull:false,
+				showLoading:true
 			};
 		},
 		onLoad() {
@@ -39,6 +45,7 @@
 				this.page++
 				this.$u.post("/api/v1/attention/list/moment_copy", sendData).then(res => {
 					console.log(res.data);
+					this.showLoading = false
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return

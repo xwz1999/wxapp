@@ -7,10 +7,10 @@
 		<view class="payment-box">
 			<view class="plain-item flex justify-between" v-for="(item,index) in payment" :key="index" @tap="choosePayment(index)">
 				<view class="flex flex-direction justify-center">
-					<image src="../../static/logo.png" style="width: 60rpx;" mode="widthFix"></image>
+					<image :src="item.icon" style="width: 60rpx;" mode="widthFix"></image>
 				</view>
 				<view class="flex-sub flex justify-between" style="margin-left: 20rpx;border-bottom: 1rpx solid #f1f1f1;">
-					<view class="flex-sub">{{item}}<text v-if="index==0" style="color: #AAAAAA;font-size: 26rpx;">(可用余额:￥{{balance}})</text></view>
+					<view class="flex-sub">{{item.text}}<text v-if="index==0" style="color: #AAAAAA;font-size: 26rpx;">(可用余额:￥{{balance}})</text></view>
 					<text class="check" :class="currentIndex==index?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'"></text>
 				</view>
 			</view>
@@ -35,17 +35,6 @@
 		</u-keyboard>
 		
 		<!-- 是否设置密码提醒弹框 -->
-		<!-- <view class="cu-modal" :class="modelName=='tipModel'?'show':''">
-			<view class="cu-dialog bg-white my-model">
-				<view class="content">您当前未设置支付密码，请先设置支付密码，或更换支付方式。</view>
-				<view class="flex text-center text-red model-bottom">
-					<view class="flex-sub" style="border-right: 1rpx solid #f1f1f1;" @tap="setPwd">设置密码</view>
-					<view class="flex-sub" @tap="changePayment">更换支付方式</view>
-				</view>
-			</view>
-		</view> -->
-		
-		<!-- 是否设置密码提醒弹框 -->
 		<u-modal v-model="showModel" content="您当前未设置支付密码，请先设置支付密码，或更换支付方式。" cancel-text="设置密码" confirm-text="更换支付方式" cancel-color="red" confirm-color="red" :show-cancel-button="true" :show-title="false" @cancel="setPwd"></u-modal>
 		
 		
@@ -56,7 +45,14 @@
 	export default {
 		data() {
 			return {
-				payment: ["余额支付", "微信支付"],
+				payment: [{
+						text:"余额支付",
+						icon:"/static/mine/pay01.png"
+					},{
+						text:"微信支付",
+						icon:"/static/mine/pay02.png"
+					}
+				],
 				currentIndex: -1,
 				showPwdModel: false,
 				password: '',
@@ -164,10 +160,10 @@
 						this.showModel = true
 					}
 				} else if (this.currentIndex == 1) {//微信支付
-					this.$u.post('/api/v1/pay/wxpay/order/create', {
+					this.$u.post('/api/v1/pay/wxminipay/order/create', {
 						userId: uni.getStorageSync("userInfo").id,
 						orderId: this.orderId,
-						wxType:"recook-weapp"
+						// wxType:"recook-weapp"
 					}).then(res => {
 						console.log(res.data);
 						if (res.data.code == "FAIL") {
@@ -175,6 +171,7 @@
 							return
 						}
 						let result = res.data.data
+						return
 						wx.requestPayment({
 							timeStamp: result.timestamp,
 							nonceStr: result.noncestr,

@@ -1,6 +1,10 @@
 <template>
 	<view>
-		<view class="goods">
+		<view class="null flex flex-direction justify-center align-center" v-if="isNull" style="width: 100vw;height: 80vh;">
+			<image :src="STATIC_URL+'null01.png'" style="width: 300rpx;" mode="widthFix"></image>
+			<view  style="font-size: 24rpx;color: #AAAAAA;margin-top: 10rpx;">暂无收藏</view>
+		</view>
+		<view class="goods" v-else>
 			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goods.id" class="goods-item bg-white flex justify-between" v-for="(item,index) in goods" :key="index">
 				<image class="goods-pic" :src="IMAGE_URL+item.goods.mainPhotoUrl" mode="aspectFill"></image>
 				<view class="goods-con flex-sub flex flex-direction justify-between clear">
@@ -23,7 +27,9 @@
 		data() {
 			return {
 				goods:[],
-				IMAGE_URL:this.IMAGE_URL
+				IMAGE_URL:this.IMAGE_URL,
+				STATIC_URL:this.STATIC_URL,
+				isNull:false
 			};
 		},
 		onLoad() {
@@ -40,6 +46,9 @@
 						return
 					}
 					this.goods = res.data.data
+					if(this.goods.length==0){
+						this.isNull = true
+					}
 				});
 			},
 			delGoods(index,id){

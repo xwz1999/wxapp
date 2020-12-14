@@ -12,7 +12,7 @@
 			</view>
 		</view>
 		<view class="" style="padding: 25rpx;">
-			<button class="bg-red text-white" @tap="submit">发布</button>
+			<button class="bg-red cu-btn lg block text-white" @tap="submit">发布</button>
 		</view>
 	</view>
 </template>

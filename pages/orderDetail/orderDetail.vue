@@ -1,9 +1,7 @@
 <template>
 	<view>
-		<view class="loading" v-if="showLoading">
-			<view class="flex justify-center" style="padding-top: 300rpx;">
-				<u-loading color="red"></u-loading>
-			</view>
+		<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;" v-if="showLoading">
+			<image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image>
 		</view>
 		<view class="" v-else>
 			<view class="waitpay text-white" v-if="showWait">

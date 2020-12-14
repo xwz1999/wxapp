@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<view style="padding: 0 30rpx 30rpx;line-height: 100rpx;font-size: 48rpx;">手机号绑定</view>
 		<view class="box">
 			<view class="item flex">
 				<view class="span">手机号(+86)</view>
@@ -12,7 +13,10 @@
 				<view class="text-red" v-else @tap="getCode">获取验证码</view>	
 			</view>
 		</view>
-		<button class="text-white bg-red shadow cu-btn lg round block" style="margin: 30rpx;" @tap="login">登录</button>
+		<button class="text-white bg-red shadow cu-btn lg block" style="margin: 30rpx;" @tap="login">登录</button>
+		<view class="" style="padding: 0 30rpx;line-height: 35rpx;font-size: 26rpx;color: #888888;">
+			根据《中华人民共和国网络安全法》要求，使用信息发布、即时通讯等互联网服务需进行身份信息验证。为保障您的使用体验，建议您尽快完成手机号绑定验证，感谢您的支持和理解。
+		</view>
 	</view>
 </template>
 
@@ -25,7 +29,7 @@
 				time:60,
 				showTime:false,
 				timer:null,
-				invitationNo:""
+				invitationNo:"000000"
 			};
 		},
 		onLoad(options) {
@@ -37,6 +41,8 @@
 		},
 		methods: {
 			getCode() {
+				this.$u.toast("暂未启用");
+				return
 				if(!this.mobile){
 					this.$u.toast("请输入手机号");
 					return
@@ -79,9 +85,6 @@
 					this.$u.toast("请输入验证码");
 					return
 				}
-				uni.showLoading({
-					title:"登录中"
-				})
 				this.$u.post('/api/v1/users/profile/mobile/login', {
 					Mobile:this.mobile,
 					SMS:this.sms
@@ -133,7 +136,7 @@
 							title:"登录成功",
 							success: () => {
 								setTimeout(function(){
-									uni.switchTab({
+									uni.reLaunch({
 										url:"../index/index"
 									})
 								},1000)

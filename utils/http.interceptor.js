@@ -11,7 +11,7 @@ const install = (Vue, vm) => {
 	Vue.prototype.$u.http.setConfig({
 		baseUrl: Vue.prototype.BASE_URL,
 		loadingText: '努力加载中~',
-		loadingTime: 1000,
+		loadingTime: 5000,
 		// 设置自定义头部content-type
 		header: {
 			'content-type': 'application/json'

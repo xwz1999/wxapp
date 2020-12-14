@@ -50,7 +50,7 @@
 				<view>审核通过后3个工作日会到账，请留意银行或者支付宝通知(特殊情况视银行结算)</view>
 			</view>
 		</view>
-		<button class="btn bg-red">完成</button>
+		<button class="btn cu-btn bg-red lg block">完成</button>
 	</view>
 </template>
 

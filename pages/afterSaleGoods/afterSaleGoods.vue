@@ -3,11 +3,11 @@
 		<u-tabs :list="list" :is-scroll="false" height="90" :current="currentIndex" duration="0.2" bar-width="100" :bold="false"
 		 active-color="red" @change="chooseTabs"></u-tabs>
 
-		<swiper class="flex-sub" :current="currentIndex" :indicator-dots="false" :autoplay="false" style="height: 0;" @change="changeCurrent" @animationfinish="initData">
+		<swiper class="flex-sub" :current="currentIndex" :indicator-dots="false" :autoplay="false" @change="changeCurrent" @animationfinish="initData">
 			<swiper-item v-for="(item1,index1) in list" :key="index1">
 				<scroll-view scroll-y="true" style="height: 100%;">
 					<view class="flex flex-direction align-center null" v-if="item1.isNull">
-						<image :src="IMAGE_URL+'/photo/FlynXmYVYlAq0dwfFFAYpWSzx0QF.png'" style="width: 500rpx;margin-top: 200rpx;" mode="widthFix"></image>
+						<image :src="STATIC_URL+'null01.png'" style="width: 300rpx;margin-top: 200rpx;" mode="widthFix"></image>
 						<view style="font-size: 24rpx;color: #AAAAAA;">暂无订单</view>
 					</view>
 					<view class="order-box" v-else>
@@ -48,6 +48,7 @@
 	export default {
 		data() {
 			return {
+				STATIC_URL:this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
 				currentIndex: 0,
 				list: [{

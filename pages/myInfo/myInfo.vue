@@ -4,7 +4,7 @@
 			<view class="">头像</view>
 			<view class="flex align-center right">
 				<view class="avatar bg-img" v-if="info.headImgUrl" :style="'background-image: url('+IMAGE_URL+ info.headImgUrl+');'"></view>
-				<view class="avatar bg-img" v-else :style="'background-image: url('+IMAGE_URL+'/photo/FiPCCUW-cwtLPTeZo-0puME0sKEd.png);'"></view>
+				<view class="avatar bg-img" v-else :style="'background-image: url('+STATIC_URL+'avatar.png);'"></view>
 				<text class="cuIcon-right"></text>
 			</view>
 		</view>
@@ -71,6 +71,7 @@
 	export default {
 		data() {
 			return {
+				STATIC_URL:this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
 				info: {},
 				sex:["男","女"],

@@ -1,12 +1,12 @@
 <template>
 	<view>
-		<view class="top-bg bg-img" :style="'background-image: url('+IMAGE_URL+'/photo/FiRDjKfAadjpJZiy0FKFN9gvBF0j.png);'">
+		<view class="top-bg bg-img" :style="'background-image: url('+STATIC_URL+'invite-bg.png);'">
 			<view class="top-con flex flex-direction  align-center">
 				<view class="text-white" style="font-size: 90rpx;font-weight: 700;">邀好友 升店主</view>
 				<view class="text-black bg-white" style="font-size: 24rpx;line-height: 35rp;border-radius: 18rpx;padding: 0 60rpx;">仅需10位</view>
 			</view>
 		</view>
-		<view class="user-box bg-img" :style="'background-image: url('+IMAGE_URL+'/photo/FgJac_NuNya9h0tJqjS8G9CNfsen.png);'">
+		<view class="user-box bg-img" :style="'background-image: url('+STATIC_URL+'bg02.png);'">
 			<view class="user-con text-white">
 				<view class="flex">
 					<image class="avatar" v-if="userInfo.headImgUrl" :src="IMAGE_URL+userInfo.headImgUrl" mode="aspectFill"></image>
@@ -17,8 +17,7 @@
 				<view class="text-white flex" style="line-height: 60rpx;font-size: 24rpx;">
 					已邀请 <text style="margin-left: 10rpx;"></text>{{hasInviteNum}}
 				</view>
-				<u-line-progress :show-percent="false" height="8" :percent="percent" active-color="#fff"
-				 inactive-color="#991323"></u-line-progress>
+				<u-line-progress :show-percent="false" height="8" :percent="percent" active-color="#fff" inactive-color="#991323"></u-line-progress>
 				<view class="flex text-white num-con">
 					<view class="flex-sub" v-for="(item,index) in 10" :key="index">
 						<view class="flex flex-direction align-center" v-if="index==0||index==3||index==7||index==9">
@@ -129,6 +128,7 @@
 	export default {
 		data() {
 			return {
+				STATIC_URL: this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
 				roleLevel: 500,
 				userInfo: {
