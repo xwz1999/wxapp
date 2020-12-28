@@ -34,7 +34,7 @@
 				
 				
 				<view class="code-box bg-white">
-					<view class="code-top">
+					<!-- <view class="code-top">
 						<view class="flex justify-center align-center" style="margin-bottom: 15rpx;">
 							<image src="/static/shop/left.png" mode="widthFix"></image>
 							<view style="padding: 0 20rpx;font-weight: 700;">专属邀请码</view>
@@ -43,7 +43,7 @@
 						<view class="flex justify-center align-center">
 							<view class="invitationNo">{{invitationNo}}<text class="text-red copy" v-if="invitationNo" @tap="copy">复制</text></view>
 						</view>
-					</view>
+					</view> -->
 					<view class="code-bottom">
 						<view class="txt">专属权益</view>
 						<view class="item flex align-center">
@@ -236,8 +236,9 @@
 
 	.code-box {
 		margin: 0 30rpx;
-		border-bottom-left-radius: 10rpx;
-		border-bottom-right-radius: 10rpx;
+		// border-bottom-left-radius: 10rpx;
+		// border-bottom-right-radius: 10rpx;
+		border-radius: 10rpx;
 		overflow: hidden;
 
 		.code-top {
