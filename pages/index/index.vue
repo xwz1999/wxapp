@@ -372,11 +372,12 @@
 						return
 					}
 					let nowTime = new Date()
-
+					
 					for (let i = 0; i < this.promotion.length; i++) {
-						// console.log(i, nowTime >= new Date(this.promotion[i].startTime), nowTime <= new Date(this.promotion[i].endTime))
+						// console.log(nowTime,new Date(this.promotion[i].startTime.replace(/-/g, "/")))
+						// console.log(i, nowTime >= new Date(this.promotion[i].startTime.replace(/-/g, "/")), nowTime <= new Date(this.promotion[i].endTime))
 						// 找出当前的时间段
-						if (nowTime <= new Date(this.promotion[i].startTime)) {
+						if (nowTime <= new Date(this.promotion[i].startTime.replace(/-/g, "/"))) {
 							let index = i - 1
 							if (index < 0) {
 								return
@@ -390,9 +391,6 @@
 					if (!this.promotionId) {
 						this.promotionId = this.promotion[0].id
 						this.nowIndex = this.TabCur = 0
-						if (this.promotionId) {
-							return
-						}
 					}
 					this.getGoodsList()
 				});
