@@ -8,9 +8,43 @@
 			"style": {
 				"navigationBarBackgroundColor": "#5B80A0",
 				"navigationBarTitleText": "",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh":true
 			}
 		},
+		{
+			"path": "pages/find/find",
+			"style": {
+				"navigationBarTitleText": "发现",
+				"enablePullDownRefresh": false
+			}
+		}, 
+		{
+		    "path" : "pages/userHomePage/userHomePage",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},	
+		
+		{
+		    "path" : "pages/videoDetail/videoDetail",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+		    }    
+		},
+		{
+			"path": "pages/paySuccess/paySuccess",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}, 
 		{
 		    "path" : "pages/cooperation/cooperation",
 		    "style" :                                                                                    
@@ -60,8 +94,8 @@
 			"path": "pages/shop/shop",
 			"style": {
 				"navigationBarTitleText": "店铺",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+				"enablePullDownRefresh": false
+				// "navigationStyle": "custom"
 			}
 		},
 		{
@@ -317,13 +351,7 @@
 				"enablePullDownRefresh": false
 			}
 		}, 
-		{
-			"path": "pages/find/find",
-			"style": {
-				"navigationBarTitleText": "发现",
-				"enablePullDownRefresh": false
-			}
-		}, 
+		
 		{
 			"path": "pages/webview/webview",
 			"style": {
@@ -346,13 +374,7 @@
 				"enablePullDownRefresh": false
 			}
 		}, 
-		{
-			"path": "pages/paySuccess/paySuccess",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		}, 
+		
 		{
 			"path": "pages/feedback/feedback",
 			"style": {
@@ -405,8 +427,66 @@
             }
             
         }
+        ,{
+            "path" : "pages/live/live",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "直播",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        
+        
+        ,{
+            "path" : "pages/anchorCenter/anchorCenter",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "主播中心",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/livePlayback/livePlayback",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/myRecommend/myRecommend",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的推荐",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/goodsComments/goodsComments",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "全部评论",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/shopOrders/shopOrders",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+								"navigationStyle": "custom"
+            }
+            
+        }
     ],
-	// 分包配置项
+	// 分包配置项(由于小程序代码包大小限制，需要分包)
 	"subPackages": [{
 		"root": "packageA",
 		"pages": [
@@ -488,22 +568,24 @@
 				"text": "特卖"
 			},
 			{
+				"pagePath": "pages/shop/shop",
+				"iconPath": "static/tabbar/shop.png",
+				"selectedIconPath": "static/tabbar/shop_.png",
+				"text": "店铺"
+			}, 
+			{
 				"pagePath": "pages/find/find",
 				"iconPath": "static/tabbar/find.png",
 				"selectedIconPath": "static/tabbar/find_.png",
 				"text": "发现"
 			},
 			{
-				"pagePath": "pages/shop/shop",
-				"iconPath": "static/tabbar/shop.png",
-				"selectedIconPath": "static/tabbar/shop_.png",
-				"text": "店铺"
-			}, {
 				"pagePath": "pages/cart/cart",
 				"iconPath": "./static/tabbar/cart.png",
 				"selectedIconPath": "static/tabbar/cart_.png",
 				"text": "购物车"
-			}, {
+			}, 
+			{
 				"pagePath": "pages/mine/mine",
 				"iconPath": "static/tabbar/mine.png",
 				"selectedIconPath": "static/tabbar/mine_.png",

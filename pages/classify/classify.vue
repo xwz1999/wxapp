@@ -3,7 +3,7 @@
 		<view class="search-box bg-white">
 			<view class="search-con flex justify-between">
 				<text class="cuIcon-search"></text>
-				<input class="flex-sub" type="text" v-model="keyword" confirm-type="search" placeholder="请输入想要搜索的内容" @confirm="toSearch()"/>
+				<input class="flex-sub" type="text" v-model="keyword" confirm-type="search" placeholder="请输入想要搜索的内容" @confirm="toSearch()" />
 			</view>
 		</view>
 		<view class="u-menu-wrap">
@@ -13,17 +13,23 @@
 					<text class="u-line-1">{{item.name}}</text>
 				</view>
 			</scroll-view>
-			<block v-for="(item,index) in cateList" :key="index">
-				<scroll-view scroll-y class="right-box" v-if="current==index">
-					<view class="item-container">
-						<image :src="IMAGE_URL+item.logoUrl" mode="widthFix"></image>
+			<scroll-view scroll-y class="right-box">
+				<view class="item-container">
+					<image v-if="topPic" :src="IMAGE_URL+topPic" mode="widthFix"></image>
+					<view class="null flex flex-direction justify-center align-center" v-if="subCateList.length==0" style="height: 600rpx;">
+						<image src="/static/null05.png" style="width: 250rpx;" mode="widthFix"></image>
+						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无内容</view>
+					</view>
+					<view class="flex flex-wrap" v-else style="padding: 15rpx;">
 						<view class="thumb-box" v-for="(item1, index1) in subCateList" :key="index1" @tap="toSearch(item1.id)">
-							<image class="item-menu-image" :src="IMAGE_URL+item1.logoUrl" mode=""></image>
+							<view class="item-menu-image">
+								<u-lazy-load threshold="-100" border-radius="60" :image="IMAGE_URL+item1.logoUrl" :index="index" height="120" error-img="/static/null05.png" loading-img="/static/null05.png" mg-mode="aspectFill"></u-lazy-load>
+							</view>
 							<view class="item-menu-name">{{item1.name}}</view>
 						</view>
 					</view>
-				</scroll-view>
-			</block>
+				</view>
+			</scroll-view>
 		</view>
 	</view>
 </template>
@@ -40,19 +46,19 @@
 				cateList: [],
 				subCateList: [],
 				parentId: null,
-				keyword:""
+				keyword: "",
+				topPic:""
 			}
 		},
 		onLoad(options) {
 			console.log(options)
-			if (options.id) {
+			if (options.index) {
 				this.current = options.index
-				this.parentId = parseInt(options.id) 
 			}
 			this.getCateList()
 		},
 		methods: {
-			
+			// 一级分类列表
 			getCateList() {
 				this.$u.post('/api/v1/goods/categories/first').then(res => {
 					console.log(res.data);
@@ -61,16 +67,16 @@
 						return
 					}
 					this.cateList = res.data.data
-					if (!this.parentId) {
-						this.parentId = this.cateList[0].id
-					}
-					this.getSubCateList(this.parentId)
+					this.parentId = this.cateList[this.current].id
+					this.topPic = this.cateList[this.current].logoUrl
+					console.log(this.parentId,this.topPic)
+					this.getSubCateList()
 				})
 			},
 			//获取子分类列表
-			getSubCateList(id) {
+			getSubCateList() {
 				this.$u.post('/api/v1/goods/categories/children', {
-					ParentId: id
+					ParentId: this.parentId
 				}).then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
@@ -85,13 +91,13 @@
 			},
 			toSearch(id) {
 				// 传了id则是点击分类进入搜索页,没有传则是搜索关键字进入搜索页
-				if(id){
+				if (id) {
 					uni.navigateTo({
 						url: "/pages/search/search?cate_id=" + id
 					})
-				}else{
+				} else {
 					uni.navigateTo({
-						url: "/pages/search/search?keyword="+this.keyword,
+						url: "/pages/search/search?keyword=" + this.keyword,
 						success: () => {
 							this.keyword = ""
 						}
@@ -102,7 +108,9 @@
 			async swichMenu(index, id) {
 				if (index == this.current) return;
 				this.current = index;
-				this.getSubCateList(id)
+				this.topPic = this.cateList[index].logoUrl
+				this.parentId = id
+				this.getSubCateList()
 				// 如果为0，意味着尚未初始化
 				if (this.menuHeight == 0 || this.menuItemHeight == 0) {
 					await this.getElRect('menu-scroll-view', 'menuHeight');
@@ -234,11 +242,7 @@
 		font-weight: normal;
 		font-size: 24rpx;
 		color: $u-main-color;
-	}
-
-	.item-container {
-		display: flex;
-		flex-wrap: wrap;
+		margin-top: 10rpx;
 	}
 
 	.thumb-box {
@@ -247,7 +251,7 @@
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
-		margin-top: 20rpx;
+		padding: 15rpx 0;
 	}
 
 	.item-menu-image {

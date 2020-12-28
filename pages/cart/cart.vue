@@ -28,7 +28,9 @@
 								<view class="flex align-center" style="height: 200rpx;">
 									<text :class="goods.goodsChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkGoods(shopIndex,goodsIndex)"></text>
 								</view>
-								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId" class="cart-goods-pic bg-img" :style="'background-image: url('+ IMAGE_URL+goods.mainPhotoUrl+');'"></navigator>
+								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId" class="cart-goods-pic">
+									<u-lazy-load threshold="-100" :image="IMAGE_URL+goods.mainPhotoUrl" :index="index" loading-img="/static/null05.png" height="200" border-radius="10" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+								</navigator>
 								<view class="cart-goods-msg flex-sub">
 									<view class="msg-top flex flex-direction justify-between clear align-start">
 										<view class="">

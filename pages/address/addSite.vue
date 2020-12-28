@@ -47,7 +47,7 @@
 			</view>
 		</view>
 		<view class="btn-box" style="padding: 30rpx;">
-			<button class="bg-red text-white" @tap="addAddress">保存</button>
+			<button class="bg-red text-white cu-btn lg block" @tap="addAddress">保存</button>
 		</view>
 		<u-picker mode="region" ref="uPicker" v-model="show" @confirm="chooseAddress"/>
 	</view>
@@ -128,13 +128,13 @@ export default {
 					this.$u.toast(res.data.msg);
 					return
 				}
-				let pages = getCurrentPages();
-				let prevPage = pages[pages.length - 2];  //上一个页面
-				prevPage.onLoad()
 				uni.showToast({
 					title:"保存成功",
 					success: (res) => {
 						setTimeout(function(){
+							let pages = getCurrentPages();
+							let prevPage = pages[pages.length - 2];  //刷新上一个页面
+							prevPage.onLoad()
 							uni.navigateBack()
 						},1000)					
 					}
@@ -145,7 +145,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 /deep/ .line {
 	color: $u-light-color;
 	font-size: 28rpx;
@@ -252,9 +252,4 @@ export default {
 		}
 	}
 }
-.btn-box {
-		position: fixed;
-		width: 100%;
-		bottom: 0;
-	}
 </style>

@@ -3,12 +3,17 @@ import Vuex from "vuex" // 引入vuex
 Vue.use(Vuex) // 让vue使用vuex
 const store = new Vuex.Store({
 	state: {
+		selectCity:"",//城市信息
 		preOrderMsg: {},//预购订单信息
 		returnGoodsMsg:{},//售后商品信息
 		logisticsDetail:[],//物流信息
-		userInfo:{}//邀请人的信息
+		userInfo:{},//邀请人的信息
+		videoDetail:{}//小视频详情
 	},
 	mutations: {
+		changeCity(state, name) {
+			state.selectCity = name
+		},
 		updatePreOrderMsg(state, obj) {
 			let newObj = Object.assign({}, obj)
 			state.preOrderMsg = newObj
@@ -24,6 +29,10 @@ const store = new Vuex.Store({
 		setUserInfo(state,obj){
 			let newObj = Object.assign({}, obj)
 			state.userInfo = newObj
+		},
+		setVideoDetail(state,obj){
+			let newObj = Object.assign({}, obj)
+			state.videoDetail = newObj
 		}
 	}
 })

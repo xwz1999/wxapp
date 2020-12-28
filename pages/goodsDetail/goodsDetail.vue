@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<swiper :indicator-dots="false" :autoplay="false" :duration="500" style="height: 100vh;" :current="containerIndex">
+		<swiper :indicator-dots="false" :autoplay="false" :duration="300" style="height: 100vh;" :current="containerIndex">
 			<!-- 商品 -->
 			<swiper-item>
 				<view class="" style="position: relative;">
@@ -8,7 +8,8 @@
 						<text class="cuIcon-home" v-if="type=='share'"></text>
 						<text class="cuIcon-back" v-else></text>
 					</view>
-					<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;" v-if="showLoading">
+					<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;"
+					 v-if="showLoading">
 						<image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image>
 					</view>
 					<view class="" v-else>
@@ -23,7 +24,7 @@
 									</swiper>
 									<view class="dots-box"><text style="font-size: 32rpx;">{{current+1}}</text>/{{goodsDetail.mainPhotos.length}}</view>
 								</view>
-						
+
 								<view class="banner-con bg-img" :style="'background-image: url('+STATIC_URL+'goods-bg.png);'">
 									<view class="pic-con">
 										<view class="flex quan-top">
@@ -35,7 +36,7 @@
 												</template>
 											</view>
 										</view>
-						
+
 										<view class="price-box text-white" style="font-size: 28rpx;">
 											<text style="color: #FFD380;font-size: 28rpx;">券后价</text>
 											<text>￥</text>
@@ -45,21 +46,25 @@
 													~{{goodsDetail.price.max.discountPrice}}
 												</template>
 											</text>
-											<text style="padding: 0 10rpx;">/</text>
-											<text>
-												赚{{goodsDetail.price.min.commission}}
-												<template v-if="goodsDetail.price.min.commission!=goodsDetail.price.max.commission">
-													~{{goodsDetail.price.max.commission}}
-												</template>
-											</text>
+											<template v-if="roleLevel!=500" class="">
+												<text style="padding: 0 10rpx;">/</text>
+												<text>
+													赚{{goodsDetail.price.min.commission}}
+													<template v-if="goodsDetail.price.min.commission!=goodsDetail.price.max.commission">
+														~{{goodsDetail.price.max.commission}}
+													</template>
+												</text>
+											</template>
 										</view>
 									</view>
 								</view>
-						
+
 								<view class="goods-msg-box bg-white" style="margin-bottom: 25rpx;padding-top: 20rpx;">
 									<view class="flex goods-name-box justify-between align-start">
 										<view class="goods-name flex-sub">{{goodsDetail.goodsName}}</view>
-										<button class="text-center share-btn" type="default" open-type="share"><text class="cuIcon-share" style="margin-right: 5rpx;"></text>分享</button>
+										<button v-if="roleLevel!=500" class="text-center share-btn" type="default" open-type="share">
+											<text class="cuIcon-share" style="margin-right: 5rpx;"></text>分享
+										</button>
 									</view>
 									<view class="tip" style="padding: 0 20rpx;color: #CCCCCC;line-height: 50rpx;font-size: 28rpx;">{{goodsDetail.description}}</view>
 									<view class="flex justify-between text-center goods-tips" @tap="tipModel(true)">
@@ -77,7 +82,7 @@
 										</view>
 									</view>
 								</view>
-						
+
 								<view class="box bg-white">
 									<view class="item flex justify-between">
 										<view class="span">领券</view>
@@ -101,24 +106,43 @@
 										<text class="cuIcon-right"></text>
 									</view>
 								</view>
-						
+
 								<view class="box bg-white">
-									<view class="item flex justify-between">
-										<view class="txt flex text-black" style="font-size: 28rpx;">用户评价<text style="color: #AAAAAA;">(0)</text></view>
+									<view class="item flex justify-between" @tap="toGoodsComments">
+										<view class="txt flex text-black" style="font-size: 28rpx;">用户评价<text style="color: #AAAAAA;">({{goodsDetail.evaluations.total}})</text></view>
 										<view class="flex text-red">查看全部<text class="cuIcon-right"></text></view>
 									</view>
+									<view class="goods-comments" v-if="goodsDetail.evaluations.children.length!=0">
+										<scroll-view scroll-x="true" >
+											<view class="flex">
+												<view class="comment-item" v-for="(item,index) in goodsDetail.evaluations.children" :key="index">
+													<view class="item-top flex">
+														<view class="comment-avatar">
+															<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" error-img="/static/null05.png"
+															 border-radius="25" height="50"></u-lazy-load>
+														</view>
+														<view class="nickname text-hidden">{{item.nickname}}</view>
+													</view>
+													<view class="two-line content">{{item.content}}</view>
+												</view>
+											</view>
+										</scroll-view>
+									</view>
 								</view>
-						
-						
+
+
 								<!-- 店铺信息 -->
 								<view class="box bg-white" style="padding-top: 0;">
-									<navigator :url="'/pages/search/search?brandId='+goodsDetail.brand.id" class="shop-box flex justify-between">
-										<view class="shop-logo bg-img" v-if="goodsDetail.brand.logoUrl" :style="'background-image: url('+IMAGE_URL+goodsDetail.brand.logoUrl+');'"></view>
+									<navigator :url="'/pages/search/search?brandId='+goodsDetail.brand.id" hover-class="none" class="shop-box flex justify-between">
+										<view class="shop-logo">
+											<u-lazy-load threshold="-100" :image="IMAGE_URL+goodsDetail.brand.logoUrl" :index="index" error-img="/static/null05.png"
+											 border-radius="10" height="150"></u-lazy-load>
+										</view>
 										<view class="shop-con flex-sub">
 											<view class="shop-name">{{goodsDetail.brand.name}}</view>
 											<view class="shop-count">全部商品：{{goodsDetail.brand.goodsCount}}</view>
 										</view>
-						
+
 										<view class="shop-right flex flex-direction justify-center">
 											<view class="flex" style="line-height: 50rpx;">
 												<view class="text-gray">进入品牌</view>
@@ -126,25 +150,26 @@
 											</view>
 										</view>
 									</navigator>
-						
+
 									<!-- 店铺商品推荐 -->
 									<view class="recommend">
 										<view class="text-black" style="line-height: 80rpx;font-size: 28rpx;">为你推荐</view>
 										<scroll-view scroll-x="true">
 											<view class="rec-con flex">
 												<view class="rec-item" v-for="(item,index) in goodsDetail.recommends" :key="index">
-													<navigator class="item-image bg-img" :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" open-type="redirect"
-													 :style="'background-image: url('+IMAGE_URL+item.mainPhotoUrl+');'"></navigator>
+													<navigator class="item-image" :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" open-type="redirect">
+														<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" error-img="/static/null05.png"
+														 border-radius="10" height="200"></u-lazy-load>
+													</navigator>
 													<view class="item-name two-line">{{item.goodsName}}</view>
 													<view class="text-black">￥{{item.price}}</view>
 												</view>
 											</view>
 										</scroll-view>
 									</view>
-						
 								</view>
-						
-						
+
+
 								<!-- 商品详情 -->
 								<view class="box bg-white">
 									<view class="goods-detail">
@@ -153,15 +178,15 @@
 											<video :src="IMAGE_URL+goodsDetail.video.url" style="width: 100%;display: block;" controls></video>
 										</view>
 										<view class="detail-pics">
-											<image lazy-load :src="IMAGE_URL+item.url" v-for="(item,index) in pictures" :key="index" style="width: 100%;"
-											 mode="widthFix"></image>
+											<u-lazy-load threshold="-100" :image="IMAGE_URL+item.url" v-for="(item,index) in pictures" :key="index"
+											 :index="index" loading-img="/static/null05.png" error-img="/static/null05.png"></u-lazy-load>
 										</view>
 									</view>
 								</view>
-						
-						
-						
-						
+
+
+
+
 								<!-- 底部导航 -->
 								<view class="" style="height: 100rpx;"></view>
 								<view class="detail-bottom bg-white shadow flex justify-between align-center">
@@ -184,22 +209,27 @@
 										</template>
 									</view>
 									<view class="buy-btns flex text-white text-center">
-						
 										<template v-if="goodsDetail.inventory==0">
 											<view class="flex-sub cannot-buy">该商品已售罄</view>
 										</template>
-						
 										<template v-else>
 											<button class="btn-item left-btn" open-type="share">
-												<view>分享</view>
-												<view style="font-size: 20rpx;">赚￥{{goodsDetail.price.min.commission}}</view>
+												<view>导购</view>
+												<view v-if="roleLevel!=500" style="font-size: 20rpx;">赚￥{{goodsDetail.price.min.commission}}
+													<template v-if="goodsDetail.price.min.commission!=goodsDetail.price.max.commission">
+														~{{goodsDetail.price.max.commission}}
+													</template>
+												</view>
 											</button>
 											<button class="btn-item right-btn" @tap="specModel(true)">
 												<view>自购</view>
-												<view style="font-size: 20rpx;">省￥{{goodsDetail.price.min.commission}}</view>
+												<view v-if="roleLevel!=500" style="font-size: 20rpx;">省￥{{goodsDetail.price.min.commission}}
+													<template v-if="goodsDetail.price.min.commission!=goodsDetail.price.max.commission">
+														~{{goodsDetail.price.max.commission}}
+													</template>
+												</view>
 											</button>
 										</template>
-						
 									</view>
 								</view>
 							</view>
@@ -213,13 +243,9 @@
 			<swiper-item>
 				<view class="flex flex-direction" style="position: relative;height: 100vh;">
 					<u-navbar :custom-back="back" title="发现" :is-fixed="false" :background="{background:'#fff'}"></u-navbar>
-					<view class="null flex flex-direction justify-center align-center" v-if="isNull" style="height: 70vh;width: 100vw;">
-						<image :src="STATIC_URL+'null03.png'" style="width: 300rpx;" mode="widthFix"></image>
-						<view  style="font-size: 24rpx;color: #AAAAAA;margin-top: 10rpx;">暂无内容</view>
+					<view class="flex-sub">
+						<dynamics :goodsId="id"></dynamics>
 					</view>
-					<scroll-view class="flex-sub" scroll-y="true" v-else>
-						<dynamics :list="dynamics"></dynamics>
-					</scroll-view>
 					<navigator :url="'../makeDynamic/makeDynamic?goodsId='+id" v-if="showBtn" class="release-btn bg-red shadow">我要发布</navigator>
 				</view>
 			</swiper-item>
@@ -268,7 +294,10 @@
 		<u-popup v-model="showSpecs" mode="bottom" border-radius="20" :closeable="true">
 			<view class="spec-box">
 				<view class="spec-top flex">
-					<view class="goods-pic bg-img" :style="'background-image: url('+IMAGE_URL+checkedSkuMsg.picUrl+');'"></view>
+					<view class="goods-pic">
+						<u-lazy-load threshold="-100" :image="IMAGE_URL+checkedSkuMsg.picUrl" :index="index" height="200" border-radius="10"
+						 loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+					</view>
 					<view class="goods-msg flex-sub">
 						<view class="text-black">
 							<text>￥<text style="font-size: 36rpx;font-weight: 700;">{{checkedSkuMsg.discountPrice}}</text></text>
@@ -307,9 +336,11 @@
 </template>
 
 <script>
+	import dynamics from 'components/dynamics.vue'
 	export default {
 		data() {
 			return {
+				roleLevel:500,
 				STATIC_URL: this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
 				showLoading: true,
@@ -330,11 +361,16 @@
 				type: null,
 				containerIndex: 0,
 				dynamics: [], //动态列表,
-				showBtn: false ,//是否显示发布按钮,
-				isNull:false
+				showBtn: false, //是否显示发布按钮
 			}
 		},
+		components: {
+			dynamics
+		},
 		onLoad(options) {
+			if (uni.getStorageSync("userInfo").roleLevel) {
+				this.roleLevel = uni.getStorageSync("userInfo").roleLevel
+			}
 			if (options.type) {
 				this.type = options.type
 			}
@@ -343,9 +379,13 @@
 			}
 			this.id = parseInt(options.id)
 			this.getGoodsDetail()
-			this.getList()
 		},
 		methods: {
+			toGoodsComments(){
+				uni.navigateTo({
+					url:"../goodsComments/goodsComments?id="+this.id
+				})
+			},
 			back() {
 				if (this.type == "share") {
 					uni.switchTab({
@@ -360,23 +400,6 @@
 				// 	this.$u.toast(res.data.msg);
 				// }
 				return
-			},
-
-			// 获取该商品发圈素材列表
-			getList() {
-				this.$u.post("/api/v1/goods/detail/moments_copy/list", {
-					goodsID: this.id
-				}).then(res => {
-					console.log(res.data);
-					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
-						return
-					}
-					this.dynamics = res.data.data
-					if(this.dynamics.length==0){
-						this.isNull = true
-					}
-				})
 			},
 			//点击收藏
 			setFavorite() {
@@ -421,7 +444,9 @@
 						return
 					}
 					this.goodsDetail = res.data.data
+					//获取商品详情图片列表
 					this.getPictures()
+					//初始化商品sku信息
 					this.initData()
 				})
 			},
@@ -687,8 +712,6 @@
 
 
 	.goods-msg-box {
-		min-height: 300rpx;
-		position: relative;
 		.goods-name {
 			color: #000;
 			font-size: 32rpx;
@@ -712,9 +735,6 @@
 			padding: 30rpx 20rpx 20rpx;
 			color: #333;
 			line-height: 50rpx;
-			position: absolute;
-			bottom: 0;
-			width: 100%;
 		}
 
 	}
@@ -901,6 +921,34 @@
 
 			.txt {
 				color: #333333;
+			}
+		}
+		.goods-comments{
+			padding: 0 20rpx;
+			.comment-item{
+				margin-right: 20rpx;
+				border-radius: 10rpx;
+				background-color: #f7f7f7;
+				padding: 15rpx;
+				&:last-child{
+					margin-right: 0;
+				}
+				.item-top{
+					line-height: 50rpx;
+					.comment-avatar{
+						width: 50rpx;
+						height: 50rpx;
+						margin-right: 15rpx;
+					}
+					.nickname{
+						font-size: 28rpx;
+					}
+				}
+				.content{
+					width: 300rpx;
+					font-size: 24rpx;
+					margin: 10rpx 0;
+				}
 			}
 		}
 

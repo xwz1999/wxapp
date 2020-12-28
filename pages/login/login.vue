@@ -10,7 +10,8 @@
 				<text class="cuIcon-mobilefill"></text>
 				<view class="">手机登录</view>
 			</button>
-			<button class="wxlogin-btn text-white shadow flex justify-center cu-btn lg block" style="background-color: #1AB663;" open-type="getUserInfo" @getuserinfo="wxLogin">
+			<button class="wxlogin-btn text-white shadow flex justify-center cu-btn lg block" style="background-color: #1AB663;"
+			 open-type="getUserInfo" @getuserinfo="wxLogin">
 				<text class="cuIcon-weixin"></text>
 				<view class="">微信登录</view>
 			</button>
@@ -38,45 +39,84 @@
 				// 	url:"../whiteInfo/whiteInfo"
 				// })
 				uni.showLoading({
-					title:"登陆中"
+					title: "登录中"
 				})
 				uni.login({
 					provider: 'weixin',
 					success: (loginRes) => {
 						console.log(loginRes);
 						let code = loginRes.code
-						 uni.getUserInfo({
-						      provider: 'weixin',
-						      success:  (infoRes)=> {
-						        console.log(infoRes);
+						uni.getUserInfo({
+							provider: 'weixin',
+							success: (infoRes) => {
+								console.log(infoRes);
 								let encryptedData = infoRes.encryptedData
 								let iv = infoRes.iv
 								// return
 								this.$u.post('/api/v1/users/profile/wx/mini/loginv2', {
 									code: code,
-									encryptedData:encryptedData,
-									iv:iv,
-									wxType:"recook-weapp"
+									encryptedData: encryptedData,
+									iv: iv,
+									wxType: "recook-weapp"
 								}).then(res => {
 									console.log(res);
-									if(res.data.code=="SUCCESS"){
-										uni.reLaunch({
-											url:"../index/index"
-										})
-									}else{
+									if(res.data.code=="FAIL"){
+										this.$u.toast(res.data.msg);
+										return
+									}
+									let wxUnionId = res.data.data.info.wxUnionId
+									if (res.data.data.status == 0) {
 										uni.navigateTo({
-											url:"../mobileLogin/mobileLogin"
+											url: "../mobileLogin/mobileLogin?wxUnionId=" + wxUnionId
+										})
+									} else if (res.data.data.status == 2) {
+										this.bindInvitation(wxUnionId)
+									}else{
+										let result = res.data.data
+										uni.setStorageSync("auth",result.auth)
+										uni.setStorageSync("userInfo",result.info)
+										uni.showToast({
+											title:"登录成功",
+											success: () => {
+												setTimeout(function(){
+													uni.reLaunch({
+														url:"../index/index"
+													})
+												},1000)
+											}
 										})
 									}
-								});
-						      }
-						    });
-						
+								})
+							},
+							fail() {
+								uni.hideLoading()
+							}
+						})
 					}
 				});
-				return
-
 			},
+			bindInvitation(wxUnionId) {
+				this.$u.post('/api/v1/users/profile/wx/invitation', {
+					wxUnionId: wxUnionId,
+					invitationNo:"000000"
+				}).then(res => {
+					console.log(res);
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					uni.showToast({
+						title:"登录成功",
+						success: () => {
+							setTimeout(function(){
+								uni.reLaunch({
+									url:"../index/index"
+								})
+							},1000)
+						}
+					})
+				});
+			}
 		}
 	}
 </script>
@@ -88,11 +128,14 @@
 
 	.logo-box {
 		margin-top: 158rpx;
+		font-size: 34rpx;
+		font-weight: 700;
 
 		image {
 			width: 160rpx;
 			box-shadow: 5rpx 5rpx 10rpx 3rpx rgba(0, 0, 0, 0.3);
 			margin-bottom: 30rpx;
+			border-radius: 30rpx;
 		}
 
 	}

@@ -14,16 +14,17 @@
 		<u-tabs :list="navs" :is-scroll="false" height="90" :current="orderTypeIndex" duration="0.2" bar-width="100" :bold="false"
 		 active-color="red" @change="chooseTabs"></u-tabs>
 
-		<swiper class="flex-sub" :current="orderTypeIndex" :duration="300" :indicator-dots="false" :autoplay="false" @change="changeCurrent" @animationfinish="initData">
+		<swiper class="flex-sub" :current="orderTypeIndex" :duration="300" :indicator-dots="false" :autoplay="false" @change="changeCurrent"
+		 @animationfinish="initData">
 			<swiper-item v-for="(item1,index1) in navs" :key="index1">
 				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getOrders(orderTypeIndex)">
-					<view class="flex flex-direction align-center null" v-if="item1.isNull">
-						<image :src="STATIC_URL+'null01.png'" style="width: 300rpx;margin-top: 200rpx;" mode="widthFix"></image>
-						<view style="font-size: 24rpx;color: #AAAAAA;">暂无订单</view>
+					<view class="flex flex-direction justify-center align-center null" v-if="item1.isNull" style="height: 60vh;">
+						<image src="/static/null05.png" style="width: 300rpx;" mode="widthFix"></image>
+						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无订单</view>
 					</view>
 					<view class="" v-else>
 						<view class="orders-box" style="padding: 10rpx 0;">
-							<view v-for="(item2,index2) in item1.orders" :key="index2" style="padding: 10rpx 30rpx;">
+							<view v-for="(item2,index2) in item1.orders" :key="index2" style="padding: 10rpx 20rpx;">
 								<navigator :url="'../orderDetail/orderDetail?orderId='+item2.id" class="order-item bg-white clear">
 									<view class="order-item-top flex justify-between align-center">
 										<view class="flex align-center">
@@ -40,14 +41,13 @@
 									</view>
 									<order-goods :goodsList="item2.goodsList"></order-goods>
 									<view class="order-btn flex justify-between align-center" hover-stop-propagation>
-										<button class="cu-btn lines-gray text-gray round" v-if="item2.status==0" @tap.stop="cancelOrder(index2,item2.id)">取消订单</button>
-										<view class="" v-if="item2.status==1">
-											<button class="cu-btn lines-gray text-gray round" style="margin-right: 15rpx;" @tap.stop="checkExpress(item2.id)">查看物流</button>
-											<button class="cu-btn lines-red text-red round" @tap.stop="confirmGet(index2,item2.id)">确认收货</button>
+										<view class="">
+											<button v-if="item2.status==0" class="cu-btn lines-gray text-gray round" @tap.stop="cancelOrder(index2,item2.id)">取消订单</button>
+											<button v-if="item2.status==1&&item2.expressStatus!=0" class="cu-btn lines-gray text-gray round" style="margin-right: 15rpx;" @tap.stop="checkExpress(item2.id)">查看物流</button>
+											<button v-if="item2.status==1&&item2.expressStatus!=0" class="cu-btn lines-red text-red round" @tap.stop="confirmGet(index2,item2.id)">确认收货</button>
+											<button v-if="item2.status==2||item2.status==3||item2.status==5" class="cu-btn lines-gray text-gray round" @tap.stop="deleteOrder(index2,item2.id)">删除订单</button>
+											<button v-if="item2.status==4" class="cu-btn lines-gray text-gray round" @tap.stop="evaluate(index2,item2.id)">立即评价</button>
 										</view>
-										<button class="cu-btn lines-gray text-gray round" v-if="item2.status==2||item2.status==3||item2.status==5"
-										 @tap.stop="deleteOrder(index2,item2.id)">删除订单</button>
-										<button class="cu-btn lines-gray text-gray round" v-if="item2.status==4" @tap.stop="evaluate(index2,item2.id)">立即评价</button>
 										<view class="">共{{item2.totalGoodsCount}}件商品 总计<text class="text-red">￥{{item2.goodsTotalAmount | toFixed(2)}}</text></view>
 									</view>
 								</navigator>
@@ -66,7 +66,6 @@
 	export default {
 		data() {
 			return {
-				STATIC_URL: this.STATIC_URL,
 				currentIndex: 0,
 				navs: [],
 				nav1: ["全部", "待付款", "待发货", "待收货", "待评价"],
@@ -76,10 +75,10 @@
 				sendData: {},
 			};
 		},
-		onLoad(options) {	
+		onLoad(options) {
 			console.log(options)
-			if(options.type) {
-				this.orderTypeIndex = parseInt(options.type) 
+			if (options.type) {
+				this.orderTypeIndex = parseInt(options.type)
 			}
 			this.setNav()
 		},

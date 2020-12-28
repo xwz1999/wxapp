@@ -16,9 +16,9 @@
 					快递配送<text class="cuIcon-right"></text>
 				</view>
 			</view>
-			<view class="item flex justify-between">
+			<view class="item flex justify-between align-center">
 				<view class="">买家留言</view>
-				<input type="text" value="" placeholder="留言(选填)" placeholder-class="placeholder" />
+				<input type="text" v-model="note" placeholder="留言(选填)" placeholder-class="placeholder" @blur="setNote"/>
 			</view>
 		</view>
 		<view class="box goods-msg-box">
@@ -102,7 +102,8 @@
 				useBalance: false, //是否使用余额
 				canUseMoney: true, //是否禁用瑞币
 				canUseBalance: true, //是否禁用余额
-				IMAGE_URL: this.IMAGE_URL
+				IMAGE_URL: this.IMAGE_URL,
+				note:""
 			};
 		},
 		computed: {
@@ -112,13 +113,25 @@
 		},
 		watch: {
 			preOrderMsg: function(val) {
-				console.log("预览订单信息发生改变")
+				console.log("预览订单信息发生改变",this.preOrderMsg)
 			}
 		},
-		onShow() {
-			console.log(this.preOrderMsg)
-		},
 		methods: {
+			// 设置买家留言信息
+			setNote(){
+				this.$u.post('/api/v1/order_preview/buyer_message/update', {
+					userId: uni.getStorageSync("userInfo").id,
+					orderId: this.preOrderMsg.id,
+					message:this.note
+				}).then(res => {
+					console.log(res.data);
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+				});
+			},
+			//切换瑞币抵扣开关
 			changeUseCoin(value){
 				console.log(value)
 				this.$u.post('/api/v1/order_preview/coin_onoff', {
@@ -150,41 +163,17 @@
 					// this.$store.commit('setOrderDetail',orderDetail);
 					//提交成功
 					uni.redirectTo({
-						url: "../orderDetail/orderDetail?orderId=" + orderDetail.id + "&type=waitPay",
+						url: "../orderDetail/orderDetail?orderId=" + orderDetail.id,
 						success: (res) => {
 							this.$u.toast(msg);
 						}
 					})
 				});
-
 			},
 			toAddressList() {
 				uni.navigateTo({
 					url: "../address/index?fromPage=confirmOrder"
 				})
-			},
-			getAddress() {
-				this.$u.post('/api/v1/users/address/list', {
-					UserID: uni.getStorageSync("userInfo").id
-				}).then(res => {
-					console.log(res.data);
-					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
-						return
-					}
-					let addresslist = res.data.data
-					if (addresslist.length == 0) {
-						//没有地址
-						return
-					}
-					for (let i = 0; i < addresslist.length; i++) {
-						if (addresslist[i].isDefault == 1) {
-							// 用户的地址列表里面设置了默认地址
-							this.addressMsg = addresslist[i]
-							break
-						}
-					}
-				});
 			}
 		}
 	}
@@ -221,7 +210,7 @@
 
 			input {
 				height: 60rpx;
-				max-height: 500rpx;
+				margin-left: 30rpx;
 				text-align: right;
 				padding: 0 10rpx;
 			}

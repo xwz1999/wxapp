@@ -2,20 +2,22 @@
 <template name="goodsList">
 	<view class="goods-box">
 		<view class="goods-item" v-for="(item,index) in goodsList" :key="index">
-			<view class="goods-item-con bg-white flex justify-between">
-				<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" class="goods-pic bg-img clear" v-if="item.mainPhotoUrl">
-				 <image :src="IMAGE_URL+item.mainPhotoUrl" lazy-load style="height: 100%;width: 100%;" mode="aspectFill"></image>
+			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" hover-class="none" class="goods-item-con bg-white flex justify-between" >
+				<view class="goods-pic clear" v-if="item.mainPhotoUrl">
+					<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="260" border-radius="10" loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
 					<view class="goods-mask flex justify-center" v-if="item.inventory==0">
 						<image :src="STATIC_URL+'sale_out.png'" mode="widthFix"></image>
 					</view>
-				</navigator>
+				</view>
 				<view class="goods-msg flex-sub clear flex flex-direction justify-between">
 					<view class="goods-msg-top">
 						<view class="goods-name two-line">{{item.goodsName}}</view>
 						<view class="goods-key-box text-hidden">{{item.description}}</view>
-						<view class="shop-msg flex align-center">
-							<image class="shop-logo bg-img" lazy-load :src="IMAGE_URL+item.brandImg" v-if="item.brandImg" mode="aspectFill"></image>
-							<view class="shop-name text-red text-hidden" style="font-size: 24rpx;">{{item.brandName}}</view>
+						<view class="shop-msg flex align-center" @tap.stop="">
+							<view class="shop-logo">
+								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.brandImg" :index="index" height="30" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+							</view>
+							<navigator :url="'/pages/search/search?brandId='+item.brandId" hover-class="none" class="shop-name text-red text-hidden" style="font-size: 24rpx;">{{item.brandName}}</navigator>
 						</view>
 					</view>
 					<view class="goods-msg-bottom" style="font-size: 24rpx;">
@@ -25,7 +27,7 @@
 									<image class="tic-pic" src="/static/index/tic.png" mode="heightFix"></image>
 									<view class="tic-txt text-white">{{item.coupon}}元券</view>
 								</view>
-								<view style="position: relative;" v-if="item.commissionDesc">
+								<view style="position: relative;" v-if="item.commissionDesc&&!hideShareBtn">
 									<image class="tic-pic" src="/static/index/tic2.png" mode="heightFix"></image>
 									<view class="tic-txt text-red">{{item.commissionDesc}}</view>
 								</view>
@@ -33,18 +35,22 @@
 							<view style="color: #666;">已售{{item.totalSalesVolume}}件</view>
 						</view>
 						<view class="buy-btn-box flex justify-between">
-							<view class="flex align-end">
-								<text class="text-red" style="font-size: 26rpx;">
-									<text>券后￥</text>
-									<text style="font-size: 36rpx;font-weight: 700;margin-right: 10rpx;">{{item.price}}</text> 
-									<text style="text-decoration: line-through;color: #888888;">¥{{item.primePrice}}</text>
-								</text>
+							<!-- <view class="flex align-end text-red" style="font-size: 26rpx;line-height: 26rpx;">
+								<text>券后￥</text>
+								<text style="font-size: 36rpx;font-weight: 700;margin-right: 10rpx;line-height: 36rpx;">{{item.price}}</text>
+								<text style="text-decoration: line-through;color: #888888;">¥{{item.primePrice}}</text>
+							</view> -->
+							<view class="flex align-end" style="font-size: 24rpx;">
+								<text class="text-orange">券后</text>
+								<text class="text-red">￥</text>
+								<text class="text-red" style="font-size: 36rpx;line-height: 36rpx;font-weight: 700;">{{item.price}}</text> 
+								<text class="text-gray" style="text-decoration: line-through;margin-left: 10rpx;">￥{{item.primePrice}}</text>
 							</view>
 							<view class="goods-btns flex align-end">
-								<button class="share-btn text-center">
+								<button v-if="!hideShareBtn" class="share-btn text-center">
 									<view class="iconfont iconfenxiang"></view>
 								</button>
-								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" class="buy-btn text-white round" :class="item.inventory==0?'bg-aaa':'bg-red'">{{item.inventory==0?'已售完':'自购'}}</navigator>
+								<view class="buy-btn text-white round" :class="item.inventory==0?'bg-aaa':'bg-red'">{{item.inventory==0?'已售完':'自购'}}</view>
 							</view>
 						</view>
 					</view>
@@ -55,7 +61,7 @@
 					<image v-if="index==1" src="../static/index/02.png" mode="widthFix"></image>
 					<image v-if="index==2" src="../static/index/03.png" mode="widthFix"></image>
 				</view> -->
-			</view>
+			</navigator>
 		</view>
 	</view>
 </template>
@@ -65,7 +71,7 @@
 		name: "goodsList",
 		data() {
 			return {
-				STATIC_URL:this.STATIC_URL,
+				STATIC_URL: this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL
 			}
 		},
@@ -77,10 +83,14 @@
 			isHot: {
 				type: Boolean,
 				value: false,
+			},
+			hideShareBtn:{
+				type:Boolean,
+				value:true
 			}
 		},
 		methods: {
-			
+
 		}
 	}
 </script>
@@ -110,6 +120,7 @@
 					margin-right: 15rpx;
 					border-radius: 10rpx;
 					position: relative;
+					overflow: hidden;
 
 					.goods-mask {
 						position: absolute;
@@ -125,6 +136,7 @@
 				.goods-name {
 					font-size: 32rpx;
 					color: #000;
+					line-height: 40rpx;
 				}
 
 				.goods-key-box {
@@ -145,7 +157,7 @@
 				}
 
 				.tic-pic {
-					height: 36rpx;
+					height: 32rpx;
 					width: auto;
 				}
 
@@ -156,8 +168,8 @@
 					top: 0;
 					left: 0;
 					text-align: center;
-					line-height: 36rpx;
-					font-size: 24rpx;
+					line-height: 32rpx;
+					font-size: 22rpx;
 				}
 
 				.buy-btn-box {
@@ -167,6 +179,7 @@
 						margin: 0;
 						font-size: 30rpx;
 						padding: 0 20rpx;
+
 						&::after {
 							content: none;
 						}

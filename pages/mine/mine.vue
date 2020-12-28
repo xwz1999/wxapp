@@ -4,8 +4,9 @@
 			<view class="user-msg-box flex justify-between">
 				<!-- 已登录 -->
 				<view class="flex msg-left" v-if="isLogin" @tap="toMyInfo">
-					<image class="avatar" v-if="userInfo.headImgUrl" :src="IMAGE_URL+userInfo.headImgUrl" mode="aspectFill"></image>
-					<image class="avatar" v-else :src="STATIC_URL+'avatar.png'" mode="aspectFill"></image>
+					<view class="avatar">
+						<u-lazy-load threshold="-100" :image="IMAGE_URL+userInfo.headImgUrl" :index="index" height="140" border-radius="70" loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+					</view>
 					<view class="user-msg">
 						<view class="nickname text-white">{{userInfo.nickname}}</view>
 						<view class="flex" v-if="iconPic">
@@ -22,7 +23,7 @@
 					<view class="text-white" style="font-size: 36rpx;">登录</view>
 				</view>
 				<view class="flex text-white msg-right text-center align-center" style="font-size: 20rpx;">
-					<navigator url="../myCollect/myCollect" style="margin-right: 30rpx;">
+					<navigator url="../myCollect/myCollect" hover-class="none" style="margin-right: 30rpx;">
 						<u-icon name="heart" size="48"></u-icon>
 						<view>收藏</view>
 					</navigator>
@@ -77,10 +78,10 @@
 					</navigator>
 				</view>
 				<view class="box bg-white" v-if="roleLevel!=500">
-					<navigator url="../selfBuyEarnings/selfBuyEarnings?type=self" class="subtitle flex justify-between">
+					<navigator url="../selfBuyEarnings/selfBuyEarnings" hover-class="none" class="subtitle flex justify-between">
 						<view class="flex align-center">
 							<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
-							<view>自购省钱</view>
+							<view>自购收益</view>
 						</view>
 						<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
 					</navigator>
@@ -101,10 +102,10 @@
 				</view>
 				
 				<view class="box bg-white" v-if="roleLevel!=500">
-					<navigator url="../shareEarnings/shareEarnings?type=share" class="subtitle flex justify-between">
+					<navigator url="../shareEarnings/shareEarnings" hover-class="none" class="subtitle flex justify-between">
 						<view class="flex align-center">
 							<image src="../../static/mine/t02.png" style="width: 64rpx;" mode="widthFix"></image>
-							<view>分享赚钱</view>
+							<view>导购收益</view>
 						</view>
 						<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
 					</navigator>
@@ -125,32 +126,32 @@
 				</view>
 				
 				<view class="box bg-white" v-if="roleLevel==300||roleLevel==200||roleLevel==100">
-					<navigator url="../teamEarnings/teamEarnings" class="subtitle flex justify-between">
+					<view class="subtitle flex justify-between" @tap="toTeamEarnings">
 						<view class="flex align-center">
 							<image src="../../static/mine/t03.png" style="width: 64rpx;" mode="widthFix"></image>
 							<view>团队收益</view>
 						</view>
 						<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-					</navigator>
+					</view>
 					<view class="money-box flex justify-between">
 						<view>
 							<view class="txt">团队销售额(元)</view>
-							<view class="num">{{info.teamIncome.amount}}</view>
+							<view class="num">{{info.teamIncome.orderNum}}</view>
 						</view>
 						<view>
 							<view class="txt">累计收益(瑞币)</view>
-							<view class="num">{{info.teamIncome.historyIncome}}</view>
+							<view class="num">{{info.teamIncome.amount}}</view>
 						</view>
 						<view>
 							<view class="txt">团队成员(人)</view>
-							<view class="num">{{info.teamIncome.orderNum}}</view>
+							<view class="num">{{info.teamIncome.historyIncome}}</view>
 						</view>
 					</view>
 				</view>
 				
 				<view class="box bg-white">
-					<navigator url="../orders/orders" class="subtitle flex justify-between">
-						<view>订单中心</view>
+					<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
+						<view>订单中心<text style="font-weight: normal;font-size: 26rpx;">(自购)</text></view>
 						<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
 					</navigator>
 					<view class="order-con flex justify-around">
@@ -231,7 +232,12 @@
 					nickname: "",
 					headImgUrl: ""
 				},
-				totalEarning: 0
+				totalEarning: 0,
+				teamIncome:{
+					amount: 0,
+					historyIncome: 0,
+					orderNum: 0
+				}
 			};
 		},
 		onLoad() {
@@ -282,28 +288,33 @@
 					switch (this.roleLevel) {
 						case 500:
 							this.role = "会员"
-							this.bgImage = this.STATIC_URL + 'bg01.png',
-								this.iconPic = '../../static/mine/level00.png'
+							// this.bgImage = this.STATIC_URL + 'bg01.png'
+							this.iconPic = '../../static/mine/level00.png'
+							this.bgImage =  this.STATIC_URL + "role00.png"
 							break;
 						case 400:
 							this.role = "店主"
-							this.bgImage = this.STATIC_URL + 'bg02.png'
+							// this.bgImage = this.STATIC_URL + 'bg02.png'
 							this.iconPic = '../../static/mine/level01.png'
+							this.bgImage =  this.STATIC_URL + "role01.png"
 							break;
 						case 300:
 							this.role = "白银店铺"
-							this.bgImage = this.STATIC_URL + 'bg03.png'
+							// this.bgImage = this.STATIC_URL + 'bg03.png'
 							this.iconPic = '../../static/mine/level02.png'
+							this.bgImage = this.STATIC_URL + "role02.png"
 							break;
 						case 200:
 							this.role = "黄金店铺"
-							this.bgImage = this.STATIC_URL + 'bg04.png'
+							// this.bgImage = this.STATIC_URL + 'bg04.png'
 							this.iconPic = '../../static/mine/level03.png'
+							this.bgImage = this.STATIC_URL +"role03.png"
 							break;
 						case 100:
 							this.role = "钻石店铺"
-							this.bgImage = this.STATIC_URL + 'bg05.png'
+							// this.bgImage = this.STATIC_URL + 'bg05.png'
 							this.iconPic = '../../static/mine/level04.png'
+							this.bgImage =  this.STATIC_URL + "role04.png"
 							break;
 						default:
 							break;
@@ -344,8 +355,12 @@
 			tipModel(flag) {
 				this.showTipModel = flag
 			},
+			toTeamEarnings(){
+				uni.navigateTo({
+					url:"../teamEarnings/teamEarnings"
+				})
+			},
 			toPage(page) {
-				
 				uni.navigateTo({
 					url: page
 				})

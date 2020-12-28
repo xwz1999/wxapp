@@ -126,16 +126,15 @@
 					password: this.password
 				}).then(res => {
 					console.log(res.data);
-					let that = this
 					//支付完成，密码置空
 					this.password = ""
-					if (res.data.code == "SUCCESS") {
-						uni.reLaunch({
-							url:"../paySuccess/paySuccess?orderId="+that.orderId
-						})
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
 						return
 					}
-					this.$u.toast(res.data.msg);
+					uni.reLaunch({
+						url:"../paySuccess/paySuccess?orderId="+this.orderId
+					})
 				});
 			},
 			//关闭密码支付弹框
@@ -171,7 +170,6 @@
 							return
 						}
 						let result = res.data.data
-						return
 						wx.requestPayment({
 							timeStamp: result.timestamp,
 							nonceStr: result.noncestr,
@@ -180,9 +178,13 @@
 							paySign: result.sign,
 							success: (res) => {
 								console.log(res)
+								uni.reLaunch({
+									url:"../paySuccess/paySuccess?orderId="+this.orderId
+								})
 							},
 							fail: (err) => {
 								console.log(err)
+								// this.$u.toast(err);
 							}
 						})
 

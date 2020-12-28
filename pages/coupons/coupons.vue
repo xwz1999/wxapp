@@ -3,9 +3,13 @@
 		<view class="">
 			<u-tabs :list="list" :is-scroll="false" height="90" :current="currentIndex" duration="0.2" bar-width="100" :bold="false" active-color="red" @change="chooseTabs"></u-tabs>
 		</view>
+		<view class="null flex-sub flex flex-direction justify-center align-center" v-if="isNull" style="width: 100vw;height: 80vh;">
+			<image src="/static/null05.png" style="width: 300rpx;" mode="widthFix"></image>
+			<view  style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无优惠券</view>
+		</view>
 		<scroll-view class="flex-sub" scroll-y="true" style="height: 0;">
 			<view class="coupons-box">
-				<view class="coupon-item flex" v-for="(item,index) in 20" :key="index">
+				<view class="coupon-item flex" v-for="(item,index) in coupons" :key="index">
 					<view class="flex flex-direction justify-center text-white bg-red item-left align-center">
 						<view class="price">100</view>
 						<view class="">无门槛</view>
@@ -36,10 +40,18 @@
 				}, {
 					name: '已失效'
 				}],
-				currentIndex:0
+				currentIndex:0,
+				coupons:[],
+				isNull:false
 			};
 		},
+		onLoad() {
+			this.getCoupons()
+		},
 		methods:{
+			getCoupons(){
+				this.isNull = true
+			},
 			chooseTabs(index){
 				this.currentIndex = index
 			}

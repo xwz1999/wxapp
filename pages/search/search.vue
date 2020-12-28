@@ -1,5 +1,6 @@
 <template>
 	<view class="flex flex-direction" style="height: 100%;">
+		
 		<!-- 搜索导航栏 -->
 		<u-navbar>
 			<view class="slot-wrap">
@@ -9,6 +10,7 @@
 				</view>
 			</view>
 		</u-navbar>
+		
 		<!-- 筛选导航栏 -->
 		<view class="nav-top flex text-center bg-white">
 			<view class="flex-sub" @tap="chooseItem(0)">综合</view>
@@ -16,7 +18,15 @@
 			<view class="flex-sub flex justify-center" @tap="chooseItem(2)">销量<text :class="flag2?'cuIcon-triangledownfill':'cuIcon-triangleupfill'"></text></view>
 			<view class="flex-sub flex justify-center icon" @tap="changePlain">排列<text :class="isBlock?'cuIcon-list':'cuIcon-apps'"></text></view>
 		</view>
-		<scroll-view class="flex-sub" scroll-y="true" style="height: 0;" @scrolltolower="getGoodsList">
+		
+		<!-- 列表为空时 -->
+		<view v-if="isNull" class="null flex flex-direction justify-center align-center" style="height: 60vh;">
+			<image src="/static/null05.png" style="width: 300rpx;" mode="widthFix"></image>
+			<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无商品</view>
+		</view>
+		
+		<!-- 商品列表 -->
+		<scroll-view v-else class="flex-sub" scroll-y="true" style="height: 0;" @scrolltolower="getGoodsList">
 			<view class="goods-box">
 				<!-- 单行排列方式 -->
 				<goods-list v-if="isBlock" :goodsList="goodsList"></goods-list>
@@ -29,6 +39,8 @@
 </template>
 
 <script>
+	import goodsList from '@/components/goodsList.vue'
+	import largeImageList from '@/components/largeImageList.vue'
 	export default {
 		data() {
 			return {
@@ -44,8 +56,13 @@
 				loadStatus: "loadmore", //触底加载状态,
 				requestUrl:"",
 				order:"",
-				isBlock:true
+				isBlock:true,
+				isNull:false
 			};
+		},
+		components:{
+			goodsList,
+			largeImageList
 		},
 		onLoad(options) {
 			console.log(options)
@@ -136,6 +153,9 @@
 					if (goodsList.length == 0) {
 						this.loadStatus = "nomore"
 						this.stopLoad = true
+						if(this.page==1){
+							this.isNull = true
+						}
 						return
 					}
 					//为了防止第一页商品数量不够时scrollview不能触底导致底部一直显示正在加载

@@ -1,45 +1,59 @@
 <template>
 	<view class="content">
 		<view class="header-box">
+			<!-- 背景随轮播图模糊变色 -->
 			<view class="blur-bg">
 				<view class="blur-bg-con" :style="'background-image: url('+bgImage+');'"></view>
 			</view>
-			<view class="search-box flex justify-between text-white">
-				<view class="flex location text-hidden" @tap="toLocation">
-					<text class="cuIcon-locationfill"></text>
-					<view style="margin: 0 15rpx 0 5rpx;">宁波</view>
-				</view>
-				<view class="search-con flex-sub flex text-white">
-					<text class="cuIcon-search"></text>
-					<input type="text" class="flex-sub" v-model="keyword" confirm-type="search" placeholder="请输入关键字" placeholder-class="placeholder"
-					 @confirm="toSearch" />
-				</view>
-				<view class="icon-box flex">
-					<!-- <u-icon name="server-fill"></u-icon> -->
-					<u-icon name="scan" @tap="scan"></u-icon>
-				</view>
-			</view>
-			<view class="weather-box flex justify-between align-center text-white">
-				<view class="flex align-center">
-					<view class="text-center" style="width: 80upx;font-size: 48upx;">30</view>
-					<view class="">
-						<view class="">℃阴</view>
-						<view class="">湿度：74% 温度25-30℃ 29优</view>
+			
+			<!-- 搜索框  u-sticky为吸顶 -->
+			<!-- <u-sticky bg-color="transparent" @fixed="changebg" @unfixed="hidebg"> -->
+				<view class="search-box flex justify-between text-white" :class="showBg?'search-bg':'hide-bg'">
+					<view class="flex location text-hidden" @tap="toLocation">
+						<text class="cuIcon-locationfill"></text>
+						<view class="text-hidden cityname">{{cityName}}</view>
+					</view>
+					<view class="search-con flex-sub flex text-white">
+						<text class="cuIcon-search"></text>
+						<input type="text" class="flex-sub" v-model="keyword" confirm-type="search" placeholder="请输入关键字" placeholder-class="placeholder" @confirm="toSearch" />
+					</view>
+					<view class="icon-box flex">
+						<!-- <u-icon name="server-fill"></u-icon> -->
+						<u-icon name="scan" @tap="scan"></u-icon>
 					</view>
 				</view>
-				<view class="text-right">
-					<view class="">庚子年(2020)五月十九</view>
-					<view class="">2020.7.9 星期四</view>
+			<!-- </u-sticky> -->
+			
+			<!-- 天气信息 -->
+			<view class="weather-box text-white flex justify-between align-center">
+				<view class="flex align-center" v-show="weatherMsg">
+					<view class="text-center flex align-start" style="margin:0 10rpx;">
+						<text class="tem">{{weatherMsg.tem}}</text>
+						<text style="font-size: 20rpx;">℃</text>
+					</view>
+					<view class="">
+						<view>{{weatherMsg.wea}}</view>
+						<view class="">湿度：{{weatherMsg.humidity}} 温度{{weatherMsg.tem2}}-{{weatherMsg.tem1}}℃ {{weatherMsg.air}}{{weatherMsg.air_level}}</view>
+					</view>
+				</view>
+				<view class="text-right" v-show="weatherMsg">
+					<view class="">{{lunarDate}}</view>
+					<view class="">{{weatherMsg.date}} {{weatherMsg.week}}</view>
 				</view>
 			</view>
+
+
+
 			<!-- 轮播图 -->
 			<swiper class="swiper-box screen-swiper square-dot" :circular="true" :autoplay="true" interval="5000" duration="500"
 			 @change="changeSwiper">
-				<swiper-item v-for="(item,index) in swipers" :key="index">
+				<swiper-item v-for="(item,index) in swipers" :key="index" @tap="toWebview(item.activityUrl)">
 					<image :src="item.url" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 		</view>
+		
+		
 		<!-- 分类导航 -->
 		<view class="navbar-box flex">
 			<scroll-view scroll-x class="bg-white nav" style="width: 610rpx;background-color: transparent;"
@@ -57,26 +71,31 @@
 			</view>
 		</view>
 
-		<template>
-			<view class="classify-box bg-white flex justify-around">
-				<view class="cla-item text-center" v-for="(item,index) in options" :key="index" @tap="toPage(index,item.page)">
-					<image :src="item.icon" mode="widthFix"></image>
-					<view class="cla-txt">{{item.text}}</view>
-				</view>
+		<view class="classify-box bg-white flex justify-around">
+			<view class="cla-item text-center" v-for="(item,index) in options" :key="index" @tap="toPage(index,item.page)">
+				<image :src="item.icon" mode="widthFix"></image>
+				<view class="cla-txt">{{item.text}}</view>
 			</view>
-		</template>
-		
+		</view>
+
 
 
 		<!-- 四张海报活动入口 -->
 		<view class="ad-box">
-			<image class="ad-item" v-if="posts.a" :src="IMAGE_URL+posts.a.logoUrl" style="width: 100%;" mode="widthFix" @tap="toWebview(posts.a.website)"></image>
-			<view class="flex justify-between" style="margin: 10rpx 0;">
-				<image class="ad-item" v-if="posts.b" :src="IMAGE_URL+posts.b.logoUrl" mode="widthFix" style="margin-right: 10rpx;"
-				 @tap="toWebview(posts.b.website)"></image>
-				<image class="ad-item" v-if="posts.c" :src="IMAGE_URL+posts.c.logoUrl" mode="widthFix" @tap="toWebview(posts.c.website)"></image>
+			<view class="ad-item" v-if="IMAGE_URL+posts.a.logoUrl">
+				<image :src="IMAGE_URL+posts.a.logoUrl" style="width: 100%;" mode="widthFix" @click="toWebview(posts.a.website)"></image>
 			</view>
-			<image class="ad-item" v-if="posts.d" :src="IMAGE_URL+posts.d.logoUrl" style="width: 100%;" mode="widthFix" @tap="toWebview(posts.d.website)"></image>
+			<view class="flex justify-between" style="margin: 10rpx 0;">
+				<view class="ad-item flex-sub" style="margin-right: 10rpx;">
+					<image :src="IMAGE_URL+posts.b.logoUrl" style="width: 100%;" mode="widthFix" @click="toWebview(posts.b.website)"></image>
+				</view>
+				<view class="ad-item flex-sub">
+					<image :src="IMAGE_URL+posts.c.logoUrl" style="width: 100%;" mode="widthFix" @click="toWebview(posts.c.website)"></image>
+				</view>
+			</view>
+			<view class="ad-item">
+				<image :src="IMAGE_URL+posts.d.logoUrl" style="width: 100%;" mode="widthFix" @click="toWebview(posts.d.website)"></image>
+			</view>
 		</view>
 
 
@@ -85,26 +104,28 @@
 			<view class="flex justify-center" style="padding: 20rpx 0;">
 				<image src="../../static/index/rec.png" style="width: 232rpx;" mode="widthFix"></image>
 			</view>
+			
+			<!-- 活动时间段导航  u-sticky为吸顶-->
+			<!-- <u-sticky offset-top="250" bg-color="transparent" @fixed="changebg" @unfixed="hidebg"> -->
+				<scroll-view scroll-x class="bg-white nav" :class="showBg?'white-bg':'hide-bg'" scroll-with-animation :scroll-left="scrollLeft">
+					<view class="time-item flex flex-direction justify-center text-center" v-for="(item,index) in promotion" :key="index"
+					 @tap="tabSelect" :data-id="item.id" :data-index="index" :class="TabCur==index?'now':index<nowIndex?'before':'after'">
+						<view class="time">{{getActTime(item.startTime)}}</view>
+						<view class="status">{{item.showName}}</view>
+					</view>
+				</scroll-view>
+			<!-- </u-sticky> -->
 
-			<!-- 活动时间段导航 -->
-			<scroll-view scroll-x class="bg-white nav" style="background-color: transparent;margin: 20rpx 0;"
-			 scroll-with-animation :scroll-left="scrollLeft">
-				<view class="time-item flex flex-direction justify-center text-center" v-for="(item,index) in promotion" :key="index"
-				 @tap="tabSelect" :data-id="item.id" :data-index="index" :class="TabCur==index?'now':index<nowIndex?'before':'after'">
-					<view class="time">{{getActTime(item.startTime)}}</view>
-					<view class="status">{{item.showName}}</view>
-				</view>
-			</scroll-view>
 
 
 			<!-- 商品列表组件 -->
 			<template v-if="goodsList.length!=0">
-				<goods-list :goodsList="goodsList"></goods-list>
+				<goods-list :goodsList="goodsList" :hideShareBtn="roleLevel==500"></goods-list>
 				<u-loadmore status="nomore" margin-bottom="40" />
 			</template>
 		</view>
 
-
+		<!-- 分享弹出框 -->
 		<u-popup v-model="isShow" mode="bottom" border-radius="15">
 			<view class="share-box flex justify-between">
 				<view class="flex-sub flex justify-center">
@@ -126,30 +147,31 @@
 </template>
 
 <script>
+	let calendar = require('@/utils/calendar.js');
 	export default {
 		data() {
 			return {
 				TabCur: -1, //选中的时段
 				nowIndex: -1, //当前的时段
 				scrollLeft: 0,
-				goodsList: null,
+				goodsList: [],
 				keyword: "",
 				swipers: [],
-				options:[],
+				options: [],
 				options1: [{
 						text: "瑞库制品",
 						page: "/pages/hotRanking/hotRanking?fromView=ruiku",
-						icon: "/static/index/index01.png"
+						icon: "/static/index/index06.png"
 					},
 					{
 						text: "家居生活",
 						page: "/pages/hotRanking/hotRanking?fromView=jiaju",
-						icon: "/static/index/index01.png"
+						icon: "/static/index/index07.png"
 					},
 					{
 						text: "数码家电",
 						page: "/pages/hotRanking/hotRanking?fromView=shuma",
-						icon: "/static/index/index01.png"
+						icon: "/static/index/index08.png"
 					},
 					{
 						text: "热销榜单",
@@ -193,17 +215,51 @@
 				promotion: [],
 				cateList: [],
 				bgImage: "",
-				isShow:false,
-				roleLevel:500
+				isShow: false,
+				roleLevel: 500,
+				weatherMsg: null,
+				currentCity: '', //当前城市，
+				cityName: "",
+				lunarDate: "", //农历信息
+				showBg: false
+			}
+		},
+		computed: {
+			selectCity() {
+				return this.$store.state.selectCity
+			}
+		},
+		watch: {
+			isShow: function(val) {
+				if (val) {
+					uni.hideTabBar()
+				} else {
+					uni.showTabBar()
+				}
+			},
+			selectCity: function(val) {
+				console.log("你已切换城市为==========", val)
+				this.cityName = val
+				this.getWeather()
 			}
 		},
 		onLoad() {
-			if(uni.getStorageSync("userInfo").roleLevel){
+			if (uni.getStorageSync("localCity")) {
+				//已授权定位
+				this.currentCity = this.cityName = uni.getStorageSync("localCity")
+			} else {
+				//未授权定位，进入默认先请求一个显示城市的天气，
+				//用户同意授权定位后再更新用户当前城市的天气信息
+				this.cityName = "深圳"
+				this.getCityName()
+			}
+			this.getWeather()
+			if (uni.getStorageSync("userInfo").roleLevel) {
 				this.roleLevel = uni.getStorageSync("userInfo").roleLevel
 			}
-			if(this.roleLevel==500){
+			if (this.roleLevel == 500) {
 				this.options = this.options1
-			}else{
+			} else {
 				this.options = this.options2
 			}
 			this.getSwiper()
@@ -211,26 +267,73 @@
 			this.getPost()
 			this.getActivity()
 		},
-		watch:{
-			isShow:function(val){
-				if(val){
-					uni.hideTabBar()
-				}else{
-					uni.showTabBar()
-				}
-			}
-		},
 		methods: {
-			postShare(){
+			// 获取用户当前城市
+			getCityName() {
+				uni.getLocation({
+					type: 'gcj02',
+					success: (res) => {
+						console.log('当前位置的经度：' + res.longitude);
+						console.log('当前位置的纬度：' + res.latitude);
+						let longitude = res.longitude
+						let latitude = res.latitude
+						wx.request({
+							url: 'https://apis.map.qq.com/ws/geocoder/v1/',
+							data: {
+								"key": this.MAP_KEY,
+								"location": latitude + ',' + longitude
+							},
+							method: 'GET',
+							success: (res) => {
+								console.log('用户位置信息', res.data.result);
+								let result = res.data.result
+								let cityName = result.ad_info.city
+								if (cityName.substring(cityName.length - 1) == "市") {
+									cityName = cityName.substr(0, cityName.length - 1);
+								}
+								this.currentCity = this.cityName = cityName
+								uni.setStorageSync("localCity", cityName)
+								this.getWeather()
+							}
+						});
+					}
+				});
+			},
+			//请求天气信息
+			getWeather() {
+				this.$u.post('/api/v1/region/weather', {
+					// cityId:this.cityCode,
+					cityZh: this.cityName
+				}).then(res => {
+					// console.log(res.data);
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					console.log(JSON.parse(res.data.data))
+					this.weatherMsg = JSON.parse(res.data.data)
+					// 日期转农历格式
+					let year = new Date().getFullYear()
+					let lunar = calendar.getLunarDate();
+					let lunarDetail = calendar.getLunarDateString(lunar);
+					console.log(lunarDetail)
+					this.lunarDate = lunarDetail.tg + lunarDetail.dz + lunarDetail.year + "年(" + year + ") " + lunarDetail.month +
+						"月" + lunarDetail.day
+					console.log(this.lunarDate)
+				});
+			},
+			postShare() {
 				this.$u.toast("功能暂未开放，敬请期待~");
 			},
-			hideModel(){
+			hideModel() {
 				this.isShow = false
 			},
+			// 轮播图切换
 			changeSwiper(e) {
 				let index = e.detail.current
 				this.bgImage = this.swipers[index].url
 			},
+			// 获取轮播图
 			getSwiper() {
 				this.$u.post('/api/v1/diamond_show/list').then(res => {
 					console.log(res.data);
@@ -256,6 +359,7 @@
 					this.posts = res.data.data
 				});
 			},
+			// 获取活动时间段
 			getActivity() {
 				this.$u.post('/api/v1/goods/list/promotion').then(res => {
 					console.log(res.data);
@@ -271,25 +375,29 @@
 
 					for (let i = 0; i < this.promotion.length; i++) {
 						// console.log(i, nowTime >= new Date(this.promotion[i].startTime), nowTime <= new Date(this.promotion[i].endTime))
-						// 当前时间在某个时间段之前
-						if (nowTime >= new Date(this.promotion[i].startTime) && nowTime <= new Date(this.promotion[i].endTime)) {
-							this.promotionId = this.promotion[i].id
-							this.nowIndex = this.TabCur = i
-							this.scrollLeft = (i - 2) * 75
-							// break
-						}
-						//凌晨有段时间不会满足上面的条件故加了下面的判断
-						// console.log(i,nowTime >= new Date(this.promotion[i].endTime),nowTime <= new Date(this.promotion[i+1].startTime))
+						// 找出当前的时间段
 						if (nowTime <= new Date(this.promotion[i].startTime)) {
-							this.promotionId = this.promotion[i].id
-							this.nowIndex = this.TabCur = i
-							this.scrollLeft = (i - 2) * 75
+							let index = i - 1
+							if (index < 0) {
+								return
+							}
+							this.promotionId = this.promotion[index].id
+							this.nowIndex = this.TabCur = index
+							this.scrollLeft = (index - 2) * 75
 							break;
+						}
+					}
+					if (!this.promotionId) {
+						this.promotionId = this.promotion[0].id
+						this.nowIndex = this.TabCur = 0
+						if (this.promotionId) {
+							return
 						}
 					}
 					this.getGoodsList()
 				});
 			},
+			// 获取商品分类信息
 			getCateList() {
 				this.$u.post('/api/v1/goods/categories/first').then(res => {
 					console.log(res.data);
@@ -374,8 +482,9 @@
 					TimeItemID: this.promotionId
 				}).then(res => {
 					console.log(res.data);
+					uni.stopPullDownRefresh()
 					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
+						// this.$u.toast(res.data.msg);
 						return
 					}
 					this.goodsList = res.data.data.goodsList
@@ -390,6 +499,7 @@
 				let M = timestr.split(" ")[1].split(":")[1]
 				return H + ":" + M
 			},
+			// 扫码
 			scan() {
 				uni.scanCode({
 					success: function(res) {
@@ -398,27 +508,31 @@
 					}
 				});
 			},
+			// 跳转webview网页
 			toWebview(src) {
+				console.log(src)
 				uni.navigateTo({
 					url: "../webview/webview?src=" + src
 				})
 			},
+			// 跳转城市索引页面
 			toLocation() {
 				uni.navigateTo({
-					url: "../location/location"
+					url: "../location/location?currentCity=" + this.currentCity
 				})
 			},
+			// 选择时间段
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.index;
 				this.promotionId = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.index - 2) * 75
 				this.getGoodsList()
 			},
+			//跳转商品分类页
 			toClassify(index, id) {
-				console.log(index, id)
 				if (id) {
 					uni.navigateTo({
-						url: "/pages/classify/classify?index=" + index + "&id=" + id
+						url: "/pages/classify/classify?index=" + index
 					})
 				} else {
 					uni.navigateTo({
@@ -427,11 +541,11 @@
 				}
 			},
 			toPage(idx, url) {
-				if(this.roleLevel==500){
+				if (this.roleLevel == 500) {
 					uni.navigateTo({
 						url: url
 					})
-				}else{
+				} else {
 					switch (idx) {
 						case 0:
 							this.$u.toast("功能暂未开放，敬请期待~");
@@ -441,7 +555,7 @@
 							break;
 						case 2:
 							uni.switchTab({
-								url:"../shop/shop"
+								url: "../shop/shop"
 							})
 							return;
 						default:
@@ -452,14 +566,25 @@
 					})
 				}
 			},
+			//跳转搜索页面
 			toSearch() {
+				console.log("跳转搜索")
 				uni.navigateTo({
 					url: "../search/search?keyword=" + this.keyword,
 					success: () => {
 						this.keyword = ""
 					}
 				})
+			},
+			changebg() {
+				this.showBg = true
+			},
+			hidebg() {
+				this.showBg = false
 			}
+		},
+		onPullDownRefresh() {
+			this.getGoodsList()
 		}
 	}
 </script>
@@ -467,7 +592,6 @@
 <style lang="scss">
 	.header-box {
 		height: 600rpx;
-		padding-top: 180rpx;
 		position: relative;
 		background-color: rgba(0, 0, 0, 0.5);
 		background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7));
@@ -488,14 +612,21 @@
 			}
 		}
 
-		.location {
-			max-width: 200rpx;
-			font-size: 32rpx;
-		}
-
 		.search-box {
-			margin: 0 20rpx;
 			line-height: 60rpx;
+			padding: 180rpx 20rpx 15rpx;
+			height: 250rpx;
+
+			.location {
+				max-width: 200rpx;
+				font-size: 32rpx;
+
+				.cityname {
+					margin: 0 15rpx 0 5rpx;
+					max-width: 150rpx;
+					font-size: 36rpx;
+				}
+			}
 
 			.search-con {
 				border-radius: 30rpx;
@@ -514,15 +645,22 @@
 			}
 
 			.icon-box u-icon {
-				padding: 0 15upx;
-				font-size: 48rpx;
+				margin-left: 20rpx;
+				font-size: 54rpx;
 			}
 		}
 
 		.weather-box {
-			font-size: 20rpx;
+			font-size: 22rpx;
 			padding: 0 20rpx;
-			height: 100rpx;
+			height: 70rpx;
+			padding-bottom: 15rpx;
+
+			.tem {
+				font-size: 60rpx;
+				line-height: 48rpx;
+				font-weight: 700;
+			}
 		}
 
 		.swiper-box {
@@ -567,12 +705,17 @@
 
 		.ad-item {
 			border-radius: 10rpx;
-			height: 192rpx;
+			overflow: hidden;
 			background-color: #F1F1F1;
 		}
 	}
 
 	.recommend-box {
+		.nav {
+			background-color: transparent;
+			padding: 20rpx 0;
+		}
+
 		.time-item {
 			display: inline-block;
 			// padding: 0 30rpx;
@@ -602,31 +745,48 @@
 		}
 
 	}
-	.share-box{
+
+	.share-box {
 		padding: 50rpx 0;
-		.share-icon{
+
+		.share-icon {
 			width: 80rpx;
 			height: 80rpx;
 			border-radius: 50%;
 			margin-bottom: 10rpx;
 		}
-		.txt{
+
+		.txt {
 			font-size: 26rpx;
 		}
-		button{
+
+		button {
 			border: 0;
 			padding: 0;
 			background-color: #FFFFFF;
 			line-height: normal;
 		}
-		button::after{
+
+		button::after {
 			content: none;
 		}
 	}
-	.cancle{
+
+	.cancle {
 		border-top: 1rpx solid #f1f1f1;
 		line-height: 90rpx;
 		text-align: center;
 	}
-	
+
+	.search-bg {
+		background-color: #C92219 !important;
+	}
+
+	.white-bg {
+		background-color: #fff !important;
+	}
+
+	.hide-bg {
+		background-color: transparent !important;
+	}
 </style>

@@ -1,6 +1,6 @@
 <template>
-	<view class="flex flex-direction" style="height: 100%;">
-		<u-navbar title="分享赚钱" :background="{backgroundColor: '#16182B'}" back-icon-color="#fff" title-color="#fff"
+	<view>
+		<u-navbar title="自购收益" :background="{backgroundColor: '#16182B'}" back-icon-color="#fff" title-color="#fff"
 		 :border-bottom="false"></u-navbar>
 		<view class="total-box">
 			<view class="total-box-con bg-img" :style="'background-image: url('+STATIC_URL+'bg.png);'">
@@ -28,17 +28,22 @@
 			</picker>
 			<view>当月收益:{{money}}</view>
 		</view>
-		<scroll-view class="flex-sub bg-white" scroll-y="true" style="height: 0;">
-			<view class="list-box">
-				<view class="item flex justify-between align-center" v-for="(item,index) in list" :key="index">
-					<view class="flex justify-between align-center" style="width: 380rpx;">
-						<view>{{item.time}}</view>
-						<image src="../../static/mine/up.png" style="width: 40rpx;" mode="widthFix"></image>
-					</view>
-					<view class="text-red">{{item.amount}}</view>
+		<view class="list-box bg-white">
+			<view class="list-top flex">
+				<view class="">日期</view>
+				<view class="">销售额</view>
+				<view class="text-center">订单数</view>
+				<view class="text-right">结算收益</view>
+			</view>
+			<view class="item-box">
+				<view class="item flex justify-between" v-for="(item,index) in list" :key="index">
+					<view class="">{{handleTime(item.time)}}</view>
+					<view class="">{{item.amount}}</view>
+					<view class="text-center">{{item.orderNum}}</view>
+					<view class="text-right text-red">{{item.historyIncome}}</view>
 				</view>
 			</view>
-		</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -56,16 +61,20 @@
 					orderNum: 0
 				},
 				money:0,
-				list: [],
-				type: ""
+				list: []
 			}
 		},
 		onLoad(options) {
-			this.type = options.type
 			this.end_time = this.time = this.getToday()
 			this.getUserInfo()
 		},
 		methods: {
+			handleTime(time){
+				let date = new Date(time)
+				let month = date.getMonth()+1
+				let day = date.getDate()
+				return `${month}月${day}日`
+			},
 			chooseTime(e) {
 				// console.log(e.detail.value)
 				this.time = e.detail.value
@@ -158,11 +167,23 @@
 
 	}
 
+	.list-box .list-top{
+		font-weight: 700;
+		line-height: 80rpx;
+		padding: 0 30rpx;
+		border-bottom: 1rpx solid #F1F1F1;
+		view{
+			flex: 1;
+		}
+	}
 	.list-box .item {
 		line-height: 80rpx;
 		padding: 0 30rpx;
 		border-bottom: 1rpx solid #F1F1F1;
-
+		font-size: 28rpx;
+		view{
+			flex:1;
+		}
 		&:last-child {
 			border: 0;
 			margin-bottom: 60rpx;
@@ -181,4 +202,41 @@
 		}
 	}
 	
+	.goods-box {
+		margin-bottom: 200rpx;
+	
+		.goods-item {
+			margin-bottom: 20rpx;
+			padding: 30rpx;
+	
+			.goods-pic {
+				width: 160rpx;
+				height: 160rpx;
+				border-radius: 10rpx;
+				margin-right: 30rpx;
+			}
+	
+			.span {
+				background-color: #E9F5EE;
+				color: #31A462;
+				font-size: 20rpx;
+				padding: 0 10rpx;
+			}
+		}
+		.money-box {
+			width: 600rpx;
+			line-height: 45rpx;
+			padding-top: 40rpx;
+		
+			.txt {
+				color: #aaa;
+				font-size: 24rpx;
+			}
+		
+			.num {
+				font-size: 28rpx;
+				color: black;
+			}
+		}
+	}
 </style>

@@ -2,8 +2,8 @@
 	<view class="goods-box">
 		<view v-for="(item,index) in goodsList" :key="index">
 			<view class="goods-item flex">
-				<navigator class="goods-pic bg-img"  :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" hover-stop-propagation @tap.stop="">
-					<image :src="IMAGE_URL+item.mainPhotoUrl" lazy-load style="height: 100%;width: 100%;" mode="aspectFill"></image>
+				<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" hover-stop-propagation @tap.stop="" class="goods-pic">
+					<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="200" border-radius="10" loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
 				</navigator>
 				<view class="goods-con flex-sub flex flex-direction justify-between">
 					<view class="">
@@ -19,11 +19,11 @@
 					</view>
 				</view>
 			</view>
-			<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;" v-if="showBtn&&item.rStatus=='待发货'">
-				<button class="cu-btn lines-gray text-gray round" @tap="returnMoney(item.goodsDetailId)">申请退款</button>
+			<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;" v-if="item.orderType==1&&item.rStatus=='待发货'">
+				<button class="cu-btn lines-gray text-gray round" hover-stop-propagation @tap.stop="returnMoney(item.goodsDetailId)">申请退款</button>
 			</view>
-			<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;" v-if="showBtn&&item.rStatus=='已发货'">
-				<button class="cu-btn lines-gray text-gray round" @tap="toChooseType(item)">申请售后</button>
+			<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;" v-if="item.orderType==1&&item.rStatus=='已发货'">
+				<button class="cu-btn lines-gray text-gray round" hover-stop-propagation @tap.stop="toChooseType(item)">申请售后</button>
 			</view>
 		</view>
 	</view>
@@ -42,9 +42,9 @@
 				type: Array,
 				value: null,
 			},
-			showBtn:{
-				type:Boolean,
-				value:false
+			orderType:{
+				type:Number,
+				value:0
 			}
 		},
 		methods:{
@@ -116,6 +116,14 @@
 				padding: 0 10rpx;
 				border-radius: 10rpx;
 				color: #aaa;
+			}
+		}
+		.goods-bottom{
+			.cu-btn{
+				height: 50rpx;
+				line-height: 50rpx;
+				padding: 0 15rpx;
+				font-size: 26rpx;
 			}
 		}
 	}

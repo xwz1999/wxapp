@@ -13,7 +13,8 @@
 				<view class="text-red" v-else @tap="getCode">获取验证码</view>	
 			</view>
 		</view>
-		<button class="text-white bg-red shadow cu-btn lg block" style="margin: 30rpx;" @tap="login">登录</button>
+		<button v-if="wxUnionId" class="text-white bg-red shadow cu-btn lg block" style="margin: 30rpx;" @tap="wxRegist">立即绑定</button>
+		<button v-else class="text-white bg-red shadow cu-btn lg block" style="margin: 30rpx;" @tap="login">登录</button>
 		<view class="" style="padding: 0 30rpx;line-height: 35rpx;font-size: 26rpx;color: #888888;">
 			根据《中华人民共和国网络安全法》要求，使用信息发布、即时通讯等互联网服务需进行身份信息验证。为保障您的使用体验，建议您尽快完成手机号绑定验证，感谢您的支持和理解。
 		</view>
@@ -24,12 +25,16 @@
 	export default {
 		data() {
 			return {
-				mobile: "15990279927",
-				sms:"0716",
+				// mobile: "15990279927",
+				// mobile: "15988645436",
+				// sms:"0716",
+				mobile: "",
+				sms:"",
 				time:60,
 				showTime:false,
 				timer:null,
-				invitationNo:"000000"
+				invitationNo:"000000",
+				wxUnionId:null
 			};
 		},
 		onLoad(options) {
@@ -38,11 +43,14 @@
 			if(options.invitationNo){
 				this.invitationNo = options.invitationNo
 			}	
+			if(options.wxUnionId){
+				this.wxUnionId = options.wxUnionId
+			}
 		},
 		methods: {
 			getCode() {
-				this.$u.toast("暂未启用");
-				return
+				// this.$u.toast("暂未启用");
+				// return
 				if(!this.mobile){
 					this.$u.toast("请输入手机号");
 					return
@@ -103,9 +111,6 @@
 					let result = res.data.data
 					uni.setStorageSync("auth",result.auth)
 					uni.setStorageSync("userInfo",result.info)
-					// uni.redirectTo({
-					// 	url:"../addInfoSuccess/addInfoSuccess"
-					// })
 					uni.showToast({
 						title:"登录成功",
 						success: () => {
@@ -124,14 +129,40 @@
 					invitationNo:this.invitationNo
 				}).then(res => {
 					console.log(res);
-					this.$u.toast(res.data.msg);
-					if(res.data.code=="SUCCESS"){
-						let result = res.data.data
+					if(res.data.code=="FAIL"){
+						this.$u.toast(res.data.msg);
+						return
+					}
+					let result = res.data.data
+					uni.setStorageSync("auth",result.auth)
+					uni.setStorageSync("userInfo",result.info)
+					uni.showToast({
+						title:"登录成功",
+						success: () => {
+							setTimeout(function(){
+								uni.reLaunch({
+									url:"../index/index"
+								})
+							},1000)
+						}
+					})
+				});
+			},
+			wxRegist(){
+				this.$u.post('/api/v1/users/profile/wx/register', {
+					mobile:this.mobile,
+					sms:this.sms,
+					wxUnionId:this.wxUnionId
+				}).then(res => {
+					console.log(res);
+					if(res.data.code=="FAIL"){
+						this.$u.toast(res.data.msg);
+						return
+					}
+					let result = res.data.data
+					if(result.status==1){
 						uni.setStorageSync("auth",result.auth)
 						uni.setStorageSync("userInfo",result.info)
-						// uni.redirectTo({
-						// 	url:"../addInfoSuccess/addInfoSuccess"
-						// })
 						uni.showToast({
 							title:"登录成功",
 							success: () => {
@@ -142,7 +173,34 @@
 								},1000)
 							}
 						})
+					}else{
+						this.bindInvitation()
 					}
+				});
+			},
+			bindInvitation() {
+				this.$u.post('/api/v1/users/profile/wx/invitation', {
+					wxUnionId: this.wxUnionId,
+					invitationNo:"000000"
+				}).then(res => {
+					console.log(res);
+					if(res.data.code == "FAIL"){
+						this.$u.toast(res.data.msg);
+						return
+					}
+					let result = res.data.data
+					uni.setStorageSync("auth",result.auth)
+					uni.setStorageSync("userInfo",result.info)
+					uni.showToast({
+						title:"登录成功",
+						success: () => {
+							setTimeout(function(){
+								uni.reLaunch({
+									url:"../index/index"
+								})
+							},1000)
+						}
+					})
 				});
 			}
 		}

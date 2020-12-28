@@ -48,12 +48,12 @@ const install = (Vue, vm) => {
 		const token = uni.getStorageSync('auth').token
 		config.header["X-Recook-ID"] = id
 		config.header["X-Recook-Token"] = token
+		config.header["Device-Type"] = "wxapp"
 		
 		// 拦截请求组参数并处理格式
 		// console.log(config.data,Vue.prototype.dealSendData)
 		// config.data = Vue.prototype.dealSendData(config.data)
-		console.log("下面这一行打印的是请求参数====================================")
-		console.log(config.data)
+		console.log("请求参数为========",config.data)
 		config.data = Encrypt(config.data)
 		
 	}

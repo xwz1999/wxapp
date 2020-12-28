@@ -76,5 +76,6 @@
 	image {
 		display: block;
 		height: auto;
+		// background-color: #ffffff;
 	}
 </style>

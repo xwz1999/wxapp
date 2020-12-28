@@ -9,7 +9,7 @@
 		</view>
 		<scroll-view scroll-y="true" class="scroll">
 			<view class="goods-box">
-				<goods-list :goodsList="goodsList" :isHot="true"></goods-list>
+				<goods-list :goodsList="goodsList" :isHot="true" :hideShareBtn="roleLevel==500"></goods-list>
 			</view>
 		</scroll-view>
 	</view>
@@ -23,12 +23,16 @@
 				goodsList: [],
 				type: null,
 				bgImage: "",
-				titleImage: ""
+				titleImage: "",
+				roleLevel:500
 			};
 		},
 		onLoad(options) {
 			console.log(options.fromView)
 			this.type = options.fromView
+			if (uni.getStorageSync("userInfo").roleLevel) {
+				this.roleLevel = uni.getStorageSync("userInfo").roleLevel
+			}
 			let requestUrl
 			switch (options.fromView) {
 				case "rexiao":

@@ -1,55 +1,38 @@
 <template>
 	<view>
-		<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;"
-		 v-if="showLoading">
-			<image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image>
-		</view>
-		<view class="" v-else>
-			<template class="container-A" v-if="roleLevel==500">
-				<invite></invite>
-			</template>
-			<template class="container-B" v-else>
-				<view class="top-box">
-					<view class="bg-box bg-img" :style="'background-image: url('+bgImage+');'" v-if="myInfo">
-						<view class="top-con flex justify-between align-center text-white">
-							<view class="">
-								<view class="">{{myInfo.nickname}}的店铺({{role}})</view>
-								<view style="font-size: 22rpx;line-height: 40rpx;">注册时间：{{createTime}}</view>
-							</view>
-							<view class="flex align-center">
-								<image :src="iconImage" style="width: 104rpx;" mode="widthFix"></image>
-								<text class="cuIcon-right"></text>
-							</view>
+		<!-- 用户角色为会员时显示邀请页面 -->
+		<template class="container-A" v-if="roleLevel==500">
+			<invite></invite>
+		</template>
+
+		<!-- 除了会员以外的角色显示数据展示页面 -->
+		<template class="container-B" v-if="roleLevel==400||roleLevel==300||roleLevel==200||roleLevel==100">
+			<view class="top-box">
+				<image :src="STATIC_URL+'top_bg.png'" style="width: 100%;" mode="widthFix"></image>
+				<view class="bg-box bg-img flex flex-direction justify-between" :style="'background-image: url('+bgImage+');'" v-if="myInfo">
+					<view class="top-con text-right">
+						<view style="font-size: 32rpx;font-weight: 700;color: #000;">{{myInfo.nickname}}的店铺</view>
+						<view style="font-size: 24rpx;">({{role}})</view>
+					</view>
+					<view class="shop-line-box">
+						<image class="luotuo" src="../../static/shop/luotuo.png" mode="heightFix"></image>
+						<view class="text-bg text-up">
+							<view class="">距下一节点还</view>
+							<view class="">差{{card.need}}万元</view>
 						</view>
-						<view class="line-box" v-if="card.stand.IncreaseNum&&card.stand.IncreaseNum.length!=0">
-							<view class="line-con">
-								<view class="animal-con">
-									<!-- 骆驼图标 -->
-									<image class="animal" src="../../static/logo.png" mode="widthFix"></image>
-								</view>
-							</view>
-							<view class="dots-con flex justify-around align-center">
-								<view class="dot-item flex justify-center align-center" v-for="(item,index) in card.stand.IncreaseNum" :key="index"
-								 @tap="chooseDot(index)">
-									<view class="dot"></view>
-									<view class="dot-msg-con" v-if="dotIndex==index">
-										<view class="" style="width: 100%;height: 100%;position: relative;">
-											<view class="dot-msg" :style="index<card.stand.IncreaseNum.length/2?'left:-50rpx;':'right:-50rpx'">
-												<view class="">团队销售额:{{item.Quantity}}</view>
-												<view class="">提成比例:{{item.Percent}}%</view>
-											</view>
-										</view>
-
-									</view>
-
-								</view>
-							</view>
+						<image class="icon" :src="iconImage" mode="heightFix"></image>
+						<image :src="lineImage" style="width: 100%;" mode="widthFix"></image>
+						<view class="text-bg text-down">
+							<view class="">团队销售额:{{card.teamIn}}</view>
+							<view class="">提成比例:{{card.percent}}%</view>
 						</view>
 					</view>
+					<view class="time text-right" style="font-size: 22rpx;">注册时间：{{createTime}}</view>
 				</view>
-				<view class="shop-msg-box">
-					<!-- 累计收益 -->
-					<!-- <view class="box bg-white">
+			</view>
+			<view class="shop-msg-box">
+				<!-- 累计收益 -->
+				<!-- <view class="box bg-white">
 					<navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between">
 						<view class="">累计收益(瑞币)</view>
 						<view class="flex more">
@@ -60,11 +43,11 @@
 					<view class="money-box flex justify-between">
 						<view class="money-box-item">
 							<view class="num">{{info.accumulateIncome.selfShopping}}</view>
-							<view class="">自购省钱(瑞币)</view>
+							<view class="">自购收益(瑞币)</view>
 						</view>
 						<view class="money-box-item">
 							<view class="num">{{info.accumulateIncome.share}}</view>
-							<view class="">分享赚钱(瑞币)</view>
+							<view class="">导购收益(瑞币)</view>
 						</view>
 						<view class="money-box-item" v-if="roleLevel==300||roleLevel==200||roleLevel==100">
 							<view class="num">{{info.accumulateIncome.team}}</view>
@@ -72,98 +55,98 @@
 						</view>
 					</view>
 				</view> -->
-					<view class="box bg-white">
-						<navigator url="../selfBuyEarnings/selfBuyEarnings?type=self" class="subtitle flex justify-between">
-							<view class="flex">
-								<view class="flex align-center" style="width: 220rpx;">
-									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
-									<view class="">自购省钱</view>
-								</view>
-								<view class="time-box flex align-center" hover-stop-propagation>
-									<view class="time-item" :class="current1==index?'avtive-time':''" v-for="(item,index) in times" :key="index"
-									 @tap.stop="chooseTime('self',index)">{{item}}</view>
-								</view>
+				<view class="box bg-white">
+					<navigator url="../selfBuyEarnings/selfBuyEarnings" hover-class="none" class="subtitle flex justify-between">
+						<view class="flex">
+							<view class="flex align-center" style="width: 220rpx;">
+								<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
+								<view class="">自购收益</view>
 							</view>
-							<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-						</navigator>
-						<view class="money-box flex justify-between">
-							<view class="">
-								<view class="txt">订单(笔)</view>
-								<view class="num">{{myShopping.orderNum}}</view>
-							</view>
-							<view class="">
-								<view class="txt">销售额(元)</view>
-								<view class="num">{{myShopping.amount}}</view>
-							</view>
-							<view class="">
-								<view class="txt">预估收益(瑞币)</view>
-								<view class="num">{{myShopping.historyIncome}}</view>
+							<view class="time-box flex align-center" hover-stop-propagation>
+								<view class="time-item" :class="current1==index?'avtive-time':''" v-for="(item,index) in times" :key="index"
+								 @tap.stop="chooseTime('self',index)">{{item}}</view>
 							</view>
 						</view>
-					</view>
-
-					<view class="box bg-white">
-						<navigator url="../shareEarnings/shareEarnings?type=share" class="subtitle flex justify-between">
-							<view class="flex">
-								<view class="flex align-center" style="width: 220rpx;">
-									<image src="../../static/mine/t02.png" style="width: 64rpx;" mode="widthFix"></image>
-									<view class="">分享赚钱</view>
-								</view>
-								<view class="time-box flex align-center" hover-stop-propagation>
-									<view class="time-item" :class="current2==index?'avtive-time':''" v-for="(item,index) in times" :key="index"
-									 @tap.stop="chooseTime('share',index)">{{item}}</view>
-								</view>
-							</view>
-							<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-						</navigator>
-						<view class="money-box flex justify-between">
-							<view class="">
-								<view class="txt">订单(笔)</view>
-								<view class="num">{{shareIncome.orderNum}}</view>
-							</view>
-							<view class="">
-								<view class="txt">销售额(元)</view>
-								<view class="num">{{shareIncome.amount}}</view>
-							</view>
-							<view class="">
-								<view class="txt">预估收益(瑞币)</view>
-								<view class="num">{{shareIncome.historyIncome}}</view>
-							</view>
+						<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
+					</navigator>
+					<view class="money-box flex justify-between">
+						<view class="">
+							<view class="txt">订单(笔)</view>
+							<view class="num">{{myShopping.orderNum}}</view>
+						</view>
+						<view class="">
+							<view class="txt">销售额(元)</view>
+							<view class="num">{{myShopping.amount}}</view>
+						</view>
+						<view class="">
+							<view class="txt">预估收益(瑞币)</view>
+							<view class="num">{{myShopping.historyIncome}}</view>
 						</view>
 					</view>
+				</view>
 
-					<view class="box bg-white" v-if="roleLevel==300||roleLevel==200||roleLevel==100">
-						<navigator url="../teamEarnings/teamEarnings" class="subtitle flex justify-between">
-							<view class="flex">
-								<view class="flex align-center" style="width: 220rpx;">
-									<image src="../../static/mine/t03.png" style="width: 64rpx;" mode="widthFix"></image>
-									<view class="">团队收益</view>
-								</view>
-								<view class="time-box flex align-center" hover-stop-propagation>
-									<view class="time-item" :class=" current3==index?'avtive-time':''" v-for="(item,index) in times" :key="index"
-									 @tap.stop="chooseTime('team',index)">{{item}}</view>
-								</view>
+				<view class="box bg-white">
+					<navigator url="../shareEarnings/shareEarnings" hover-class="none" class="subtitle flex justify-between">
+						<view class="flex">
+							<view class="flex align-center" style="width: 220rpx;">
+								<image src="../../static/mine/t02.png" style="width: 64rpx;" mode="widthFix"></image>
+								<view class="">导购收益</view>
 							</view>
-							<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-						</navigator>
-						<view class="money-box flex justify-between">
-							<view class="">
-								<view class="txt">团队销售额(元)<text class="cuIcon-question"></text></view>
-								<view class="num">{{teamIncome.amount}}</view>
-							</view>
-							<view class="">
-								<view class="txt">预估提成比例(%)</view>
-								<view class="num">{{teamIncome.percent}}</view>
-							</view>
-							<view class="">
-								<view class="txt">预估收益(瑞币)<text class="cuIcon-question"></text></view>
-								<view class="num">{{teamIncome.historyIncome}}</view>
+							<view class="time-box flex align-center" hover-stop-propagation>
+								<view class="time-item" :class="current2==index?'avtive-time':''" v-for="(item,index) in times" :key="index"
+								 @tap.stop="chooseTime('share',index)">{{item}}</view>
 							</view>
 						</view>
+						<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
+					</navigator>
+					<view class="money-box flex justify-between">
+						<view class="">
+							<view class="txt">订单(笔)</view>
+							<view class="num">{{shareIncome.orderNum}}</view>
+						</view>
+						<view class="">
+							<view class="txt">销售额(元)</view>
+							<view class="num">{{shareIncome.amount}}</view>
+						</view>
+						<view class="">
+							<view class="txt">预估收益(瑞币)</view>
+							<view class="num">{{shareIncome.historyIncome}}</view>
+						</view>
 					</view>
+				</view>
 
-					<!-- 店铺升级 -->
-					<!-- <view class="box bg-white">
+				<view class="box bg-white" v-if="roleLevel==300||roleLevel==200||roleLevel==100">
+					<view class="subtitle flex justify-between" @tap="toTeamEarnings">
+						<view class="flex">
+							<view class="flex align-center" style="width: 220rpx;">
+								<image src="../../static/mine/t03.png" style="width: 64rpx;" mode="widthFix"></image>
+								<view class="">团队收益</view>
+							</view>
+							<view class="time-box flex align-center" hover-stop-propagation>
+								<view class="time-item" :class=" current3==index?'avtive-time':''" v-for="(item,index) in times" :key="index"
+								 @tap.stop="chooseTime('team',index)">{{item}}</view>
+							</view>
+						</view>
+						<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
+					</view>
+					<view class="money-box flex justify-between">
+						<view class="">
+							<view class="txt">团队销售额(元)<text class="cuIcon-question"></text></view>
+							<view class="num">{{teamIncome.amount}}</view>
+						</view>
+						<view class="">
+							<view class="txt">预估提成比例(%)</view>
+							<view class="num">{{teamIncome.percent}}</view>
+						</view>
+						<view class="">
+							<view class="txt">预估收益(瑞币)<text class="cuIcon-question"></text></view>
+							<view class="num">{{teamIncome.historyIncome}}</view>
+						</view>
+					</view>
+				</view>
+
+				<!-- 店铺升级 -->
+				<!-- <view class="box bg-white">
 					<view class="flex justify-between subtitle" style="border-bottom: 0;line-height: 60rpx;">
 						<view><text class="cuIcon-titles text-red"></text>升至白银店铺</view>
 						<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
@@ -190,85 +173,83 @@
 				</view> -->
 
 
-					<!-- 邀请升级 -->
-					<view class="box bg-white">
-						<view class="subtitle" style="line-height: 60rpx;border: 0;">邀请升级</view>
-						<view class="invite-box flex justify-between text-white" v-if="roleLevel==100">
-							<navigator class="bg-img" :style="'width: 260rpx;height: 300rpx;background-image: url('+STATIC_URL+'t03.png'">
-								<view class="">升级财富团</view>
-								<view class="">邀请好友·福利双赢</view>
-							</navigator>
-							<view class="flex flex-direction justify-between">
-								<view class="flex justify-between">
-									<navigator class="bg-img" :style="'width: 204rpx;height: 150rpx;background-image: url('+STATIC_URL+'t04.png);'">
-										<view class="">我的推荐</view>
-										<view class="">呼朋唤友·享收益</view>
-									</navigator>
-									<navigator url="../myInvite/myInvite" class="bg-img" :style="'width: 204rpx;height: 150rpx;background-image: url('+STATIC_URL+'t05.png);'">
-										<view class="">我的邀请</view>
-										<view class="">有福同享·真壕友</view>
-									</navigator>
-								</view>
-								<view class="bg-img" :style="'width: 420rpx;height: 140rpx;background-image: url('+STATIC_URL+'t06.png);'" @tap="isShow = true">
-									<view class="">邀请开店</view>
-									<view class="">0元创业·轻松赚</view>
-								</view>
+				<!-- 邀请升级 -->
+				<view class="box bg-white">
+					<view class="subtitle" style="line-height: 60rpx;border: 0;">邀请升级</view>
+					<view class="invite-box flex justify-between text-white" v-if="roleLevel==100">
+						<navigator class="bg-img" :style="'width: 260rpx;height: 300rpx;background-image: url('+STATIC_URL+'t03.png'">
+							<view class="">升级财富团</view>
+							<view class="">邀请好友·福利双赢</view>
+						</navigator>
+						<view class="flex flex-direction justify-between">
+							<view class="flex justify-between">
+								<navigator url="../myRecommend/myRecommend" class="bg-img" :style="'width: 204rpx;height: 150rpx;background-image: url('+STATIC_URL+'t04.png);'">
+									<view class="">我的推荐</view>
+									<view class="">呼朋唤友·享收益</view>
+								</navigator>
+								<navigator url="../myInvite/myInvite" class="bg-img" :style="'width: 204rpx;height: 150rpx;background-image: url('+STATIC_URL+'t05.png);'">
+									<view class="">我的邀请</view>
+									<view class="">有福同享·真壕友</view>
+								</navigator>
 							</view>
-						</view>
-						<view class="invite-box flex justify-between text-white" v-else>
-							<navigator :url="'../inviteMakeShop/inviteMakeShop?roleLevel='+roleLevel" class="bg-img" :style="'width: 340rpx;height: 150rpx;background-image: url('+IMAGE_URL+'/photo/FuIbH1pm8UsP94fk1b7KQl_6GA4n.png);'">
+							<view class="bg-img" :style="'width: 420rpx;height: 140rpx;background-image: url('+STATIC_URL+'t06.png);'" @tap="isShow = true">
 								<view class="">邀请开店</view>
 								<view class="">0元创业·轻松赚</view>
-							</navigator>
-							<navigator url="../myInvite/myInvite" class="bg-img" :style="'width: 340rpx;height: 150rpx;background-image: url('+IMAGE_URL+'/photo/Fp3Y8ZUI7kJx0uj4JlNJzmpY7vSx.png);'">
-								<view class="">我的邀请</view>
-								<view style="">有福同享·真壕友</view>
-							</navigator>
-						</view>
-					</view>
-
-
-					<!-- 订单中心 -->
-					<view class="box bg-white">
-						<navigator url="../orders/orders" class="subtitle flex justify-between">
-							<view style="font-size: 32rpx;color: #000;">订单中心</view>
-							<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-						</navigator>
-						<view class="order-box flex text-center">
-							<view class="flex-sub" v-for="(item,index) in orders" :key="index" @tap="toOrders(index)">
-								<text class="text-red" :class="item.icon"></text>
-								<view class="">{{item.text}}</view>
 							</view>
 						</view>
 					</view>
-				</view>
-				<!-- <button type="default" @tap="showtipModel(true)">弹框</button> -->
-				<view class="cu-modal" :class="tipModel?'show':''">
-					<view class="cu-dialog" style="width: 600rpx;background-color: transparent;">
-						<image :src="IMAGE_URL+'/photo/Fl2ZrJfLt81KLzRQzYclukJ7Y60d.png'" style="width: 100%;" mode="widthFix" @tap="showtipModel(false)"></image>
+					<view class="invite-box flex justify-between text-white" v-else>
+						<navigator :url="'../inviteMakeShop/inviteMakeShop?roleLevel='+roleLevel" class="bg-img" :style="'width: 340rpx;height: 150rpx;background-image: url('+IMAGE_URL+'/photo/FuIbH1pm8UsP94fk1b7KQl_6GA4n.png);'">
+							<view class="">邀请开店</view>
+							<view class="">0元创业·轻松赚</view>
+						</navigator>
+						<navigator url="../myInvite/myInvite" class="bg-img" :style="'width: 340rpx;height: 150rpx;background-image: url('+IMAGE_URL+'/photo/Fp3Y8ZUI7kJx0uj4JlNJzmpY7vSx.png);'">
+							<view class="">我的邀请</view>
+							<view style="">有福同享·真壕友</view>
+						</navigator>
 					</view>
 				</view>
-				
-				<u-popup v-model="isShow" mode="bottom" border-radius="15">
-					<view class="share-box flex justify-between">
-						<view class="flex-sub flex justify-center">
-							<button class="flex flex-direction justify-center align-center" open-type="share" @tap="hideModel">
-								<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
-								<view class="txt">微信好友</view>
-							</button>
-						</view>
-						<view class="flex-sub flex justify-center">
-							<button class="flex flex-direction justify-center align-center" @tap="postShare">
-								<image class="share-icon" src="/static/mine/post.png" mode="widthFix"></image>
-								<view class="txt">二维码海报</view>
-							</button>
-						</view>
-					</view>
-					<view class="cancle" @tap="hideModel">取消</view>
-				</u-popup>
-			</template>
-		</view>
 
+
+				<!-- 订单中心 -->
+				<view class="box bg-white">
+					<navigator url="../shopOrders/shopOrders" hover-class="none" class="subtitle flex justify-between">
+						<view>订单中心<text style="font-weight: normal;font-size: 26rpx;">(导购)</text></view>
+						<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
+					</navigator>
+					<view class="order-box flex text-center">
+						<view class="flex-sub" v-for="(item,index) in orders" :key="index" @tap="toOrders(index)">
+							<text class="text-red" :class="item.icon"></text>
+							<view class="">{{item.text}}</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!-- <button type="default" @tap="showtipModel(true)">弹框</button> -->
+			<view class="cu-modal" :class="tipModel?'show':''">
+				<view class="cu-dialog" style="width: 600rpx;background-color: transparent;">
+					<image :src="IMAGE_URL+'/photo/Fl2ZrJfLt81KLzRQzYclukJ7Y60d.png'" style="width: 100%;" mode="widthFix" @tap="showtipModel(false)"></image>
+				</view>
+			</view>
+
+			<u-popup v-model="isShow" mode="bottom" border-radius="15">
+				<view class="share-box flex justify-between">
+					<view class="flex-sub flex justify-center">
+						<button class="flex flex-direction justify-center align-center" open-type="share" @tap="hideModel">
+							<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
+							<view class="txt">微信好友</view>
+						</button>
+					</view>
+					<view class="flex-sub flex justify-center">
+						<button class="flex flex-direction justify-center align-center" @tap="postShare">
+							<image class="share-icon" src="/static/mine/post.png" mode="widthFix"></image>
+							<view class="txt">二维码海报</view>
+						</button>
+					</view>
+				</view>
+				<view class="cancle" @tap="hideModel">取消</view>
+			</u-popup>
+		</template>
 	</view>
 </template>
 
@@ -279,21 +260,20 @@
 			return {
 				STATIC_URL: this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
-				roleLevel: 500,
+				roleLevel: 0,
 				showLoading: true,
 				card: {},
-				dotIndex: -1,
 				myInfo: null,
 				tipModel: false,
 				current1: 0,
 				current2: 0,
 				current3: 0,
-				myShopping: { //页面显示的自购省钱数据
+				myShopping: { //页面显示的自购收益数据
 					"orderNum": 0,
 					"amount": 0,
 					"historyIncome": 0
 				},
-				shareIncome: { //页面显示的分享赚钱数据
+				shareIncome: { //页面显示的导购收益数据
 					"orderNum": 0,
 					"amount": 0,
 					"historyIncome": 0
@@ -306,6 +286,7 @@
 				times: ["今日", "本月", "上月"],
 				bgImage: "",
 				iconImage: "",
+				lineImage: "",
 				role: "",
 				createTime: "",
 				orders: [{
@@ -329,14 +310,14 @@
 						url: ""
 					}
 				],
-				isShow:false
+				isShow: false
 			};
 		},
-		watch:{
-			isShow:function(val){
-				if(val){
+		watch: {
+			isShow: function(val) {
+				if (val) {
 					uni.hideTabBar()
-				}else{
+				} else {
 					uni.showTabBar()
 				}
 			}
@@ -352,14 +333,11 @@
 			}
 		},
 		methods: {
-			postShare(){
+			postShare() {
 				this.$u.toast("功能暂未开放，敬请期待~");
 			},
-			hideModel(){
+			hideModel() {
 				this.isShow = false
-			},
-			chooseDot(i) {
-				this.dotIndex = i
 			},
 			//获取店铺全部信息
 			getInfo() {
@@ -375,30 +353,44 @@
 					this.info = res.data.data
 					console.log(this.info)
 					this.card = this.info.card
+					let dots = this.card.stand.IncreaseNum
+					// 计算距离下一节点还差多少
+					if(dots&&dots.length!=0){
+						for (let i = 0; i < dots.length; i++) {
+							if(dots[i].Quantity>this.card.teamIn){
+								this.card.need = (dots[i].Quantity - this.card.teamIn)/10000
+								break
+							}
+						}
+					}
 					this.myShopping = this.info.myShoppingWithTime.today
 					this.shareIncome = this.info.shareIncomeWithTime.today
 					this.teamIncome = this.info.teamIncomeWithTime.today
 					this.roleLevel = this.info.roleLevel
-					// this.roleLevel = 100
+					// this.roleLevel = 300
 					switch (this.roleLevel) {
 						case 400:
-							this.bgImage = this.STATIC_URL + 'bg02.png'
-							this.iconImage = this.STATIC_URL + 'shop01.png'
+							this.bgImage =  this.STATIC_URL + "role01.png"
+							this.lineImage =  this.STATIC_URL + "line01.png"
+							this.iconImage = this.STATIC_URL + "b_01.png"
 							this.role = "店主"
 							break;
 						case 300:
-							this.bgImage = this.STATIC_URL + 'bg03.png'
-							this.iconImage = this.STATIC_URL + 'shop02.png'
+							this.bgImage = this.STATIC_URL + "role02.png"
+							this.iconImage = this.STATIC_URL + "b_02.png"
+							this.lineImage = this.STATIC_URL + "line02.png"
 							this.role = "白银店铺"
 							break;
 						case 200:
-							this.bgImage = this.STATIC_URL + 'bg04.png'
-							this.iconImage = this.STATIC_URL + 'shop03.png'
+							this.bgImage = this.STATIC_URL + "role03.png"
+							this.iconImage = this.STATIC_URL + "b_03.png"
+							this.lineImage = this.STATIC_URL + "line03.png"
 							this.role = "黄金店铺"
 							break;
 						case 100:
-							this.bgImage = this.STATIC_URL + 'bg05.png'
-							this.iconImage = this.STATIC_URL + 'shop04.png'
+							this.bgImage = this.STATIC_URL + "role04.png"
+							this.iconImage = this.STATIC_URL + "b_04.png"
+							this.lineImage = this.STATIC_URL + "line04.png"
 							this.role = "钻石店铺"
 							break;
 						default:
@@ -416,17 +408,22 @@
 			showtipModel(flag) {
 				this.tipModel = flag
 			},
+			toTeamEarnings() {
+				uni.navigateTo({
+					url: "../teamEarnings/teamEarnings"
+				})
+			},
 			toOrders(index) {
 				let type
 				switch (index) {
 					case 0:
-						type = 2
+						type = 1
 						break;
 					case 1:
-						type = 3
+						type = 2
 						break;
 					case 2:
-						type = 4
+						type = 3
 						break;
 					case 3:
 						uni.navigateTo({
@@ -435,7 +432,7 @@
 						return;
 				}
 				uni.navigateTo({
-					url: "../orders/orders?type=" + type
+					url: "../shopOrders/shopOrders?type=" + type
 				})
 			},
 			chooseTime(type, index) {
@@ -500,98 +497,53 @@
 
 <style lang="scss">
 	.top-box {
-		padding: 180rpx 30rpx 50rpx;
-		background-color: #3A3943;
+		position: relative;
 
 		.bg-box {
+			position: absolute;
+			bottom: 26rpx;
+			left: 30rpx;
 			width: 690rpx;
-			height: 386rpx;
-			border-radius: 15rpx;
+			height: 320rpx;
+			border-top-left-radius: 15rpx;
+			border-top-right-radius: 15rpx;
+			padding: 20rpx 30rpx 15rpx;
 			overflow: hidden;
 
-			.top-con {
-				padding: 0 20rpx;
-				height: 156rpx;
-			}
-
-			.line-box {
+			.shop-line-box {
+				padding-top: 80rpx;
+				padding-bottom: 80rpx;
 				position: relative;
-				width: 590rpx;
-				height: 8rpx;
-				border-radius: 5rpx;
-				background-color: rgba(0, 0, 0, 0.3);
-				left: 50rpx;
-				top: 110rpx;
-
-				.line-con {
+				.text-bg{
+					background-color: rgba(0, 0, 0, 0.3);
+					color: #fff;
+					border-radius: 12rpx;
+					padding: 8rpx 12rpx;
+					font-size: 18rpx;	
+				}
+				.luotuo {
+					position: absolute;
+					left: 0;
+					top: 25rpx;
+					width: auto;
+					height: 50rpx;
+				}
+				.text-up{
 					position: absolute;
 					top: 0;
-					width: 30%;
-					border-radius: 5rpx;
-					background-color: rgba(255, 255, 255, 0.8);
-					height: 100%;
-
-					.animal-con {
-						width: 100%;
-						height: 100%;
-						position: relative;
-					}
-
-					.animal {
-						width: 60rpx;
-						position: absolute;
-						bottom: 30rpx;
-						right: 0;
-						transform: translateX(50%);
-					}
-
+					left: 70rpx;
 				}
-
-				.dots-con {
+				.text-down{
 					position: absolute;
-					top: 50%;
-					width: 100%;
-					height: 50rpx;
-					transform: translateY(-50%);
-
-					.dot-item {
-						width: 20rpx;
-						height: 40rpx;
-						position: relative;
-					}
-
-					.dot {
-						width: 12rpx;
-						height: 12rpx;
-						border: 1rpx solid #fff;
-						background-color: rgba(0, 0, 0, 0.4);
-						border-radius: 50%;
-
-					}
-
-					.dot-msg-con {
-						position: absolute;
-						width: 20rpx;
-						height: 40rpx;
-						left: 0;
-						top: 10rpx;
-						border-left: 10rpx solid transparent;
-						border-right: 10rpx solid transparent;
-						border-bottom: 20rpx solid rgba(0, 0, 0, 0.5);
-						border-top: 20rpx solid transparent;
-					}
-
-
-					.dot-msg {
-						position: absolute;
-						top: 20rpx;
-						background-color: rgba(0, 0, 0, 0.5);
-						border-radius: 10rpx;
-						padding: 10rpx 15rpx;
-						color: rgba(255, 255, 255, 0.8);
-						font-size: 22rpx;
-						white-space: nowrap;
-					}
+					bottom: 0;
+					left: 0;
+				}
+				.icon {
+					position: absolute;
+					right: 0;
+					top: 0;
+					width: auto;
+					height: 70rpx;
 				}
 			}
 		}
@@ -599,7 +551,6 @@
 	}
 
 	.shop-msg-box {
-		margin-bottom: 200rpx;
 		border-top-left-radius: 20rpx;
 		border-top-right-radius: 20rpx;
 		overflow: hidden;
@@ -715,29 +666,34 @@
 	.avtive-time {
 		color: red !important;
 	}
-	
-	.share-box{
+
+	.share-box {
 		padding: 50rpx 0;
-		.share-icon{
+
+		.share-icon {
 			width: 80rpx;
 			height: 80rpx;
 			border-radius: 50%;
 			margin-bottom: 10rpx;
 		}
-		.txt{
+
+		.txt {
 			font-size: 26rpx;
 		}
-		button{
+
+		button {
 			border: 0;
 			padding: 0;
 			background-color: #FFFFFF;
 			line-height: normal;
 		}
-		button::after{
+
+		button::after {
 			content: none;
 		}
 	}
-	.cancle{
+
+	.cancle {
 		border-top: 1rpx solid #f1f1f1;
 		line-height: 90rpx;
 		text-align: center;

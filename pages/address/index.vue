@@ -20,14 +20,14 @@
 					</view>
 					<view class="flex btns">
 						<text @tap.stop="toAddSite(item)">编辑</text>
-						<text @tap.stop="delAddress(item.id)">删除</text>
+						<text @tap.stop="delAddress(index,item.id)">删除</text>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="" style="height: 200rpx;"></view>
 		<view class="btn-box" style="padding: 30rpx;">
-			<button class="bg-red text-white" @tap="toAddSite()">添加新地址</button>
+			<button class="bg-red cu-btn lg block text-white" @tap="toAddSite()">添加新地址</button>
 		</view>
 	</view>
 </template>
@@ -50,7 +50,7 @@
 		},
 		onLoad(options) {
 			console.log(options)
-			if(options.fromPage){
+			if(options&&options.fromPage){
 				this.fromPage = options.fromPage
 			}
 			this.getAddresslist();
@@ -95,7 +95,6 @@
 									this.$u.toast(res.data.msg);
 									return
 								}
-								// this.getAddresslist()
 								for (let i = 0; i < this.siteList.length; i++) {
 									this.siteList[i].isDefault = 0
 								}
@@ -111,7 +110,7 @@
 					}
 				});
 			},
-			delAddress(id) {
+			delAddress(index,id) {
 				uni.showModal({
 					title: '提示',
 					content: '确认要删除该地址吗？',
@@ -127,7 +126,10 @@
 									this.$u.toast(res.data.msg);
 									return
 								}
-								this.getAddresslist()
+								this.siteList.splice(index,1)
+								if(this.siteList.length==0){
+									this.isNull = true
+								}
 								uni.showToast({
 									title: "删除成功"
 								})
@@ -151,6 +153,8 @@
 					this.siteList = res.data.data
 					if(this.siteList.length==0){
 						this.isNull = true
+					}else{
+						this.isNull = false
 					}
 				});
 			},

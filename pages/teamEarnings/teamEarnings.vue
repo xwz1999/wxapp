@@ -1,5 +1,5 @@
 <template>
-	<view class="flex flex-direction" style="height: 100%;">
+	<view>
 		<u-navbar :title="title" :background="{backgroundColor: '#16182B'}" back-icon-color="#fff" title-color="#fff"
 		 :border-bottom="false"></u-navbar>
 		<view class="total-box">
@@ -7,16 +7,16 @@
 				<view class="con-box flex flex-direction justify-between">
 					<view>
 						<view class="text">预估收益(瑞币)</view>
-						<view style="font-size: 48rpx;color: #000;">{{data.historyIncome}}</view>
+						<view style="font-size: 48rpx;color: #000;">{{data.historyIncome?data.historyIncome:0}}</view>
 					</view>
 					<view class="flex justify-between">
 						<view>
 							<view class="text">销售额(元)</view>
-							<view class="num">{{data.teamAmount}}</view>
+							<view class="num">{{data.teamAmount?data.teamAmount:0}}</view>
 						</view>
 						<view>
 							<view class="text">团队成员(人)</view>
-							<view class="num">{{data.memberNum}}</view>
+							<view class="num">{{data.memberNum?data.memberNum:0}}</view>
 						</view>
 					</view>
 				</view>
@@ -27,16 +27,16 @@
 				<view class="time bg-white text-black">{{time}}<text class="cuIcon-triangledownfill"></text></view>
 			</picker>
 		</view>
-		<scroll-view class="flex-sub scroll" scroll-y="true">
-			<view class="null flex justify-center flex-direction align-center" v-if="list.length==0">
-				<image :src="STATIC_URL+'null01.png'" style="width: 300rpx;" mode="widthFix"></image>
+		<view class="data-box">
+			<view class="null flex justify-center flex-direction align-center" style="padding: 30rpx 0;" v-if="list.length==0">
+				<image src="/static/null05.png" style="width: 300rpx;" mode="widthFix"></image>
 				<view style="font-size: 24rpx;color: #DDDDDD;">暂无业绩，请耐心等待</view>
 			</view>
 			<view v-else>
 				<view class="team-box bg-white">
 					<view style="padding:30rpx;border-bottom: 2rpx dashed #F1F1F1;">
 						<view class="text-black subtitle">收益明细</view>
-						<view class="flex justify-between text-center" style="line-height: 50rpx;">
+						<view class="flex justify-between" style="line-height: 50rpx;">
 							<view>
 								<view class="txt">结算收益(瑞币)</view>
 								<view class="num">{{incomeDetail.income}}</view>
@@ -45,31 +45,39 @@
 								<view class="txt">销售额(元)</view>
 								<view class="num">{{incomeDetail.amount}}</view>
 							</view>
-							<view>
-								<view class="txt">提成比例(5)</view>
-								<view class="num">{{incomeDetail.percent}}%</view>
+							<view class="text-right">
+								<view class="txt">提成比例(%)</view>
+								<view class="num">{{incomeDetail.percent}}</view>
 							</view>
 						</view>
 					</view>
 					<view style="padding:10rpx 30rpx 30rpx;">
 						<view class="text-black subtitle">团队贡献榜</view>
 						<view class="team-peoples">
-							<view class="people flex align-center" v-for="(item,index) in 20" :key="index">
-								<view class="people-pic bg-img" :style="'background-image: url('+'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1163880681,1457601312&fm=26&gp=0.jpg'+');'"></view>
-								<view class="flex-sub">
-									<view class="people-name">张三</view>
-									<view class="flex">
-										<view style="margin-right: 100rpx;">13376888888</view>
-										<view>会员</view>
+							<view class="people flex" v-for="(item,index) in list" :key="index">
+								<view class="people-pic">
+									<u-lazy-load threshold="-100" :image="item.headImgUrl" :index="index" height="80" border-radius="40" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+								</view>
+								<view class="flex-sub flex flex-direction justify-around">
+									<view class="flex justify-between">
+										<view class="people-name">{{item.username}}</view>
+										<view>{{item.amount}}</view>
+									</view>
+									<view class="flex" style="font-size: 26rpx;color: #888888;">
+										<view style="margin-right: 100rpx;"><text class="cuIcon-dianhua"></text>{{item.mobile}}</view>
+										<view v-if="item.roleLevel==500"><text class="cuIcon-choiceness"></text>会员</view>
+										<view v-if="item.roleLevel==400"><text class="cuIcon-choiceness"></text>店主</view>
+										<view v-if="item.roleLevel==300"><text class="cuIcon-choiceness"></text>白银</view>
+										<view v-if="item.roleLevel==200"><text class="cuIcon-choiceness"></text>黄金</view>
+										<view v-if="item.roleLevel==100"><text class="cuIcon-choiceness"></text>钻石</view>
 									</view>
 								</view>
-								<view>300.34</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
-		</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -95,7 +103,8 @@
 				}
 			}
 		},
-		onLoad() {
+		onLoad(options) {
+			console.log(options)
 			this.end_time = this.time = this.getToday()
 			this.getInfo()
 		},
@@ -107,7 +116,7 @@
 			getToday() {
 				let today = new Date()
 				let Y = today.getFullYear()
-				let M = today.getMonth() + 1
+				let M = today.getMonth()
 				let D = today.getDate()
 				let newDate = Y + "-" + M
 				// console.log(newDate)
@@ -125,10 +134,11 @@
 				this.$u.post('/api/v1/users/profile/my_info/team', sendData).then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
+						// this.$u.toast(res.data.msg);
 						return
 					}
 					this.data = res.data.data.teamIncome
+					this.list = res.data.data.billboard
 					this.incomeDetail = res.data.data.incomeDetail
 				});
 			}
@@ -187,18 +197,13 @@
 		}
 	
 	}
-	.scroll{
+	.data-box{
 		background-color: #FFFFFF;
-		box-shadow: 0 3rpx 10rpx 3rpx rgba(0, 0, 0, 0.1);
-		height: 0;margin:0 30rpx 30rpx;
+		box-shadow: 0 1rpx 10rpx 1rpx rgba(0, 0, 0, 0.05);
+		margin:0 30rpx 30rpx;
 		width: 690rpx;
 		border-radius: 10rpx;
 		overflow: hidden;
-		.null{
-			position: relative;
-			top: 50%;
-			transform: translateY(-50%);
-		}
 	}
 	.team-box {
 		.subtitle{

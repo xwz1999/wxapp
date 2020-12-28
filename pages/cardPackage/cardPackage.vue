@@ -1,28 +1,60 @@
 <template>
 	<view class="flex flex-direction" style="height: 100vh;">
+		
 		<view class="" style="border-bottom: 1rpx solid #f1f1f1;">
 			<u-tabs :list="list" :is-scroll="false" height="90" :current="currentIndex" duration="0.2" bar-width="100" :bold="false"
 			 active-color="red" @change="chooseTabs"></u-tabs>
 		</view>
+		
+		
 		<swiper class="flex-sub" :current="currentIndex" :duration="300" :indicator-dots="false" :autoplay="false" @change="changeCurrent">
-			<swiper-item>
+			<swiper-item v-for="(item1,index1) in list" :key="index1">
 				<scroll-view scroll-y="true" style="height: 100%;">
-					<view class="card-box">
-						<view v-for="(item,index) in list[0].cards" :key="index">
-							<view class="card-item bg-img" :style="item.isUpcode?'background-image: url('+STATIC_URL+'card01.png);':'background-image: url('+STATIC_URL+'card02.png);'">
-								<view v-if="item.isUpcode" class="con-left flex flex-direction justify-between text-colorA">
+					<view class="null flex-sub flex flex-direction justify-center align-center" v-if="item1.cards.length==0" style="height: 70vh;">
+						<image src="/static/null05.png" style="width: 300rpx;" mode="widthFix"></image>
+						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无卡券</view>
+					</view>
+					<view class="card-box" v-else>
+						<view v-for="(item2,index2) in item1.cards" :key="index2">
+							
+							
+							<!-- 未使用 -->
+							<view v-if="index1==0" class="card-item bg-img" :style="item2.isUpcode?'background-image: url('+STATIC_URL+'card01.png);':'background-image: url('+STATIC_URL+'card02.png);'">
+								<view v-if="item2.isUpcode" class="con-left flex flex-direction justify-between text-colorA">
 									<view class="con-top">
 										<view style="font-size: 36rpx;font-weight: 900;">升级卡</view>
 										<view style="font-size: 28rpx;">Upgrade Card</view>
 									</view>
-									<view class="con-bottom">{{item.code}}</view>
+									<view class="con-bottom">{{item2.code}}</view>
 								</view>
 								<view v-else class="con-left flex flex-direction justify-between text-colorB">
 									<view class="con-top">
 										<view style="font-size: 36rpx;font-weight: 900;">保级卡</view>
 										<view style="font-size: 28rpx;">Renewal Card</view>
 									</view>
-									<view class="con-bottom">{{item.code}}</view>
+									<view class="con-bottom">{{item2.code}}</view>
+								</view>
+								<view class="con-btn flex flex-direction justify-center">
+									<view class="btn-item text-white" @tap="useCard">使用</view>
+									<view class="btn-item text-white" @tap="sendCard">赠送</view>
+								</view>
+							</view>
+							
+							<!-- 已使用 -->
+							<view v-if="index1==1" class="card-item bg-img" :style="item2.isUpcode?'background-image: url('+STATIC_URL+'card_01.png);':'background-image: url('+STATIC_URL+'card_02.png);'">
+								<view v-if="item2.isUpcode" class="con-left flex flex-direction justify-between text-colorA">
+									<view class="con-top">
+										<view style="font-size: 36rpx;font-weight: 900;">升级卡</view>
+										<view style="font-size: 28rpx;">Upgrade Card</view>
+									</view>
+									<view class="con-bottom">{{item2.code}}</view>
+								</view>
+								<view v-else class="con-left flex flex-direction justify-between text-colorB">
+									<view class="con-top">
+										<view style="font-size: 36rpx;font-weight: 900;">保级卡</view>
+										<view style="font-size: 28rpx;">Renewal Card</view>
+									</view>
+									<view class="con-bottom">{{item2.code}}</view>
 								</view>
 								<view class="con-btn flex flex-direction justify-center">
 									<view class="btn-item text-white" @tap="useCard">使用</view>
@@ -32,37 +64,8 @@
 						</view>
 					</view>
 				</scroll-view>
-			</swiper-item>
-			<swiper-item>
-				<scroll-view scroll-y="true" style="height: 100%;">
-					<view class="card-box">
-						<view v-for="(item,index) in list[1].cards" :key="index">
-							<view class="card-item bg-img" :style="item.isUpcode?'background-image: url('+STATIC_URL+'card_01.png);':'background-image: url('+STATIC_URL+'card_02.png);'">
-								<view v-if="item.isUpcode" class="con-left flex flex-direction justify-between text-colorA">
-									<view class="con-top">
-										<view style="font-size: 36rpx;font-weight: 900;">升级卡</view>
-										<view style="font-size: 28rpx;">Upgrade Card</view>
-									</view>
-									<view class="con-bottom">{{item.code}}</view>
-								</view>
-								<view v-else class="con-left flex flex-direction justify-between text-colorB">
-									<view class="con-top">
-										<view style="font-size: 36rpx;font-weight: 900;">保级卡</view>
-										<view style="font-size: 28rpx;">Renewal Card</view>
-									</view>
-									<view class="con-bottom">{{item.code}}</view>
-								</view>
-								<view class="con-btn flex flex-direction justify-center">
-									<view class="btn-item text-white" @tap="useCard">使用</view>
-									<view class="btn-item text-white" @tap="sendCard">赠送</view>
-								</view>
-							</view>
-						</view>
-					</view>
-				</scroll-view>
-			</swiper-item>
+			</swiper-item>		
 		</swiper>
-
 	</view>
 </template>
 
@@ -92,10 +95,12 @@
 			},
 			sendCard(){
 				this.$u.toast("功能暂未开放，敬请期待~");
+				// uni.navigateTo({
+				// 	url:"../myInvite/myInvite"
+				// })
 			},
 			changeCurrent(e) {
 				this.currentIndex = e.detail.current
-
 			},
 			chooseTabs(index) {
 				this.currentIndex = index

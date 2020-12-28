@@ -1,12 +1,20 @@
 <template>
 	<view>
-		<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;" v-if="showLoading">
+		<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;"
+		 v-if="showLoading">
 			<image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image>
 		</view>
 		<view class="" v-else>
-			<view class="waitpay text-white" v-if="showWait">
-				<view style="font-size: 34rpx;">等待付款</view>
-				<view class="">倒计时:{{orderDetail.expireTime}}</view>
+			<view class="waitpay text-white" v-if="orderDetail.status==0">
+				<view style="font-size: 36rpx;">等待付款</view>
+				<view class="" v-if="countdownTime>0">倒计时：<u-count-down :timestamp="countdownTime" :show-days="false"
+					 separator-color="#fff" separator="zh" bg-color="transparent" color="#fff"></u-count-down>
+				</view>
+				<view class="" v-else>支付到期时间：{{orderDetail.expireTime}}</view>
+			</view>
+			<view class="waitpay text-white" v-else>
+				<view style="font-size: 36rpx;">{{title}}</view>
+				<view style="font-size: 28rpx;">{{subTitle}}</view>
 			</view>
 			<view class="box flex align-center address-box">
 				<image src="../../static/index/add.png" style="width: 50rpx;" mode="widthFix"></image>
@@ -22,20 +30,20 @@
 						<image :src="IMAGE_URL+shop.brandLogoUrl" style="width: 36rpx;margin-right: 10rpx;" mode="widthFix"></image>
 						<view class="">{{shop.brandName}}</view>
 					</view>
-					<order-goods :goodsList="shop.goods" :showBtn="true"></order-goods>
+					<order-goods :goodsList="shop.goods" :orderType="order.status"></order-goods>
 					<view class="total-msg flex justify-end text-black" style="line-height: 80rpx;">
 						<view style="margin-right: 20rpx;">共{{shop.brandGoodsTotalCount}}件</view>
 						<view>合计{{shop.brandGoodsTotalAmount | toFixed(2)}}元</view>
 					</view>
 				</view>
 			</view>
-			
+
 			<view class="pay-msg bg-white">
 				<view class="item flex justify-between">
 					<view class="">商品金额</view>
 					<view class="">￥{{orderDetail.goodsTotalAmount | toFixed(2)}}</view>
 				</view>
-				<template v-if="isShow">
+				<view class="more-con" :class="isShow?'showMore':''">
 					<view class="item flex justify-between">
 						<view class="">运费</view>
 						<view class="">+￥{{orderDetail.expressTotalFee | toFixed(2)}}</view>
@@ -48,7 +56,7 @@
 						<view class="">瑞币抵扣</view>
 						<view class="">-￥{{orderDetail.coinTotalAmount | toFixed(2)}}</view>
 					</view>
-				</template>
+				</view>
 				<view class="item flex justify-between" style="border-top: 1rpx solid #f1f1f1;font-size: 30rpx;line-height: 80rpx;">
 					<view class="text-black">实付款</view>
 					<view class="text-red">￥{{orderDetail.actualTotalAmount | toFixed(2)}}</view>
@@ -58,8 +66,8 @@
 					<text :class="isShow?'cuIcon-triangleupfill':'cuIcon-triangledownfill'"></text>
 				</view>
 			</view>
-			
-			
+
+
 			<view class="box order-msg">
 				<view class="item flex">
 					<view class="span">订单编号</view>
@@ -79,7 +87,7 @@
 				</view>
 				<view class="item flex">
 					<view class="span">销售额</view>
-					<view class="text-black">￥{{orderDetail.actualTotalAmount}}</view>
+					<view class="text-black">￥{{orderDetail.actualTotalAmount | toFixed(2)}}</view>
 				</view>
 			</view>
 			<view class="" style="height: 120rpx;"></view>
@@ -88,7 +96,7 @@
 					<button class="cu-btn round lines-gray" style="margin-right: 20rpx;" @tap="cancelOrder">取消订单</button>
 					<button class="cu-btn round lines-red" @tap="toOrderPay">继续支付</button>
 				</template>
-				<template v-if="orderDetail.status==1">
+				<template v-if="orderDetail.status==1&&orderDetail.expressStatus!=0">
 					<button class="cu-btn round lines-gray" style="margin-right: 20rpx;" @tap="checkExpress">查看物流</button>
 					<button class="cu-btn round lines-red" @tap="confirmGet">确认收货</button>
 				</template>
@@ -100,7 +108,7 @@
 				</template>
 			</view>
 		</view>
-		
+
 	</view>
 </template>
 
@@ -109,30 +117,29 @@
 		data() {
 			return {
 				IMAGE_URL: this.IMAGE_URL,
-				orderId:null,
-				orderDetail:null,
-				showWait:false,
-				showLoading:true,
-				isShow:false
+				orderId: null,
+				orderDetail: null,
+				showLoading: true,
+				isShow: false,
+				countdownTime: 0,
+				title: "",
+				subTitle: ""
 			};
 		},
 		onLoad(options) {
 			console.log(options)
-			if(options.orderId){
+			if (options.orderId) {
 				this.orderId = parseInt(options.orderId)
 			}
-			if(options.type=="waitPay"){
-				this.showWait = true
-			}
 		},
-		onShow(){
+		onShow() {
 			this.getOrderDetail()
 		},
-		methods:{
-			showMore(){
+		methods: {
+			showMore() {
 				this.isShow = !this.isShow
 			},
-			getOrderDetail(){
+			getOrderDetail() {
 				this.$u.post('/api/v1/order/detail', {
 					userId: uni.getStorageSync("userInfo").id,
 					orderId: this.orderId,
@@ -144,22 +151,64 @@
 						return
 					}
 					this.orderDetail = res.data.data
+					switch (this.orderDetail.status) {
+						case 0:
+							let finishTime = new Date(this.orderDetail.expireTime).getTime()
+							let nowTime = new Date().getTime()
+							this.countdownTime = (finishTime - nowTime) / 1000
+							break;
+						case 1:
+							switch (this.orderDetail.expressStatus){
+								case 0:
+								this.title = "买家已付款"
+								this.subTitle = "等待卖家发货"
+									break;
+								case 1:
+								this.title = "部分商品已发货"
+								this.subTitle = "商品正在赶往您的路上哦"
+									break;
+								case 2:
+								this.title = "全部商品已发货"
+								this.subTitle = "商品正在赶往您的路上哦"
+									break;
+							}
+							break;
+						case 2:
+							this.title = "订单已取消"
+							this.subTitle = "请重新购买"
+							break;
+						case 3:
+							this.title = "订单已过期"
+							this.subTitle = "请重新购买"
+							break;
+						case 4:
+							this.title = "订单已完成"
+							this.subTitle = "请重新购买"
+							break;
+						case 5:
+							this.title = "订单已关闭"
+							this.subTitle = ""
+							break;
+						default:
+							break;
+					}
 				});
 			},
-			toOrderPay(){
+			toOrderPay() {
 				// 跳转支付页面携带参数（支付价格，创建时间）
 				uni.navigateTo({
-					url:"../orderPay/orderPay?orderId="+this.orderId+"&finalPrice="+this.orderDetail.actualTotalAmount+"&time="+this.orderDetail.createdAt
+					url: "../orderPay/orderPay?orderId=" + this.orderId + "&finalPrice=" + this.orderDetail.actualTotalAmount +
+						"&time=" + this.orderDetail.createdAt
 				})
 			},
 			//取消订单
-			cancelOrder(){
+			cancelOrder() {
 				uni.showModal({
-				    title: '提示',
-				    content: '确认要取消该订单吗？',
-				    success: (res)=> {
-				        if (res.confirm) {
-				            console.log('用户点击确定');
+					title: '提示',
+					content: '确认要取消该订单吗？',
+					success: (res) => {
+						if (res.confirm) {
+							console.log('用户点击确定');
 							this.$u.post('/api/v1/order/cancel', {
 								userId: uni.getStorageSync("userInfo").id,
 								orderId: this.orderId,
@@ -170,20 +219,20 @@
 									return
 								}
 								uni.showToast({
-									title:"订单已取消",
-									mask:true,
+									title: "订单已取消",
+									mask: true,
 									success: () => {
-										setTimeout(function(){
+										setTimeout(function() {
 											uni.navigateBack()
-										},1000)
+										}, 1000)
 									}
 								})
 							});
-				        } else if (res.cancel) {
-				            console.log('用户点击取消');
-				        }
-				    }
-				});	
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
 			},
 			//确认收货
 			confirmGet() {
@@ -203,12 +252,12 @@
 									return
 								}
 								uni.showToast({
-									title:"已确认收货",
-									mask:true,
+									title: "已确认收货",
+									mask: true,
 									success: () => {
-										setTimeout(function(){
+										setTimeout(function() {
 											uni.navigateBack()
-										},1000)
+										}, 1000)
 									}
 								})
 							});
@@ -236,12 +285,12 @@
 									return
 								}
 								uni.showToast({
-									title:"订单已删除",
-									mask:true,
+									title: "订单已删除",
+									mask: true,
 									success: () => {
-										setTimeout(function(){
+										setTimeout(function() {
 											uni.navigateBack()
-										},1000)
+										}, 1000)
 									}
 								})
 							});
@@ -252,17 +301,17 @@
 				});
 			},
 			//查看物流
-			checkExpress(){
+			checkExpress() {
 				uni.navigateTo({
-					url:"../logisticsList/logisticsList?orderId="+this.orderId
+					url: "../logisticsList/logisticsList?orderId=" + this.orderId
 				})
 			},
-			evaluate(){
+			evaluate() {
 				this.$u.toast("暂未开放");
 			},
-			copy(){
+			copy() {
 				uni.setClipboardData({
-					data:this.orderDetail.id.toString(),
+					data: this.orderDetail.id.toString(),
 					success: function() {
 						console.log('success');
 					}
@@ -276,21 +325,34 @@
 	page {
 		background-color: #f3f3f3;
 	}
-	.waitpay{
+
+	.waitpay {
 		padding: 30rpx;
 		line-height: 50rpx;
-		background-image: linear-gradient(to right,#CE2727,#EE5250);
+		background-image: linear-gradient(to right, #CE2727, #EE5250);
 	}
-	
-	.pay-msg{
+
+	.pay-msg {
 		padding: 20rpx 30rpx 0;
 		margin-bottom: 20rpx;
-		.item{
+
+		.item {
 			line-height: 60rpx;
 			font-size: 26rpx;
 			color: #888888;
 		}
-		
+
+		.more-con {
+			transition: 0.4s;
+			height: 0;
+			overflow: hidden;
+		}
+
+		.showMore {
+			height: 180rpx;
+			transition: 0.4s;
+		}
+
 	}
 
 	.box {
@@ -341,28 +403,40 @@
 				height: 60rpx;
 			}
 		}
-		.num{
+
+		.num {
 			// font-size: 24rpx;
 			color: #AAAAAA;
 		}
+
 		&.coupon-box {
 			padding: 20rpx 30rpx;
 			line-height: 70rpx;
 			font-size: 28rpx;
 		}
-		&.order-msg{
+
+		&.order-msg {
 			padding: 20rpx 30rpx 0;
-			.item{
-				line-height: 70rpx;
-				.span{
+
+			.item {
+				line-height: 40rpx;
+				padding: 15rpx;
+
+				.span {
 					width: 200rpx;
 				}
-				&:last-child{
-					line-height: 100rpx;
+
+				.num {
+					flex: 1;
+				}
+
+				&:last-child {
+					line-height: 80rpx;
 					border-top: 1rpx solid #f1f1f1;
 				}
 			}
-			.copy{
+
+			.copy {
 				padding: 0 10rpx;
 				line-height: 30rpx;
 				border-radius: 10rpx;
@@ -373,13 +447,14 @@
 			}
 		}
 	}
-	.bottom-box{
+
+	.bottom-box {
 		position: fixed;
 		width: 100%;
 		height: 100rpx;
 		padding: 0 30rpx;
 		bottom: 0;
-		box-shadow: 0 0 15rpx 1rpx rgba(0,0,0,0.1);
+		box-shadow: 0 0 15rpx 1rpx rgba(0, 0, 0, 0.1);
 		z-index: 1000;
 	}
 </style>

@@ -6,9 +6,9 @@
 		<swiper class="flex-sub" :current="currentIndex" :indicator-dots="false" :autoplay="false" @change="changeCurrent" @animationfinish="initData">
 			<swiper-item v-for="(item1,index1) in list" :key="index1">
 				<scroll-view scroll-y="true" style="height: 100%;">
-					<view class="flex flex-direction align-center null" v-if="item1.isNull">
-						<image :src="STATIC_URL+'null01.png'" style="width: 300rpx;margin-top: 200rpx;" mode="widthFix"></image>
-						<view style="font-size: 24rpx;color: #AAAAAA;">暂无订单</view>
+					<view class="flex flex-direction justify-center align-center null" v-if="item1.isNull" style="height: 60vh;">
+						<image src="/static/null05.png" style="width: 300rpx;" mode="widthFix"></image>
+						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无订单</view>
 					</view>
 					<view class="order-box" v-else>
 						<view v-for="(item2,index2) in item1.goods" :key="index2" style="padding: 10rpx 30rpx;">
@@ -48,7 +48,6 @@
 	export default {
 		data() {
 			return {
-				STATIC_URL:this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
 				currentIndex: 0,
 				list: [{

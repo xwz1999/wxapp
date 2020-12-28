@@ -46,14 +46,14 @@
 				<view class="item flex align-center">
 					<image src="../../static/shop/01.png" mode="widthFix"></image>
 					<view class="">
-						<view class="txt">自购省钱</view>
+						<view class="txt">自购收益</view>
 						<view class="num">自己购物，平台返还5%-50%佣金</view>
 					</view>
 				</view>
 				<view class="item flex align-center">
 					<image src="../../static/shop/02.png" mode="widthFix"></image>
 					<view class="">
-						<view class="txt">分享赚钱</view>
+						<view class="txt">导购收益</view>
 						<view class="num">分享商品链接，用户购买无退货获得佣金</view>
 					</view>
 				</view>

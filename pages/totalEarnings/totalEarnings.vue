@@ -5,20 +5,20 @@
 		 <view class="total-box">
 		 	<view class="total-box-con bg-img" :style="'background-image: url('+STATIC_URL+'bg.png);'">
 		 		<view class="con-box flex flex-direction justify-between">
-		 			<view class="">
-		 				<view class="text">预估收益(瑞币)</view>
+		 			<view>
+		 				<view class="text">累计收益</view>
 		 				<view style="font-size: 48rpx;color: #000;">{{accumulateIncome.all}}</view>
 		 			</view>
 		 			<view class="flex justify-between">
-		 				<view class="">
+		 				<view>
 		 					<view class="text">自购收益(元)</view>
 		 					<view class="num">{{accumulateIncome.selfShopping}}</view>
 		 				</view>
-		 				<view class="">
+		 				<view>
 		 					<view class="text">分享收益(元)</view>
 		 					<view class="num">{{accumulateIncome.share}}</view>
 		 				</view>
-						<view class="">
+						<view>
 							<view class="text">团队收益(元)</view>
 							<view class="num">{{accumulateIncome.team}}</view>
 						</view>
@@ -30,7 +30,7 @@
 			<picker mode="date" start="1990-01-01" fields="year" :end="end_time" @change="chooseTime">
 				<view class="time bg-white text-black">{{time}}<text class="cuIcon-triangledownfill"></text></view>
 			</picker>
-			<view class="">年度收益:{{yearIncome}}</view>
+			<view>年度收益:<text class="text-red">{{yearIncome}}</text></view>
 		</view>
 		<view class="month-earning-box bg-white">
 			<view class="month-top bg-white flex justify-between">
@@ -42,18 +42,18 @@
 					<view class="item-con">
 						<view class="flex justify-between" style="line-height: 100rpx;">
 							<view class="text-black"><text style="font-size: 36rpx;">{{item.month}}</text>月</view>
-							<view class="">总收益：<text class="text-red">{{item.totalIncome}}</text></view>
+							<view>总收益：<text class="text-red">{{item.totalIncome}}</text></view>
 						</view>
 						<view class="flex justify-between">
-							<view class="">
+							<view>
 								<view class="text">自购收益</view>
 								<view class="num">{{item.myIncome}}</view>
 							</view>
-							<view class="">
+							<view>
 								<view class="text">分享收益</view>
 								<view class="num">{{item.shareIncome}}</view>
 							</view>
-							<view class="">
+							<view>
 								<view class="text">团队收益</view>
 								<view class="text-red" style="font-size: 24rpx;" v-if="item.teamIncome==-1">未结算</view>
 								<view class="num" v-else>{{item.teamIncome}}</view>

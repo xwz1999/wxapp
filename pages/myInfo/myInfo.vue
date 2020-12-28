@@ -3,8 +3,9 @@
 		<view class="top-box flex justify-between align-center bg-white" @tap="chooseImage">
 			<view class="">头像</view>
 			<view class="flex align-center right">
-				<view class="avatar bg-img" v-if="info.headImgUrl" :style="'background-image: url('+IMAGE_URL+ info.headImgUrl+');'"></view>
-				<view class="avatar bg-img" v-else :style="'background-image: url('+STATIC_URL+'avatar.png);'"></view>
+				<view class="avatar">
+					<u-lazy-load threshold="-100" :image="IMAGE_URL+info.headImgUrl" :index="index" height="120" border-radius="60" loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+				</view>
 				<text class="cuIcon-right"></text>
 			</view>
 		</view>
@@ -71,7 +72,6 @@
 	export default {
 		data() {
 			return {
-				STATIC_URL:this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
 				info: {},
 				sex:["男","女"],

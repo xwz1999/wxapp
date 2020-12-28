@@ -2,7 +2,7 @@
 	<view class="goods-container flex flex-wrap justify-between">
 		<view class="goods-item bg-white" v-for="(item,index) in goodsList" :key="index">
 			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" class="goods-pic bg-img">
-				<image :src="IMAGE_URL+item.mainPhotoUrl" lazy-load style="height: 100%;width: 100%;" mode="aspectFill"></image>
+				<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="328" loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
 				<view class="goods-mask flex justify-center" v-if="item.inventory==0">
 					<image :src="STATIC_URL+'sale_out.png'" mode="widthFix"></image>
 				</view>
@@ -37,7 +37,8 @@
 		name: "largeImageList",
 		data() {
 			return {
-				IMAGE_URL: this.IMAGE_URL
+				IMAGE_URL: this.IMAGE_URL,
+				STATIC_URL:this.STATIC_URL
 			}
 		},
 		props: {
@@ -90,10 +91,10 @@
 			}
 
 			.tic-pic {
-				height: 36rpx;
+				height: 32rpx;
 				width: auto;
 			}
-
+			
 			.tic-txt {
 				position: absolute;
 				width: 100%;
@@ -101,8 +102,8 @@
 				top: 0;
 				left: 0;
 				text-align: center;
-				line-height: 36rpx;
-				font-size: 24rpx;
+				line-height: 32rpx;
+				font-size: 22rpx;
 			}
 
 			.price-con {

@@ -1,6 +1,6 @@
 <template>
-	<view class="flex flex-direction" style="height: 100%;">
-		<u-navbar title="自购省钱" :background="{backgroundColor: '#16182B'}" back-icon-color="#fff" title-color="#fff"
+	<view>
+		<u-navbar title="自购收益" :background="{backgroundColor: '#16182B'}" back-icon-color="#fff" title-color="#fff"
 		 :border-bottom="false"></u-navbar>
 		<view class="total-box">
 			<view class="total-box-con bg-img" :style="'background-image: url('+STATIC_URL+'bg.png);'">
@@ -28,43 +28,22 @@
 			</picker>
 			<view>当月收益:{{money}}</view>
 		</view>
-		<!-- <view class="goods-box">
-			<view class="goods-item bg-white" v-for="(item,index) in 5" :key="index">
-				<view class="goods-item-con flex">
-					<view class="goods-pic bg-img" :style="'background-image: url('+'https://gw.alicdn.com/tps/i4/33283/O1CN01G030as1a7ev6CEzR3_!!0-item_pic.jpg_Q75.jpg_.webp'+');'"></view>
-					<view class="goods-name-con flex-sub flex flex-direction justify-between clear align-start">
-						<view class="goods-name text-hidden">这是商品名称这是商品名称这是商品名称这是商品名称这是商品名称这是商品名称！！！！</view>
-						<view style="color: #aaa;font-size: 24rpx;">共计3件</view>
-						<view class="span">已结算</view>
-					</view>
-				</view>
-				<view class="money-box flex justify-between">
-					<view class="">
-						<view class="txt">付款金额</view>
-						<view class="num">200.00</view>
-					</view>
-					<view class="">
-						<view class="txt">佣金比例(%)</view>
-						<view class="num">200.00</view>
-					</view>
-					<view class="">
-						<view class="txt">结算收益</view>
-						<view class="num">200.00</view>
-					</view>
+		<view class="list-box bg-white">
+			<view class="list-top flex">
+				<view class="">日期</view>
+				<view class="">销售额</view>
+				<view class="text-center">订单数</view>
+				<view class="text-right">结算收益</view>
+			</view>
+			<view class="item-box">
+				<view class="item flex justify-between" v-for="(item,index) in list" :key="index">
+					<view class="">{{handleTime(item.time)}}</view>
+					<view class="">{{item.amount}}</view>
+					<view class="text-center">{{item.orderNum}}</view>
+					<view class="text-right text-red">{{item.historyIncome}}</view>
 				</view>
 			</view>
-		</view> -->
-		<scroll-view class="flex-sub bg-white" scroll-y="true" style="height: 0;">
-			<view class="list-box">
-				<view class="item flex justify-between align-center" v-for="(item,index) in list" :key="index">
-					<view class="flex justify-between align-center" style="width: 380rpx;">
-						<view>{{item.time}}</view>
-						<image src="../../static/mine/up.png" style="width: 40rpx;" mode="widthFix"></image>
-					</view>
-					<view class="text-red">{{item.amount}}</view>
-				</view>
-			</view>
-		</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -82,16 +61,20 @@
 					orderNum: 0
 				},
 				money:0,
-				list: [],
-				type: ""
+				list: []
 			}
 		},
 		onLoad(options) {
-			this.type = options.type
 			this.end_time = this.time = this.getToday()
 			this.getUserInfo()
 		},
 		methods: {
+			handleTime(time){
+				let date = new Date(time)
+				let month = date.getMonth()+1
+				let day = date.getDate()
+				return `${month}月${day}日`
+			},
 			chooseTime(e) {
 				// console.log(e.detail.value)
 				this.time = e.detail.value
@@ -184,11 +167,23 @@
 
 	}
 
+	.list-box .list-top{
+		font-weight: 700;
+		line-height: 80rpx;
+		padding: 0 30rpx;
+		border-bottom: 1rpx solid #F1F1F1;
+		view{
+			flex: 1;
+		}
+	}
 	.list-box .item {
 		line-height: 80rpx;
 		padding: 0 30rpx;
 		border-bottom: 1rpx solid #F1F1F1;
-
+		font-size: 28rpx;
+		view{
+			flex:1;
+		}
 		&:last-child {
 			border: 0;
 			margin-bottom: 60rpx;
