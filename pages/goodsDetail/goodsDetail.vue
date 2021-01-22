@@ -8,23 +8,22 @@
 						<text class="cuIcon-home" v-if="type=='share'"></text>
 						<text class="cuIcon-back" v-else></text>
 					</view>
-					<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;"
-					 v-if="showLoading">
+				<!-- 	<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;"v-if="showLoading">
 						<image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image>
-					</view>
-					<view class="" v-else>
+					</view> -->
+					<view class="">
 						<scroll-view scroll-y="true" style="height: 100vh;">
 							<view>
-								<view style="position: relative;">
-									<swiper class="swiper-box screen-swiper" :current="current" :circular="true" :autoplay="true" interval="3000"
+								<view style="position: relative;" class="goodsDetail-swiper">
+									<u-swiper :list="swiperList" mode="number" indicator-pos="bottomRight" :height='750'></u-swiper>
+									<!-- 	<swiper class="swiper-box screen-swiper" :current="current" :circular="true" :autoplay="true" interval="3000"
 									 duration="500" @change="swiperChange">
 										<swiper-item v-for="(item,index) in goodsDetail.mainPhotos" :key="index">
 											<image :src="IMAGE_URL+item.url" mode="aspectFill"></image>
 										</swiper-item>
-									</swiper>
-									<view class="dots-box"><text style="font-size: 32rpx;">{{current+1}}</text>/{{goodsDetail.mainPhotos.length}}</view>
+									</swiper> -->
+									<!-- 		<view class="dots-box"><text style="font-size: 32rpx;">{{current+1}}</text>/{{goodsDetail.mainPhotos.length}}</view> -->
 								</view>
-
 								<view class="banner-con bg-img" :style="'background-image: url('+STATIC_URL+'goods-bg.png);'">
 									<view class="pic-con">
 										<view class="flex quan-top">
@@ -58,7 +57,6 @@
 										</view>
 									</view>
 								</view>
-
 								<view class="goods-msg-box bg-white" style="margin-bottom: 25rpx;padding-top: 20rpx;">
 									<view class="flex goods-name-box justify-between align-start">
 										<view class="goods-name flex-sub">{{goodsDetail.goodsName}}</view>
@@ -82,7 +80,6 @@
 										</view>
 									</view>
 								</view>
-
 								<view class="box bg-white">
 									<view class="item flex justify-between">
 										<view class="span">领券</view>
@@ -94,32 +91,92 @@
 										<text class="cuIcon-right"></text>
 									</view>
 								</view>
-								<view class="box bg-white">
+								<view class="box bg-white" v-if="goodsDetail.isFerme">
+									<view class="item flex justify-between align-center">
+										<view class="span">进口税</view>
+										<view class="text-hidden flex-sub txt flex align-center justify-start">
+											<view class="tab_ferme">包税</view> 预计￥{{goodsDetail.price.max.ferme}}由瑞库客
+										</view>
+									</view>
+								</view>
+								<view class="box bg-white" v-if="goodsDetail.isImport">
 									<view class="item flex justify-between">
+										<view class="span">送至</view>
+										<view class="text-hidden flex-sub txt"> <text style="color: #CC1B4F;">请选择</text> 收货地址</view>
+											<text class="cuIcon-right"></text>
+									</view>
+								<!-- 	<view class="item flex justify-between">
+										<view class="span"></view>
+										<view class="text-hidden flex-sub txt " style="padding-right: 88rpx;"> 
+											<view class="flex align-end justify-between goods_box">
+												<view class="goods_icon">
+													<image src="/static/goodsIcon/just.png" mode="widthFix"></image>
+													<text>正品保障</text>
+												</view>
+												<view class="goods_hr">
+													
+												</view>
+												<view class="goods_icon">
+													<image src="/static/goodsIcon/details.png" mode="widthFix"></image>
+													<text>国内仓</text>
+												</view>
+												<view class="goods_hr">
+													
+												</view>
+												<view class="goods_icon">
+													<image src="/static/goodsIcon/location.png" mode="widthFix"></image>
+													<text>宁波市</text>
+												</view>
+											</view>
+										</view>
+									</view> -->
+								</view>
+								<view class="box bg-white">
+									<view class="item flex justify-between" @tap="parameterModel(true)">
 										<view class="span">参数</view>
 										<view class="text-hidden flex-sub txt">品牌 工艺...</view>
 										<text class="cuIcon-right"></text>
 									</view>
 									<view class="item flex justify-between">
 										<view class="span">服务</view>
-										<view class="text-hidden flex-sub txt">正品保证 | 售后无忧</view>
-										<text class="cuIcon-right"></text>
+										<view class="text-hidden flex-sub txt">
+											
+											<block v-if="goodsDetail.storehouse===1">
+												<view>
+													不支持7天无理由退换货
+												</view>
+											</block>
+											<block v-else-if="goodsDetail.storehouse===3||goodsDetail.storehouse===2">
+												<view>
+													跨境商品不支持开发票
+												</view>
+												<view>
+													不支持7天无理由退换货
+												</view>
+											</block>
+											<block v-else>
+												<view>
+													正品保证 | 售后无忧
+												</view>
+											</block>
+										</view>
 									</view>
 								</view>
-
+							
 								<view class="box bg-white">
 									<view class="item flex justify-between" @tap="toGoodsComments">
 										<view class="txt flex text-black" style="font-size: 28rpx;">用户评价<text style="color: #AAAAAA;">({{goodsDetail.evaluations.total}})</text></view>
 										<view class="flex text-red">查看全部<text class="cuIcon-right"></text></view>
 									</view>
 									<view class="goods-comments" v-if="goodsDetail.evaluations.children.length!=0">
-										<scroll-view scroll-x="true" >
+										<scroll-view scroll-x="true">
 											<view class="flex">
 												<view class="comment-item" v-for="(item,index) in goodsDetail.evaluations.children" :key="index">
 													<view class="item-top flex">
 														<view class="comment-avatar">
 															<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" error-img="/static/null05.png"
 															 border-radius="25" height="50"></u-lazy-load>
+
 														</view>
 														<view class="nickname text-hidden">{{item.nickname}}</view>
 													</view>
@@ -168,8 +225,6 @@
 										</scroll-view>
 									</view>
 								</view>
-
-
 								<!-- 商品详情 -->
 								<view class="box bg-white">
 									<view class="goods-detail">
@@ -183,15 +238,11 @@
 										</view>
 									</view>
 								</view>
-
-
-
-
 								<!-- 底部导航 -->
 								<view class="" style="height: 100rpx;"></view>
 								<view class="detail-bottom bg-white shadow flex justify-between align-center">
 									<view class="flex text-center flex-sub justify-around">
-										<navigator open-type="switchTab" url="/pages/cart/cart" style="width: 100rpx;text-align: center;">
+										<navigator  url="../../packageA/goodsCart/index" style="width: 100rpx;text-align: center;">
 											<text class="cuIcon-cart" style="font-size: 48rpx;"></text>
 											<view style="font-size: 20rpx;">购物车</view>
 										</navigator>
@@ -222,7 +273,7 @@
 												</view>
 											</button>
 											<button class="btn-item right-btn" @tap="specModel(true)">
-												<view>自购</view>
+												<view>领券购买</view>
 												<view v-if="roleLevel!=500" style="font-size: 20rpx;">省￥{{goodsDetail.price.min.commission}}
 													<template v-if="goodsDetail.price.min.commission!=goodsDetail.price.max.commission">
 														~{{goodsDetail.price.max.commission}}
@@ -237,8 +288,6 @@
 					</view>
 				</view>
 			</swiper-item>
-
-
 			<!-- 发现 -->
 			<swiper-item>
 				<view class="flex flex-direction" style="position: relative;height: 100vh;">
@@ -289,7 +338,34 @@
 				<view @tap="tipModel(false)">完成</view>
 			</view>
 		</u-popup>
-
+	<!-- 规格弹框 -->
+		<u-popup v-model="parameterShow" mode="bottom" border-radius="20">
+			<view class="text-center text-black" style="line-height: 100rpx;font-size: 32rpx;font-weight: 900;">产品参数</view>
+			<view class="parameter-box" style="height: 40vh;">
+				<view class="parameter-list">
+					<view class="lf">
+						<text>品牌</text>
+					</view>
+					<view class="rg">
+						<text>{{goodsDetail.brand.name}}</text>
+					</view>
+				</view>
+				<view class="parameter-list">
+					<view class="lf">
+						<text>条形码</text>
+					</view>
+					<view class="rg">
+						<view class="" v-for="(item,index) in goodsDetail.sku" :key='index'><text style="padding-right: 16rpx;">{{item.name}}  </text>  <text>{{item.code}}</text></view>
+					
+					</view>
+				</view>
+			</view>
+			<view class="tip-btn text-center text-white">
+				<view @tap="parameterModel(false)">完成</view>
+			</view>
+			
+		</u-popup>
+	
 		<!-- 规格弹框 -->
 		<u-popup v-model="showSpecs" mode="bottom" border-radius="20" :closeable="true">
 			<view class="spec-box">
@@ -312,8 +388,8 @@
 					<view v-for="(attr,index1) in goodsDetail.attributes" :key="index1">
 						<view class="spec-title text-black">{{attr.name}}</view>
 						<view class="flex flex-wrap">
-							<view class="spec-item" :class="[item.isShow?'':'noneActive',subIndex[index1]==index2?'spec-checked':'']" v-for="(item,index2) in attr.children"
-							 :key="index2" @tap="chooseAttr(index1,index2,item.id,item.value)">{{item.value}}</view>
+							<view class="spec-item" v-for="(item,index2) in attr.children" :key="index2" :class="[item.isShow?'':'noneActive',subIndex[index1]==index2?'spec-checked':'']"
+							 @tap="chooseAttr(index1,index2,item.id,item.value)">{{item.value}}</view>
 						</view>
 					</view>
 				</view>
@@ -340,7 +416,9 @@
 	export default {
 		data() {
 			return {
-				roleLevel:500,
+				parameterShow:false,
+				swiperImgList: [],
+				roleLevel: 500,
 				STATIC_URL: this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
 				showLoading: true,
@@ -368,6 +446,10 @@
 			dynamics
 		},
 		onLoad(options) {
+			if (options.q !== undefined) {
+				let url = decodeURIComponent(options.q)
+				options.id = url.split("/")[6];
+			}
 			if (uni.getStorageSync("userInfo").roleLevel) {
 				this.roleLevel = uni.getStorageSync("userInfo").roleLevel
 			}
@@ -378,12 +460,32 @@
 				this.showBtn = true
 			}
 			this.id = parseInt(options.id)
+			console.log(this.id+'-------')
 			this.getGoodsDetail()
 		},
+		computed: {
+			swiperList() {
+				let arr = []
+				this.swiperImgList.map(item => {
+					arr.push(this.IMAGE_URL + item.url)
+				})
+				return arr
+			}
+		},
+		mounted() {
+			console.log(uni.getStorageSync("userInfo").id)
+		},
 		methods: {
-			toGoodsComments(){
+			parameterModel(bool){
+				this.parameterShow = bool
+			},
+			getUrlKey(url, name) { //获取url 参数
+				return decodeURIComponent(
+					(new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(url) || [, ""])[1].replace(/\+/g, '%20')) || null;
+			},
+			toGoodsComments() {
 				uni.navigateTo({
-					url:"../goodsComments/goodsComments?id="+this.id
+					url: "../goodsComments/goodsComments?id=" + this.id
 				})
 			},
 			back() {
@@ -404,6 +506,7 @@
 			//点击收藏
 			setFavorite() {
 				this.goodsDetail.isFavorite = !this.goodsDetail.isFavorite
+				console.log(this.goodsDetail.isFavorite)
 				let reqUrl = ""
 				if (this.goodsDetail.isFavorite) {
 					reqUrl = "/api/v1/goods/favorites/add"
@@ -431,10 +534,10 @@
 			specModel(flag) {
 				this.showSpecs = flag
 			},
-
 			// 获取商品详情信息
 			getGoodsDetail() {
 				this.$u.post('/api/v1/goods/detail/summary', {
+					userID: uni.getStorageSync("userInfo").id,
 					GoodsID: this.id
 				}).then(res => {
 					console.log(res.data);
@@ -444,6 +547,15 @@
 						return
 					}
 					this.goodsDetail = res.data.data
+					// 规格只有一个 默认选中
+					if (this.goodsDetail.attributes.length === 1 && this.goodsDetail.attributes[0].children.length === 1) {
+						this.selectName[0] = this.goodsDetail.attributes[0].children[0].name
+						this.selectArr[0] = this.goodsDetail.attributes[0].children[0].id
+						this.subIndex[0] = 0
+					}
+					console.log(res.data.data)
+					this.swiperImgList = res.data.data.mainPhotos
+
 					//获取商品详情图片列表
 					this.getPictures()
 					//初始化商品sku信息
@@ -459,10 +571,16 @@
 				this.skuPhoto = this.IMAGE_URL + this.goodsDetail.sku[0].picUrl
 				this.skuStoreCount = this.goodsDetail.sku[0].inventory
 				this.checkedSku = "请选择规格"
+
+				if (this.goodsDetail.sku.length === 1) {
+					this.checkedSku = this.goodsDetail.sku[0].name
+					this.sku_id = this.goodsDetail.sku[0].id
+					console.log(this.sku_id)
+				}
 				for (let i in this.goodsDetail.sku) {
 					this.shopItemInfo[this.goodsDetail.sku[i].combineId.split(",").reverse().join(",")] = this.goodsDetail.sku[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
 				}
-				// console.log(this.shopItemInfo)
+				console.log(this.shopItemInfo)
 				this.checkItem();
 			},
 
@@ -488,6 +606,7 @@
 					this.$u.toast("请选择商品规格")
 					return
 				}
+
 				this.$u.post('/api/v1/goods/shopping_trolley/add', {
 					UserID: uni.getStorageSync("userInfo").id,
 					GoodsID: this.id,
@@ -530,7 +649,10 @@
 						return
 					}
 					let preViewMsg = res.data.data
+					preViewMsg.isImport = this.goodsDetail.isImport
 					this.$store.commit('updatePreOrderMsg', preViewMsg);
+					console.log(res.data.data)
+					// return
 					uni.navigateTo({
 						url: "/pages/confirmOrder/confirmOrder"
 					})
@@ -549,6 +671,7 @@
 					this.selectArr[i1] = ""
 					this.subIndex[i1] = -1 //去掉选中的颜色
 				}
+
 				// console.log(this.selectArr,this.subIndex,this.selectName)
 				this.checkedSku = this.selectName.join(",")
 				this.checkItem();
@@ -643,6 +766,57 @@
 </script>
 
 <style lang="scss">
+	.parameter-box{
+		.parameter-list{
+			display: flex;
+			margin-bottom: 30rpx;
+			.lf{
+				color: #121212;
+				padding-left: 100rpx;
+				width: 250rpx;
+			}
+			.rg{
+				color: #bebebe;
+			}
+		}
+	
+	}
+	.goods_box{
+		.goods_icon{
+			text-align: center;
+			width: 96rpx;
+			image{
+				width: 52rpx;
+				margin: 0 auto;
+			}
+		}
+		// .goods_hr{
+		// 	flex: 1;
+		// 	height: 1px;
+		// 	border: 1px dashed #CCCCCC;
+		// }
+		
+	}
+	// 轮播图指示器位置
+	.goodsDetail-swiper {
+		.u-swiper-indicator {
+			bottom: 100rpx !important;
+		}
+	}
+	.tab_ferme{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 64rpx;
+		height: 28rpx;
+		background: #FFE5ED;
+		border-radius: 15rpx;
+		margin-right: 20rpx;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #CC1B4F;
+	}
 	.back {
 		position: absolute;
 		top: 80rpx;
@@ -916,35 +1090,42 @@
 			color: #AAAAAA;
 
 			.span {
-				margin-right: 40rpx;
+				width: 96rpx;
 			}
 
 			.txt {
 				color: #333333;
 			}
 		}
-		.goods-comments{
+
+		.goods-comments {
 			padding: 0 20rpx;
-			.comment-item{
+
+			.comment-item {
 				margin-right: 20rpx;
 				border-radius: 10rpx;
 				background-color: #f7f7f7;
 				padding: 15rpx;
-				&:last-child{
+
+				&:last-child {
 					margin-right: 0;
 				}
-				.item-top{
+
+				.item-top {
 					line-height: 50rpx;
-					.comment-avatar{
+
+					.comment-avatar {
 						width: 50rpx;
 						height: 50rpx;
 						margin-right: 15rpx;
 					}
-					.nickname{
+
+					.nickname {
 						font-size: 28rpx;
 					}
 				}
-				.content{
+
+				.content {
 					width: 300rpx;
 					font-size: 24rpx;
 					margin: 10rpx 0;

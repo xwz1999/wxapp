@@ -30,7 +30,8 @@
 				<order-goods :goodsList="shop.goods"></order-goods>
 				<view class="total-msg flex justify-end" style="line-height: 80rpx;">
 					<view style="margin-right: 20rpx;color: #AAAAAA;">共{{shop.brandGoodsTotalCount}}件</view>
-					<view style="color: #FA6400;">合计{{shop.brandGoodsTotalAmount}}元</view>
+					<view style="color: #FA6400;margin-right: 20rpx;">合计{{shop.brandGoodsTotalAmount}}元 </view>
+					<view style="color: #AAAAAA;">赚：<text style="color: #FA6400;">{{shop.goods[0].totalCommission}} </text></view>
 				</view>
 			</view>
 		</view>
@@ -84,13 +85,25 @@
 				<view class="text-red">￥{{preOrderMsg.actualTotalAmount | toFixed(2)}}</view>
 			</view>
 		</view>
+		<view class="agree_box" v-if="preOrderMsg.isImport">
+			<u-checkbox-group >
+				<u-checkbox  v-model="agree" shape="circle" active-color="red">同意并接受 </u-checkbox ><text style="color: #007AFF;" @click="toPage">《跨境商品用户通知协议》</text>
+			</u-checkbox-group>
+		</view>
 		<view class="" style="height: 200rpx;"></view>
 		<view class="bottom-box flex justify-between align-center bg-white">
 			<view class="flex align-center">
 				<text>实付款</text>
 				<text class="text-red" style="font-size: 32rpx;font-weight: 900;">￥{{preOrderMsg.actualTotalAmount | toFixed(2)}}</text>
 			</view>
-			<button class="cu-btn round text-white" @tap="submitOrder">提交订单</button>
+			<block v-if="preOrderMsg.isImport">
+				<button class="cu-btn round text-white" :class="agree?'':'prevent'" @tap="submitOrder">提交订单</button>
+			</block>
+			<block v-else>
+				<button class="cu-btn round text-white"  @tap="submitOrder">提交订单</button>
+			</block>
+			
+			<!-- &&preOrderMsg.isImport -->
 		</view>
 	</view>
 </template>
@@ -99,6 +112,7 @@
 	export default {
 		data() {
 			return {
+				agree:false,//是否接受协议
 				useBalance: false, //是否使用余额
 				canUseMoney: true, //是否禁用瑞币
 				canUseBalance: true, //是否禁用余额
@@ -111,12 +125,20 @@
 				return this.$store.state.preOrderMsg
 			}
 		},
+		mounted() {
+		console.log(this.$store.state.preOrderMsg)	
+		},
 		watch: {
 			preOrderMsg: function(val) {
 				console.log("预览订单信息发生改变",this.preOrderMsg)
 			}
 		},
 		methods: {
+			toPage(){
+				uni.navigateTo({
+					url:'../../packageA/agreement/goods'
+				})
+			},
 			// 设置买家留言信息
 			setNote(){
 				this.$u.post('/api/v1/order_preview/buyer_message/update', {
@@ -163,7 +185,8 @@
 					// this.$store.commit('setOrderDetail',orderDetail);
 					//提交成功
 					uni.redirectTo({
-						url: "../orderDetail/orderDetail?orderId=" + orderDetail.id,
+						url: "../orderPay/orderPay?orderId=" + orderDetail.id,
+						// url: "../orderDetail/orderDetail?orderId=" + orderDetail.id,
 						success: (res) => {
 							this.$u.toast(msg);
 						}
@@ -180,10 +203,17 @@
 </script>
 
 <style lang="scss">
+	.prevent{
+		color: #C8C9CC !important;
+		background: #AAAAAA !important;
+		pointer-events: none;
+	}
 	page {
 		background-color: #f3f3f3;
 	}
-
+.agree_box{
+	margin: 20rpx 30rpx;
+}
 	.box {
 		margin: 20rpx 30rpx;
 		border-radius: 10rpx;

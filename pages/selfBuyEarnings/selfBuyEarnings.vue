@@ -14,7 +14,7 @@
 							<view class="text">销售额(元)</view>
 							<view class="num">{{data.amount}}</view>
 						</view>
-						<view>
+						<view class="text-right">
 							<view class="text">订单数(笔)</view>
 							<view class="num">{{data.orderNum}}</view>
 						</view>
@@ -30,17 +30,17 @@
 		</view>
 		<view class="list-box bg-white">
 			<view class="list-top flex">
-				<view class="">日期</view>
-				<view class="">销售额</view>
-				<view class="text-center">订单数</view>
-				<view class="text-right">结算收益</view>
+				<view class="" style="width: 25%;">日期</view>
+				<view class="text-right" style="width: 25%;">销售额</view>
+				<view class="text-right" style="width: 25%;">订单数</view>
+				<view class="text-right" style="width: 25%;">结算收益</view>
 			</view>
 			<view class="item-box">
 				<view class="item flex justify-between" v-for="(item,index) in list" :key="index">
-					<view class="">{{handleTime(item.time)}}</view>
-					<view class="">{{item.amount}}</view>
-					<view class="text-center">{{item.orderNum}}</view>
-					<view class="text-right text-red">{{item.historyIncome}}</view>
+					<view class="" style="width: 25%;">{{handleTime(item.time)}}</view>
+					<view class="text-right" style="width: 25%;">{{item.amount}}</view>
+					<view class="text-right" style="width: 25%;">{{item.orderNum}}</view>
+					<view class="text-right text-red" style="width: 25%;">{{item.historyIncome}}</view>
 				</view>
 			</view>
 		</view>
@@ -73,10 +73,15 @@
 				let date = new Date(time)
 				let month = date.getMonth()+1
 				let day = date.getDate()
+				if(month < 10){
+					month = '0' + month
+				}
+				if(day < 10){
+					day = '0' + day
+				}
 				return `${month}月${day}日`
 			},
 			chooseTime(e) {
-				// console.log(e.detail.value)
 				this.time = e.detail.value
 				this.getUserInfo()
 			},
@@ -85,6 +90,9 @@
 				let Y = today.getFullYear()
 				let M = today.getMonth() + 1
 				let D = today.getDate()
+				if(M < 10){
+					M = '0' + M
+				}
 				let newDate = Y + "-" + M
 				// console.log(newDate)
 				return newDate

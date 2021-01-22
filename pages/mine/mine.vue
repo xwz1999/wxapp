@@ -5,7 +5,8 @@
 				<!-- 已登录 -->
 				<view class="flex msg-left" v-if="isLogin" @tap="toMyInfo">
 					<view class="avatar">
-						<u-lazy-load threshold="-100" :image="IMAGE_URL+userInfo.headImgUrl" :index="index" height="140" border-radius="70" loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+						<u-lazy-load threshold="-100" :image="IMAGE_URL+userInfo.headImgUrl" :index="index" height="140" border-radius="70"
+						 loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
 					</view>
 					<view class="user-msg">
 						<view class="nickname text-white">{{userInfo.nickname}}</view>
@@ -100,7 +101,7 @@
 						</view>
 					</view>
 				</view>
-				
+
 				<view class="box bg-white" v-if="roleLevel!=500">
 					<navigator url="../shareEarnings/shareEarnings" hover-class="none" class="subtitle flex justify-between">
 						<view class="flex align-center">
@@ -124,7 +125,7 @@
 						</view>
 					</view>
 				</view>
-				
+
 				<view class="box bg-white" v-if="roleLevel==300||roleLevel==200||roleLevel==100">
 					<view class="subtitle flex justify-between" @tap="toTeamEarnings">
 						<view class="flex align-center">
@@ -148,7 +149,7 @@
 						</view>
 					</view>
 				</view>
-				
+
 				<view class="box bg-white">
 					<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
 						<view>订单中心<text style="font-weight: normal;font-size: 26rpx;">(自购)</text></view>
@@ -163,7 +164,8 @@
 					</view>
 				</view>
 				<view class="box flex justify-around bg-white">
-					<view class="other-item flex-sub flex flex-direction justify-between align-center" v-for="(item,index) in otherOptions" :key="index" @tap="toPage(item.page)">
+					<view class="other-item flex-sub flex flex-direction justify-between align-center" v-for="(item,index) in otherOptions"
+					 :key="index" @tap="toPage(item.page)">
 						<image :src="item.icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
 						<view>{{item.text}}</view>
 					</view>
@@ -178,7 +180,7 @@
 	export default {
 		data() {
 			return {
-				STATIC_URL:this.STATIC_URL,
+				STATIC_URL: this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
 				isLogin: false,
 				bgImage: this.STATIC_URL + 'bg01.png',
@@ -216,8 +218,8 @@
 					},
 					{
 						icon: "../../static/mine/b03.png",
-						text: "商务合作", 
-						page:"/pages/cooperation/cooperation"
+						text: "商务合作",
+						page: "/pages/cooperation/cooperation"
 					},
 					{
 						icon: "../../static/mine/b04.png",
@@ -233,7 +235,7 @@
 					headImgUrl: ""
 				},
 				totalEarning: 0,
-				teamIncome:{
+				teamIncome: {
 					amount: 0,
 					historyIncome: 0,
 					orderNum: 0
@@ -241,11 +243,22 @@
 			};
 		},
 		onLoad() {
-			this.getUserInfo()
-			this.getTotalEarning()
+			if (uni.getStorageSync("auth").token) {
+				this.getUserInfo()
+				this.getTotalEarning()
+			} else {
+				this.$u.toast("游客无法使用该功能，请登录");
+				setTimeout(() => {
+					uni.navigateTo({
+						url: "../login/login"
+					})
+				}, 1500)
+				return false;
+			}
 		},
 		onShow() {
-			if (uni.getStorageSync("auth")) {
+			console.log(uni.getStorageSync("auth"))
+			if (uni.getStorageSync("auth").token) {
 				this.isLogin = true
 				this.userInfo.nickname = uni.getStorageSync("userInfo").nickname
 				this.userInfo.headImgUrl = uni.getStorageSync("userInfo").headImgUrl
@@ -275,7 +288,6 @@
 				this.$u.post('/api/v1/users/profile/my_info', {
 					userId: uni.getStorageSync("userInfo").id
 				}).then(res => {
-					console.log(res.data);
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
@@ -284,19 +296,22 @@
 					if (!this.info) {
 						return
 					}
+					console.log(res.data.data)
+					uni.setStorageSync("userId",res.data.data.identifier)
+					console.log(uni.getStorageSync("userId"))
 					this.roleLevel = this.info.roleLevel
 					switch (this.roleLevel) {
 						case 500:
 							this.role = "会员"
 							// this.bgImage = this.STATIC_URL + 'bg01.png'
 							this.iconPic = '../../static/mine/level00.png'
-							this.bgImage =  this.STATIC_URL + "role00.png"
+							this.bgImage = this.STATIC_URL + "role00.png"
 							break;
 						case 400:
 							this.role = "店主"
 							// this.bgImage = this.STATIC_URL + 'bg02.png'
 							this.iconPic = '../../static/mine/level01.png'
-							this.bgImage =  this.STATIC_URL + "role01.png"
+							this.bgImage = this.STATIC_URL + "role01.png"
 							break;
 						case 300:
 							this.role = "白银店铺"
@@ -308,23 +323,24 @@
 							this.role = "黄金店铺"
 							// this.bgImage = this.STATIC_URL + 'bg04.png'
 							this.iconPic = '../../static/mine/level03.png'
-							this.bgImage = this.STATIC_URL +"role03.png"
+							this.bgImage = this.STATIC_URL + "role03.png"
 							break;
 						case 100:
 							this.role = "钻石店铺"
 							// this.bgImage = this.STATIC_URL + 'bg05.png'
 							this.iconPic = '../../static/mine/level04.png'
-							this.bgImage =  this.STATIC_URL + "role04.png"
+							this.bgImage = this.STATIC_URL + "role04.png"
 							break;
 						default:
 							break;
 					}
+					
 					// this.roleLevel = 200
 					// 订单数量提醒
 					this.orderStatus[0].count = this.info.orderCenter.waitPay
 					this.orderStatus[1].count = this.info.orderCenter.waitSend
 					this.orderStatus[2].count = this.info.orderCenter.waitRecv
-					this.orderStatus[4].count = this.info.orderCenter.afterSales
+					// this.orderStatus[4].count = this.info.orderCenter.afterSales
 				});
 			},
 			toWithdraw() {
@@ -342,9 +358,9 @@
 					url: "../myMoney/myMoney"
 				})
 			},
-			toCardPackage(){
+			toCardPackage() {
 				uni.navigateTo({
-					url:"../cardPackage/cardPackage"
+					url: "../cardPackage/cardPackage"
 				})
 			},
 			toLogin() {
@@ -355,9 +371,9 @@
 			tipModel(flag) {
 				this.showTipModel = flag
 			},
-			toTeamEarnings(){
+			toTeamEarnings() {
 				uni.navigateTo({
-					url:"../teamEarnings/teamEarnings"
+					url: "../teamEarnings/teamEarnings"
 				})
 			},
 			toPage(page) {

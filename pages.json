@@ -487,16 +487,44 @@
         }
     ],
 	// 分包配置项(由于小程序代码包大小限制，需要分包)
+	/**
+	 * {
+			"path": "pages/cart/cart",
+			"style": {
+				"navigationBarTitleText": "购物车",
+				"enablePullDownRefresh": false
+			}
+		},
+	 */
 	"subPackages": [{
 		"root": "packageA",
 		"pages": [
 			{
 				"path": "invoice/invoice",
 				"style": {
-					"navigationBarTitleText": "开具发票",
-					"enablePullDownRefresh": false
+					"navigationStyle": "custom"
 				}
 			}, 
+			{
+				"path": "goodsCart/index",
+				"style": {
+					"navigationBarTitleText": "购物车",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "agreement/share",
+				"style": {
+					"navigationStyle": "custom"
+				}
+			},
+			{
+				"path": "agreement/goods",
+				"style": {
+					"navigationBarTitleText": "跨境商品用户购买须知",
+					"enablePullDownRefresh": false
+				}
+			},
 			{
 				"path": "invoiceTitle/invoiceTitle",
 				"style": {

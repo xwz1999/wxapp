@@ -49,27 +49,19 @@ const install = (Vue, vm) => {
 		config.header["X-Recook-ID"] = id
 		config.header["X-Recook-Token"] = token
 		config.header["Device-Type"] = "wxapp"
-		
-		// 拦截请求组参数并处理格式
-		// console.log(config.data,Vue.prototype.dealSendData)
-		// config.data = Vue.prototype.dealSendData(config.data)
 		console.log("请求参数为========",config.data)
 		config.data = Encrypt(config.data)
-		
 	}
-	
-	
-	
 	// 响应拦截
 	Vue.prototype.$u.http.interceptor.response = (res) => {
-		// console.log(res)
+		console.log(res)
 		if(res.code=="FAIL"){
 			vm.$u.toast(res.msg);
 			return false
 		}
 		if (res.data.msg == "游客无法使用该功能，请登录"||res.data.msg == "登录失效") {
 			console.log("响应拦截")
-			vm.$u.toast(res.data.msg);
+			vm.$u.toast(res.data);
 			setTimeout(() => {
 				vm.$u.route('/pages/login/login')
 			}, 1500)

@@ -1,5 +1,6 @@
 <template name="orderGoods">
 	<view class="goods-box">
+		
 		<view v-for="(item,index) in goodsList" :key="index">
 			<view class="goods-item flex">
 				<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" hover-stop-propagation @tap.stop="" class="goods-pic">
@@ -10,11 +11,21 @@
 						<view class="goods-name two-line">{{item.goodsName}}</view>
 						<view class="goods-spec-con flex justify-between">
 							<view class="goods-spec text-hidden">{{item.skuName}}</view>
-							<view class="goods-num" style="color:#aaa;">*{{item.quantity}}</view>
+							
+							<!-- <view class="goods-num" style="color:#aaa;">×{{item.quantity}}</view> -->
 						</view>
+							<view class="flex align-center" style="margin:10rpx 0;">
+								<view class="align-center justify-start" v-if="item.isFerme">
+									<view class="tab_ferme">包税</view>
+								</view>
+								<view class="" style="font-size: 20rpx;color: #FA6400;" v-if="item.storehouse">
+									<text>不支持7天无理由退换货</text>
+								</view>
+							</view>
 					</view>
 					<view class="flex justify-between" style="font-size: 28rpx;color: #FA6400;">
-						<view class="">￥{{item.unitPrice | toFixed(2)}}</view>
+						<view class="flex">￥{{item.unitPrice | toFixed(2)}} </view>
+						<view>×{{item.quantity}}</view>
 						<view v-if="item.rStatus">{{item.rStatus}}</view>
 					</view>
 				</view>
@@ -46,6 +57,9 @@
 				type:Number,
 				value:0
 			}
+		},
+		mounted() {
+				console.log(this.goodsList)
 		},
 		methods:{
 			//未发货申请退款
@@ -86,6 +100,20 @@
 </script>
 
 <style lang="scss">
+	.tab_ferme{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 64rpx;
+		height: 28rpx;
+		background: #FFE5ED;
+		border-radius: 15rpx;
+		margin-right: 20rpx;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #CC1B4F;
+	}
 	.goods-box {
 		border-bottom: 1rpx solid #EEEEEE;
 		padding: 10rpx 0;

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="logo-box flex flex-direction align-center">
-			<image src="../../static/logo.png" mode="widthFix"></image>
+			<image :src="IMAGE_URL+'/logo.png'" mode="widthFix"></image>
 			<view class="">享受指尖的购物乐趣</view>
 		</view>
 		<view class="btn-box">
@@ -35,9 +35,6 @@
 				})
 			},
 			wxLogin() {
-				// uni.navigateTo({
-				// 	url:"../whiteInfo/whiteInfo"
-				// })
 				uni.showLoading({
 					title: "登录中"
 				})
@@ -73,6 +70,7 @@
 										this.bindInvitation(wxUnionId)
 									}else{
 										let result = res.data.data
+										console.log(result)
 										uni.setStorageSync("auth",result.auth)
 										uni.setStorageSync("userInfo",result.info)
 										uni.showToast({

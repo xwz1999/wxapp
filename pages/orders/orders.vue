@@ -1,19 +1,19 @@
 <template>
 	<view class="flex flex-direction" style="height: 100vh;">
-		<u-navbar>
-			<view class="flex tab-con">
-				<view class="tab flex">
-					<view :class="currentIndex==0?'text-white':''" @tap="chooseNav(0)">线上订单</view>
-					<view :class="currentIndex==1?'text-white':''" @tap="chooseNav(1)">门店订单</view>
-					<view class="current bg-red" :class="currentIndex==0?'':'moveright'"></view>
+		<u-navbar >
+			<view class="slot-wrap justify-center">
+				<view class="flex tab-con justify-center">
+					<view class="tab flex justify-center">
+						<view :class="currentIndex==0?'text-white':''" @tap="chooseNav(0)">线上订单</view>
+						<view :class="currentIndex==1?'text-white':''" @tap="chooseNav(1)">门店订单</view>
+						<view class="current bg-red" :class="currentIndex==0?'':'moveright'"></view>
+					</view>
+					<!-- <view class="btn" @tap="toInvoice">开发票</view> -->
 				</view>
-				<!-- <view class="btn" @tap="toInvoice">开发票</view> -->
 			</view>
 		</u-navbar>
-
 		<u-tabs :list="navs" :is-scroll="false" height="90" :current="orderTypeIndex" duration="0.2" bar-width="100" :bold="false"
 		 active-color="red" @change="chooseTabs"></u-tabs>
-
 		<swiper class="flex-sub" :current="orderTypeIndex" :duration="300" :indicator-dots="false" :autoplay="false" @change="changeCurrent"
 		 @animationfinish="initData">
 			<swiper-item v-for="(item1,index1) in navs" :key="index1">
@@ -43,9 +43,11 @@
 									<view class="order-btn flex justify-between align-center" hover-stop-propagation>
 										<view class="">
 											<button v-if="item2.status==0" class="cu-btn lines-gray text-gray round" @tap.stop="cancelOrder(index2,item2.id)">取消订单</button>
-											<button v-if="item2.status==1&&item2.expressStatus!=0" class="cu-btn lines-gray text-gray round" style="margin-right: 15rpx;" @tap.stop="checkExpress(item2.id)">查看物流</button>
+											<button v-if="item2.status==1&&item2.expressStatus!=0" class="cu-btn lines-gray text-gray round" style="margin-right: 15rpx;"
+											 @tap.stop="checkExpress(item2.id)">查看物流</button>
 											<button v-if="item2.status==1&&item2.expressStatus!=0" class="cu-btn lines-red text-red round" @tap.stop="confirmGet(index2,item2.id)">确认收货</button>
-											<button v-if="item2.status==2||item2.status==3||item2.status==5" class="cu-btn lines-gray text-gray round" @tap.stop="deleteOrder(index2,item2.id)">删除订单</button>
+											<button v-if="item2.status==2||item2.status==3||item2.status==5" class="cu-btn lines-gray text-gray round"
+											 @tap.stop="deleteOrder(index2,item2.id)">删除订单</button>
 											<button v-if="item2.status==4" class="cu-btn lines-gray text-gray round" @tap.stop="evaluate(index2,item2.id)">立即评价</button>
 										</view>
 										<view class="">共{{item2.totalGoodsCount}}件商品 总计<text class="text-red">￥{{item2.goodsTotalAmount | toFixed(2)}}</text></view>
@@ -311,13 +313,21 @@
 		height: 100vh;
 		width: 100vw;
 	}
-
+.slot-wrap {
+		display: flex;
+		align-items: center;
+		 flex: 1; 
+	justify-content: center;
+		/* 如果您想让slot内容占满整个导航栏的宽度 */
+		/* flex: 1; */
+		/* 如果您想让slot内容与导航栏左右有空隙 */
+		/* padding: 0 30rpx; */
+	}
 	.tab-con {
 		.tab {
 			border: 2rpx solid #DDDDDD;
 			border-radius: 30rpx;
 			position: relative;
-
 			view {
 				width: 160rpx;
 				height: 60rpx;

@@ -5,6 +5,7 @@
 			<view style="color: #AAAAAA;line-height: 60rpx;">创建时间：{{time}}</view>
 		</view>
 		<view class="payment-box">
+			<!-- :class="balance>finalPrice?'prevent':''" -->
 			<view class="plain-item flex justify-between" v-for="(item,index) in payment" :key="index" @tap="choosePayment(index)">
 				<view class="flex flex-direction justify-center">
 					<image :src="item.icon" style="width: 60rpx;" mode="widthFix"></image>
@@ -30,14 +31,16 @@
 				<view class="u-flex u-row-center">
 					<u-message-input mode="box" :maxlength="6" :dot-fill="true" v-model="password" :disabled-keyboard="true" @finish="finish"></u-message-input>
 				</view>
-				<view class="u-text-right u-padding-top-20 u-padding-bottom-40 u-padding-right-30 tips text-red"><text class="cuIcon-question"></text>忘记密码</view>
+				<view class="u-text-right u-padding-top-20 u-padding-bottom-40 u-padding-right-30 tips text-red" @click='setPwd()'><text
+					 class="cuIcon-question"></text>忘记密码</view>
 			</view>
 		</u-keyboard>
-		
+
 		<!-- 是否设置密码提醒弹框 -->
-		<u-modal v-model="showModel" content="您当前未设置支付密码，请先设置支付密码，或更换支付方式。" cancel-text="设置密码" confirm-text="更换支付方式" cancel-color="red" confirm-color="red" :show-cancel-button="true" :show-title="false" @cancel="setPwd"></u-modal>
-		
-		
+		<u-modal v-model="showModel" content="您当前未设置支付密码，请先设置支付密码，或更换支付方式。" cancel-text="设置密码" confirm-text="更换支付方式"
+		 cancel-color="red" confirm-color="red" :show-cancel-button="true" :show-title="false" @cancel="setPwd"></u-modal>
+
+
 	</view>
 </template>
 
@@ -46,13 +49,12 @@
 		data() {
 			return {
 				payment: [{
-						text:"余额支付",
-						icon:"/static/mine/pay01.png"
-					},{
-						text:"微信支付",
-						icon:"/static/mine/pay02.png"
-					}
-				],
+					text: "余额支付",
+					icon: "/static/mine/pay01.png"
+				}, {
+					text: "微信支付",
+					icon: "/static/mine/pay02.png"
+				}],
 				currentIndex: -1,
 				showPwdModel: false,
 				password: '',
@@ -60,21 +62,41 @@
 				finalPrice: 0,
 				time: "",
 				balance: 0,
-				isSetPwd:false,
-				showModel:false
+				isSetPwd: false,
+				showModel: false,
+				orderDetail: null,
+				orderId: null,
 			};
 		},
-		onLoad(options) {
-			if (options.orderId) {
-				this.orderId = parseInt(options.orderId)
-				this.finalPrice = parseFloat(options.finalPrice).toFixed(2)
-				this.time = options.time
-			}	
-		},
-		onShow() {
-			this.getBalance()
+		onUnload() {
+			uni.navigateTo({
+				url: "../orderDetail/orderDetail?orderId=" + this.orderId,
+			})
 		},
 		methods: {
+
+			setPwd() {
+				uni.navigateTo({
+					url: '../authentication/authentication'
+				})
+			},
+
+			getOrderDetail() {
+				this.$u.post('/api/v1/order/detail', {
+					userId: uni.getStorageSync("userInfo").id,
+					orderId: this.orderId,
+				}).then(res => {
+					console.log(res.data);
+					this.showLoading = false
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.orderDetail = res.data.data
+					this.finalPrice = res.data.data.actualTotalAmount
+					this.time = res.data.data.createdAt
+				});
+			},
 			//查询用户余额，判断用户是否设置支付密码
 			getBalance() {
 				this.$u.post('/api/v1/pay/recookpay/fund/query', {
@@ -106,9 +128,9 @@
 				}
 			},
 			//用户点击设置密码
-			setPwd(){
+			setPwd() {
 				uni.navigateTo({
-					url:"../authentication/authentication"
+					url: "../authentication/authentication"
 				})
 			},
 			onBackspace(e) {
@@ -133,23 +155,27 @@
 						return
 					}
 					uni.reLaunch({
-						url:"../paySuccess/paySuccess?orderId="+this.orderId
+						url: "../paySuccess/paySuccess?orderId=" + this.orderId
 					})
 				});
 			},
 			//关闭密码支付弹框
-			hidePayModel(){
+			hidePayModel() {
 				this.password = ""
 				this.showPwdModel = false
 			},
 			//选择支付方式后点击确认支付按钮
 			orderPay() {
-				if(this.currentIndex==-1){
+				if (this.currentIndex == -1) {
 					this.$u.toast("请选择支付方式");
 					return
 				}
 				//余额支付
 				if (this.currentIndex == 0) {
+					if (this.balance < parseFloat(this.finalPrice)) {
+						this.$u.toast('余额不足');
+						return
+					}
 					// 余额支付判断是否设置支付密码
 					if (this.isSetPwd) {
 						// 有密码则弹出支付弹框
@@ -158,13 +184,13 @@
 						//没密码弹框提示设置密码/换方式支付
 						this.showModel = true
 					}
-				} else if (this.currentIndex == 1) {//微信支付
+				} else if (this.currentIndex == 1) { //微信支付
 					this.$u.post('/api/v1/pay/wxminipay/order/create', {
 						userId: uni.getStorageSync("userInfo").id,
 						orderId: this.orderId,
 						// wxType:"recook-weapp"
 					}).then(res => {
-						console.log(res.data);
+						console.log(res);
 						if (res.data.code == "FAIL") {
 							this.$u.toast(res.data.msg);
 							return
@@ -179,7 +205,7 @@
 							success: (res) => {
 								console.log(res)
 								uni.reLaunch({
-									url:"../paySuccess/paySuccess?orderId="+this.orderId
+									url: "../paySuccess/paySuccess?orderId=" + this.orderId
 								})
 							},
 							fail: (err) => {
@@ -194,11 +220,34 @@
 				}
 
 			}
-		}
+		},
+		onLoad(options) {
+			if (options.orderId) {
+				this.orderId = parseInt(options.orderId)
+			}
+			wx.enableAlertBeforeUnload({
+			      message: "您的订单尚未完成支付，确认要离开？",
+			      success: function (res) {
+						console.log(res)
+			      },
+			      fail: function (errMsg) {
+			        console.log("方法注册失败：", errMsg);
+			      },
+			    });
+			this.getOrderDetail()
+		},
+		onShow() {
+			this.getBalance()
+		},
 	}
 </script>
 
 <style lang="scss">
+	.prevent {
+		opacity: 0.8;
+		pointer-events: none;
+	}
+
 	page {
 		background-color: #FFFFFF;
 	}
@@ -222,13 +271,16 @@
 		line-height: 80rpx;
 		font-size: 30rpx;
 	}
-	.my-model{
+
+	.my-model {
 		width: 550rpx;
-		.content{
+
+		.content {
 			padding: 40rpx 50rpx;
-			
+
 		}
-		.model-bottom{
+
+		.model-bottom {
 			line-height: 80rpx;
 			border-top: 1rpx solid #f1f1f1;
 		}

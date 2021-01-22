@@ -146,6 +146,8 @@
 			}
 		},
 		methods: {
+		//注册这个消除报错toJson
+		toJSON(){},
 			// 用于重新初始化
 			init() {
 				this.isError = false;

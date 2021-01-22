@@ -1,12 +1,12 @@
 <template>
 	<view>
-		<u-navbar title="自购收益" :background="{backgroundColor: '#16182B'}" back-icon-color="#fff" title-color="#fff"
+		<u-navbar title="导购收益" :background="{backgroundColor: '#16182B'}" back-icon-color="#fff" title-color="#fff"
 		 :border-bottom="false"></u-navbar>
 		<view class="total-box">
 			<view class="total-box-con bg-img" :style="'background-image: url('+STATIC_URL+'bg.png);'">
 				<view class="con-box flex flex-direction justify-between">
 					<view>
-						<view class="text">预估收益(瑞币)</view>
+						<view class="text">累计收益(瑞币)</view>
 						<view style="font-size: 48rpx;color: #000;">{{data.historyIncome}}</view>
 					</view>
 					<view class="flex justify-between">
@@ -14,7 +14,7 @@
 							<view class="text">销售额(元)</view>
 							<view class="num">{{data.amount}}</view>
 						</view>
-						<view>
+						<view class="text-right">
 							<view class="text">订单数(笔)</view>
 							<view class="num">{{data.orderNum}}</view>
 						</view>
@@ -31,15 +31,15 @@
 		<view class="list-box bg-white">
 			<view class="list-top flex">
 				<view class="">日期</view>
-				<view class="">销售额</view>
-				<view class="text-center">订单数</view>
+				<view class="text-right">销售额</view>
+				<view class="text-right">订单数</view>
 				<view class="text-right">结算收益</view>
 			</view>
 			<view class="item-box">
 				<view class="item flex justify-between" v-for="(item,index) in list" :key="index">
 					<view class="">{{handleTime(item.time)}}</view>
-					<view class="">{{item.amount}}</view>
-					<view class="text-center">{{item.orderNum}}</view>
+					<view class="text-right">{{item.amount}}</view>
+					<view class="text-right">{{item.orderNum}}</view>
 					<view class="text-right text-red">{{item.historyIncome}}</view>
 				</view>
 			</view>
@@ -84,9 +84,12 @@
 				let today = new Date()
 				let Y = today.getFullYear()
 				let M = today.getMonth() + 1
+				if(M < 10){
+					M = '0' + M
+				}
 				let D = today.getDate()
 				let newDate = Y + "-" + M
-				// console.log(newDate)
+
 				return newDate
 			},
 			//获取我的全部信息
@@ -97,10 +100,12 @@
 				}
 				if (this.time) {
 					sendData.date = this.time
+					
 				}
 				this.$u.post("/api/v1/users/profile/my_info/share", sendData).then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
+						console.log(res.data)
 						this.$u.toast(res.data.msg);
 						return
 					}

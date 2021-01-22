@@ -20,8 +20,8 @@
 			<view class="item bg-white flex justify-between align-center">
 				<view class="">用户ID</view>
 				<view class="flex right">
-					<view class="">{{info.id}}</view>
-					<text class="cuIcon-right"></text>
+					<view class="">{{identifier}}</view>
+			
 				</view>
 			</view>
 			<picker mode="selector" :range="sex" :value="defaultSex" @change="chooseSex">
@@ -74,12 +74,15 @@
 			return {
 				IMAGE_URL: this.IMAGE_URL,
 				info: {},
+				identifier:null,
 				sex:["男","女"],
 				defaultSex:0
 			};
 		},
 		onShow() {
 			this.info = uni.getStorageSync("userInfo")
+			this.identifier = uni.getStorageSync("userId")
+			console.log(this.info)
 			this.info.birthday = this.info.birthday.split(" ")[0]
 			if(this.info.gender==1){
 				this.defaultSex = 0

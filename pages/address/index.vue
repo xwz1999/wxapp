@@ -46,7 +46,12 @@
 			};
 		},
 		computed: {
-			...mapState(['preOrderMsg'])
+			...mapState(['preOrderMsg']),
+			// 数组siteList排序
+			 sortstudents:function(){
+			  return this.sortByKey(this.siteList,'isDefault')
+		  }
+
 		},
 		onLoad(options) {
 			console.log(options)
@@ -56,6 +61,14 @@
 			this.getAddresslist();
 		},
 		methods: {
+			  //数组对象排序
+			sortByKey(array,key){
+			    return array.sort(function(a,b){
+			        let x = a[key];
+			        let y = b[key];
+			        return((x>y)?-1:((x<y)?1:0));
+			    })
+			},
 			//更新预览订单的地址信息
 			upDateOrder(id) {
 				this.$u.post('/api/v1/order_preview/addr/update', {
@@ -151,6 +164,7 @@
 						return
 					}
 					this.siteList = res.data.data
+					console.log(this.siteList)
 					if(this.siteList.length==0){
 						this.isNull = true
 					}else{

@@ -42,12 +42,10 @@
 				</view>
 			</view>
 
-
-
 			<!-- 轮播图 -->
 			<swiper class="swiper-box screen-swiper square-dot" :circular="true" :autoplay="true" interval="5000" duration="500"
 			 @change="changeSwiper">
-				<swiper-item v-for="(item,index) in swipers" :key="index" @tap="toWebview(item.activityUrl)">
+				<swiper-item v-for="(item,index) in swipers" :key="index" @tap="toDeitail(item.goodsId,item.activityUrl)">
 					<image :src="item.url" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
@@ -120,7 +118,7 @@
 
 			<!-- 商品列表组件 -->
 			<template v-if="goodsList.length!=0">
-				<goods-list :goodsList="goodsList" :hideShareBtn="roleLevel==500"></goods-list>
+				<goods-list :goodsList="goodsList" :hideShareBtn="roleLevel==500" @shareBtn='shareBtn'></goods-list>
 				<u-loadmore status="nomore" margin-bottom="40" />
 			</template>
 		</view>
@@ -151,6 +149,7 @@
 	export default {
 		data() {
 			return {
+				onShareData:{},
 				TabCur: -1, //选中的时段
 				nowIndex: -1, //当前的时段
 				scrollLeft: 0,
@@ -243,6 +242,18 @@
 				this.getWeather()
 			}
 		},
+		onShareAppMessage(res) {
+				
+			if (res.from === 'button') { // 来自页面内分享按钮
+				console.log(res.target.dataset)
+			}
+	
+			return {
+				title: "我在买" + res.target.dataset.title + ",快来看看吧！",
+				path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.id + "&type=share",
+				imageUrl: this.IMAGE_URL + res.target.dataset.url
+			}
+		},
 		onLoad() {
 			if (uni.getStorageSync("localCity")) {
 				//已授权定位
@@ -268,13 +279,16 @@
 			this.getActivity()
 		},
 		methods: {
+			shareBtn(data){
+				this.onShareData = data
+			},
 			// 获取用户当前城市
 			getCityName() {
 				uni.getLocation({
 					type: 'gcj02',
 					success: (res) => {
-						console.log('当前位置的经度：' + res.longitude);
-						console.log('当前位置的纬度：' + res.latitude);
+						// console.log('当前位置的经度：' + res.longitude);
+						// console.log('当前位置的纬度：' + res.latitude);
 						let longitude = res.longitude
 						let latitude = res.latitude
 						wx.request({
@@ -285,7 +299,7 @@
 							},
 							method: 'GET',
 							success: (res) => {
-								console.log('用户位置信息', res.data.result);
+								// console.log('用户位置信息', res.data.result);
 								let result = res.data.result
 								let cityName = result.ad_info.city
 								if (cityName.substring(cityName.length - 1) == "市") {
@@ -310,13 +324,14 @@
 						this.$u.toast(res.data.msg);
 						return
 					}
-					console.log(JSON.parse(res.data.data))
+					// console.log(JSON.parse(res.data.data))
 					this.weatherMsg = JSON.parse(res.data.data)
+					console.log()
 					// 日期转农历格式
 					let year = new Date().getFullYear()
 					let lunar = calendar.getLunarDate();
 					let lunarDetail = calendar.getLunarDateString(lunar);
-					console.log(lunarDetail)
+					// console.log(lunarDetail)
 					this.lunarDate = lunarDetail.tg + lunarDetail.dz + lunarDetail.year + "年(" + year + ") " + lunarDetail.month +
 						"月" + lunarDetail.day
 					console.log(this.lunarDate)
@@ -336,22 +351,24 @@
 			// 获取轮播图
 			getSwiper() {
 				this.$u.post('/api/v1/diamond_show/list').then(res => {
-					console.log(res.data);
+					// console.log(res.data);
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
 					}
 					this.swipers = res.data.data
+					console.log(res.data.data)
 					this.swipers.map(item => {
 						item.url = this.IMAGE_URL + item.url
 					})
 					this.bgImage = this.swipers[0].url
+					console.log(this.swipers)
 				});
 			},
 			// 获取三个特卖入口图片
 			getPost() {
 				this.$u.post('/api/v1/activity/list/query').then(res => {
-					console.log(res.data);
+					// console.log(res.data);
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
@@ -362,7 +379,7 @@
 			// 获取活动时间段
 			getActivity() {
 				this.$u.post('/api/v1/goods/list/promotion').then(res => {
-					console.log(res.data);
+					// console.log(res.data);
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
@@ -398,7 +415,7 @@
 			// 获取商品分类信息
 			getCateList() {
 				this.$u.post('/api/v1/goods/categories/first').then(res => {
-					console.log(res.data);
+					// console.log(res.data);
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
@@ -479,7 +496,6 @@
 				this.$u.post('/api/v1/goods/list/promotion/goods', {
 					TimeItemID: this.promotionId
 				}).then(res => {
-					console.log(res.data);
 					uni.stopPullDownRefresh()
 					if (res.data.code == "FAIL") {
 						// this.$u.toast(res.data.msg);
@@ -501,16 +517,31 @@
 			scan() {
 				uni.scanCode({
 					success: function(res) {
-						console.log('条码类型：' + res.scanType);
-						console.log('条码内容：' + res.result);
+						// console.log('条码类型：' + res.scanType);
+						// console.log('条码内容：' + res.result);
 					}
 				});
 			},
+			toDeitail(id,src){
+				if(src !== ''){
+					let data = {
+						dataSrc:src
+					}
+						uni.navigateTo({
+							// url: "../webview/webview?src=" + src
+							url:"/pages/webview/webview?dataSrc="+ encodeURIComponent(JSON.stringify(data))
+						})
+				}else{
+					uni.navigateTo({
+						url: "/pages/goodsDetail/goodsDetail?id=" + id
+					})
+				}
+				
+			},
 			// 跳转webview网页
 			toWebview(src) {
-				console.log(src)
 				uni.navigateTo({
-					url: "../webview/webview?src=" + src
+					url:'/pages/webview/webview?src='+src
 				})
 			},
 			// 跳转城市索引页面

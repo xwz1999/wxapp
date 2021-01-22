@@ -13,13 +13,7 @@
 		},
 			
 		onLoad(options){
-			if(options.dataSrc !== undefined){
-				let data = JSON.parse(decodeURIComponent(options.dataSrc));
-				this.src = data.dataSrc
-			}else{
-				this.src = options.src
-				
-			}	
+			this.src = options.src
 			console.log(this.src)
 		}
 	}

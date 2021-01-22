@@ -178,13 +178,13 @@
 					<view class="subtitle" style="line-height: 60rpx;border: 0;">邀请升级</view>
 					<view class="invite-box flex justify-between text-white" v-if="roleLevel==100">
 						<navigator class="bg-img" :style="'width: 260rpx;height: 300rpx;background-image: url('+STATIC_URL+'t03.png'">
-							<view class="">升级财富团</view>
+							<view class="">推荐砖石店铺</view>
 							<view class="">邀请好友·福利双赢</view>
 						</navigator>
 						<view class="flex flex-direction justify-between">
 							<view class="flex justify-between">
 								<navigator url="../myRecommend/myRecommend" class="bg-img" :style="'width: 204rpx;height: 150rpx;background-image: url('+STATIC_URL+'t04.png);'">
-									<view class="">我的推荐</view>
+									<view class="">我的团队</view>
 									<view class="">呼朋唤友·享收益</view>
 								</navigator>
 								<navigator url="../myInvite/myInvite" class="bg-img" :style="'width: 204rpx;height: 150rpx;background-image: url('+STATIC_URL+'t05.png);'">
@@ -193,7 +193,7 @@
 								</navigator>
 							</view>
 							<view class="bg-img" :style="'width: 420rpx;height: 140rpx;background-image: url('+STATIC_URL+'t06.png);'" @tap="isShow = true">
-								<view class="">邀请开店</view>
+								<view class="">团队扩招</view>
 								<view class="">0元创业·轻松赚</view>
 							</view>
 						</view>

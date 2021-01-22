@@ -132,6 +132,7 @@
 				this.orderId = parseInt(options.orderId)
 			}
 		},
+	
 		onShow() {
 			this.getOrderDetail()
 		},
@@ -197,8 +198,7 @@
 			toOrderPay() {
 				// 跳转支付页面携带参数（支付价格，创建时间）
 				uni.navigateTo({
-					url: "../orderPay/orderPay?orderId=" + this.orderId + "&finalPrice=" + this.orderDetail.actualTotalAmount +
-						"&time=" + this.orderDetail.createdAt
+					url: "../orderPay/orderPay?orderId=" + this.orderId
 				})
 			},
 			//取消订单
