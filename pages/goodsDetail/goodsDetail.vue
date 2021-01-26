@@ -60,8 +60,7 @@
 								<view class="goods-msg-box bg-white" style="margin-bottom: 25rpx;padding-top: 20rpx;">
 									<view class="flex goods-name-box justify-between align-start">
 										<view class="goods-name flex-sub">
-											<view class="text-center text-white"
-											style="display: inline-block; background: #CC1B4F;font-size: 20rpx; width:48rpx;height: 40rpx;line-height: 40rpx; border-radius: 6rpx;margin-right: 8rpx;"
+											<view class="text-center text-white" style="display: inline-block; background: #CC1B4F;font-size: 20rpx; width:48rpx;height: 40rpx;line-height: 40rpx; border-radius: 6rpx;margin-right: 8rpx;"
 											 v-if="goodsDetail.isImport">
 												<text>进口</text>
 											</view> {{goodsDetail.goodsName}}
@@ -121,39 +120,55 @@
 									</view>
 									<view class="item flex justify-between">
 										<view class="span"></view>
-										<view class="text-hidden flex-sub txt " style="padding-right: 88rpx;">
+										<view class="text-hidden flex-sub txt " style="padding-right: 60rpx;">
 											<view class="flex align-start justify-between goods_box" style="margin: 16rpx 0;">
 												<view class="goods_icon">
 													<image :src="`${IMAGE_URL}/recook-weapp/goodsIcon/just.png`" mode="widthFix"></image>
-													<text>正品保障</text>
-												</view>
-												<view class="goods_hr">
 												</view>
 												<view class="goods_icon" v-if="goodsDetail.storehouse === 1">
 													<image v-if="addressList.length > 1" :src="`${IMAGE_URL}/recook-weapp/goodsIcon/details_active.png`" mode="widthFix"></image>
 													<image v-else :src="`${IMAGE_URL}/recook-weapp/goodsIcon/details.png`" mode="widthFix"></image>
-													<text>国内仓</text>
+										
 												</view>
 												<view class="goods_icon" v-else-if="goodsDetail.storehouse === 2">
 													<image v-if="addressList.length > 1" :src="`${IMAGE_URL}/recook-weapp/goodsIcon/aircraft_active.png`" mode="widthFix"></image>
 													<image v-else :src="`${IMAGE_URL}/recook-weapp/goodsIcon/aircraft.png`" mode="widthFix"></image>
-													<text>海外直邮</text>
+											
 												</view>
 												<view class="goods_icon" v-else-if="goodsDetail.storehouse === 3">
 													<image v-if="addressList.length > 1" :src="`${IMAGE_URL}/recook-weapp/goodsIcon/bonded_active.png`" mode="widthFix"></image>
 													<image v-else :src="`${IMAGE_URL}/recook-weapp/goodsIcon/bonded.png`" mode="widthFix"></image>
-													<text>保税仓</text>
+											
 												</view>
-												<view class="goods_hr">
-												</view>
+			
 												<view class="goods_icon">
 													<block v-if="addressList.length > 1">
 														<image :src="`${IMAGE_URL}/recook-weapp/goodsIcon/location_active.png`" mode="widthFix"></image>
-														<text>{{addressList[addressList.length-1]}}</text>
+								
 													</block>
 													<block v-else>
-															<image :src="`${IMAGE_URL}/recook-weapp/goodsIcon/location.png`" mode="widthFix"></image>
+														<image :src="`${IMAGE_URL}/recook-weapp/goodsIcon/location.png`" mode="widthFix"></image>
 													</block>
+												</view>
+											</view>
+											<view class="flex justify-between align-center goods_box">
+												<view class="goods_icon">
+													<text>正品保障</text>
+												</view>
+												<view class="goods_icon_hr">
+													
+												</view>
+												<view class="goods_icon">
+
+													<text v-if="goodsDetail.storehouse === 1">国内仓</text>
+													<text v-if="goodsDetail.storehouse === 2">海外直邮</text>
+													<text v-if="goodsDetail.storehouse ===3">保税仓</text>
+												</view>
+												<view class="goods_icon_hr">
+													
+												</view>
+												<view class="goods_icon">
+													<text v-if="addressList.length > 1">{{addressList[addressList.length-1]}}</text>
 												</view>
 											</view>
 										</view>
@@ -824,12 +839,18 @@
 	.goods_box {
 		.goods_icon {
 			text-align: center;
-			width: 96rpx;
-
+			color: #CCCCCC;
+			width: 120rpx;
 			image {
 				width: 52rpx;
 				margin: 0 auto;
 			}
+		}
+		.goods_icon_hr{
+			flex: 1;
+			height: 1rpx;
+			border-bottom: 1rpx dashed  #CCCCCC;
+			
 		}
 
 
