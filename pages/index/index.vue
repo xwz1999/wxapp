@@ -243,11 +243,9 @@
 			}
 		},
 		onShareAppMessage(res) {
-				
 			if (res.from === 'button') { // 来自页面内分享按钮
 				console.log(res.target.dataset)
 			}
-	
 			return {
 				title: "我在买" + res.target.dataset.title + ",快来看看吧！",
 				path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.id + "&type=share",
@@ -255,6 +253,8 @@
 			}
 		},
 		onLoad() {
+			// uni.getStorageSync("userInfo").id
+			
 			if (uni.getStorageSync("localCity")) {
 				//已授权定位
 				this.currentCity = this.cityName = uni.getStorageSync("localCity")
@@ -357,12 +357,11 @@
 						return
 					}
 					this.swipers = res.data.data
-					console.log(res.data.data)
+					console.log(res)
 					this.swipers.map(item => {
 						item.url = this.IMAGE_URL + item.url
 					})
 					this.bgImage = this.swipers[0].url
-					console.log(this.swipers)
 				});
 			},
 			// 获取三个特卖入口图片
@@ -374,6 +373,7 @@
 						return
 					}
 					this.posts = res.data.data
+					console.log(res)
 				});
 			},
 			// 获取活动时间段

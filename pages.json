@@ -3,6 +3,7 @@
 		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
 	},
 	"pages": [
+
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -90,6 +91,7 @@
 				"enablePullDownRefresh": false
 			}
 		},
+	
 		{
 			"path": "pages/shop/shop",
 			"style": {
@@ -355,8 +357,8 @@
 		{
 			"path": "pages/webview/webview",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
+				// "navigationBarTitleText": "",
+				// "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 			}
 		}, 
@@ -474,8 +476,28 @@
                 "enablePullDownRefresh": false
             }
             
-        }
-        ,{
+        },
+		{
+			"path": "pages/apply/apply",
+			"style": {
+				"navigationBarTitleText": "填写资料"
+			}
+		}, 
+		{
+			"path": "pages/apply/success",
+			"style": {
+				"navigationBarTitleText": "提交成功"
+			}
+		}, 
+		{
+			"path": "pages/invite/invite",
+			"style": {
+				"navigationBarTitleText": "推荐升级",
+				"enablePullDownRefresh": false
+				// "navigationStyle": "custom"
+			}
+		},
+        {
             "path" : "pages/shopOrders/shopOrders",
             "style" :                                                                                    
             {
@@ -505,6 +527,7 @@
 					"navigationStyle": "custom"
 				}
 			}, 
+		
 			{
 				"path": "goodsCart/index",
 				"style": {
@@ -518,6 +541,7 @@
 					"navigationStyle": "custom"
 				}
 			},
+		
 			{
 				"path": "agreement/goods",
 				"style": {

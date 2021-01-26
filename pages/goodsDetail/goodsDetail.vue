@@ -8,7 +8,7 @@
 						<text class="cuIcon-home" v-if="type=='share'"></text>
 						<text class="cuIcon-back" v-else></text>
 					</view>
-				<!-- 	<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;"v-if="showLoading">
+					<!-- 	<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;"v-if="showLoading">
 						<image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image>
 					</view> -->
 					<view class="">
@@ -99,37 +99,59 @@
 										</view>
 									</view>
 								</view>
-								<view class="box bg-white" v-if="goodsDetail.isImport">
+								<!-- 
+								 is_import 是否进口商品
+								 storehouse 进口商品仓库 0=无 1=国内仓 2=海外直邮 3=保税仓-->
+								<view class="box bg-white" v-if="goodsDetail.isImport && goodsDetail.storehouse">
 									<view class="item flex justify-between">
 										<view class="span">送至</view>
-										<view class="text-hidden flex-sub txt"> <text style="color: #CC1B4F;">请选择</text> 收货地址</view>
-											<text class="cuIcon-right"></text>
+										<view class="text-hidden flex-sub txt">
+											<picker mode="region" @change="chooseAddress">
+												<block v-if="addressList.length < 1"><text style="color: #CC1B4F;">请选择</text>收货地址</block>
+												<block v-else>{{address}}</block>
+											</picker>
+										</view>
+										<text class="cuIcon-right"></text>
 									</view>
-								<!-- 	<view class="item flex justify-between">
+									<view class="item flex justify-between">
 										<view class="span"></view>
-										<view class="text-hidden flex-sub txt " style="padding-right: 88rpx;"> 
-											<view class="flex align-end justify-between goods_box">
+										<view class="text-hidden flex-sub txt " style="padding-right: 88rpx;">
+											<view class="flex align-start justify-between goods_box" style="margin: 16rpx 0;">
 												<view class="goods_icon">
-													<image src="/static/goodsIcon/just.png" mode="widthFix"></image>
+													<image :src="`${IMAGE_URL}/recook-weapp/goodsIcon/just.png`" mode="widthFix"></image>
 													<text>正品保障</text>
 												</view>
 												<view class="goods_hr">
-													
 												</view>
-												<view class="goods_icon">
-													<image src="/static/goodsIcon/details.png" mode="widthFix"></image>
+												<view class="goods_icon" v-if="goodsDetail.storehouse === 1">
+													<image v-if="addressList.length > 1" :src="`${IMAGE_URL}/recook-weapp/goodsIcon/details_active.png`" mode="widthFix"></image>
+													<image v-else :src="`${IMAGE_URL}/recook-weapp/goodsIcon/details.png`" mode="widthFix"></image>
 													<text>国内仓</text>
 												</view>
+												<view class="goods_icon" v-else-if="goodsDetail.storehouse === 2">
+													<image v-if="addressList.length > 1" :src="`${IMAGE_URL}/recook-weapp/goodsIcon/aircraft_active.png`" mode="widthFix"></image>
+													<image v-else :src="`${IMAGE_URL}/recook-weapp/goodsIcon/aircraft.png`" mode="widthFix"></image>
+													<text>海外直邮</text>
+												</view>
+												<view class="goods_icon" v-else-if="goodsDetail.storehouse === 3">
+													<image v-if="addressList.length > 1" :src="`${IMAGE_URL}/recook-weapp/goodsIcon/bonded_active.png`" mode="widthFix"></image>
+													<image v-else :src="`${IMAGE_URL}/recook-weapp/goodsIcon/bonded.png`" mode="widthFix"></image>
+													<text>保税仓</text>
+												</view>
 												<view class="goods_hr">
-													
 												</view>
 												<view class="goods_icon">
-													<image src="/static/goodsIcon/location.png" mode="widthFix"></image>
-													<text>宁波市</text>
+													<block v-if="addressList.length > 1">
+														<image :src="`${IMAGE_URL}/recook-weapp/goodsIcon/location_active.png`" mode="widthFix"></image>
+														<text>{{addressList[addressList.length-1]}}</text>
+													</block>
+													<block v-else>
+															<image :src="`${IMAGE_URL}/recook-weapp/goodsIcon/location.png`" mode="widthFix"></image>
+													</block>
 												</view>
 											</view>
 										</view>
-									</view> -->
+									</view>
 								</view>
 								<view class="box bg-white">
 									<view class="item flex justify-between" @tap="parameterModel(true)">
@@ -140,7 +162,7 @@
 									<view class="item flex justify-between">
 										<view class="span">服务</view>
 										<view class="text-hidden flex-sub txt">
-											
+
 											<block v-if="goodsDetail.storehouse===1">
 												<view>
 													不支持7天无理由退换货
@@ -162,7 +184,7 @@
 										</view>
 									</view>
 								</view>
-							
+
 								<view class="box bg-white">
 									<view class="item flex justify-between" @tap="toGoodsComments">
 										<view class="txt flex text-black" style="font-size: 28rpx;">用户评价<text style="color: #AAAAAA;">({{goodsDetail.evaluations.total}})</text></view>
@@ -242,7 +264,7 @@
 								<view class="" style="height: 100rpx;"></view>
 								<view class="detail-bottom bg-white shadow flex justify-between align-center">
 									<view class="flex text-center flex-sub justify-around">
-										<navigator  url="../../packageA/goodsCart/index" style="width: 100rpx;text-align: center;">
+										<navigator url="../../packageA/goodsCart/index" style="width: 100rpx;text-align: center;">
 											<text class="cuIcon-cart" style="font-size: 48rpx;"></text>
 											<view style="font-size: 20rpx;">购物车</view>
 										</navigator>
@@ -338,7 +360,7 @@
 				<view @tap="tipModel(false)">完成</view>
 			</view>
 		</u-popup>
-	<!-- 规格弹框 -->
+		<!-- 规格弹框 -->
 		<u-popup v-model="parameterShow" mode="bottom" border-radius="20">
 			<view class="text-center text-black" style="line-height: 100rpx;font-size: 32rpx;font-weight: 900;">产品参数</view>
 			<view class="parameter-box" style="height: 40vh;">
@@ -355,17 +377,18 @@
 						<text>条形码</text>
 					</view>
 					<view class="rg">
-						<view class="" v-for="(item,index) in goodsDetail.sku" :key='index'><text style="padding-right: 16rpx;">{{item.name}}  </text>  <text>{{item.code}}</text></view>
-					
+						<view class="" v-for="(item,index) in goodsDetail.sku" :key='index'><text style="padding-right: 16rpx;">{{item.name}}
+							</text> <text>{{item.code}}</text></view>
+
 					</view>
 				</view>
 			</view>
 			<view class="tip-btn text-center text-white">
 				<view @tap="parameterModel(false)">完成</view>
 			</view>
-			
+
 		</u-popup>
-	
+
 		<!-- 规格弹框 -->
 		<u-popup v-model="showSpecs" mode="bottom" border-radius="20" :closeable="true">
 			<view class="spec-box">
@@ -416,7 +439,7 @@
 	export default {
 		data() {
 			return {
-				parameterShow:false,
+				parameterShow: false,
 				swiperImgList: [],
 				roleLevel: 500,
 				STATIC_URL: this.STATIC_URL,
@@ -440,6 +463,8 @@
 				containerIndex: 0,
 				dynamics: [], //动态列表,
 				showBtn: false, //是否显示发布按钮
+				addressList: [],
+				address: null
 			}
 		},
 		components: {
@@ -460,7 +485,7 @@
 				this.showBtn = true
 			}
 			this.id = parseInt(options.id)
-			console.log(this.id+'-------')
+			console.log(this.id + '-------')
 			this.getGoodsDetail()
 		},
 		computed: {
@@ -476,7 +501,7 @@
 			console.log(uni.getStorageSync("userInfo").id)
 		},
 		methods: {
-			parameterModel(bool){
+			parameterModel(bool) {
 				this.parameterShow = bool
 			},
 			getUrlKey(url, name) { //获取url 参数
@@ -710,6 +735,12 @@
 				// console.log(this.shopItemInfo[result])
 				return this.shopItemInfo[result].inventory == 0 ? false : true; //匹配选中的数据的库存，若不为空返回true反之返回false
 			},
+			chooseAddress(e) {
+				console.log(e)
+				this.addressList = e.detail.value
+				this.address = this.addressList.join("-")
+				console.log(this.addressList)
+			},
 			//下载发圈素材图片
 			downloadPic(pics) {
 				console.log(pics)
@@ -766,44 +797,46 @@
 </script>
 
 <style lang="scss">
-	.parameter-box{
-		.parameter-list{
+	.parameter-box {
+		.parameter-list {
 			display: flex;
 			margin-bottom: 30rpx;
-			.lf{
+
+			.lf {
 				color: #121212;
 				padding-left: 100rpx;
 				width: 250rpx;
 			}
-			.rg{
+
+			.rg {
 				color: #bebebe;
 			}
 		}
-	
+
 	}
-	.goods_box{
-		.goods_icon{
+
+	.goods_box {
+		.goods_icon {
 			text-align: center;
 			width: 96rpx;
-			image{
+
+			image {
 				width: 52rpx;
 				margin: 0 auto;
 			}
 		}
-		// .goods_hr{
-		// 	flex: 1;
-		// 	height: 1px;
-		// 	border: 1px dashed #CCCCCC;
-		// }
-		
+
+
 	}
+
 	// 轮播图指示器位置
 	.goodsDetail-swiper {
 		.u-swiper-indicator {
 			bottom: 100rpx !important;
 		}
 	}
-	.tab_ferme{
+
+	.tab_ferme {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -817,6 +850,7 @@
 		font-weight: 400;
 		color: #CC1B4F;
 	}
+
 	.back {
 		position: absolute;
 		top: 80rpx;
