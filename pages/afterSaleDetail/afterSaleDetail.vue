@@ -27,7 +27,7 @@
 			<view class="flex" style="line-height: 50rpx;padding-bottom: 20rpx;">
 				<text class="text-black" style="font-weight: 900;font-size: 32rpx;">{{message.subtitle}}</text>
 			</view>
-			<view class="des">平台拒绝了您的退款申请。如有疑问，请联系客服。</view>
+			<view class="des">平台拒绝了您的退款申请。原因:{{message.rejectReason}}</view>
 		</view>
 		
 		<!-- 申请通过，要求用户寄回 -->

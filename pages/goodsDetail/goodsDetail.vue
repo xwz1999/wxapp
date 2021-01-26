@@ -15,7 +15,7 @@
 						<scroll-view scroll-y="true" style="height: 100vh;">
 							<view>
 								<view style="position: relative;" class="goodsDetail-swiper">
-									<u-swiper :list="swiperList" mode="number" indicator-pos="bottomRight" :height='750'></u-swiper>
+									<u-swiper :list="swiperList" mode="number" @click="handClick" indicator-pos="bottomRight" :height='750'></u-swiper>
 									<!-- 	<swiper class="swiper-box screen-swiper" :current="current" :circular="true" :autoplay="true" interval="3000"
 									 duration="500" @change="swiperChange">
 										<swiper-item v-for="(item,index) in goodsDetail.mainPhotos" :key="index">
@@ -780,6 +780,14 @@
 					success: (res) => {
 						console.log("success")
 					}
+				})
+			},
+			
+			handClick(val) {
+				console.log(val)
+				wx.previewImage({
+				  current: this.swiperList[val], // 当前显示图片的http链接
+				  urls: this.swiperList // 需要预览的图片http链接列表
 				})
 			}
 		},
