@@ -1,40 +1,75 @@
 <template>
 	<view class="flex flex-direction" style="height: 100vh;width:100vw;">
-		<view class="top-container bg-img" :style="'background-image: url('+bgImage+');'">
-			<view class="user-msg-box flex justify-between">
-				<!-- 已登录 -->
-				<view class="flex msg-left" v-if="isLogin" @tap="toMyInfo">
-					<view class="avatar">
-						<u-lazy-load threshold="-100" :image="IMAGE_URL+userInfo.headImgUrl" :index="index" height="140" border-radius="70"
-						 loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+		<view class="top-container bg-img" :style="'background-image: url('+bg+');'">
+			<view class="flex balance-box  flex-direction" :style="'background-image: url('+bgImage+');'">
+				<view class="user-msg-box flex justify-between grid col-3">
+					<view class="flex align-center flex-direction msg-left" v-if="isLogin" @tap="toMyInfo">
+						<view class="avatar">
+							<u-lazy-load threshold="-100" :image="IMAGE_URL+userInfo.headImgUrl" :index="index" height="140" border-radius="70"
+							 loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+						</view>
+						<view class="user-msg">
+							<view class="nickname text-black">{{userInfo.nickname}}</view>
+						</view>
 					</view>
-					<view class="user-msg">
-						<view class="nickname text-white">{{userInfo.nickname}}</view>
-						<view class="flex" v-if="iconPic">
-							<view class="level-box flex justify-center align-center">
-								<image :src="iconPic" mode="widthFix" style="width: 24rpx;"></image>
-								<view style="margin-left: 3rpx;">{{role}}</view>
+					<!-- 已登录 -->
+					<!-- <view class="flex msg-left" v-if="isLogin" @tap="toMyInfo">
+						<view class="avatar">
+							<u-lazy-load threshold="-100" :image="IMAGE_URL+userInfo.headImgUrl" :index="index" height="140" border-radius="70"
+							 loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+						</view>
+						<view class="user-msg">
+							<view class="nickname text-white">{{userInfo.nickname}}</view>
+							<view class="flex" v-if="iconPic">
+								<view class="level-box flex justify-center align-center">
+									<image :src="iconPic" mode="widthFix" style="width: 24rpx;"></image>
+									<view style="margin-left: 3rpx;">{{role}}</view>
+								</view>
+							</view>
+						</view>
+					</view> -->
+					<!-- 未登录 -->
+					<!-- <view class="flex align-center" v-else @tap="toLogin">
+						<image class="avatar" :src="STATIC_URL+'avatar.png'" mode="aspectFill"></image>
+						<view class="text-white" style="font-size: 36rpx;">登录</view>
+					</view> -->
+					
+					<view class="flex flex-direction align-center justify-center text-white msg-right text-center" style="font-size: 20rpx;">
+						<view class="flex">
+							<navigator url="../myCollect/myCollect" hover-class="none" style="margin-right: 30rpx;">
+								<u-icon name="heart" size="48"></u-icon>
+								<view>收藏</view>
+							</navigator>
+							<view>
+								<u-icon name="server-fill" size="48"></u-icon>
+								<view>客服</view>
+							</view>
+						</view>
+						<view class="flex">
+							<view>
+								<image style="width: 96rpx; height: 110rpx;" :src="badgeImg" mode="aspectFill"></image>
 							</view>
 						</view>
 					</view>
 				</view>
-				<!-- 未登录 -->
-				<view class="flex align-center" v-else @tap="toLogin">
-					<image class="avatar" :src="STATIC_URL+'avatar.png'" mode="aspectFill"></image>
-					<view class="text-white" style="font-size: 36rpx;">登录</view>
-				</view>
-				<view class="flex text-white msg-right text-center align-center" style="font-size: 20rpx;">
-					<navigator url="../myCollect/myCollect" hover-class="none" style="margin-right: 30rpx;">
-						<u-icon name="heart" size="48"></u-icon>
-						<view>收藏</view>
-					</navigator>
-					<view>
-						<u-icon name="server-fill" size="48"></u-icon>
-						<view>客服</view>
+				
+				<!-- 编号 -->
+				<view class=" flex grid col-3" >
+					<view class="flex flex-wrap justify-center align-center small-text">
+						NO.201204008888
+					</view>
+					
+					<view class="flex flex-wrap justify-center align-center small-text">
+						注册时间2020-7-19
+					</view>
+					
+					<view class="flex justify-center align-center small-text">
+						(钻石店铺)
 					</view>
 				</view>
 			</view>
-			<view class="balance-box">
+			
+			<!-- <view class="balance-box">
 				<view style="position: relative;">
 					<image src="../../static/mine/yue.png" style="width: 100%;" mode="widthFix"></image>
 					<view class="balance-con flex justify-between align-center">
@@ -51,34 +86,71 @@
 						</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
+		
 		<scroll-view class="flex-sub" scroll-y="true" style="height: 0;">
 			<view class="info-container" style="padding: 20rpx;">
+				<!-- 我的资产 -->
 				<view class="box bg-white">
 					<view class="subtitle">我的资产</view>
 					<view class="flex justify-around text-center card-con">
-						<view @tap="toCoupons">
+						<!-- <view @tap="toCoupons">
 							<view class="num">{{info.myAssets.couponNum?info.balance:0}}</view>
 							<view>优惠券(张)</view>
-						</view>
+						</view> -->
 						<view @tap="toMyMoney">
 							<view class="num">{{info.myAssets.coinNum?info.myAssets.coinNum:0}}</view>
 							<view>瑞币(个)<text class="cuIcon-question" @tap.stop="tipModel(true)"></text></view>
 						</view>
+						<view @tap="toCoupons">
+							<view class="num">{{info.balance?info.balance:0}}</view>
+							<view>余额(元)</view>
+						</view>
 						<view @tap="toCardPackage">
 							<view class="num">{{info.myAssets.cards?info.myAssets.cards:0}}</view>
-							<view>卡包(个)</view>
+							<view>权益卡(张)</view>
 						</view>
 					</view>
 				</view>
+				<!-- 累计收益 -->
 				<view class="box bg-white">
 					<navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;">
 						<view>累计收益<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text></view>
 						<view class="flex more"><text style="font-size: 34rpx;color: #333333;">{{totalEarning}}</text><text class="cuIcon-right"></text></view>
 					</navigator>
 				</view>
-				<view class="box bg-white" v-if="roleLevel!=500">
+				<!-- 我的收益 -->
+				<view class="box bg-white">
+					<navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;">
+						<view>我的收益</view>
+						<view class="flex more"><text class="cuIcon-right"></text></view>
+					</navigator>
+					<view class="flex justify-around align-center" style="border-top: 1px solid #e6e6e6; border-bottom: 1px solid #e6e6e6;">
+						<view class="flex flex-direction justify-center fengexian" style="padding: 16rpx 0px 20rpx; width: 100%;position: relative;">
+							<view class="text-xl text-black text-content text-center">1223.56</view>
+							<view class="text-sm text-black text-content text-center">本月预估</view>
+						</view>
+						
+						<!-- <view style="width: 1px; background-color: #e6e6e6; height: 40px;"></view> -->
+						
+						 <view class="flex flex-direction justify-center" style="padding: 16rpx 0px 20rpx; width: 100%;">
+							 <view class="text-xl text-black text-content text-center">42.67</view>
+							 <view class="text-sm text-black text-content text-center">本日预估</view>
+						 </view>
+					</view>
+					<view class="flex justify-around" style="padding: 10px 0px;">
+						<view class="text-sm">
+							上月结算<text class="text-price" style="color: #D7BE8E; margin-left: 8rpx;">2813.45</text>
+						</view>
+						<view class="text-sm">
+							上月预估<text class="text-price" style="color: #D7BE8E; margin-left: 8rpx;">2933.15</text>
+						</view>
+					</view>
+				</view>
+				
+				
+				<!-- <view class="box bg-white" v-if="roleLevel!=500">
 					<navigator url="../selfBuyEarnings/selfBuyEarnings" hover-class="none" class="subtitle flex justify-between">
 						<view class="flex align-center">
 							<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
@@ -149,7 +221,9 @@
 						</view>
 					</view>
 				</view>
+				 -->
 
+				<!-- 订单中心 -->
 				<view class="box bg-white">
 					<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
 						<view>订单中心<text style="font-weight: normal;font-size: 26rpx;">(自购)</text></view>
@@ -163,6 +237,7 @@
 						</view>
 					</view>
 				</view>
+				<!-- 地址 -->
 				<view class="box flex justify-around bg-white">
 					<view class="other-item flex-sub flex flex-direction justify-between align-center" v-for="(item,index) in otherOptions"
 					 :key="index" @tap="toPage(item.page)">
@@ -172,6 +247,7 @@
 				</view>
 			</view>
 		</scroll-view>
+		
 		<u-modal v-model="showTipModel" content="瑞币可随时转到余额,可提现" :confirm-style="{color:'#D5101A'}"></u-modal>
 	</view>
 </template>
@@ -183,7 +259,9 @@
 				STATIC_URL: this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
 				isLogin: false,
-				bgImage: this.STATIC_URL + 'bg01.png',
+				bg: this.STATIC_URL + 'bg@2x.png', // 底部图案
+				bgImage: this.STATIC_URL + 'diamond.webp', // 会员背景
+				badgeImg: this.STATIC_URL + 'diamond_badge.png', // 会员徽章
 				iconPic: "",
 				role: "",
 				orderStatus: [{
@@ -300,36 +378,37 @@
 					uni.setStorageSync("userId",res.data.data.identifier)
 					console.log(uni.getStorageSync("userId"))
 					this.roleLevel = this.info.roleLevel
+					console.log(this.roleLevel)
 					switch (this.roleLevel) {
 						case 500:
 							this.role = "会员"
 							// this.bgImage = this.STATIC_URL + 'bg01.png'
 							this.iconPic = '../../static/mine/level00.png'
-							this.bgImage = this.STATIC_URL + "role00.png"
+							this.bgImage = this.STATIC_URL + "diamond.webp"
 							break;
 						case 400:
 							this.role = "店主"
 							// this.bgImage = this.STATIC_URL + 'bg02.png'
 							this.iconPic = '../../static/mine/level01.png'
-							this.bgImage = this.STATIC_URL + "role01.png"
+							this.bgImage = this.STATIC_URL + "diamond.webp"
 							break;
 						case 300:
 							this.role = "白银店铺"
 							// this.bgImage = this.STATIC_URL + 'bg03.png'
 							this.iconPic = '../../static/mine/level02.png'
-							this.bgImage = this.STATIC_URL + "role02.png"
+							this.bgImage = this.STATIC_URL + "diamond.webp"
 							break;
 						case 200:
 							this.role = "黄金店铺"
 							// this.bgImage = this.STATIC_URL + 'bg04.png'
 							this.iconPic = '../../static/mine/level03.png'
-							this.bgImage = this.STATIC_URL + "role03.png"
+							this.bgImage = this.STATIC_URL + "diamond.webp"
 							break;
 						case 100:
 							this.role = "钻石店铺"
 							// this.bgImage = this.STATIC_URL + 'bg05.png'
 							this.iconPic = '../../static/mine/level04.png'
-							this.bgImage = this.STATIC_URL + "role04.png"
+							this.bgImage = this.STATIC_URL + "diamond.webp"
 							break;
 						default:
 							break;
@@ -348,11 +427,11 @@
 					url: "../withdraw/withdraw"
 				})
 			},
-			toCoupons() {
-				uni.navigateTo({
-					url: "../coupons/coupons"
-				})
-			},
+			// toCoupons() {
+			// 	uni.navigateTo({
+			// 		url: "../coupons/coupons"
+			// 	})
+			// },
 			toMyMoney() {
 				uni.navigateTo({
 					url: "../myMoney/myMoney"
@@ -445,9 +524,7 @@
 		height: 450rpx;
 
 		.user-msg-box {
-			position: absolute;
 			width: 100%;
-			bottom: 150rpx;
 			left: 0;
 			padding: 0 30rpx;
 
@@ -477,9 +554,10 @@
 
 		.balance-box {
 			position: absolute;
-			bottom: 0;
-			width: 690rpx;
-			left: 30rpx;
+			padding: 10px 0px;
+			bottom: 40rpx;
+			width: 100%;
+			left: 15rpx;
 
 			.balance-con {
 				position: absolute;
@@ -498,8 +576,26 @@
 				}
 			}
 		}
+		
+		.small-text{
+			height: 16px;
+			font-size: 24rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #333333;
+		}
 	}
 
+	.info-container{
+		.fengexian::after{
+			content: '';
+			position: absolute;
+			right: 0px;
+			width: 1px;
+			background-color: #e6e6e6;
+			height: 40px;
+		}
+	}
 	.box {
 		border-radius: 20rpx;
 		overflow: hidden;
@@ -507,7 +603,7 @@
 
 		.subtitle {
 			padding: 0 20rpx;
-			line-height: 84rpx;
+			line-height: 64rpx;
 			font-size: 32rpx;
 			color: #000;
 			border-bottom: 2rpx solid #E6E6E6;
