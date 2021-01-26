@@ -232,7 +232,7 @@
 
 		.line {
 			background-color: rgba(255, 255, 255, 0.6);
-			height: 2rpx;
+			height: 3rpx;
 			width: 450rpx;
 		}
 	}
