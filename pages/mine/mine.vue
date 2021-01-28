@@ -93,7 +93,7 @@
 			<view class="info-container" style="padding: 20rpx;">
 				<!-- 我的资产 -->
 				<view class="box bg-white">
-					<view class="subtitle">我的资产</view>
+					<view class="subtitle" >我的资产</view>
 					<view class="flex justify-around text-center card-con">
 						<!-- <view @tap="toCoupons">
 							<view class="num">{{info.myAssets.couponNum?info.balance:0}}</view>
@@ -147,6 +147,52 @@
 							上月预估<text class="text-price" style="color: #D7BE8E; margin-left: 8rpx;">2933.15</text>
 						</view>
 					</view>
+				</view>
+				
+				<!-- 店铺管理 -->
+				<view class="box bg-white">
+					<view class="subtitle" style="border: 0;padding: 10rpx 20rpx;">
+						<view>店铺管理</view>
+					</view>
+					<view style="padding: 20rpx;">
+						<!-- all -->
+						<view class="flex justify-between " style="margin-top: 10rpx;" >
+							<view class="flex flex-direction " :style="'background-image: url('+ STATIC_URL + 'group_expand.webp' +');'" style="border-radius: 4px; padding: 20rpx; width: 48%; height: 90px; background-size: 100% 100%" >
+								<view class="text-xl text-white text-content ">团队扩招</view>
+								<view class="text-sm text-white text-content ">0元创业·轻松赚</view>
+							</view>
+
+							<view class="flex flex-direction " :style="'background-image: url('+ STATIC_URL + 'my_group.webp' +');'" style="border-radius: 4px; padding: 20rpx; width: 48%; height: 90px; background-size: 100% 100%" >
+								<view class="text-xl text-white text-content ">我的团队</view>
+								<view class="text-sm text-white text-content ">有福同享·真壕友</view>
+							</view>
+						</view>
+						<!-- 钻二以上 -->
+						<view class="flex justify-between " style="margin-top: 10rpx;">
+							<view class="flex flex-direction " :style="'background-image: url('+ STATIC_URL + 'recommand_diamond.webp' +');'" style="border-radius: 4px; padding: 20rpx; width: 48%; height: 90px; background-size: 100% 100%" >
+								<view class="text-xl text-white text-content ">推荐钻石店铺</view>
+								<view class="text-sm text-white text-content ">推荐好友·福利双赢</view>
+							</view>
+						
+							<view class="flex flex-direction " :style="'background-image: url('+ STATIC_URL + 'my_recommand.webp' +');'" style="border-radius: 4px; padding: 20rpx; width: 48%; height: 90px; background-size: 100% 100%" >
+								<view class="text-xl text-white text-content ">我的推荐</view>
+								<view class="text-sm text-white text-content ">呼朋唤友·享收益</view>
+							</view>
+						</view>
+						<!-- 钻三专属 -->
+						<view class="flex justify-between " style="margin-top: 10rpx;">
+							<view class="flex flex-direction " :style="'background-image: url('+ STATIC_URL + 'platform_award.webp' +');'" style="border-radius: 4px; padding: 20rpx; width: 48%; height: 90px; background-size: 100% 100%" >
+								<view class="text-xl text-white text-content ">获取平台奖励</view>
+								<view class="text-sm text-white text-content ">平台可靠·奖励多</view>
+							</view>
+						
+							<view class="flex flex-direction " :style="'background-image: url('+ STATIC_URL + 'my_award.webp' +');'" style="border-radius: 4px; padding: 20rpx; width: 48%; height: 90px; background-size: 100% 100%" >
+								<view class="text-xl text-white text-content ">我的奖励</view>
+								<view class="text-sm text-white text-content ">积少成多·奖励丰厚</view>
+							</view>
+						</view>
+					</view>
+
 				</view>
 				
 				
