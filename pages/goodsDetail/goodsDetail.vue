@@ -492,6 +492,12 @@
 			dynamics
 		},
 		onLoad(options) {
+			console.log(options)
+			console.log('1234565')
+			console.log(options.invite)
+			if(options.invite){
+				this.$store.commit('setinvite', options.invite);
+			}
 			if (options.q !== undefined) {
 				let url = decodeURIComponent(options.q)
 				options.id = url.split("/")[6];
@@ -669,7 +675,6 @@
 					})
 					this.specModel(false)
 				})
-
 			},
 			//创建预购单
 			createOrder() {
@@ -815,12 +820,19 @@
 		onShareAppMessage(res) {
 			if (res.from === 'button') { // 来自页面内分享按钮
 				console.log(res.target)
+			} else {
+				console.log(this.$store.state.invitationNo)
 			}
-			return {
+			return uni.getStorageSync("auth").token ?  {
 				title: "我在买" + this.goodsDetail.goodsName + ",快来看看吧！",
-				path: '/pages/goodsDetail/goodsDetail?id=' + this.id + "&type=share",
+				path: '/pages/goodsDetail/goodsDetail?id=' + this.id + "&type=share&invite=" + this.$store.state.invitationNo,
 				imageUrl: this.IMAGE_URL + this.goodsDetail.mainPhotos[0].url
+			} : {
+				title: "阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业",
+				path: '/pages/index/index',
+				imageUrl: this.STATIC_URL + 'invite.jpg'
 			}
+			
 		}
 	}
 </script>

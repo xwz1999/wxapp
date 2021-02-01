@@ -486,8 +486,9 @@
 				console.log(res.target)
 			}
 			return {
-				title: '',
-				path: '/pages/mobileLogin/mobileLogin?invitationNo=' + this.invitationNo
+				title: '阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业',
+				path: '/pages/mobileLogin/mobileLogin?invitationNo=' + this.invitationNo,
+				imageUrl: this.STATIC_URL + 'invite.jpg'
 			}
 		}
 	}

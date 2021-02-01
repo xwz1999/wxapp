@@ -70,7 +70,7 @@
 										this.bindInvitation(wxUnionId)
 									}else{
 										let result = res.data.data
-										console.log(result)
+										this.$store.commit('setinvitationNo', result.info.invitationNo);
 										uni.setStorageSync("auth",result.auth)
 										uni.setStorageSync("userInfo",result.info)
 										uni.showToast({

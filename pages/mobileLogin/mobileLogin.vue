@@ -39,9 +39,11 @@
 		},
 		onLoad(options) {
 			console.log(options)
+			let invite = this.$store.state.invite
+			console.log(this.$store.state.invite)
 			//别人分享的邀请码
-			if(options.invitationNo){
-				this.invitationNo = options.invitationNo
+			if(invite !== '' && invite !== null && invite !== undefined){
+				this.invitationNo = this.$store.state.invite
 			}	
 			if(options.wxUnionId){
 				this.wxUnionId = options.wxUnionId
@@ -101,13 +103,14 @@
 					if(res.data.code=="FAIL"){
 						this.$u.toast(res.data.msg);
 						return
-					}	
+					}
 					if(res.data.data.status==0){
 						// 该用户没有账号
 						//注册账号
 						this.regist()
 						return
 					}
+					this.$store.commit('setinvitationNo', res.data.data.info.invitationNo);
 					let result = res.data.data
 					uni.setStorageSync("auth",result.auth)
 					uni.setStorageSync("userInfo",result.info)
@@ -124,9 +127,11 @@
 				});
 			},
 			regist(){
-				this.$u.post('/api/v1/users/profile/mobile/register', {
-					mobile:this.mobile,
-					invitationNo:this.invitationNo
+				console.log(this.invitationNo)
+				this.$u.post('/api/v1/users/profile/mobile/register-h5', {
+					mobile: this.mobile,
+					sms: this.sms,
+					invitationNo: this.invitationNo
 				}).then(res => {
 					console.log(res);
 					if(res.data.code=="FAIL"){
@@ -181,7 +186,7 @@
 			bindInvitation() {
 				this.$u.post('/api/v1/users/profile/wx/invitation', {
 					wxUnionId: this.wxUnionId,
-					invitationNo:"000000"
+					invitationNo: this.invitationNo
 				}).then(res => {
 					console.log(res);
 					if(res.data.code == "FAIL"){

@@ -14,6 +14,9 @@
 		</u-navbar>
 		<u-tabs :list="navs" :is-scroll="false" height="90" :current="orderTypeIndex" duration="0.2" bar-width="100" :bold="false"
 		 active-color="red" @change="chooseTabs"></u-tabs>
+
+		 <u-alert-tips icon='volume-up' :show="show" @close="closedTips" :close-able="true" :show-icon="true" type="warning" :title="description"></u-alert-tips>
+
 		<swiper class="flex-sub" :current="orderTypeIndex" :duration="300" :indicator-dots="false" :autoplay="false" @change="changeCurrent"
 		 @animationfinish="initData">
 			<swiper-item v-for="(item1,index1) in navs" :key="index1">
@@ -68,6 +71,9 @@
 	export default {
 		data() {
 			return {
+				show: true, // 提醒文案是否显示
+				
+				description: '重要提醒：请谨防网络及客服诈骗！瑞库客不会以订单异常、系统维护等情况为由，要求你进行退款操作',
 				currentIndex: 0,
 				navs: [],
 				nav1: ["全部", "待付款", "待发货", "待收货", "待评价"],
@@ -84,7 +90,31 @@
 			}
 			this.setNav()
 		},
+		created () {
+			let that = this
+			wx.getStorage({
+			  key: 'errorTips',
+			  success (res) {
+				that.show = res.data
+			  },
+			  fail () {
+				console.log('fail')
+				wx.setStorage({
+				  key: "errorTips",
+				  data: true
+				})
+			  }
+			})
+		},
 		methods: {
+			// 关闭 提示
+			closedTips (){
+				this.show = false
+				wx.setStorage({
+				  key: "errorTips",
+				  data: false
+				})
+			},
 			// 线上订单/门店订单切换
 			chooseNav(i) {
 				this.currentIndex = i
@@ -308,108 +338,124 @@
 	}
 </script>
 
-<style lang="scss">
-	page {
-		height: 100vh;
-		width: 100vw;
-	}
+<style lang="scss" scoped>
+page {
+	height: 100vh;
+	width: 100vw;
+}
 .slot-wrap {
-		display: flex;
-		align-items: center;
-		 flex: 1; 
+	display: flex;
+	align-items: center;
+	flex: 1; 
 	justify-content: center;
-		/* 如果您想让slot内容占满整个导航栏的宽度 */
-		/* flex: 1; */
-		/* 如果您想让slot内容与导航栏左右有空隙 */
-		/* padding: 0 30rpx; */
-	}
-	.tab-con {
-		.tab {
-			border: 2rpx solid #DDDDDD;
-			border-radius: 30rpx;
-			position: relative;
-			view {
-				width: 160rpx;
-				height: 60rpx;
-				line-height: 60rpx;
-				font-weight: 900;
-				text-align: center;
-			}
-
-			.current {
-				border-radius: 30rpx;
-				position: absolute;
-				top: 0;
-				left: 0;
-				z-index: -100;
-				transition: 0.5s;
-			}
-
-			.moveright {
-				transform: translateX(160rpx);
-			}
-		}
-
-		.btn {
-			margin-left: 10rpx;
-			padding: 0 10rpx;
+	/* 如果您想让slot内容占满整个导航栏的宽度 */
+	/* flex: 1; */
+	/* 如果您想让slot内容与导航栏左右有空隙 */
+	/* padding: 0 30rpx; */
+}
+.tab-con {
+	.tab {
+		border: 2rpx solid #DDDDDD;
+		border-radius: 30rpx;
+		position: relative;
+		view {
+			width: 160rpx;
+			height: 60rpx;
 			line-height: 60rpx;
-		}
-	}
-
-	.nav-box {
-		line-height: 80rpx;
-		box-shadow: 0 0 15rpx 1rpx rgba(0, 0, 0, 0.1);
-
-		.nav-item {
-			flex: 1;
+			font-weight: 900;
 			text-align: center;
-			font-weight: 700;
 		}
 
-		.active {
-			position: relative;
-			color: red;
-		}
-
-		.active::after {
-			content: "";
+		.current {
+			border-radius: 30rpx;
 			position: absolute;
-			bottom: 5rpx;
-			width: 100rpx;
-			left: 50%;
-			transform: translateX(-50%);
-			height: 6rpx;
-			border-radius: 3rpx;
-			background-color: red;
+			top: 0;
+			left: 0;
+			z-index: -100;
+			transition: 0.5s;
+		}
+
+		.moveright {
+			transform: translateX(160rpx);
 		}
 	}
 
-	.order-item {
-		padding: 25rpx;
-		border-radius: 10rpx;
+	.btn {
+		margin-left: 10rpx;
+		padding: 0 10rpx;
+		line-height: 60rpx;
+	}
+}
 
-		.order-item-top {
-			line-height: 40rpx;
-			padding: 10rpx 0;
+.nav-box {
+	line-height: 80rpx;
+	box-shadow: 0 0 15rpx 1rpx rgba(0, 0, 0, 0.1);
 
-			.buy {
-				font-size: 28rpx;
-				background-color: #FE3E27;
-				border-radius: 5rpx;
-				margin-right: 10rpx;
-				width: 40rpx;
-			}
-		}
+	.nav-item {
+		flex: 1;
+		text-align: center;
+		font-weight: 700;
+	}
 
-		.order-btn {
-			margin: 30rpx 0 10rpx;
+	.active {
+		position: relative;
+		color: red;
+	}
 
-			button {
-				padding: 0 15rpx;
-				height: 60rpx;
-				font-size: 28rpx;
-			}
+	.active::after {
+		content: "";
+		position: absolute;
+		bottom: 5rpx;
+		width: 100rpx;
+		left: 50%;
+		transform: translateX(-50%);
+		height: 6rpx;
+		border-radius: 3rpx;
+		background-color: red;
+	}
+}
+
+.order-item {
+	padding: 25rpx;
+	border-radius: 10rpx;
+	.order-item-top {
+		line-height: 40rpx;
+		padding: 10rpx 0;
+
+		.buy {
+			font-size: 28rpx;
+			background-color: #FE3E27;
+			border-radius: 5rpx;
+			margin-right: 10rpx;
+			width: 40rpx;
 		}
 	}
+
+	.order-btn {
+		margin: 30rpx 0 10rpx;
+
+		button {
+			padding: 0 15rpx;
+			height: 60rpx;
+			font-size: 28rpx;
+		}
+	}
+}
+/deep/.u-alert-tips{
+	.u-alert-content{
+		.u-alert-title{
+			padding: 0px 10rpx;
+			color: #fcbd71 !important;
+			font-size: 24rpx;
+		}
+	}
+	.u-close-icon{
+		top: 50% !important;
+		transform: translateY(-50%);
+		.u-icon__icon{
+			font-size: 12px !important;
+		}
+	}
+}
+
 </style>

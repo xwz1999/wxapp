@@ -8,7 +8,9 @@ const store = new Vuex.Store({
 		returnGoodsMsg:{},//售后商品信息
 		logisticsDetail:[],//物流信息
 		userInfo:{},//邀请人的信息
-		videoDetail:{}//小视频详情
+		videoDetail:{},//小视频详情
+		invitationNo: '' ,// 本人邀请码
+		invite: '' // 别人的邀请码
 	},
 	mutations: {
 		changeCity(state, name) {
@@ -33,6 +35,12 @@ const store = new Vuex.Store({
 		setVideoDetail(state,obj){
 			let newObj = Object.assign({}, obj)
 			state.videoDetail = newObj
+		},
+		setinvitationNo(state,val){
+			state.invitationNo = val
+		},
+		setinvite(state,val){
+			state.invite = val
 		}
 	}
 })

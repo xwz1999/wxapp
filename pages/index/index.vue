@@ -247,9 +247,9 @@
 				console.log(res.target.dataset)
 			}
 			return {
-				title: "我在买" + res.target.dataset.title + ",快来看看吧！",
-				path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.id + "&type=share",
-				imageUrl: this.IMAGE_URL + res.target.dataset.url
+				title: '阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业',
+				path: '/pages/index/index',
+				imageUrl: this.STATIC_URL + 'invite.jpg'
 			}
 		},
 		onLoad() {

@@ -151,6 +151,7 @@
 			this.userInfo.nickname = uni.getStorageSync("userInfo").nickname
 			this.userInfo.headImgUrl = uni.getStorageSync("userInfo").headImgUrl
 			this.invitationNo = uni.getStorageSync("userInfo").invitationNo
+			console.log(this.invitationNo)
 			this.getInviteNum()
 		},
 		methods: {
