@@ -307,13 +307,19 @@
 											<view class="flex-sub cannot-buy">该商品已售罄</view>
 										</template>
 										<template v-else>
-											<button class="btn-item left-btn" open-type="share">
+											<button v-if="roleLevel!=500" class="btn-item left-btn" open-type="share">
 												<view>导购</view>
-												<view v-if="roleLevel!=500" style="font-size: 20rpx;">赚￥{{goodsDetail.price.min.commission}}
+												<view  style="font-size: 20rpx;">赚￥{{goodsDetail.price.min.commission}}
 													<template v-if="goodsDetail.price.min.commission!=goodsDetail.price.max.commission">
 														~{{goodsDetail.price.max.commission}}
 													</template>
 												</view>
+											</button>
+											<button v-else-if="isLogin" class="btn-item left-btn" open-type="share">
+												<view>邀请升级</view>
+											</button>
+											<button v-else class="btn-item left-btn" @tap="goLogin">
+												<view>邀请升级</view>
 											</button>
 											<button class="btn-item right-btn" @tap="specModel(true)">
 												<view>领券购买</view>
@@ -421,8 +427,8 @@
 					<view class="goods-msg flex-sub">
 						<view class="text-black">
 							<text>￥<text style="font-size: 36rpx;font-weight: 700;">{{checkedSkuMsg.discountPrice}}</text></text>
-							<text style="padding:0 5rpx;">/</text>
-							<text class="text-red" style="font-size: 24rpx;">赚{{checkedSkuMsg.commission}}</text>
+							<text style="padding:0 5rpx;" v-if="roleLevel!=500">/</text>
+							<text class="text-red" style="font-size: 24rpx;" v-if="roleLevel!=500">赚{{checkedSkuMsg.commission}}</text>
 						</view>
 						<view style="font-size: 24rpx;color: #AAAAAA;margin: 10rpx 0;">库存 {{checkedSkuMsg.inventory}}件</view>
 						<view style="font-size: 24rpx;">已选择:{{checkedSku}}</view>
@@ -460,6 +466,7 @@
 	export default {
 		data() {
 			return {
+				isLogin: false,
 				parameterShow: false,
 				swiperImgList: [],
 				roleLevel: 500,
@@ -492,6 +499,11 @@
 			dynamics
 		},
 		onLoad(options) {
+			if (uni.getStorageSync("auth").token) {
+				this.isLogin = true
+			} else {
+				this.isLogin = false
+			}
 			console.log(options)
 			console.log('1234565')
 			console.log(options.invite)
@@ -651,32 +663,52 @@
 			},
 
 
-			//添加购物车
+			//添加购物车 判断是否登录
 			addcart() {
-				console.log(this.sku_id)
-				if (!this.sku_id) {
-					this.$u.toast("请选择商品规格")
-					return
-				}
-
-				this.$u.post('/api/v1/goods/shopping_trolley/add', {
-					UserID: uni.getStorageSync("userInfo").id,
-					GoodsID: this.id,
-					SkuID: this.sku_id,
-					Quantity: this.buyNum
-				}).then(res => {
-					console.log(res.data);
-					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
+				if (uni.getStorageSync("auth").token) {
+					console.log(this.sku_id)
+					if (!this.sku_id) {
+						this.$u.toast("请选择商品规格")
 						return
 					}
-					uni.showToast({
-						title: "已加入购物车"
+
+					this.$u.post('/api/v1/goods/shopping_trolley/add', {
+						UserID: uni.getStorageSync("userInfo").id,
+						GoodsID: this.id,
+						SkuID: this.sku_id,
+						Quantity: this.buyNum
+					}).then(res => {
+						console.log(res.data);
+						if (res.data.code == "FAIL") {
+							this.$u.toast(res.data.msg);
+							return
+						}
+						uni.showToast({
+							title: "已加入购物车"
+						})
+						this.specModel(false)
 					})
-					this.specModel(false)
-				})
+				} else {
+					this.$u.toast("游客无法使用该功能，请登录");
+					let pages = getCurrentPages();
+					let currPage = null;
+					if (pages.length) {
+					   currPage = pages[pages.length - 1];
+					}
+					console.log(currPage)
+					let url = '/' + currPage.route + '?id=' +currPage.options.id + '&type=share'
+					this.$store.commit('setUrl', url)
+					console.log(url)
+					setTimeout(() => {
+						uni.navigateTo({
+							url: "../login/login"
+						})
+					}, 1000)
+					return false;
+				}
+				
 			},
-			//创建预购单
+			//创建预购单 判断是否登录
 			createOrder() {
 				console.log(this.checkedSku)
 				if (!this.sku_id) {
@@ -689,26 +721,46 @@
 					SkuName: this.selectName.join('+'),
 					Quantity: this.buyNum
 				}
-				if (this.parentId) {
-					sendData.ParentID = this.parentId
-				}
-				// 此时创建普通订单预览
-				this.$u.post('/api/v1/order_preview/create', sendData).then(res => {
-					console.log(res);
-					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
-						return
+				if (uni.getStorageSync("auth").token) {
+					if (this.parentId) {
+						sendData.ParentID = this.parentId
 					}
-					let preViewMsg = res.data.data
-					preViewMsg.isImport = this.goodsDetail.isImport
-					this.$store.commit('updatePreOrderMsg', preViewMsg);
-					console.log(res.data.data)
-					// return
-					uni.navigateTo({
-						url: "/pages/confirmOrder/confirmOrder"
-					})
-					this.specModel(false)
-				});
+					// 此时创建普通订单预览
+					this.$u.post('/api/v1/order_preview/create', sendData).then(res => {
+						console.log(res);
+						if (res.data.code == "FAIL") {
+							this.$u.toast(res.data.msg);
+							return
+						}
+						let preViewMsg = res.data.data
+						preViewMsg.isImport = this.goodsDetail.isImport
+						this.$store.commit('updatePreOrderMsg', preViewMsg);
+						console.log(res.data.data)
+						// return
+						uni.navigateTo({
+							url: "/pages/confirmOrder/confirmOrder"
+						})
+						this.specModel(false)
+					});
+				} else {
+					this.$u.toast("游客无法使用该功能，请登录");
+					let pages = getCurrentPages();
+					let currPage = null;
+					if (pages.length) {
+					   currPage = pages[pages.length - 1];
+					}
+					console.log(currPage)
+					let url = '/' + currPage.route + '?id=' +currPage.options.id + '&type=share'
+					this.$store.commit('setUrl', url)
+					console.log(url)
+					setTimeout(() => {
+						uni.navigateTo({
+							url: "../login/login"
+						})
+					}, 1000)
+					return false;
+				}
+				
 			},
 
 			//选择规格
@@ -815,24 +867,50 @@
 				  current: this.swiperList[val], // 当前显示图片的http链接
 				  urls: this.swiperList // 需要预览的图片http链接列表
 				})
+			},
+			
+			goLogin() {
+				if (!uni.getStorageSync("auth").token) {
+					this.$u.toast("游客无法使用该功能，请登录");
+					let pages = getCurrentPages();
+					let currPage = null;
+					if (pages.length) {
+					   currPage = pages[pages.length - 1];
+					}
+					console.log(currPage)
+					let url = '/' + currPage.route + '?id=' +currPage.options.id + '&type=share'
+					this.$store.commit('setUrl', url)
+					setTimeout(() => {
+						uni.navigateTo({
+							url: "../login/login"
+						})
+					}, 1000)
+				}
 			}
 		},
 		onShareAppMessage(res) {
-			if (res.from === 'button') { // 来自页面内分享按钮
-				console.log(res.target)
-			} else {
-				console.log(this.$store.state.invitationNo)
-			}
-			return uni.getStorageSync("auth").token ?  {
+			let shareObj = {
 				title: "我在买" + this.goodsDetail.goodsName + ",快来看看吧！",
 				path: '/pages/goodsDetail/goodsDetail?id=' + this.id + "&type=share&invite=" + this.$store.state.invitationNo,
 				imageUrl: this.IMAGE_URL + this.goodsDetail.mainPhotos[0].url
-			} : {
-				title: "阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业",
-				path: '/pages/index/index',
-				imageUrl: this.STATIC_URL + 'invite.jpg'
 			}
-			
+			if (res.from === 'button') { // 来自页面内分享按钮
+				shareObj = {
+					title: "阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业",
+					path: '/pages/login/login?type=share',
+					imageUrl: this.STATIC_URL + 'invite.jpg'
+				}
+			} else {
+				console.log(this.$store.state.invitationNo)
+				if (!this.isLogin) {
+					shareObj = {
+						title: "阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业",
+						path: '/pages/index/index',
+						imageUrl: this.STATIC_URL + 'invite.jpg'
+					}
+				}
+			}
+			return shareObj
 		}
 	}
 </script>

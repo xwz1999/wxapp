@@ -1,15 +1,11 @@
 <template>
 	<view>
+		<view v-if="type !== 'share'" style="position: absolute; top: 25px; right: 16px;" @tap="toMobileLogin">手机号登录</view>
 		<view class="logo-box flex flex-direction align-center">
 			<image :src="IMAGE_URL+'/logo.png'" mode="widthFix"></image>
 			<view class="">享受指尖的购物乐趣</view>
 		</view>
 		<view class="btn-box">
-			<button class="wxlogin-btn text-white shadow flex justify-center cu-btn lg block" style="background-color: #1AB663;"
-			 @tap="toMobileLogin">
-				<text class="cuIcon-mobilefill"></text>
-				<view class="">手机登录</view>
-			</button>
 			<button class="wxlogin-btn text-white shadow flex justify-center cu-btn lg block" style="background-color: #1AB663;"
 			 open-type="getUserInfo" @getuserinfo="wxLogin">
 				<text class="cuIcon-weixin"></text>
@@ -25,8 +21,14 @@
 	export default {
 		data() {
 			return {
+				type: true,
 				IMAGE_URL: this.IMAGE_URL
 			};
+		},
+		onLoad (options) {
+			if (options.type) {
+				this.type = options.type
+			}
 		},
 		methods: {
 			toMobileLogin() {
@@ -76,10 +78,20 @@
 										uni.showToast({
 											title:"登录成功",
 											success: () => {
+												let that = this
 												setTimeout(function(){
-													uni.reLaunch({
-														url:"../index/index"
-													})
+													if (that.$store.state.url) {
+														let url = that.$store.state.url
+														console.log(url)
+														uni.navigateTo({
+															url: url
+														})
+														that.$store.commit('removeUrl')
+													} else {
+														uni.reLaunch({
+															url:"../index/index"
+														})
+													}
 												},1000)
 											}
 										})

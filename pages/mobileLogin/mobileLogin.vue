@@ -86,6 +86,7 @@
 					that.time--
 				},1000)
 			},
+			// 手机登录 已注册
 			login(){
 				if(!this.mobile){
 					this.$u.toast("请输入手机号");
@@ -117,18 +118,29 @@
 					uni.showToast({
 						title:"登录成功",
 						success: () => {
+							let that = this
 							setTimeout(function(){
-								uni.reLaunch({
-									url:"../index/index"
-								})
+								if (that.$store.state.url) {
+									let url = that.$store.state.url
+									console.log(url)
+									uni.navigateTo({
+										url: url
+									})
+									that.$store.commit('removeUrl')
+								} else {
+									uni.reLaunch({
+										url:"../index/index"
+									})
+								}
 							},1000)
 						}
 					})
 				});
 			},
+			// 手机登录 未注册
 			regist(){
 				console.log(this.invitationNo)
-				this.$u.post('/api/v1/users/profile/mobile/register-h5', {
+				this.$u.post('/api/v1/users/profile/mobile/register-wxapp', {
 					mobile: this.mobile,
 					sms: this.sms,
 					invitationNo: this.invitationNo
@@ -144,15 +156,26 @@
 					uni.showToast({
 						title:"登录成功",
 						success: () => {
+							let that = this
 							setTimeout(function(){
-								uni.reLaunch({
-									url:"../index/index"
-								})
+								if (that.$store.state.url) {
+									let url = that.$store.state.url
+									console.log(url)
+									uni.navigateTo({
+										url: url
+									})
+									that.$store.commit('removeUrl')
+								} else {
+									uni.reLaunch({
+										url:"../index/index"
+									})
+								}
 							},1000)
 						}
 					})
 				});
 			},
+			// 微信注册 绑定手机号
 			wxRegist(){
 				this.$u.post('/api/v1/users/profile/wx/register', {
 					mobile:this.mobile,
@@ -171,20 +194,32 @@
 						uni.showToast({
 							title:"登录成功",
 							success: () => {
+								let that = this
 								setTimeout(function(){
-									uni.reLaunch({
-										url:"../index/index"
-									})
+									if (that.$store.state.url) {
+										let url = that.$store.state.url
+										console.log(url)
+										uni.navigateTo({
+											url: url
+										})
+										that.$store.commit('removeUrl')
+									} else {
+										uni.reLaunch({
+											url:"../index/index"
+										})
+									}
 								},1000)
 							}
 						})
 					}else{
+						// 去绑定验证码
 						this.bindInvitation()
 					}
 				});
 			},
+			// 微信注册 绑定邀请码
 			bindInvitation() {
-				this.$u.post('/api/v1/users/profile/wx/invitation', {
+				this.$u.post('/api/v1/users/profile/wx/invitation-wxapp', {
 					wxUnionId: this.wxUnionId,
 					invitationNo: this.invitationNo
 				}).then(res => {
@@ -199,10 +234,20 @@
 					uni.showToast({
 						title:"登录成功",
 						success: () => {
+							let that = this
 							setTimeout(function(){
-								uni.reLaunch({
-									url:"../index/index"
-								})
+								if (that.$store.state.url) {
+									let url = that.$store.state.url
+									console.log(url)
+									uni.navigateTo({
+										url: url
+									})
+									that.$store.commit('removeUrl')
+								} else {
+									uni.reLaunch({
+										url:"../index/index"
+									})
+								}
 							},1000)
 						}
 					})

@@ -10,7 +10,8 @@ const store = new Vuex.Store({
 		userInfo:{},//邀请人的信息
 		videoDetail:{},//小视频详情
 		invitationNo: '' ,// 本人邀请码
-		invite: '' // 别人的邀请码
+		invite: '' ,// 别人的邀请码
+		url: null, // 跳转到登录页面时原地址
 	},
 	mutations: {
 		changeCity(state, name) {
@@ -41,6 +42,12 @@ const store = new Vuex.Store({
 		},
 		setinvite(state,val){
 			state.invite = val
+		},
+		setUrl(state, val) {
+			state.url = val
+		},
+		removeUrl(state) {
+			state.url = null
 		}
 	}
 })

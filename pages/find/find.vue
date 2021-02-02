@@ -69,14 +69,18 @@
 		},
 		onShareAppMessage(res) {
 			console.log(res)
-			let goodsMsg = res.target.dataset.goods
+			// let goodsMsg = res.target.dataset.goods
 			if (res.from === 'button') { // 来自页面内分享按钮
 				console.log(res.target)
 			}
-			return {
-				title: "我在看" + goodsMsg.name + ",快来加入吧！",
-				path: '/pages/goodsDetail/goodsDetail?id=' + goodsMsg.id + "&type=share",
-				imageUrl: this.IMAGE_URL + goodsMsg.mainPhotoURL
+			return res.from === 'button' ? {
+				title: "我在看" + res.target.dataset.goods.name + ",快来加入吧！",
+				path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.goods.id + "&type=share",
+				imageUrl: this.IMAGE_URL + res.target.dataset.goods.mainPhotoURL
+			} : {
+				title: '阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业',
+				path: '/pages/mobileLogin/mobileLogin?invitationNo=' + this.invitationNo,
+				imageUrl: this.STATIC_URL + 'invite.jpg'
 			}
 		}
 	}
