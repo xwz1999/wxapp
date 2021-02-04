@@ -29,6 +29,19 @@
 			if (options.type) {
 				this.type = options.type
 			}
+			// 别人传进来的邀请id
+			console.log(options)
+			console.log(options.invite)
+			if(options.invite){
+				this.$store.commit('setinvite', options.invite);
+			}
+			console.log(uni.getStorageSync("auth").token)
+			if (uni.getStorageSync("auth").token) {
+				console.log(12345)
+				uni.reLaunch({
+					url:"../index/index"
+				})
+			}
 		},
 		methods: {
 			toMobileLogin() {
