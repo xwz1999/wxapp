@@ -549,6 +549,21 @@
 					"enablePullDownRefresh": false
 				}
 			},
+			// 扫码
+			{
+				"path": "scan/scanFail",
+				"style": {
+					"navigationBarTitleText": "识别失败",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "scan/scan",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			},
 			{
 				"path": "invoiceTitle/invoiceTitle",
 				"style": {

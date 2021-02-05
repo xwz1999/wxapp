@@ -96,12 +96,12 @@
 													if (that.$store.state.url) {
 														let url = that.$store.state.url
 														console.log(url)
-														uni.navigateTo({
+														uni.reLaunch({
 															url: url
 														})
 														that.$store.commit('removeUrl')
 													} else {
-														uni.reLaunch({
+														uni.navigateTo({
 															url:"../index/index"
 														})
 													}

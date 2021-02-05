@@ -4,9 +4,9 @@
 			<!-- 背景随轮播图模糊变色 -->
 			<view class="blur-bg">
 				<view class="blur-bg-con" :style="'background-image: url('+bgImage+');'"></view>
-			</view>
-			
+			</view>			
 			<!-- 搜索框  u-sticky为吸顶 -->
+			
 			<!-- <u-sticky bg-color="transparent" @fixed="changebg" @unfixed="hidebg"> -->
 				<view class="search-box flex justify-between text-white" :class="showBg?'search-bg':'hide-bg'">
 					<view class="flex location text-hidden" @tap="toLocation">
@@ -242,18 +242,20 @@
 				this.getWeather()
 			}
 		},
-		onShareAppMessage(res) {
-			if (res.from === 'button') { // 来自页面内分享按钮
-				console.log(res.target.dataset)
-			}
-			return {
-				title: '阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业',
-				path: '/pages/index/index',
-				imageUrl: this.STATIC_URL + 'invite.jpg'
-			}
-		},
 		onLoad() {
 			// uni.getStorageSync("userInfo").id
+			
+			let pages = getCurrentPages() // 获取加载的页面
+			let currentPage = pages[pages.length - 1] // 获取当前页面的对象
+			let url = currentPage.route // 当前页面url
+			let options = currentPage.options // 如果要获取url中所带的参数可以查看options
+			console.log(options)
+			
+			  
+			if(options.invite){
+				console.log(options)
+				this.$store.commit('setinvite', options.invite);
+			}
 			
 			if (uni.getStorageSync("localCity")) {
 				//已授权定位
@@ -513,15 +515,40 @@
 				let M = timestr.split(" ")[1].split(":")[1]
 				return H + ":" + M
 			},
+			
+			
 			// 扫码
 			scan() {
+				let that = this
 				uni.scanCode({
 					success: function(res) {
-						// console.log('条码类型：' + res.scanType);
-						// console.log('条码内容：' + res.result);
+						console.log(res)
+						let code = res.result
+						that.$u.post('/api/v1/goods/code/search', {code: code}).then(res => {
+							console.log(res)
+							if (res.code === 'FAIL') {
+								return
+							}
+							if (res.data.code === 'FAIL') {
+								uni.reLaunch({
+									url: "/packageA/scan/scanFail?code=" + code
+								})
+							}
+							uni.navigateTo({
+								url: "/pages/goodsDetail/goodsDetail?id=" + res.data.data.goodsId
+							})
+						});
 					}
 				});
 			},
+			// scan() {
+			// 	console.log('1234')
+			// 	uni.navigateTo({
+			// 		url: '/pages/scan/scan'
+			// 	})
+			// },
+			
+			
 			toDeitail(id,src){
 				if(src !== ''){
 					let data = {
@@ -614,7 +641,34 @@
 		},
 		onPullDownRefresh() {
 			this.getGoodsList()
-		}
+		},
+		onShareAppMessage(res) {
+			let shareObj = {
+				title: '',
+				path: "/pages/index/index?invite=" + this.$store.state.invitationNo,
+				imageUrl: ''
+			}
+			if (res.from === 'button') { // 来自页面内分享按钮
+				console.log(res)
+				if (res.target.dataset.title) {
+					shareObj = {
+						title: "我在买" + res.target.dataset.title + ",快来看看吧！",
+						path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.id + "&type=share&invite=" + this.$store.state.invitationNo,
+						imageUrl: this.IMAGE_URL + res.target.dataset.url
+					}
+				} else {
+					shareObj = {
+						title: uni.getStorageSync("userInfo").nickname + '正在邀请您加入瑞库客，0成本带您玩转副业',
+						path: '/pages/login/login?type=share&invite=' + this.$store.state.invitationNo,
+						imageUrl: this.STATIC_URL + 'invite.jpg'
+					}
+				}
+			} else {
+				
+			}
+			console.log(shareObj)
+			return shareObj
+		},
 	}
 </script>
 

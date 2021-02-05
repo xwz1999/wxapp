@@ -68,20 +68,25 @@
 			}
 		},
 		onShareAppMessage(res) {
+			let pages = getCurrentPages() // 获取加载的页面
+			let currentPage = pages[pages.length - 1] // 获取当前页面的对象
+			let url = currentPage.route // 当前页面url
+			let shareObj = {
+				title: "",
+				path: url + "?invite=" + this.$store.state.invitationNo,
+				imageUrl: ''
+			}
 			console.log(res)
 			// let goodsMsg = res.target.dataset.goods
 			if (res.from === 'button') { // 来自页面内分享按钮
-				console.log(res.target)
+				shareObj = {
+					title: "我在看" + res.target.dataset.goods.name + ",快来加入吧！",
+					path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.goods.id + "&type=share&invite=" + this.$store.state.invitationNo,
+					imageUrl: this.IMAGE_URL + res.target.dataset.goods.mainPhotoURL
+				}
 			}
-			return res.from === 'button' ? {
-				title: "我在看" + res.target.dataset.goods.name + ",快来加入吧！",
-				path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.goods.id + "&type=share",
-				imageUrl: this.IMAGE_URL + res.target.dataset.goods.mainPhotoURL
-			} : {
-				title: '阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业',
-				path: '/pages/mobileLogin/mobileLogin?invitationNo=' + this.invitationNo,
-				imageUrl: this.STATIC_URL + 'invite.jpg'
-			}
+			console.log(shareObj)
+			return shareObj
 		}
 	}
 </script>

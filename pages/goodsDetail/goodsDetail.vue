@@ -896,20 +896,23 @@
 			}
 			if (res.from === 'button') { // 来自页面内分享按钮
 				console.log(this.$store.state.invitationNo)
-				shareObj = {
-					title: "阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业",
-					path: '/pages/login/login?type=share&invite=' + this.$store.state.invitationNo,
-					imageUrl: this.STATIC_URL + 'invite.jpg'
+				if (this.roleLevel == 500) {
+					shareObj = {
+						title: uni.getStorageSync('userInfo').nickname+"正在邀请您加入瑞库客，0成本带您玩转副业",
+						path: '/pages/login/login?type=share&invite=' + this.$store.state.invitationNo,
+						imageUrl: this.STATIC_URL + 'invite.jpg'
+					}	
 				}
 			} else {
 				if (!this.isLogin) {
 					shareObj = {
 						title: "阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业",
-						path: '/pages/index/index',
+						path: '/pages/index/index?invite=' + this.$store.state.invitationNo,
 						imageUrl: this.STATIC_URL + 'invite.jpg'
 					}
 				}
 			}
+			console.log(shareObj)
 			return shareObj
 		}
 	}

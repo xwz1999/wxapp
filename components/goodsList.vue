@@ -110,7 +110,7 @@
 					url: "/pages/goodsDetail/goodsDetail?id=" + id
 				})
 			}
-		},
+		}
 	}
 </script>
 

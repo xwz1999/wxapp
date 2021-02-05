@@ -33,7 +33,7 @@
 				time:60,
 				showTime:false,
 				timer:null,
-				invitationNo:"000000",
+				invitationNo:"NXR0L3",
 				wxUnionId:null
 			};
 		},

@@ -171,7 +171,29 @@
 					this.goodsList.push(...goodsList)
 				});
 			}
-		}
+		},
+		onShareAppMessage(res) {
+			let pages = getCurrentPages() // 获取加载的页面
+			let currentPage = pages[pages.length - 1] // 获取当前页面的对象
+			let url = currentPage.route // 当前页面url
+			let shareObj = {
+				title: "",
+				path: url + "?invite=" + this.$store.state.invitationNo,
+				imageUrl: ''
+			}
+			if (res.from === 'button') { // 来自页面内分享按钮
+				console.log(res)
+				if (res.target.dataset.title) {
+					shareObj = {
+						title: "我在买" + res.target.dataset.title + ",快来看看吧！",
+						path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.id + "&type=share&invite=" + this.$store.state.invitationNo,
+						imageUrl: this.IMAGE_URL + res.target.dataset.url
+					}
+				}
+			}
+			console.log(shareObj)
+			return shareObj
+		},
 	}
 </script>
 
