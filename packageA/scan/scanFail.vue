@@ -1,10 +1,10 @@
 <template>
 	<view class="content">
 		<view class="resultBox">
-			<view class="result">暂未录入改商品</view>
-			<view class="text">
+			<view class="result">暂未录入该商品</view>
+			<view class="text flex align-center">
 				扫码结果
-				{{code}}
+				<view style="color: rgba(0,0,0,0.4); margin-left: 10px;">{{code}}</view>
 			</view>
 		</view>
 		
@@ -77,8 +77,9 @@ page{
 			margin-bottom: 15px;
 		}
 		.text{
-			font-size: 42rpx;
-			border-bottom: 1px solid rgba(0,0,0,0.35);
+			padding: 20rpx 0rpx 40rpx;
+			font-size: 38rpx;
+			border-bottom: 1px solid rgba(0,0,0,0.1);
 		}
 	}
 	.buttonBox{

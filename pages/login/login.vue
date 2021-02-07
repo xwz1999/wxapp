@@ -94,6 +94,7 @@
 												let that = this
 												setTimeout(function(){
 													if (that.$store.state.url) {
+														console.log(1)
 														let url = that.$store.state.url
 														console.log(url)
 														uni.reLaunch({
@@ -101,11 +102,12 @@
 														})
 														that.$store.commit('removeUrl')
 													} else {
-														uni.navigateTo({
-															url:"../index/index"
+														console.log(2)
+														uni.reLaunch({
+															url: "/pages/index/index"
 														})
 													}
-												},1000)
+												},500)
 											}
 										})
 									}
