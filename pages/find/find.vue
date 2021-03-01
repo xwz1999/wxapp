@@ -16,9 +16,9 @@
 					<live-videos></live-videos>
 				</swiper-item> -->
 				<!-- 小视频列表 -->
-				<swiper-item>
+				<!-- <swiper-item>
 					<small-videos></small-videos>
-				</swiper-item>
+				</swiper-item> -->
 				<!-- 图文动态列表 -->
 				<swiper-item>
 					<dynamics :showGoodsLink="true"></dynamics>
@@ -36,10 +36,12 @@
 		data() {
 			return {
 				showMybtn:false,
-				currentIndex:1,
-				list: [{
-					name: '视频'
-				}, {
+				currentIndex:0,
+				list: [
+				// {
+				// 	name: '视频'
+				// }, 
+				{
 					name: '图文'
 				}]
 			};
