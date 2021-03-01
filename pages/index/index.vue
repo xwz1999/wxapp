@@ -125,15 +125,15 @@
 		<u-popup v-model="isShow" mode="bottom" border-radius="15">
 			<view class="share-box flex justify-between">
 				<view class="flex-sub flex justify-center">
-					<button class="flex flex-direction justify-center align-center" open-type="share" @tap="hideModel">
+					<button class="flex flex-direction justify-center align-center" open-type="share" >
 						<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
-						<view class="txt">小程序海报</view>
+						<view class="txt">微信好友</view>
 					</button>
 				</view>
 				<view class="flex-sub flex justify-center">
-					<button class="flex flex-direction justify-center align-center" open-type="share" @tap="hideModel">
+					<button class="flex flex-direction justify-center align-center"  @tap="copyLink">
 						<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
-						<view class="txt">微信好友</view>
+						<view class="txt">复制链接</view>
 					</button>
 				</view>
 				<view class="flex-sub flex justify-center">
@@ -285,9 +285,22 @@
 			this.getActivity()
 		},
 		methods: {
+			// 子组件分享按钮 获取分享内容 打开分享面板
 			shareBtn(data){
 				this.isShow = true
 				this.onShareData = data
+			},
+			// 分享面板 复制链接
+			copyLink(){
+				// /pages/goodsDetail/goodsDetail?id=' + this.onShareData.id 
+				// https://h5.reecook.cn/#/goods/detail/14337/R7M1V9
+				let url = `/pages/goodsDetail/goodsDetail?id=${this.onShareData.id}`
+				uni.setClipboardData({
+				    data: url,
+				    success: function () {
+				        console.log('success');
+				    }
+				});
 			},
 			// 获取用户当前城市
 			getCityName() {
@@ -642,32 +655,38 @@
 			this.getGoodsList()
 		},
 		onShareAppMessage(res) {
-			console.log(this.onShareData)
-			let shareObj = {
-				title: '',
-				path: "/pages/index/index?invite=" + this.$store.state.invitationNo,
-				imageUrl: ''
-			}
 			if (res.from === 'button') { // 来自页面内分享按钮
-				console.log(res)
-				if (res.target.dataset.title) {
-					shareObj = {
-						title: "我在买" + res.target.dataset.title + ",快来看看吧！",
-						path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.id + "&type=share&invite=" + this.$store.state.invitationNo,
-						imageUrl: this.IMAGE_URL + res.target.dataset.url
-					}
-				} else {
-					shareObj = {
-						title: uni.getStorageSync("userInfo").nickname + '正在邀请您加入瑞库客，0成本带您玩转副业',
-						path: '/pages/login/login?type=share&invite=' + this.$store.state.invitationNo,
-						imageUrl: this.STATIC_URL + 'invite.jpg'
-					}
+				return  {
+					title: "我在买" + this.onShareData.name + ",快来看看吧！",
+					path: '/pages/goodsDetail/goodsDetail?id=' + this.onShareData.id + "&type=share&invite=" + this.$store.state.invitationNo,
+					imageUrl: this.IMAGE_URL + this.onShareData.url
 				}
-			} else {
+			} 
+			// let shareObj = {
+			// 	title: '',
+			// 	path: "/pages/index/index?invite=" + this.$store.state.invitationNo,
+			// 	imageUrl: ''
+			// }
+			// if (res.from === 'button') { // 来自页面内分享按钮
+			// 	console.log(res)
+			// 	if (res.target.dataset.title) {
+			// 		shareObj = {
+			// 			title: "我在买" + res.target.dataset.title + ",快来看看吧！",
+			// 			path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.id + "&type=share&invite=" + this.$store.state.invitationNo,
+			// 			imageUrl: this.IMAGE_URL + res.target.dataset.url
+			// 		}
+			// 	} else {
+			// 		shareObj = {
+			// 			title: uni.getStorageSync("userInfo").nickname + '正在邀请您加入瑞库客，0成本带您玩转副业',
+			// 			path: '/pages/login/login?type=share&invite=' + this.$store.state.invitationNo,
+			// 			imageUrl: this.STATIC_URL + 'invite.jpg'
+			// 		}
+			// 	}
+			// } else {
 				
-			}
-			console.log(shareObj)
-			return shareObj
+			// }
+			// console.log(shareObj)
+			// return shareObj
 		},
 	}
 </script>
