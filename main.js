@@ -18,9 +18,16 @@ Vue.component('large-image-list', largeImageList)
 // 测试域名
 // Vue.prototype.BASE_URL = "https://testapi.reecook.cn"
 // Vue.prototype.IMAGE_URL = "https://testcdn.reecook.cn/static"
+
 // 正式域名
 Vue.prototype.BASE_URL = "https://api.reecook.cn"
 Vue.prototype.IMAGE_URL = "https://cdn.reecook.cn/static"
+
+
+// 正式域名
+Vue.prototype.BASE_URL = "https://api.reecook.cn"
+Vue.prototype.IMAGE_URL = "https://cdn.reecook.cn/static"
+
 //腾讯地图key
 Vue.prototype.MAP_KEY = "SPVBZ-2EXWJ-WTEFC-K7ANJ-VG7G6-V7FQ6"
 //小程序静态资源存储地址（由于小程序代码包大小限制，比较大的静态资源图片放在了宝塔上对应域名下的recook-weapp文件夹里面）

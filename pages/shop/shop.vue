@@ -6,7 +6,7 @@
 		</template>
 
 		<!-- 除了会员以外的角色显示数据展示页面 -->
-		<template class="container-B" v-if="roleLevel==400||roleLevel==300||roleLevel==200||roleLevel==100">
+		<template class="container-B" v-else-if="roleLevel==400||roleLevel==300||roleLevel==200||roleLevel==100">
 			<view class="top-box">
 				<image :src="STATIC_URL+'top_bg.png'" style="width: 100%;" mode="widthFix"></image>
 				<view class="bg-box bg-img flex flex-direction justify-between" :style="'background-image: url('+bgImage+');'" v-if="myInfo">
@@ -248,6 +248,13 @@
 				<view class="cancle" @tap="hideModel">取消</view>
 			</u-popup>
 		</template>
+		<template v-else>
+			<view class="loginBtn">
+				<button class="btn" @click="tologin" style="background-color: #ff0000;">
+					<view class="">登录</view>
+				</button>
+			</view>
+		</template>
 	</view>
 </template>
 
@@ -331,6 +338,11 @@
 			}
 		},
 		methods: {
+			tologin() {
+				uni.navigateTo({
+					url: "../login/login"
+				})
+			},
 			postShare() {
 				this.$u.toast("功能暂未开放，敬请期待~");
 			},
@@ -497,6 +509,23 @@
 </script>
 
 <style lang="scss">
+	.loginBtn{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		.btn{
+			width:110px;
+			margin: 20rpx 30rpx;
+			border-radius: 44rpx;
+			height: 88rpx;
+			line-height: 88rpx;
+			color: #FFFFFF;
+		}
+	}
 	.top-box {
 		position: relative;
 
