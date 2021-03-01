@@ -56,8 +56,7 @@
 							</view>
 							<view class="goods-btns flex align-end">
 								<!-- IMAGE_URL+item.mainPhotoUrl -->
-								<button v-if="!hideShareBtn" class="share-btn text-center" @tap.stop="" :data-url='item.mainPhotoUrl'
-								 :data-title="item.goodsName" :data-id="item.goodsId" open-type="share">
+								<button v-if="!hideShareBtn" class="share-btn text-center" @tap.stop="shareBtn(item.goodsName, item.goodsId, item.mainPhotoUrl)">
 									<view class="iconfont iconfenxiang"></view>
 								</button>
 								<view class="buy-btn text-white round" :class="item.inventory==0?'bg-aaa':'bg-red'">{{item.inventory==0?'已售完':'自购'}}</view>

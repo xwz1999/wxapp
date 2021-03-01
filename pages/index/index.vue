@@ -114,8 +114,6 @@
 				</scroll-view>
 			<!-- </u-sticky> -->
 
-
-
 			<!-- 商品列表组件 -->
 			<template v-if="goodsList.length!=0">
 				<goods-list :goodsList="goodsList" :hideShareBtn="roleLevel==500" @shareBtn='shareBtn'></goods-list>
@@ -126,6 +124,12 @@
 		<!-- 分享弹出框 -->
 		<u-popup v-model="isShow" mode="bottom" border-radius="15">
 			<view class="share-box flex justify-between">
+				<view class="flex-sub flex justify-center">
+					<button class="flex flex-direction justify-center align-center" open-type="share" @tap="hideModel">
+						<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
+						<view class="txt">小程序海报</view>
+					</button>
+				</view>
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" open-type="share" @tap="hideModel">
 						<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
@@ -282,6 +286,7 @@
 		},
 		methods: {
 			shareBtn(data){
+				this.isShow = true
 				this.onShareData = data
 			},
 			// 获取用户当前城市
@@ -541,12 +546,6 @@
 					}
 				});
 			},
-			// scan() {
-			// 	console.log('1234')
-			// 	uni.navigateTo({
-			// 		url: '/pages/scan/scan'
-			// 	})
-			// },
 			
 			
 			toDeitail(id,src){
@@ -643,6 +642,7 @@
 			this.getGoodsList()
 		},
 		onShareAppMessage(res) {
+			console.log(this.onShareData)
 			let shareObj = {
 				title: '',
 				path: "/pages/index/index?invite=" + this.$store.state.invitationNo,
