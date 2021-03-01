@@ -128,6 +128,7 @@
 		},
 		onLoad(options) {
 			console.log(options)
+	
 			if (options.orderId) {
 				this.orderId = parseInt(options.orderId)
 			}
@@ -213,7 +214,6 @@
 								userId: uni.getStorageSync("userInfo").id,
 								orderId: this.orderId,
 							}).then(res => {
-								console.log(res.data);
 								if (res.data.code == "FAIL") {
 									this.$u.toast(res.data.msg);
 									return
@@ -224,6 +224,9 @@
 									success: () => {
 										setTimeout(function() {
 											uni.navigateBack()
+											uni.$emit("cancelOrderSuccess", {
+												msg: '订单已取消',
+											});
 										}, 1000)
 									}
 								})
@@ -289,6 +292,9 @@
 									mask: true,
 									success: () => {
 										setTimeout(function() {
+											uni.$emit("cancelOrderSuccess", {
+												msg: '订单已删除',
+											});
 											uni.navigateBack()
 										}, 1000)
 									}

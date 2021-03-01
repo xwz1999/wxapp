@@ -454,7 +454,7 @@
 				</template>
 				<template v-else>
 					<view class="flex-sub" style="margin-right: 3rpx;" @tap="addcart">加入购物车</view>
-					<view class="flex-sub buy-now" @tap="createOrder">立即购买</view>
+					<view class="flex-sub buy-now" @tap="$u.throttle(createOrder,1000)">立即购买</view>
 				</template>
 			</view>
 		</u-popup>
@@ -709,6 +709,8 @@
 				
 			},
 			//创建预购单 判断是否登录
+		
+
 			createOrder() {
 				console.log(this.checkedSku)
 				if (!this.sku_id) {

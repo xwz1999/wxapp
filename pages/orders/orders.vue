@@ -27,8 +27,9 @@
 					</view>
 					<view class="" v-else>
 						<view class="orders-box" style="padding: 10rpx 0;">
-							<view v-for="(item2,index2) in item1.orders" :key="index2" style="padding: 10rpx 20rpx;">
-								<navigator :url="'../orderDetail/orderDetail?orderId='+item2.id" class="order-item bg-white clear">
+							<view v-for="(item2,index2) in item1.orders" :key="index2" style="padding: 10rpx 20rpx;" @click="OrdersDetails(item2.id,index2)">
+								<view class="order-item bg-white clear">
+								
 									<view class="order-item-top flex justify-between align-center">
 										<view class="flex align-center">
 											<view class="text-center text-white buy" style="">买</view>
@@ -55,7 +56,7 @@
 										</view>
 										<view class="">共{{item2.totalGoodsCount}}件商品 总计<text class="text-red">￥{{item2.goodsTotalAmount | toFixed(2)}}</text></view>
 									</view>
-								</navigator>
+								</view>
 							</view>
 						</view>
 						<u-loadmore :status="item1.loadStatus" margin-bottom="40" />
@@ -89,6 +90,12 @@
 				this.orderTypeIndex = parseInt(options.type)
 			}
 			this.setNav()
+			// 订单详情页取消订单或者删除订单成功后
+			uni.$off('cancelOrderSuccess');
+			uni.$on("cancelOrderSuccess", res => {
+				console.log(res)
+				this.setNav()
+			})	
 		},
 		created () {
 			let that = this
@@ -107,6 +114,11 @@
 			})
 		},
 		methods: {
+			OrdersDetails(id,index){
+				uni.navigateTo({
+					url: "../orderDetail/orderDetail?orderId=" + id
+				})
+			},
 			// 关闭 提示
 			closedTips (){
 				this.show = false
