@@ -16,17 +16,12 @@ Vue.component('goods-list', goodsList)
 Vue.component('order-goods', orderGoods)
 Vue.component('large-image-list', largeImageList)
 // 测试域名
-// Vue.prototype.BASE_URL = "https://testapi.reecook.cn"
-// Vue.prototype.IMAGE_URL = "https://testcdn.reecook.cn/static"
+Vue.prototype.BASE_URL = "https://testapi.reecook.cn"
+Vue.prototype.IMAGE_URL = "https://testcdn.reecook.cn/static"
 
 // 正式域名
-Vue.prototype.BASE_URL = "https://api.reecook.cn"
-Vue.prototype.IMAGE_URL = "https://cdn.reecook.cn/static"
-
-
-// 正式域名
-Vue.prototype.BASE_URL = "https://api.reecook.cn"
-Vue.prototype.IMAGE_URL = "https://cdn.reecook.cn/static"
+// Vue.prototype.BASE_URL = "https://api.reecook.cn"
+// Vue.prototype.IMAGE_URL = "https://cdn.reecook.cn/static"
 
 //腾讯地图key
 Vue.prototype.MAP_KEY = "SPVBZ-2EXWJ-WTEFC-K7ANJ-VG7G6-V7FQ6"

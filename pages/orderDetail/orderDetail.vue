@@ -30,9 +30,10 @@
 						<image :src="IMAGE_URL+shop.brandLogoUrl" style="width: 36rpx;margin-right: 10rpx;" mode="widthFix"></image>
 						<view class="">{{shop.brandName}}</view>
 					</view>
-					<order-goods :goodsList="shop.goods" :orderType="order.status"></order-goods>
+					<!-- orderDetail.status -->
+					<order-goods :goodsList="shop.goods" :orderType="1"  ></order-goods>
 					<view class="total-msg flex justify-end text-black" style="line-height: 80rpx;">
-						<view style="margin-right: 20rpx;">共{{shop.brandGoodsTotalCount}}件</view>
+						<view style="margin-right: 20rpx;">共{{shop.brandGoodsTotalCount}}件商品</view>
 						<view>合计{{shop.brandGoodsTotalAmount | toFixed(2)}}元</view>
 					</view>
 				</view>
@@ -128,13 +129,16 @@
 		},
 		onLoad(options) {
 			console.log(options)
-	
+
 			if (options.orderId) {
 				this.orderId = parseInt(options.orderId)
 			}
 		},
-	
+
 		onShow() {
+			this.getOrderDetail()
+		},
+		onPullDownRefresh() {
 			this.getOrderDetail()
 		},
 		methods: {
@@ -160,18 +164,18 @@
 							this.countdownTime = (finishTime - nowTime) / 1000
 							break;
 						case 1:
-							switch (this.orderDetail.expressStatus){
+							switch (this.orderDetail.expressStatus) {
 								case 0:
-								this.title = "买家已付款"
-								this.subTitle = "等待卖家发货"
+									this.title = "买家已付款"
+									this.subTitle = "等待卖家发货"
 									break;
 								case 1:
-								this.title = "部分商品已发货"
-								this.subTitle = "商品正在赶往您的路上哦"
+									this.title = "部分商品已发货"
+									this.subTitle = "商品正在赶往您的路上哦"
 									break;
 								case 2:
-								this.title = "全部商品已发货"
-								this.subTitle = "商品正在赶往您的路上哦"
+									this.title = "全部商品已发货"
+									this.subTitle = "商品正在赶往您的路上哦"
 									break;
 							}
 							break;

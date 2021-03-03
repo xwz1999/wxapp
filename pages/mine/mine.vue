@@ -29,8 +29,17 @@
 						<view>收藏</view>
 					</navigator>
 					<view>
-						<u-icon name="server-fill" size="48"></u-icon>
+						<button open-type='contact' class='customer-service'>
+							<u-icon name="server-fill" size="48"></u-icon>
+						</button>
+
 						<view>客服</view>
+						<!-- 			<contact-button 
+						  type="default-light" 
+						  size="20"
+						  session-from="weapp"
+						>
+						</contact-button> -->
 					</view>
 				</view>
 			</view>
@@ -297,7 +306,7 @@
 						return
 					}
 					console.log(res.data.data)
-					uni.setStorageSync("userId",res.data.data.identifier)
+					uni.setStorageSync("userId", res.data.data.identifier)
 					console.log(uni.getStorageSync("userId"))
 					this.roleLevel = this.info.roleLevel
 					switch (this.roleLevel) {
@@ -334,7 +343,7 @@
 						default:
 							break;
 					}
-					
+
 					// this.roleLevel = 200
 					// 订单数量提醒
 					this.orderStatus[0].count = this.info.orderCenter.waitPay
@@ -416,6 +425,28 @@
 	page {
 		background-color: #F3F4F6;
 	}
+
+	.customer-service {
+
+		margin: 0;
+		padding: 0;
+		line-height: 0;
+		border: none;
+		background-color: rgba(0, 0, 0, 0);
+		border-radius: 0;
+		 border: none;
+		 color: #FFFFFF;
+		// &button{
+		// 	margin:0;
+		// 	padding: 0;
+		// 	line-height: 0;
+		// }
+		// &button
+		&::after {
+		  border: none;
+		}
+	}
+
 
 	// .login-box {
 	// 	position: fixed;

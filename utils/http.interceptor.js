@@ -8,6 +8,7 @@ const Decrypt = require('./cryptojs.js').Decrypt;
 
 
 const install = (Vue, vm) => {
+	console.log( Vue.prototype.BASE_URL)
 	Vue.prototype.$u.http.setConfig({
 		baseUrl: Vue.prototype.BASE_URL,
 		loadingText: '努力加载中~',

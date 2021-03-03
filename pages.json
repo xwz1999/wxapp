@@ -246,7 +246,8 @@
 			"path": "pages/orderDetail/orderDetail",
 			"style": {
 				"navigationBarTitleText": "订单详情",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
+				
 			}
 		},
 		{
@@ -491,10 +492,7 @@
 		{
 			"path": "pages/poster/poster",
 			"style": {
-				"navigationBarTitleText": "分享海报",
-				"usingComponents":{
-				  "painter":"/wxcomponents/painter/painter"
-				}
+				"navigationBarTitleText": "分享海报"
 			}
 		}
 	],

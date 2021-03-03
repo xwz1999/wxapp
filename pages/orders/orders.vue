@@ -191,7 +191,7 @@
 				this.sendData = {
 					userId: uni.getStorageSync("userInfo").id,
 					page: this.navs[index].page,
-					orderType: this.currentIndex.toString()
+					orderType: null
 				}
 				this.navs[index].page++
 				switch (index) {
@@ -221,6 +221,7 @@
 					default:
 						break;
 				}
+				console.log(this.sendData)
 				this.$u.post(this.reqUrl, this.sendData).then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
