@@ -302,6 +302,13 @@
 				    }
 				});
 			},
+			// 分享海报
+			postShare() {
+				// this.$u.toast("功能暂未开放，敬请期待~");
+				uni.navigateTo({
+					url:'/pages/poster/poster'
+				})
+			},
 			// 获取用户当前城市
 			getCityName() {
 				uni.getLocation({
@@ -357,9 +364,7 @@
 					console.log(this.lunarDate)
 				});
 			},
-			postShare() {
-				this.$u.toast("功能暂未开放，敬请期待~");
-			},
+
 			hideModel() {
 				this.isShow = false
 			},
