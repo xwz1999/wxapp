@@ -1,57 +1,45 @@
 <template name="orderGoods">
 	<view class="goods-box">
+		
 		<view v-for="(item,index) in goodsList" :key="index">
 			<view class="goods-item flex">
 				<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" hover-stop-propagation @tap.stop="" class="goods-pic">
-					<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="200" border-radius="10"
-					 loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+					<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="200" border-radius="10" loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
 				</navigator>
 				<view class="goods-con flex-sub flex flex-direction justify-between">
 					<view class="">
 						<view class="goods-name two-line">{{item.goodsName}}</view>
 						<view class="goods-spec-con flex justify-between">
 							<view class="goods-spec text-hidden">{{item.skuName}}</view>
-							<view>×{{item.quantity}}</view>
+							
 							<!-- <view class="goods-num" style="color:#aaa;">×{{item.quantity}}</view> -->
 						</view>
-						<view class="flex align-center" style="margin:10rpx 0;">
-							<view class="align-center justify-start" v-if="item.isFerme">
-								<view class="tab_ferme">包税</view>
+							<view class="flex align-center" style="margin:10rpx 0;">
+								<view class="align-center justify-start" v-if="item.isFerme">
+									<view class="tab_ferme">包税</view>
+								</view>
+								<view class="" style="font-size: 20rpx;color: #FA6400;" v-if="item.storehouse">
+									<text>不支持7天无理由退换货</text>
+								</view>
 							</view>
-							<view class="" style="font-size: 20rpx;color: #FA6400;" v-if="item.storehouse">
-								<text>不支持7天无理由退换货</text>
-							</view>
-						</view>
 					</view>
 					<view class="flex justify-between" style="font-size: 28rpx;color: #FA6400;">
 						<view class="flex">￥{{item.unitPrice | toFixed(2)}} </view>
-						<view class="" v-if="orderType !==1">
-							<view v-if="item.rStatus">{{item.rStatus}}</view>
-						</view>
-						<view class="" v-else>
-							<view v-if="item.rStatus !=='待发货' && item.rStatus !=='已发货'">
-								<button v-if="item.rStatus" style="color: #FA6400;" class="cu-btn lines-gray text-gray round"
-								 hover-stop-propagation @click="toAfterSaleDetail(item.goodsDetailId)">{{item.rStatus}}</button>
-							</view>
-							<view v-else>
-								<view class="" v-if="item.rStatus">
-									{{item.rStatus}}
-								</view>
-							</view>
-						</view>
-
+						<view>×{{item.quantity}}</view>
+						<view v-if="item.rStatus">{{item.rStatus}}</view>
 					</view>
 				</view>
 			</view>
-			<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;" v-if="item.rStatus=='待发货' && orderType==1">
+			<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;" v-if="item.orderType==1&&item.rStatus=='待发货'">
 				<button class="cu-btn lines-gray text-gray round" hover-stop-propagation @tap.stop="returnMoney(item.goodsDetailId)">申请退款</button>
 			</view>
-			<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;" v-if="item.rStatus=='已发货' &&orderType==1 ">
+			<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;" v-if="item.orderType==1&&item.rStatus=='已发货'">
 				<button class="cu-btn lines-gray text-gray round" hover-stop-propagation @tap.stop="toChooseType(item)">申请售后</button>
 			</view>
 		</view>
 	</view>
 </template>
+
 <script>
 	export default {
 		name: "orderGoods",
@@ -65,53 +53,46 @@
 				type: Array,
 				value: null,
 			},
-			// 判断是哪个页面调用  购物车和订单详情页共用了一个组件
-			orderType: {
-				type: Number,
-				value: 0
-			},
-		
+			orderType:{
+				type:Number,
+				value:0
+			}
 		},
 		mounted() {
-			console.log(this.goodsList)
+				console.log(this.goodsList)
 		},
-		methods: {
+		methods:{
 			//未发货申请退款
-			returnMoney(id) {
+			returnMoney(id){
 				uni.showModal({
-					title: '提示',
-					content: '确认申请退款吗？',
-					success: (res) => {
-						if (res.confirm) {
-							console.log('用户点击确定');
-							this.$u.post('/api/v1/order/refund', {
+				    title: '提示',
+				    content: '确认申请退款吗？',
+				    success: (res)=> {
+				        if (res.confirm) {
+				            console.log('用户点击确定');
+							this.$u.post('/api/v1/order/refund',{
 								userId: uni.getStorageSync("userInfo").id,
-								orderGoodsIDs: [id]
+								orderGoodsIDs:[id]
 							}).then(res => {
 								console.log(res.data);
 								if (res.data.code == "FAIL") {
 									this.$u.toast(res.data.msg);
 									return
 								}
-								wx.startPullDownRefresh() 
+								uni.navigateTo({
+									url:"/pages/afterSaleDetail/afterSaleDetail?orderGoodsId="+id
+								})
 							});
-						} else if (res.cancel) {
-							console.log('用户点击取消');
-						}
-					}
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
 				});
 			},
-			// 售后页面
-			toAfterSaleDetail(id) {
-				console.log(id)
+			toChooseType(obj){
+				this.$store.commit('setReturnGoodsMsg',obj);
 				uni.navigateTo({
-					url: "/pages/afterSaleDetail/afterSaleDetail?orderGoodsId=" + id
-				})
-			},
-			toChooseType(obj) {
-				this.$store.commit('setReturnGoodsMsg', obj);
-				uni.navigateTo({
-					url: "/pages/chooseAftersaleType/chooseAftersaleType"
+					url:"/pages/chooseAftersaleType/chooseAftersaleType"
 				})
 			}
 		}
@@ -119,7 +100,7 @@
 </script>
 
 <style lang="scss">
-	.tab_ferme {
+	.tab_ferme{
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -133,7 +114,6 @@
 		font-weight: 400;
 		color: #CC1B4F;
 	}
-
 	.goods-box {
 		border-bottom: 1rpx solid #EEEEEE;
 		padding: 10rpx 0;
@@ -166,9 +146,8 @@
 				color: #aaa;
 			}
 		}
-
-		.goods-bottom {
-			.cu-btn {
+		.goods-bottom{
+			.cu-btn{
 				height: 50rpx;
 				line-height: 50rpx;
 				padding: 0 15rpx;

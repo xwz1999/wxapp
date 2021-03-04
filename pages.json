@@ -178,6 +178,13 @@
 			}
 		},
 		{
+			"path": "pages/afterSaleDetail/afterDetailed",
+			"style": {
+				"navigationBarTitleText": "进度详情",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/chooseAftersaleType/chooseAftersaleType",
 			"style": {
 				"navigationBarTitleText": "选择售后类型",

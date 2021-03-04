@@ -31,14 +31,58 @@
 						<view class="">{{shop.brandName}}</view>
 					</view>
 					<!-- orderDetail.status -->
-					<order-goods :goodsList="shop.goods" :orderType="1"  ></order-goods>
-					<view class="total-msg flex justify-end text-black" style="line-height: 80rpx;">
-						<view style="margin-right: 20rpx;">共{{shop.brandGoodsTotalCount}}件商品</view>
-						<view>合计{{shop.brandGoodsTotalAmount | toFixed(2)}}元</view>
+					<!-- <order-goods :goodsList="shop.goods" :orderType="1"  ></order-goods> -->
+					<view class="goods-box">
+						<view v-for="(item,index) in shop.goods" :key="index">
+							<view class="goods-item flex">
+								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" hover-stop-propagation @tap.stop="" class="goods-pic">
+									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="200" border-radius="10"
+									 loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+								</navigator>
+								<view class="goods-con flex-sub flex flex-direction justify-between">
+									<view class="">
+										<view class="goods-name two-line">{{item.goodsName}}</view>
+										<view class="goods-spec-con flex justify-between">
+											<view class="goods-spec text-hidden">{{item.skuName}}</view>
+											<view class="goods-num">×{{item.quantity}}</view>
+											<!-- <view class="goods-num" style="color:#aaa;">×{{item.quantity}}</view> -->
+										</view>
+										<view class="flex align-center" style="margin:10rpx 0;">
+											<view class="align-center justify-start" v-if="item.isFerme">
+												<view class="tab_ferme">包税</view>
+											</view>
+											<view class="" style="font-size: 20rpx;color: #FA6400;" v-if="item.storehouse">
+												<text>不支持7天无理由退换货</text>
+											</view>
+										</view>
+									</view>
+									<view class="flex justify-between" style="font-size: 28rpx;color: #FA6400;">
+										<view class="flex">￥{{item.unitPrice | toFixed(2)}} </view>
+										<view class="">
+											<view v-if="item.rStatus !=='待发货' && item.rStatus !=='已发货'">
+												<button v-if="item.rStatus" style="color: #FA6400;height: 40rpx;font-size: 28rpx;" class="cu-btn lines-gray text-gray round"
+												 hover-stop-propagation @click="toAfterSaleDetail(item.goodsDetailId)">{{item.rStatus}}</button>
+											</view>
+											<view v-else="item.rStatus">{{item.rStatus}}</view>
+										</view>
+									</view>
+								</view>
+							</view>
+							<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;" v-if="item.rStatus=='待发货' && orderDetail.status !== 2">
+								<button class="cu-btn lines-gray text-gray round" hover-stop-propagation @tap.stop="returnMoney(item.goodsDetailId)">申请退款</button>
+							</view>
+							<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;" v-if="item.rStatus=='已发货' && orderDetail.status !== 2">
+								<button class="cu-btn lines-gray text-gray round" hover-stop-propagation @tap.stop="toChooseType(item)">申请售后</button>
+							</view>
+						</view>
 					</view>
+
+				</view>
+				<view class="total-msg flex justify-end text-black" style="line-height: 80rpx;border-top:1rpx solid #EEEEEE;">
+					<view style="margin-right: 20rpx;">共{{goodsTotal.totalNumber}}件商品</view>
+					<view>合计{{goodsTotal.totalPrice | toFixed(2)}}元</view>
 				</view>
 			</view>
-
 			<view class="pay-msg bg-white">
 				<view class="item flex justify-between">
 					<view class="">商品金额</view>
@@ -67,8 +111,6 @@
 					<text :class="isShow?'cuIcon-triangleupfill':'cuIcon-triangledownfill'"></text>
 				</view>
 			</view>
-
-
 			<view class="box order-msg">
 				<view class="item flex">
 					<view class="span">订单编号</view>
@@ -90,9 +132,17 @@
 					<view class="span">销售额</view>
 					<view class="text-black">￥{{orderDetail.actualTotalAmount | toFixed(2)}}</view>
 				</view>
+				<button open-type='contact' class='customer-service'>
+					<view class="item flex justify-center">
+						<view class="text-black" style="font-size: 28rpx;">
+							<u-icon name="server-fill" size="28" class="text-black" style="padding-right: 20rpx;"></u-icon>联系客服
+						</view>
+					</view>
+				</button>
 			</view>
 			<view class="" style="height: 120rpx;"></view>
 			<view class="bottom-box flex align-center justify-end bg-white">
+				
 				<template v-if="orderDetail.status==0">
 					<button class="cu-btn round lines-gray" style="margin-right: 20rpx;" @tap="cancelOrder">取消订单</button>
 					<button class="cu-btn round lines-red" @tap="toOrderPay">继续支付</button>
@@ -119,7 +169,7 @@
 			return {
 				IMAGE_URL: this.IMAGE_URL,
 				orderId: null,
-				orderDetail: null,
+				orderDetail: [],
 				showLoading: true,
 				isShow: false,
 				countdownTime: 0,
@@ -127,21 +177,66 @@
 				subTitle: ""
 			};
 		},
-		onLoad(options) {
-			console.log(options)
-
-			if (options.orderId) {
-				this.orderId = parseInt(options.orderId)
+		computed: {
+			// 商品数量和商品金额合计
+			goodsTotal() {
+				let goosData = {
+					totalPrice: 0,
+					totalNumber: 0
+				}
+				if (!this.orderDetail.brands) {
+					return
+				}
+				this.orderDetail.brands.map(item => {
+					goosData.totalNumber += item.brandGoodsTotalCount
+					goosData.totalPrice += item.brandGoodsTotalAmount
+				})
+				return goosData
 			}
 		},
-
-		onShow() {
-			this.getOrderDetail()
-		},
-		onPullDownRefresh() {
-			this.getOrderDetail()
-		},
 		methods: {
+			//未发货申请退款
+			returnMoney(id) {
+				uni.showModal({
+					title: '提示',
+					content: '确认申请退款吗？',
+					success: (res) => {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							this.$u.post('/api/v1/order/refund', {
+								userId: uni.getStorageSync("userInfo").id,
+								orderGoodsIDs: [id],
+
+							}).then(res => {
+								console.log(res.data);
+								if (res.data.code == "FAIL") {
+									this.$u.toast(res.data.msg);
+									return
+								}
+							this.getOrderDetail()
+							});
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+			},
+			// 售后详情
+			toAfterSaleDetail(id) {
+				console.log(id)
+				// uni.navigateTo({
+				// 	url: "/pages/chooseAftersaleType/chooseAftersaleType"
+				// })
+				uni.navigateTo({
+					url: "/pages/afterSaleDetail/afterSaleDetail?orderGoodsId=" + id
+				})
+			},
+			toChooseType(obj) {
+				this.$store.commit('setReturnGoodsMsg', obj);
+				uni.navigateTo({
+					url: "/pages/chooseAftersaleType/chooseAftersaleType"
+				})
+			},
 			showMore() {
 				this.isShow = !this.isShow
 			},
@@ -327,6 +422,17 @@
 					}
 				})
 			}
+		},
+		onLoad(options) {
+			console.log(options)
+
+			if (options.orderId) {
+				this.orderId = parseInt(options.orderId)
+			}
+		},
+
+		onShow() {
+			this.getOrderDetail()
 		}
 	}
 </script>
@@ -335,6 +441,91 @@
 	page {
 		background-color: #f3f3f3;
 	}
+
+	.customer-service {
+
+		margin: 0;
+		padding: 0;
+		line-height: 0;
+		border: none;
+		background-color: rgba(0, 0, 0, 0);
+		border-radius: 0;
+		border: none;
+		color: #FFFFFF;
+
+		// &button{
+		// 	margin:0;
+		// 	padding: 0;
+		// 	line-height: 0;
+		// }
+		// &button
+		&::after {
+			border: none;
+		}
+	}
+
+	.tab_ferme {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 64rpx;
+		height: 28rpx;
+		background: #FFE5ED;
+		border-radius: 15rpx;
+		margin-right: 20rpx;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #CC1B4F;
+	}
+
+	.goods-box {
+		padding: 10rpx 0;
+
+		.goods-item {
+			line-height: 40rpx;
+			padding: 10rpx 0;
+
+			.goods-pic {
+				width: 200rpx;
+				height: 200rpx;
+				border-radius: 10rpx;
+				overflow: hidden;
+				margin-right: 20rpx;
+			}
+
+			.goods-name {
+				color: #000;
+				font-size: 28rpx;
+				margin-bottom: 10rpx;
+				font-size: 32rpx;
+				color: #000;
+			}
+
+			.goods-spec {
+				background-color: #EFF1F6;
+				font-size: 20rpx;
+				padding: 0 10rpx;
+				border-radius: 10rpx;
+				color: #aaa;
+			}
+
+			.goods-num {
+				font-size: 24rpx;
+				color: #aaa;
+			}
+		}
+
+		.goods-bottom {
+			.cu-btn {
+				height: 50rpx;
+				line-height: 50rpx;
+				padding: 0 15rpx;
+				font-size: 26rpx;
+			}
+		}
+	}
+
 
 	.waitpay {
 		padding: 30rpx;
@@ -461,8 +652,8 @@
 	.bottom-box {
 		position: fixed;
 		width: 100%;
-		height: 100rpx;
-		padding: 0 30rpx;
+		// height: 100rpx;
+		padding: 20rpx 30rpx;
 		bottom: 0;
 		box-shadow: 0 0 15rpx 1rpx rgba(0, 0, 0, 0.1);
 		z-index: 1000;
