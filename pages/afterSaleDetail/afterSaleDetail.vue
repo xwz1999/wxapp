@@ -12,7 +12,6 @@
 				</view>
 			</view>
 		</view>
-		
 		<view class="msg-box bg-white">
 			<!-- 待审核 -->
 			<view class=" bg-white" v-if="message.status==1&&message.returnStatus==1">

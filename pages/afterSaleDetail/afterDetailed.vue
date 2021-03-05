@@ -1,10 +1,10 @@
 <template>
 	<view class="goods-box">
-		<view class="box" v-for="item in list" :key='item.id'>
+		<view class="box" v-for="(item,index) in list" :key='item.id'>
 			<view class="item">
 				<view class="title">
 					<view class="left">
-						<view class="dot" :class=""></view>
+						<view class="dot" :class="index===0?'active':''"></view>
 					</view>
 					<view class="flex justify-between align-center" style="flex: 1;">
 						<view>{{item.title}} </view>
@@ -12,12 +12,14 @@
 					</view>
 				</view>
 				<view class="line-box">
-					<view class="left" style="width: 40rpx;">
-						<view class="line"></view>
+					<view class="left">
+						<view class="line" v-if="index!==list.length-1"></view>
 					</view>
 					<view class="" style="padding: 20rpx 0rpx 30rpx 0;flex: 1;">
 						<view class="txt">
-							<view v-for="(txt,index) in item.content" :key='index'>{{txt |strFilters}}</view>
+							<view style="padding: 10rpx 0;" v-for="(txt,i) in item.content" :key='i'>
+								<rich-text :nodes="txt"></rich-text>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -30,15 +32,7 @@
 	export default {
 		data() {
 			return {
-				list: []
-			}
-		},
-		filters: {
-			strFilters(str) {
-				if (str) {
-					str.replace(/<.+>/g, "")
-					return str.replace(/<[^>]+>/g, '');
-				}
+				list: [],
 			}
 		},
 		methods: {
@@ -53,11 +47,16 @@
 					}
 					this.list = res.data.data
 					this.list.map(item => {
-						item.content = item.content.split("|")
-
+						item.content = this.repE(item.content)
 					})
-
 				});
+			},
+			// 替换标签
+			repE(str) {
+				let strArr = str.replace(/<black>(.*?)<\/black>/g, '<span class="font-black">$1</span>')
+								.replace(/<gray>(.*?)<\/gray>/g, '<div class="gray-box">$1</div>')
+								.replace(/<address>(.*?)<\/address>/g,'<span class="font-black">$1</span>')
+				return strArr.split("|")
 			}
 		},
 		onLoad(options) {
@@ -70,15 +69,32 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+	.gray-box {
+		background: #F8F8F8;
+		border-radius: 8rpx;
+		padding: 10rpx 0;
+		font-size: 28rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #999999;
+	}
+
+	.font-black {
+		font-weight: bold;
+		font-size: 28rpx;
+		color: #333333;
+	}
+
 	.goods-box {
 		background: #FFFFFF;
 		min-height: 100vh;
+
 		padding: 30rpx;
 		height: auto;
 	}
-	.box {
 
+	.box {
 		.left {
 			width: 40rpx;
 			display: flex;
@@ -91,15 +107,18 @@
 			border-radius: 50%;
 			background: #E5E5E5;
 			z-index: 10;
-			&.active{
+
+			&.active {
 				background: #DB2D2D;
 			}
 		}
+
 		.line {
 			width: 4rpx;
 			height: auto;
 			background: #E5E5E5;
 		}
+
 		.title {
 			display: flex;
 			align-items: center;
@@ -108,6 +127,7 @@
 			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 500;
 			color: #333333;
+
 			.time-txt {
 				font-size: 24rpx;
 				font-weight: 400;
@@ -121,6 +141,7 @@
 			.txt {
 				flex: 1;
 				font-size: 28rpx;
+
 				font-family: PingFangSC-Regular, PingFang SC;
 				font-weight: 400;
 				color: #666666;

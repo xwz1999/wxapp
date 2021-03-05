@@ -155,6 +155,27 @@
 			}
 		},
 		{
+			"path": "pages/orders/remark",
+			"style": {
+				"navigationBarTitleText": "我的评价",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/orders/releaseRemark",
+			"style": {
+				"navigationBarTitleText": "发表评价",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/orders/remarkDetails",
+			"style": {
+				"navigationBarTitleText": "我的评价",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/realname/realname",
 			"style": {
 				"navigationBarTitleText": "实名认证",

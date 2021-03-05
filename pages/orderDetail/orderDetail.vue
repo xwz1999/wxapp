@@ -129,8 +129,8 @@
 					<view class="num">{{orderDetail.buyerMessage}}</view>
 				</view>
 				<view class="item flex">
-					<view class="span">销售额</view>
-					<view class="text-black">￥{{orderDetail.actualTotalAmount | toFixed(2)}}</view>
+					<view class="span">销售额 <text class="cuIcon-question" style="padding-left: 8rpx;" @click="queston"></text></view>
+					<view class="text-black">￥{{orderDetail.goodsTotalAmount | toFixed(2)}}</view>
 				</view>
 				<button open-type='contact' class='customer-service'>
 					<view class="item flex justify-center">
@@ -195,6 +195,9 @@
 			}
 		},
 		methods: {
+			queston(){
+				
+			},
 			//未发货申请退款
 			returnMoney(id) {
 				uni.showModal({

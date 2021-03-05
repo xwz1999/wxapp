@@ -403,8 +403,10 @@
 						type = 3
 						break;
 					case 3:
-						type = 4
-						break;
+						uni.navigateTo({
+							url: "../orders/remark"
+						})
+						return;
 					case 4:
 						uni.navigateTo({
 							url: "../afterSaleGoods/afterSaleGoods"
