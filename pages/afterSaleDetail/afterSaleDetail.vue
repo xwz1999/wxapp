@@ -3,11 +3,33 @@
 		<view class="top-box" style="height: 260rpx;background-color: #DB2D2D;">
 			<view class="top-con flex align-center justify-center text-white">
 				<!-- 				<view class="bg-white top-round" :class="message.status==1&&message.returnStatus==1?'cuIcon-check':''"> -->
-				<view class="bg-white top-round">
+		<!-- 		<view class="bg-white top-round">
 					<view class="round-txt">{{message.title}}</view>
-				</view>
+				</view> -->
+				<!-- 退款成功通过 -->
+				<block v-if="message.status==5&&message.returnStatus==5">
+					<view class="bg-white top-round cuIcon-check">
+								<view class="round-txt">{{message.title}}</view>
+							</view> 
+				</block>
+				<!--还没退款成功 -->
+				<block v-else>
+					<view class=" bg-white top-round cuIcon-check" v-if="message.status==1&&message.returnStatus==1" >
+							<view class="round-txt">{{message.title}}</view>
+					</view>
+					<view class=" bg-white top-round cuIcon-close" v-if="message.status==7&&message.returnStatus==2" >
+							<view class="round-txt">{{message.title}}</view>
+					</view>
+					<view class=" bg-white top-round cuIcon-check" v-if="message.status==2&&message.returnStatus==3" >
+							<view class="round-txt">{{message.title}}</view>
+					</view>
+					<view class=" bg-white top-round cuIcon-check" v-if="message.status==3&&message.returnStatus==4" >
+							<view class="round-txt">{{message.title}}</view>
+					</view>
+				</block>
+				
 				<view class="line"></view>
-				<view class="bg-white top-round">
+				<view class="bg-white top-round" :class="message.status==5&&message.returnStatus==5?'cuIcon-check':''">
 					<view class="round-txt">{{message.rightTile}}</view>
 				</view>
 			</view>

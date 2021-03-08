@@ -67,9 +67,13 @@
 				<view class="box bg-white">
 					<view class="subtitle">我的资产</view>
 					<view class="flex justify-around text-center card-con">
-						<view @tap="toCoupons">
+				<!-- 		<view @tap="toCoupons">
 							<view class="num">{{info.myAssets.couponNum?info.balance:0}}</view>
 							<view>优惠券(张)</view>
+						</view> -->
+						<view @tap="toBalance">
+							<view class="num">{{info.balance?info.balance:0}}</view>
+							<view>余额（元）</view>
 						</view>
 						<view @tap="toMyMoney">
 							<view class="num">{{info.myAssets.coinNum?info.myAssets.coinNum:0}}</view>
@@ -86,6 +90,30 @@
 						<view>累计收益<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text></view>
 						<view class="flex more"><text style="font-size: 34rpx;color: #333333;">{{totalEarning}}</text><text class="cuIcon-right"></text></view>
 					</navigator>
+				</view>
+				<view class="box bg-white">
+					<view class="subtitle flex align-center justify-between"><text>我的收益</text> <text class="cuIcon-right"></text></view>
+					<view class="flex justify-around text-center card-con">
+						<view class="text-center">
+							<view class="">
+								<text>18922</text>
+							</view>
+							<view class="">
+								<text>本月预估</text>
+							</view>
+						</view>
+						<view class="line">
+							
+						</view>
+						<view class="">
+							<view class="">
+								<text>233</text>
+							</view>
+							<view class="">
+								<text>今日预估</text>
+							</view>
+						</view>
+					</view>
 				</view>
 				<view class="box bg-white" v-if="roleLevel!=500">
 					<navigator url="../selfBuyEarnings/selfBuyEarnings" hover-class="none" class="subtitle flex justify-between">
@@ -277,6 +305,13 @@
 			toMyInfo() {
 				uni.navigateTo({
 					url: "../myInfo/myInfo"
+				})
+			},
+			toBalance(){
+				//我的余额	
+
+				uni.navigateTo({
+					url: "/packageA/balance/balance"
 				})
 			},
 			getTotalEarning() {

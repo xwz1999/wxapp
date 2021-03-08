@@ -94,10 +94,10 @@
 				this.$u.toast("功能暂未开放，敬请期待~");
 			},
 			sendCard(){
-				this.$u.toast("功能暂未开放，敬请期待~");
-				// uni.navigateTo({
-				// 	url:"../myInvite/myInvite"
-				// })
+				// this.$u.toast("功能暂未开放，敬请期待~");
+				uni.navigateTo({
+					url:"../myInvite/myInvite"
+				})
 			},
 			changeCurrent(e) {
 				this.currentIndex = e.detail.current

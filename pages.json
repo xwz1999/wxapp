@@ -275,7 +275,7 @@
 			"style": {
 				"navigationBarTitleText": "订单详情",
 				"enablePullDownRefresh": true
-				
+
 			}
 		},
 		{
@@ -547,6 +547,13 @@
 				"path": "goodsCart/index",
 				"style": {
 					"navigationBarTitleText": "购物车",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "balance/balance",
+				"style": {
+					"navigationBarTitleText": "我的余额",
 					"enablePullDownRefresh": false
 				}
 			},

@@ -15,11 +15,15 @@
 			<view class="content">
 				<text>{{goodsEva.content}}</text>
 			</view>
-			<view class="image-list  flex flex-wrap align-end">
-				<view class="image-box" v-for="(imgItem,imgIndex) in goodsImgList" :key='imgIndex'>
-					<image :src="`${IMAGE_URL}${imgItem.url}`" mode="widthFix"></image>
+			<view class="">
+				<view class="grid col-3 grid-square">
+					<view class="image-box" v-for="(imgItem,imgIndex) in goodsImgList" :key='imgIndex'>
+						<image :src="`${IMAGE_URL}${imgItem.url}`" mode="widthFix"></image>
+					</view>
 				</view>
-				共{{goodsImgList.length}}张
+				<view class="flex justify-end">
+					共{{goodsImgList.length}}张
+				</view>
 			</view>
 		</view>
 	</view>
@@ -38,12 +42,14 @@
 		onLoad(options) {
 			const data = JSON.parse(decodeURIComponent(options.data));
 			this.pageData = data
-			this.getData()
+			console.log(data)
+			 let id = parseInt(data.evaluated_id)
+			this.getData(id)
 		},
 		methods: {
 			getData(id) {
 				let resData = {
-					id: 177
+					id: id
 				}
 				this.$u.post('/api/v1/order/evaluation/evaluationDea', resData).then(res => {
 					console.log(res.data);
@@ -100,15 +106,6 @@
 			font-size: 28rpx;
 			color: #333333;
 			margin-bottom: 80rpx;
-		}
-		.image-list {
-			.image-box {
-				width: 178rpx;
-				height: 178rpx;
-				border-radius: 8rpx;
-				margin-right: 16rpx;
-				margin-top: 20rpx;
-			}
 		}
 	}
 </style>

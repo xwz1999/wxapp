@@ -152,7 +152,7 @@
 					<button class="cu-btn round lines-red" @tap="confirmGet">确认收货</button>
 				</template>
 				<template v-if="orderDetail.status==2||orderDetail.status==3||orderDetail.status==5">
-					<button class="cu-btn round lines-gray" @tap="deleteOrder">删除订单</button>
+					<button class="cu-btn round  lines-red" @tap="deleteOrder">删除订单</button>
 				</template>
 				<template v-if="orderDetail.status==4">
 					<button class="cu-btn round lines-gray" @tap="evaluate">立即评价</button>

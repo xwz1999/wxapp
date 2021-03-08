@@ -59,7 +59,15 @@
 			};
 		},
 		onLoad() {
-			this.end_time = this.time = this.getToday()
+			let today = new Date()
+			let Y = today.getFullYear()
+			let M = today.getMonth() + 1
+			let D = today.getDate()
+			if(M < 10){
+				M = "0"+M
+			}
+			let newDate = Y + "-" + M
+			this.end_time = this.time = newDate
 			this.getCoins()
 		},
 		methods: {
@@ -75,20 +83,23 @@
 				this.getCoins()
 			},
 			chooseTime(e) {
-				// console.log(e.detail.value)
+				if (e.detail.value === this.time) {
+					this.isShow = false
+					return
+				}
 				this.time = e.detail.value
 				this.isShow = false
 				this.getCoins()
 			},
-			getToday() {
-				let today = new Date()
-				let Y = today.getFullYear()
-				let M = today.getMonth() + 1
-				let D = today.getDate()
-				let newDate = Y + "-" + M
-				// console.log(newDate)
-				return newDate
-			},
+			// getToday() {
+			// 	let today = new Date()
+			// 	let Y = today.getFullYear()
+			// 	let M = today.getMonth() + 1
+			// 	let D = today.getDate()
+			// 	let newDate = Y + "-" + M
+			// 	// console.log(newDate)
+			// 	return newDate
+			// },
 			getCoins() {
 				let coinType = ""
 				switch (this.currentType) {
@@ -113,12 +124,13 @@
 					default:
 						break;
 				}
-
-				this.$u.post('/api/v1/wallet/coin/coin_list', {
+				let resData = {
 					userID: uni.getStorageSync("userInfo").id,
 					date: this.time,
 					coinType: coinType
-				}).then(res => {
+				}
+				console.log(resData)
+				this.$u.post('/api/v1/wallet/coin/coin_list',resData).then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);

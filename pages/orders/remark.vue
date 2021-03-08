@@ -37,8 +37,8 @@
 								<view class="remark-btn flex justify-end">
 									<view class="btn flex justify-center align-center">
 										<view class="" @click="toPage(item)">
-											<text v-if="currentIndex">已评价</text>
-											<text v-else>查看评价</text>
+											<text v-if="currentIndex">查看评价</text>
+											<text v-else>评价</text>
 										</view>
 									</view>
 								</view>
@@ -73,6 +73,10 @@
 		
 		onLoad() {
 			this.getOrders()
+			uni.$off('releaseSuccess');
+			uni.$on("releaseSuccess", res => {
+				this.getOrders()
+			})
 		},
 		methods: {
 			// 跳转页面
