@@ -1,13 +1,13 @@
 <template>
 	<view>
 		<view class="null flex flex-direction justify-center align-center" v-if="isNull" style="height: 80vh;">
-			<image src="/static/null05.png" style="width: 300rpx;" mode="widthFix"></image>
+			<image :src="IMAGE_URL + '/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
 			<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无收藏</view>
 		</view>
 		<view class="goods" v-else>
 			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goods.id" class="goods-item bg-white flex justify-between" v-for="(item,index) in goods" :key="index">
 				<view class="goods-pic">
-					<u-lazy-load threshold="-100" :image="IMAGE_URL+item.goods.mainPhotoUrl" :index="index" height="200" border-radius="10" loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+					<u-lazy-load threshold="-100" :image="IMAGE_URL+item.goods.mainPhotoUrl" :index="index" height="200" border-radius="10" :loading-img="IMAGE_URL + '/null05.png'"  :error-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 				</view>
 				<view class="goods-con flex-sub flex flex-direction justify-between clear">
 					<view class="">

@@ -37,7 +37,7 @@
 							<view class="goods-item flex">
 								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" hover-stop-propagation @tap.stop="" class="goods-pic">
 									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="200" border-radius="10"
-									 loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+									 :loading-img="IMAGE_URL + '/null05.png'"  :error-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 								</navigator>
 								<view class="goods-con flex-sub flex flex-direction justify-between">
 									<view class="">

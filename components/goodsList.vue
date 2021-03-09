@@ -5,7 +5,7 @@
 			<navigator hover-class="none" class="goods-item-con bg-white flex justify-between">
 				<view class="goods-pic clear" v-if="item.mainPhotoUrl">
 					<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="260" border-radius="10"
-					 loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+					 :loading-img="IMAGE_URL + '/null05.png'"  :error-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 					<view class="goods-mask flex justify-center" v-if="item.inventory==0">
 						<image :src="STATIC_URL+'sale_out.png'" mode="widthFix"></image>
 					</view>
@@ -28,7 +28,7 @@
 					<view class="goods-msg-bottom" style="font-size: 24rpx;">
 						<view class="shop-msg flex align-center" style="margin: 16rpx 0;" @tap.stop="">
 							<view class="shop-logo">
-								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.brandImg" :index="index" height="30" error-img="/static/null05.png"
+								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.brandImg" :index="index" height="30" :error-img="IMAGE_URL + '/null05.png'" 
 								 img-mode="aspectFill"></u-lazy-load>
 							</view>
 							<navigator :url="'/pages/search/search?brandId='+item.brandId" hover-class="none" class="shop-name text-red text-hidden"

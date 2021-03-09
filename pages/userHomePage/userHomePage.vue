@@ -3,7 +3,7 @@
 		<view class="top-container bg-white">
 			<view class="top-info-box flex align-center">
 				<view class="avatar">
-					<u-lazy-load threshold="-100" :image="IMAGE_URL+info.headImgUrl" :index="index1" error-img="/static/null05.png"
+					<u-lazy-load threshold="-100" :image="IMAGE_URL+info.headImgUrl" :index="index1" :error-img="IMAGE_URL + '/null05.png'" 
 					 borderRadius="60" height="120" img-mode="aspectFill"></u-lazy-load>
 				</view>
 				<view class="flex-sub name text-hidden">{{info.nickname}}</view>
@@ -34,7 +34,7 @@
 		</u-sticky>
 		<view class="dynamic-container bg-white" v-if="currentIndex==0">
 			<view class="null flex flex-direction align-center" style="margin-top: 150rpx;" v-if="isNull1">
-				<image src="../../static/null05.png" style="width: 200rpx;" mode="widthFix"></image>
+				<image :src="IMAGE_URL + '/null05.png'"  style="width: 200rpx;" mode="widthFix"></image>
 				<view class="" style="margin-top: 10rpx;color: #AAAAAA;font-size: 28rpx;">暂无动态</view>
 			</view>
 			<view class="" v-else>
@@ -44,7 +44,7 @@
 						<view class="time">{{item.time}}</view>
 						<view class="flex-sub clear item-con">
 							<navigator url="/pages/videoDetail/videoDetail" class="cover-pic" @tap="getVideoDetail(item)">
-								<u-lazy-load threshold="-100" :image="item.short.cover_url" :index="index" borderRadius="10" error-img="/static/null05.png" loading-img="/static/null05.png"></u-lazy-load>
+								<u-lazy-load threshold="-100" :image="item.short.cover_url" :index="index" borderRadius="10" :error-img="IMAGE_URL + '/null05.png'"  :loading-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>
 								<view class="mask flex flex-direction justify-center align-center">
 									<text class="cuIcon-videofill text-white"></text>
 								</view>
@@ -53,7 +53,7 @@
 							<view class="goods-container flex justify-between" @tap="toDetail(item.goods.id)">
 								<view class="goods-pic">
 									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.goods.mainPhotoURL" :index="index" borderRadius="10"
-									 height="120" error-img="/static/null05.png" loading-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+									 height="120" :error-img="IMAGE_URL + '/null05.png'"  :loading-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 								</view>
 								<view class="goods-name flex-sub flex flex-direction justify-center clear">
 									<view class="name text-hidden">{{item.goods.name}}</view>
@@ -72,7 +72,7 @@
 		
 		<view class="video-container bg-white" v-if="currentIndex==1">
 			<view class="null flex flex-direction align-center" style="margin-top: 150rpx;" v-if="isNull2">
-				<image src="../../static/null05.png" style="width: 200rpx;" mode="widthFix"></image>
+				<image :src="IMAGE_URL + '/null05.png'"  style="width: 200rpx;" mode="widthFix"></image>
 				<view class="" style="margin-top: 10rpx;color: #AAAAAA;font-size: 28rpx;">暂无直播回放</view>
 			</view>
 			<view class="" v-else>
@@ -94,7 +94,7 @@
 								<view class="">{{item.goodsCount}}个宝贝</view>
 							</view>
 							<view class="cover-pic">
-								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.cover" :index="index" borderRadius="10" error-img="/static/null05.png" loading-img="/static/null05.png"></u-lazy-load>
+								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.cover" :index="index" borderRadius="10" :error-img="IMAGE_URL + '/null05.png'"  :loading-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>
 								<view class="mask flex flex-direction justify-center align-center">
 									<text class="cuIcon-videofill text-white"></text>
 								</view>

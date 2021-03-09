@@ -4,7 +4,7 @@
 			<u-tabs :list="list" :is-scroll="false" height="90" :current="currentIndex" duration="0.2" bar-width="100" :bold="false" active-color="red" @change="chooseTabs"></u-tabs>
 		</view>
 		<view class="null flex-sub flex flex-direction justify-center align-center" v-if="isNull" style="width: 100vw;height: 80vh;">
-			<image src="/static/null05.png" style="width: 300rpx;" mode="widthFix"></image>
+			<image :src="IMAGE_URL + '/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
 			<view  style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无优惠券</view>
 		</view>
 		<scroll-view class="flex-sub" scroll-y="true" style="height: 0;">

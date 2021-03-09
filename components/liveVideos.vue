@@ -7,7 +7,7 @@
 			<view class="live-container flex justify-between flex-wrap">
 				<view class="live-item bg-white" v-for="(item,index) in liveVideos" :key="index">
 					<view class="live-main-pic">
-						<u-lazy-load threshold="-100" :image="item.cover" :index="index" error-img="/static/null05.png" @click="toLiveDetail(item.id)"></u-lazy-load>
+						<u-lazy-load threshold="-100" :image="item.cover" :index="index" :error-img="IMAGE_URL + '/null05.png'"  @click="toLiveDetail(item.id)"></u-lazy-load>
 						<view class="icon text-white flex">
 							<text class="cuIcon-playfill"></text>
 							<text style="padding: 0 8rpx;">{{item.look}}人看过</text>
@@ -18,14 +18,14 @@
 							<view class="live-title two-line">{{item.title}}</view>
 							<view class="live-user-msg flex">
 								<view class="avatar">
-									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" error-img="/static/null05.png" height="40" border-radius="20" mg-mode="aspectFill"></u-lazy-load>
+									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'"  height="40" border-radius="20" mg-mode="aspectFill"></u-lazy-load>
 								</view>
 								<view class="user-name text-hidden flex-sub">{{item.nickname}}</view>
 							</view>
 						</view>
 						<view class="live-con-right">
 							<view class="goods-pic">
-								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" error-img="/static/null05.png"
+								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'" 
 								 height="100" mg-mode="aspectFill"></u-lazy-load>
 							</view>
 							<view class="text-center price">￥{{item.originalPrice}}</view>

@@ -2,7 +2,7 @@
 	<view class="goods-container flex flex-wrap justify-between">
 		<view class="goods-item bg-white" v-for="(item,index) in goodsList" :key="index">
 			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" class="goods-pic bg-img">
-				<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="328" loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+				<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="328" :loading-img='IMAGE_URL+"/null05.png"' :error-img='IMAGE_URL+"/null05.png"' img-mode="aspectFill"></u-lazy-load>
 				<view class="goods-mask flex justify-center" v-if="item.inventory==0">
 					<image :src="STATIC_URL+'sale_out.png'" mode="widthFix"></image>
 				</view>

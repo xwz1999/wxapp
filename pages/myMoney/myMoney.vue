@@ -37,7 +37,14 @@
 				</view>
 			</scroll-view>
 		</view>
+<view class="" style="height: 96rpx;">
 
+		</view>
+		<view class="btn-box" @click="toWithdrawal">
+			<view class="btn">
+				<text>转到余额</text>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -69,8 +76,20 @@
 			let newDate = Y + "-" + M
 			this.end_time = this.time = newDate
 			this.getCoins()
+			
+			uni.$off('confirmWithdrawal');
+			uni.$on("confirmWithdrawal", res => {
+				this.getCoins()
+			})
 		},
 		methods: {
+			toWithdrawal(){
+				// 瑞币提现
+				uni.navigateTo({
+					
+					url:"/pages/myMoney/withdrawal?coinTotal=" + this.data.total
+				})
+			},
 			showType() {
 				this.isShow = !this.isShow
 			},
@@ -150,7 +169,19 @@
 		width: 100vw;
 		height: 100vh;
 	}
-
+.btn-box {
+		position: fixed;
+		bottom: 0;
+		width: 750rpx;
+		height: 96rpx;
+		line-height: 96rpx;
+		text-align: center;
+		font-size: 32rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+		background: #C92219;
+	}
 	.num {
 		font-size: 60rpx;
 		margin-top: 10rpx;

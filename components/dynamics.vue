@@ -1,14 +1,14 @@
 <template name="dynamics">
 	<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getList">
 		<view class="null flex flex-direction justify-center align-center" v-if="isNull" style="height: 70vh;width: 100vw;">
-			<image src="/static/null05.png" style="width: 300rpx;" mode="widthFix"></image>
+			<image :src="IMAGE_URL + '/null05.png'" style="width: 300rpx;" mode="widthFix"></image>
 			<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无动态</view>
 		</view>
 		<view class="find-container" v-else>
 			<view class="dynamic-item" v-for="(item1,index1) in dynamics" :key="index1">
 				<view class="bg-white flex justify-between" style="padding: 30rpx;">
 					<view class="avatar">
-						<u-lazy-load threshold="-100" :image="IMAGE_URL+item1.headImgUrl" :index="index1" error-img="/static/null05.png" height="80" border-radius="40" img-mode="aspectFill"></u-lazy-load>		
+						<u-lazy-load threshold="-100" :image="IMAGE_URL+item1.headImgUrl" :index="index1" :error-img="IMAGE_URL + '/null05.png'"  height="80" border-radius="40" img-mode="aspectFill"></u-lazy-load>		
 					</view>
 					<view class="finder-msg flex-sub flex flex-direction clear">
 						<view class="avatar-right flex flex-direction justify-center">
@@ -18,14 +18,14 @@
 						<view class="dynamic-con">
 							<view class="pic-con flex flex-wrap">
 								<view class="pic-item bg-img" v-for="(item2,index2) in item1.photos" :key="index2" @tap="previewImage(index2,item1.photos)">
-									<u-lazy-load threshold="-100" border-radius="5" :image="IMAGE_URL+item2.url" :index="index2" error-img="/static/null05.png" height="190" img-mode="aspectFill"></u-lazy-load>
+									<u-lazy-load threshold="-100" border-radius="5" :image="IMAGE_URL+item2.url" :index="index2" :error-img="IMAGE_URL + '/null05.png'" height="190" img-mode="aspectFill"></u-lazy-load>
 								</view>
 							</view>
 							<view class="txt-con">{{item1.text}}</view>
 						</view>
 						<view class="goods-container flex justify-between" v-if="showGoodsLink" @tap="toDetail(item1.goods.id)">
 							<view class="goods-pic">
-								<u-lazy-load threshold="-100" :image="IMAGE_URL+item1.goods.mainPhotoURL" :index="index" borderRadius="10" height="120" error-img="/static/null05.png" loading-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+								<u-lazy-load threshold="-100" :image="IMAGE_URL+item1.goods.mainPhotoURL" :index="index" borderRadius="10" height="120" :error-img="IMAGE_URL + '/null05.png'" :loading-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 							</view>
 							<view class="goods-name flex-sub flex flex-direction justify-center clear">
 								<view class="name text-hidden">{{item1.goods.name}}</view>

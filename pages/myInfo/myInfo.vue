@@ -4,7 +4,7 @@
 			<view class="">头像</view>
 			<view class="flex align-center right">
 				<view class="avatar">
-					<u-lazy-load threshold="-100" :image="IMAGE_URL+info.headImgUrl" :index="index" height="120" border-radius="60" loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+					<u-lazy-load threshold="-100" :image="IMAGE_URL+info.headImgUrl" :index="index" height="120" border-radius="60" :loading-img="IMAGE_URL + '/null05.png'"  :error-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 				</view>
 				<text class="cuIcon-right"></text>
 			</view>

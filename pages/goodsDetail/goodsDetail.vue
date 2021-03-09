@@ -217,7 +217,7 @@
 												<view class="comment-item" v-for="(item,index) in goodsDetail.evaluations.children" :key="index">
 													<view class="item-top flex">
 														<view class="comment-avatar">
-															<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" error-img="/static/null05.png"
+															<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'" 
 															 border-radius="25" height="50"></u-lazy-load>
 
 														</view>
@@ -235,7 +235,7 @@
 								<view class="box bg-white" style="padding-top: 0;">
 									<navigator :url="'/pages/search/search?brandId='+goodsDetail.brand.id" hover-class="none" class="shop-box flex justify-between">
 										<view class="shop-logo">
-											<u-lazy-load threshold="-100" :image="IMAGE_URL+goodsDetail.brand.logoUrl" :index="index" error-img="/static/null05.png"
+											<u-lazy-load threshold="-100" :image="IMAGE_URL+goodsDetail.brand.logoUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'" 
 											 border-radius="10" height="150"></u-lazy-load>
 										</view>
 										<view class="shop-con flex-sub">
@@ -258,7 +258,7 @@
 											<view class="rec-con flex">
 												<view class="rec-item" v-for="(item,index) in goodsDetail.recommends" :key="index">
 													<navigator class="item-image" :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" open-type="redirect">
-														<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" error-img="/static/null05.png"
+														<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'" 
 														 border-radius="10" height="200"></u-lazy-load>
 													</navigator>
 													<view class="item-name two-line">{{item.goodsName}}</view>
@@ -277,7 +277,7 @@
 										</view>
 										<view class="detail-pics">
 											<u-lazy-load threshold="-100" :image="IMAGE_URL+item.url" v-for="(item,index) in pictures" :key="index"
-											 :index="index" loading-img="/static/null05.png" error-img="/static/null05.png"></u-lazy-load>
+											 :index="index" :loading-img="IMAGE_URL + '/null05.png'"  :error-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>
 										</view>
 									</view>
 								</view>
@@ -422,7 +422,7 @@
 				<view class="spec-top flex">
 					<view class="goods-pic">
 						<u-lazy-load threshold="-100" :image="IMAGE_URL+checkedSkuMsg.picUrl" :index="index" height="200" border-radius="10"
-						 loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+						 :loading-img="IMAGE_URL + '/null05.png'"  :error-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 					</view>
 					<view class="goods-msg flex-sub">
 						<view class="text-black">

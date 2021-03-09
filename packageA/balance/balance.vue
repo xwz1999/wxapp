@@ -37,7 +37,14 @@
 				</view>
 			</scroll-view>
 		</view>
+		<view class="" style="height: 96rpx;">
 
+		</view>
+		<view class="btn-box" @click="toBalance">
+			<view class="btn">
+				<text>转到余额</text>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -75,6 +82,13 @@
 		methods: {
 			showType() {
 				this.isShow = !this.isShow
+			},
+			// 转到余额页面
+			toBalance() {
+				// pages/withdraw/withdraw
+				uni.navigateTo({
+					url: "/pages/withdraw/withdraw"
+				})
 			},
 			getTotal() {
 				let resData = {
@@ -136,6 +150,20 @@
 		background-color: #F5F5F5;
 		width: 100vw;
 		height: 100vh;
+	}
+
+	.btn-box {
+		position: fixed;
+		bottom: 0;
+		width: 750rpx;
+		height: 96rpx;
+		line-height: 96rpx;
+		text-align: center;
+		font-size: 32rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+		background: #C92219;
 	}
 
 	.num {

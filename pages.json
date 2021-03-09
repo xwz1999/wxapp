@@ -104,6 +104,20 @@
 			}
 		},
 		{
+			"path": "pages/myMoney/withdrawal",
+			"style": {
+				"navigationBarTitleText": "转到余额",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/myMoney/success",
+			"style": {
+				"navigationBarTitleText": "结果详情",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/inviteMakeShop/inviteMakeShop",
 			"style": {
 				"navigationBarTitleText": "会员邀请店主",
@@ -401,14 +415,6 @@
 				"enablePullDownRefresh": false
 			}
 		},
-
-		{
-			"path": "pages/feedback/feedback",
-			"style": {
-				"navigationBarTitleText": "意见反馈",
-				"enablePullDownRefresh": false
-			}
-		},
 		{
 			"path": "pages/logisticsList/logisticsList",
 			"style": {
@@ -557,7 +563,19 @@
 					"enablePullDownRefresh": false
 				}
 			},
-
+			{
+				"path": "myIncome/myIncome",
+				// "style": {
+				// 	"navigationBarTitleText": "我的收益",
+				// 	"enablePullDownRefresh": false
+				// },
+				"style": {
+					"navigationBarTitleText": "我的收益",
+					"enablePullDownRefresh": false,
+					"navigationBarBackgroundColor": "#16182B",
+					"navigationBarTextStyle": "white"
+				}
+			},
 			{
 				"path": "agreement/share",
 				"style": {

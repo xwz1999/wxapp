@@ -6,7 +6,7 @@
 				<view class="flex msg-left" v-if="isLogin" @tap="toMyInfo">
 					<view class="avatar">
 						<u-lazy-load threshold="-100" :image="IMAGE_URL+userInfo.headImgUrl" :index="index" height="140" border-radius="70"
-						 loading-img="/static/null05.png" error-img="/static/null05.png" img-mode="aspectFill"></u-lazy-load>
+						 :loading-img="IMAGE_URL + '/null05.png'" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill"></u-lazy-load>
 					</view>
 					<view class="user-msg">
 						<view class="nickname text-white">{{userInfo.nickname}}</view>
@@ -67,7 +67,7 @@
 				<view class="box bg-white">
 					<view class="subtitle">我的资产</view>
 					<view class="flex justify-around text-center card-con">
-				<!-- 		<view @tap="toCoupons">
+						<!-- 		<view @tap="toCoupons">
 							<view class="num">{{info.myAssets.couponNum?info.balance:0}}</view>
 							<view>优惠券(张)</view>
 						</view> -->
@@ -85,33 +85,46 @@
 						</view>
 					</view>
 				</view>
+		
 				<view class="box bg-white">
 					<navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;">
 						<view>累计收益<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text></view>
 						<view class="flex more"><text style="font-size: 34rpx;color: #333333;">{{totalEarning}}</text><text class="cuIcon-right"></text></view>
 					</navigator>
 				</view>
-				<view class="box bg-white">
+				
+				
+						<!-- 我的收益 -->
+				<view class="box bg-white" @click="toMyIncome">
 					<view class="subtitle flex align-center justify-between"><text>我的收益</text> <text class="cuIcon-right"></text></view>
-					<view class="flex justify-around text-center card-con">
-						<view class="text-center">
+					<view class="flex justify-around text-center align-center subtitle" style="line-height: 50rpx;font-size: 36rpx;color: #333333;padding: 16rpx 0 20rpx 0;font-weight: 400;">
+						<view>
 							<view class="">
-								<text>18922</text>
+								<text>{{myIncomeData.monthExpect?myIncomeData.monthExpect:0}}</text>
 							</view>
-							<view class="">
+							<view class="" style="font-size: 24rpx;">
 								<text>本月预估</text>
 							</view>
 						</view>
-						<view class="line">
-							
+						<view class="line" style="width: 4rpx; height: 76rpx; background: #E6E6E6; border-radius: 1rpx;">
 						</view>
 						<view class="">
 							<view class="">
-								<text>233</text>
+								<text>{{myIncomeData.dayExpect?myIncomeData.dayExpect:0}}</text>
 							</view>
-							<view class="">
+							<view class="" style="font-size: 24rpx;">
 								<text>今日预估</text>
 							</view>
+						</view>
+					</view>
+					<view class="flex justify-around align-center" style="font-size: 24rpx;color: #666666;padding: 14rpx 0;">
+						<view class="">
+							<text>上月结算</text><text style="color: #D7BE8E;">￥{{myIncomeData.lastMonthIncome?myIncomeData.lastMonthIncome:0}}</text>
+						</view>
+						<view class="">
+						</view>
+						<view class="">
+							<text>上月预估</text><text style="color: #D7BE8E;">￥{{myIncomeData.lastMonthExpect?myIncomeData.lastMonthExpect:0}}</text>
 						</view>
 					</view>
 				</view>
@@ -217,6 +230,7 @@
 	export default {
 		data() {
 			return {
+				myIncomeData:null,//
 				STATIC_URL: this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
 				isLogin: false,
@@ -300,6 +314,7 @@
 				this.userInfo.nickname = uni.getStorageSync("userInfo").nickname
 				this.userInfo.headImgUrl = uni.getStorageSync("userInfo").headImgUrl
 			}
+			this.myIncome()
 		},
 		methods: {
 			toMyInfo() {
@@ -307,11 +322,28 @@
 					url: "../myInfo/myInfo"
 				})
 			},
-			toBalance(){
+			toBalance() {
 				//我的余额	
-
 				uni.navigateTo({
 					url: "/packageA/balance/balance"
+				})
+			},
+			// 我的收益
+			myIncome(){
+				this.$u.post('/api/v2/app/user/income', {
+				}).then(res => {
+					console.log(res.data);
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.myIncomeData = res.data.data
+				});
+			},
+			// 到我的收益页面
+			toMyIncome(){
+				uni.navigateTo({
+					url: "/packageA/myIncome/myIncome"
 				})
 			},
 			getTotalEarning() {
@@ -471,8 +503,9 @@
 		border: none;
 		background-color: rgba(0, 0, 0, 0);
 		border-radius: 0;
-		 border: none;
-		 color: #FFFFFF;
+		border: none;
+		color: #FFFFFF;
+
 		// &button{
 		// 	margin:0;
 		// 	padding: 0;
@@ -480,7 +513,7 @@
 		// }
 		// &button
 		&::after {
-		  border: none;
+			border: none;
 		}
 	}
 
@@ -580,7 +613,6 @@
 			color: #000;
 			border-bottom: 2rpx solid #E6E6E6;
 			font-weight: 700;
-
 			.more {
 				font-size: 26rpx;
 				color: #AAAAAA;

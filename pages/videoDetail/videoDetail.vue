@@ -8,7 +8,7 @@
 				<view class="flex align-center top-left round">
 					<view class="avatar">
 						<u-lazy-load threshold="-100" :image="IMAGE_URL+videoDetail.headImgUrl" :index="index" height="70" border-radius="35"
-						 error-img="/static/null05.png" @click="toUserHomePage(videoDetail.userId)"></u-lazy-load>
+						 :error-img="IMAGE_URL + '/null05.png'"  @click="toUserHomePage(videoDetail.userId)"></u-lazy-load>
 					</view>
 					<view class="user-info">
 						<view style="font-size: 26rpx;">{{videoDetail.nickname}}</view>
@@ -23,7 +23,7 @@
 			<navigator :url="'../goodsDetail/goodsDetail?id='+videoDetail.goods.id" class="goods-left bg-white">
 				<view class="goods-pic">
 					<u-lazy-load threshold="-100" :image="IMAGE_URL+videoDetail.goods.mainPhotoURL" :index="index" height="180"
-					 error-img="/static/null05.png"></u-lazy-load>
+					 :error-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>
 					<view class="name text-hidden">{{videoDetail.goods.name}}</view>
 				</view>
 				<view class="text-center text-red price">￥{{videoDetail.goods.price | toFixed(2)}}</view>
@@ -47,14 +47,14 @@
 				</view>
 				<scroll-view class="comment-con flex-sub" style="height: 0;" scroll-y="true" @scrolltolower="getComments">
 					<view class="flex flex-direction justify-center align-center null" v-if="isNull">
-						<image src="../../static/null05.png" style="width: 240rpx;margin-top: 120rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/null05.png'"  style="width: 240rpx;margin-top: 120rpx;" mode="widthFix"></image>
 						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无评论</view>
 					</view>
 					<view class="comment-center" v-else>
 						<view class="comment-item flex justify-between align-start" v-for="(item,index) in comments" :key="index">
 							<view class="comment-avatar">
 								<u-lazy-load threshold="-100" border-radius="25" :image="IMAGE_URL+item.headImgUrl" :index="index" height="50"
-								 error-img="/static/null05.png"></u-lazy-load>
+								 :error-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>
 							</view>
 							<view class="item-center flex-sub clear">
 								<view class="name">{{item.nickname}}</view>

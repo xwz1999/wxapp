@@ -1,7 +1,7 @@
 <template>
 	<view style="height: 100vh;">
 		<view class="null flex flex-direction justify-center align-center" v-if="isNull" style="height: 80vh;">
-			<image src="/static/null05.png" style="width: 300rpx;" mode="widthFix"></image>
+			<image :src="IMAGE_URL + '/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
 			<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无邀请</view>
 		</view>
 		<view v-else class="flex flex-direction" style="height: 100%;">

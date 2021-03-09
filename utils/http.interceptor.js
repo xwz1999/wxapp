@@ -55,7 +55,6 @@ const install = (Vue, vm) => {
 	}
 	// 响应拦截
 	Vue.prototype.$u.http.interceptor.response = (res) => {
-		console.log(res)
 		if(res.code=="FAIL"){
 			vm.$u.toast(res.msg);
 			return false

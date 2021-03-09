@@ -11,7 +11,7 @@
 			<swiper-item v-for="(item1,index1) in list" :key="index1">
 				<scroll-view scroll-y="true" style="height: 100%;">
 					<view class="null flex-sub flex flex-direction justify-center align-center" v-if="item1.cards.length==0" style="height: 70vh;">
-						<image src="/static/null05.png" style="width: 300rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
 						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无卡券</view>
 					</view>
 					<view class="card-box" v-else>

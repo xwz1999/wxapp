@@ -6,7 +6,7 @@
 				<view class="flex align-center top-left round">
 					<view class="avatar">
 						<u-lazy-load threshold="-100" :image="IMAGE_URL+videoDetail.headImgUrl" :index="index" height="70" border-radius="35"
-						 error-img="/static/null05.png" @click="toUserHomePage(videoDetail.userId,videoDetail.isFollow)"></u-lazy-load>
+						 :error-img="IMAGE_URL + '/null05.png'"  @click="toUserHomePage(videoDetail.userId,videoDetail.isFollow)"></u-lazy-load>
 					</view>
 					<view class="user-info">
 						<view style="font-size: 26rpx;">{{videoDetail.nickname}}</view>
@@ -31,7 +31,7 @@
 				<view class="item" v-for="(item,index) in videoDetail.goodsLists" :key="index">
 					<view class="item-con flex justify-between">
 						<view class="goods-pic">
-							<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="200" border-radius="10" error-img="/static/null05.png" @click="toGoodsDetail(item.id)"></u-lazy-load>
+							<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="200" border-radius="10" :error-img="IMAGE_URL + '/null05.png'"  @click="toGoodsDetail(item.id)"></u-lazy-load>
 							<view class="no">{{index+1}}</view>
 						</view>
 						<view class="goods-con flex-sub flex flex-direction justify-between">
