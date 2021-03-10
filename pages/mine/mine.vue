@@ -494,9 +494,8 @@
 	page {
 		background-color: #F3F4F6;
 	}
-
+	//客服
 	.customer-service {
-
 		margin: 0;
 		padding: 0;
 		line-height: 0;
@@ -505,37 +504,11 @@
 		border-radius: 0;
 		border: none;
 		color: #FFFFFF;
-
-		// &button{
-		// 	margin:0;
-		// 	padding: 0;
-		// 	line-height: 0;
-		// }
-		// &button
 		&::after {
 			border: none;
 		}
 	}
 
-
-	// .login-box {
-	// 	position: fixed;
-	// 	width: 100vw;
-	// 	height: 100vh;
-
-	// 	image {
-	// 		width: 160rpx;
-	// 		box-shadow: 5rpx 5rpx 10rpx 3rpx rgba(0, 0, 0, 0.3);
-	// 		margin-bottom: 200rpx;
-	// 	}
-
-	// 	button {
-	// 		width: 400rpx;
-	// 		height: 60rpx;
-	// 		line-height: 60rpx;
-	// 		border-radius: 15rpx;
-	// 	}
-	// }
 
 	.top-container {
 		position: relative;

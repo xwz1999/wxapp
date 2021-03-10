@@ -565,12 +565,53 @@
 			},
 			{
 				"path": "myIncome/myIncome",
-				// "style": {
-				// 	"navigationBarTitleText": "我的收益",
-				// 	"enablePullDownRefresh": false
-				// },
 				"style": {
 					"navigationBarTitleText": "我的收益",
+					"enablePullDownRefresh": false,
+					"navigationBarBackgroundColor": "#16182B",
+					"navigationBarTextStyle": "white"
+				}
+			},
+			{
+				"path": "myIncome/purchase",
+				"style": {
+					"navigationBarTitleText": "自购收益",
+					"enablePullDownRefresh": false,
+					"navigationBarBackgroundColor": "#16182B",
+					"navigationBarTextStyle": "white"
+				}
+			},
+			{
+				"path": "myIncome/guide",
+				"style": {
+					"navigationBarTitleText": "导购收益",
+					"enablePullDownRefresh": false,
+					"navigationBarBackgroundColor": "#16182B",
+					"navigationBarTextStyle": "white"
+				}
+			},
+			{
+				"path": "myIncome/team",
+				"style": {
+					"navigationBarTitleText": "团队收益",
+					"enablePullDownRefresh": false,
+					"navigationBarBackgroundColor": "#16182B",
+					"navigationBarTextStyle": "white"
+				}
+			},
+			{
+				"path": "myIncome/recommend",
+				"style": {
+					"navigationBarTitleText": "推荐收益",
+					"enablePullDownRefresh": false,
+					"navigationBarBackgroundColor": "#16182B",
+					"navigationBarTextStyle": "white"
+				}
+			},
+			{
+				"path": "myIncome/reward",
+				"style": {
+					"navigationBarTitleText": "平台收益",
 					"enablePullDownRefresh": false,
 					"navigationBarBackgroundColor": "#16182B",
 					"navigationBarTextStyle": "white"

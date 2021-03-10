@@ -1,5 +1,5 @@
 <template>
-	<view class="">
+	<view class="content-box">
 		<view class="myNav">
 
 		</view>
@@ -24,7 +24,7 @@
 		</view>
 		<view>
 			<view class="box bg-white">
-				<navigator url="../selfBuyEarnings/selfBuyEarnings" hover-class="none" class="subtitle flex justify-between">
+				<navigator url="./purchase" hover-class="none" class="subtitle flex justify-between">
 					<view class="flex align-center">
 						<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
 						<view>自购收益</view>
@@ -48,7 +48,7 @@
 			</view>
 
 			<view class="box bg-white">
-				<navigator url="../shareEarnings/shareEarnings" hover-class="none" class="subtitle flex justify-between">
+				<navigator url="./guide" hover-class="none" class="subtitle flex justify-between">
 					<view class="flex align-center">
 						<image src="../../static/mine/t02.png" style="width: 64rpx;" mode="widthFix"></image>
 						<view>导购收益</view>
@@ -72,13 +72,14 @@
 			</view>
 
 			<view class="box bg-white">
-				<view class="subtitle flex justify-between" @tap="toTeamEarnings">
+			
+				<navigator url="./team" hover-class="none" class="subtitle flex justify-between">
 					<view class="flex align-center">
 						<image src="../../static/mine/t03.png" style="width: 64rpx;" mode="widthFix"></image>
 						<view>团队收益</view>
 					</view>
 					<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-				</view>
+				</navigator>
 				<view class="money-box flex justify-between">
 					<view>
 						<view class="txt">团队销售额(元)</view>
@@ -95,7 +96,7 @@
 				</view>
 			</view>
 			<view class="box bg-white">
-				<navigator url="../shareEarnings/shareEarnings" hover-class="none" class="subtitle flex justify-between">
+				<navigator url="./recommend" hover-class="none" class="subtitle flex justify-between">
 					<view class="flex align-center">
 						<image src="../../static/mine/t02.png" style="width: 64rpx;" mode="widthFix"></image>
 						<view>推荐收益</view>
@@ -118,7 +119,7 @@
 				</view>
 			</view>
 			<view class="box bg-white">
-				<navigator url="../shareEarnings/shareEarnings" hover-class="none" class="subtitle flex justify-between">
+				<navigator url="./reward" hover-class="none" class="subtitle flex justify-between">
 					<view class="flex align-center">
 						<image src="../../static/mine/t02.png" style="width: 64rpx;" mode="widthFix"></image>
 						<view>平台奖励</view>
@@ -159,13 +160,12 @@
 				}, {
 					name: '上月',
 				}],
-				current: null,
+				current: 0,
 				tabsListData: [],
-				amountTotal:0
+				amountTotal: 0
 			}
 		},
-		mounted() {
-
+		async mounted() {
 			let today = new Date()
 			let nowYear = today.getFullYear()
 			let nowMonth = today.getMonth()
@@ -190,22 +190,20 @@
 				let todayDate = new Date(nowYear, nowMonth - 1, nowDay);
 				return this.formatMonthDate(todayDate);
 			};
-			this.getDay(newDay())
-			this.getDay(lastDay())
-			this.getMonth(newMonth())
-			this.getMonth(lastMonth())
-			this.current = 0
+			await this.getDay(newDay(), 0)
+			await this.getDay(lastDay(), 1)
+			await this.getMonth(newMonth(), 2)
+			await this.getMonth(lastMonth(), 3)
+			this.totalAmount()
 		},
 		methods: {
 			totalAmount() {
 				let obj = this.tabsListData[this.current]
 				let numTotal = 0
-				Object.keys(obj).forEach(function(key) {
-
-					numTotal += obj[key].amount
+				Object.keys(obj).forEach(function(keys) {
+					numTotal += obj[keys].amount
 				})
 				this.amountTotal = numTotal
-				
 			},
 			//天数格式化
 			formatDayDate(date) {
@@ -230,48 +228,43 @@
 				return (myyear + "-" + mymonth);
 			},
 			changeCurrent(e) {
-				console.log(e)
 				this.current = e.detail.current
+				this.totalAmount()
 			},
 			change(index) {
 				this.current = index
 				this.totalAmount()
 			},
-			getMonth(month) {
-				this.$u.post('/api/v2/app/user/income/month_incomes', {
+			async getMonth(month, index) {
+				const res = await this.$u.post('/api/v2/app/user/income/month_incomes', {
 					month: month
-				}).then(res => {
-					// console.log(res)
-					this.tabsListData.push(res.data.data)
 				})
+				this.$set(this.tabsListData, index, res.data.data)
+
 			},
-			getDay(day) {
-				this.$u.post('/api/v2/app/user/income/day_incomes', {
+			async getDay(day, index) {
+				const res = await this.$u.post('/api/v2/app/user/income/day_incomes', {
 					day: day
-				}).then(res => {
-					this.tabsListData.push(res.data.data)
 				})
-			}
-		},
-		watch:{
-			current: {
-				handler(newValue) {
-					this.totalAmount()
-				},
-				immediate: true
+				this.$set(this.tabsListData, index, res.data.data)
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.content-box {
+		width: 750rpx;
+		overflow: hidden;
+	}
+
 	.myNav {
 		position: absolute;
 		top: 0;
-		left: 0;
-		width: 750rpx;
+		left: -100rpx;
+		width: 950rpx;
 		height: 386rpx;
-		border-radius: 0 0 150rpx 150rpx;
+		border-radius: 0 0 350rpx 350rpx;
 		background: #16182B;
 		z-index: -1;
 	}

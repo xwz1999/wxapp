@@ -1,0 +1,244 @@
+<!-- 导购 -->
+<template>
+	<view class="" style="width: 750rpx; overflow: hidden;">
+		<view class="myNav">
+		</view>
+		<view class="content">
+			<view class="tab-box">
+				<view class="tabs flex justify-between align-center">
+					<view class="tab" v-for="(tab,index) in tabList" :key='index' :class="current===index?'tab-active':''" @click="tabChange(index)">
+						<text>{{tab.name}}</text>
+					</view>
+				</view>
+			</view>
+			<view class="">
+				<swiper class="flex-sub" :current="current" :indicator-dots="false" :autoplay="false" @change="changeCurrent">
+					<swiper-item v-for="(item,index) in tabList" :key='index'>
+						<scroll-view scroll-y="true" style="height: 344rpx;width: 690rpx;background: #FFFFFF;margin: 20rpx auto;">
+							<view class="flex justify-center align-center text-center" style="width: 100%; height: 100%;">
+								<view>
+									<view class="">
+										<text style="font-size:36rpx;color:#999999;">预估收益</text>
+									</view>
+									<view class="">
+										<text style="font-size:56rpx;color:#333333;">{{memberList[current].recommend.amount}}</text>
+									</view>
+								</view>
+							</view>
+						</scroll-view>
+					</swiper-item>
+				</swiper>
+			</view>
+			<view class="member-line">
+				<view class="line">
+
+				</view>
+			</view>
+
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				tabList: [{
+					name: '今日'
+				}, {
+					name: '昨日'
+				}, {
+					name: '本月',
+				}, {
+					name: '上月',
+				}],
+				tabsListData: [],
+				current: 0,
+				IMAGE_URL: this.IMAGE_URL,
+				memberList: [],
+
+			}
+		},
+		mounted() {
+			let today = new Date()
+			let nowYear = today.getFullYear()
+			let nowMonth = today.getMonth()
+			let nowDay = today.getDate()
+			// 当天
+			const newDay = () => {
+				let todayDate = new Date(nowYear, nowMonth, nowDay);
+				return this.formatDayDate(todayDate);
+			};
+			// 昨天
+			const lastDay = () => {
+				let todayDate = new Date(nowYear, nowMonth, nowDay - 1);
+				return this.formatDayDate(todayDate);
+			};
+			// 当月
+			const newMonth = () => {
+				let todayDate = new Date(nowYear, nowMonth, nowDay);
+				return this.formatMonthDate(todayDate);
+			};
+			// 上月
+			const lastMonth = () => {
+				let todayDate = new Date(nowYear, nowMonth - 1, nowDay);
+				return this.formatMonthDate(todayDate);
+			};
+			this.getDay(newDay(), 0)
+			this.getDay(lastDay(), 1)
+			this.getMonth(newMonth(), 2)
+			this.getMonth(lastMonth(), 3)
+			console.log(this.tabsListData)
+		},
+		filters: {
+			formatDayDate(mmdd) {
+				let date = new Date(mmdd);
+				let myyear = date.getFullYear();
+				let mymonth = date.getMonth() + 1;
+				let myDay = date.getDate()
+				if (myDay < 10) {
+					myDay = '0' + myDay
+				}
+				if (mymonth < 10) {
+					mymonth = "0" + mymonth;
+				}
+				return (mymonth + '月' + myDay + '日');
+			},
+		},
+		methods: {
+			changeCurrent(e) {
+				this.current = e.detail.current
+				// this.totalAmount()
+			},
+			tabChange(index) {
+				this.current = index
+			},
+			getMonth(month, index) {
+				this.$u.post('/api/v2/app/user/income/month_expect_team', {
+					month: month
+				}).then(res => {
+					console.log(res)
+					this.$set(this.memberList, index, res.data.data)
+
+				})
+			},
+			getDay(day, index) {
+				this.$u.post('/api/v2/app/user/income/day_expect_team', {
+					day: day
+				}).then(res => {
+					console.log(res)
+					this.$set(this.memberList, index, res.data.data)
+
+				})
+			},
+			//天数格式化
+			formatDayDate(date) {
+				let myyear = date.getFullYear();
+				let mymonth = date.getMonth() + 1;
+				let myDay = date.getDate()
+				if (myDay < 10) {
+					myDay = '0' + myDay
+				}
+				if (mymonth < 10) {
+					mymonth = "0" + mymonth;
+				}
+				return (myyear + "-" + mymonth + '-' + myDay);
+			},
+			// 月格式化
+			formatMonthDate(date) {
+				let myyear = date.getFullYear();
+				let mymonth = date.getMonth() + 1;
+				if (mymonth < 10) {
+					mymonth = "0" + mymonth;
+				}
+				return (myyear + "-" + mymonth);
+			},
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.myNav {
+		position: absolute;
+		top: 0;
+		left: -100rpx;
+		width: 950rpx;
+		height: 386rpx;
+		border-radius: 0 0 350rpx 350rpx;
+		background: #16182B;
+		z-index: -1;
+	}
+
+
+	.content {
+		.tab-box {
+			margin: 0 30rpx;
+			.tabs {
+				.tab {
+					width: 120rpx;
+					height: 44rpx;
+					line-height: 44rpx;
+					text-align: center;
+					border-radius: 20rpx;
+					border: 2rpx solid #FFFFFF;
+					font-size: 28rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #FFFFFF;
+					&.tab-active {
+						background: #FFFFFF;
+						color: #000000;
+					}
+				}
+			}
+		}
+
+		.member-line {
+			width: 722rpx;
+			margin: 20rpx auto 0;
+			padding: 6rpx 8rpx;
+			background: #E3E3E3;
+			box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.25);
+			border-radius: 14rpx;
+			z-index: 10;
+
+			.line {
+				width: 706rpx;
+				height: 8rpx;
+				background: #6A6A6A;
+				box-shadow: 0rpx 4rpx 8rpx 0rpx rgba(0, 0, 0, 0.39);
+				border-radius: 14rpx;
+				opacity: 0.31;
+			}
+		}
+
+		.member-box {
+			margin: 0 30rpx;
+			position: relative;
+			top: -6rpx;
+			z-index: 100;
+			padding: 0 30rpx;
+			background: #FFFFFF;
+			box-shadow: 0rpx 4rpx 8rpx 0rpx rgba(0, 0, 0, 0.11);
+
+			.avatar {
+				width: 80rpx;
+				height: 80rpx;
+				border-radius: 50%;
+				overflow: hidden;
+				margin-right: 20rpx;
+			}
+
+			.member-title {
+				margin-bottom: 20rpx;
+				padding: 40rpx 0 20rpx;
+				font-size: 28rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
+				color: #333333;
+			}
+		}
+
+
+	}
+</style>
