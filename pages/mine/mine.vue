@@ -128,78 +128,69 @@
 						</view>
 					</view>
 				</view>
-				<view class="box bg-white" v-if="roleLevel!=500">
-					<navigator url="../selfBuyEarnings/selfBuyEarnings" hover-class="none" class="subtitle flex justify-between">
-						<view class="flex align-center">
-							<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
-							<view>自购收益</view>
+				<view class="box bg-white">
+					<view class=" subtitle flex justify-between" style="border: none;">
+						<view>店铺管理</view>
+					</view>
+				
+					<view class="shop-box flex justify-between flex-wrap">
+						<view class="card" @click="teamShare" >
+							<image :src="`${IMAGE_URL}/mineShop/shop1.jpg`" mode="widthFix"></image>
+							<view class="">
+								<text>团队扩招</text>
+							</view>
+							<view class="" style="font-size: 20rpx;">
+								<text>0元创业·轻松赚</text>
+							</view>
 						</view>
-						<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-					</navigator>
-					<view class="money-box flex justify-between">
-						<view>
-							<view class="txt">订单(笔)</view>
-							<view class="num">{{info.myShopping.orderNum}}</view>
+						<view class="card" @click="toMineShopPage" >
+							<image :src="`${IMAGE_URL}/mineShop/shop2.jpg`" mode="widthFix"></image>
+							<view class="">
+								<text>我的团队</text>
+							</view>
+							<view class="" style="font-size: 20rpx;">
+								<text>有福同享·真壕友</text>
+							</view>
 						</view>
-						<view>
-							<view class="txt">销售额(元)</view>
-							<view class="num">{{info.myShopping.amount}}</view>
+						<view class="card" >
+							<image :src="`${IMAGE_URL}/mineShop/shop3.jpg`" mode="widthFix"></image>
+							<view class="">
+								<text>推荐钻石店铺</text>
+							</view>
+							<view class="" style="font-size: 20rpx;">
+								<text>推荐好友·福利双赢</text>
+							</view>
 						</view>
-						<view>
-							<view class="txt">累计收益(瑞币)</view>
-							<view class="num">{{info.myShopping.historyIncome}}</view>
+						<view class="card" >
+							<image :src="`${IMAGE_URL}/mineShop/shop4.jpg`" mode="widthFix"></image>
+							<view class="">
+								<text>我的推荐</text>
+							</view>
+							<view class="" style="font-size: 20rpx;">
+								<text>呼朋唤友·享收益
+</text>
+							</view>
+						</view>
+						<view class="card" >
+							<image :src="`${IMAGE_URL}/mineShop/shop5.jpg`" mode="widthFix"></image>
+							<view class="">
+								<text>获取平台奖励</text>
+							</view>
+							<view class="" style="font-size: 20rpx;">
+								<text>平台可靠·奖励多</text>
+							</view>
+						</view>
+						<view class="card">
+							<image :src="`${IMAGE_URL}/mineShop/shop6.jpg`" mode="widthFix"></image>
+							<view class="">
+								<text>我的奖励</text>
+							</view>
+							<view class="" style="font-size: 20rpx;">
+								<text>积少成多·奖励丰厚</text>
+							</view>
 						</view>
 					</view>
 				</view>
-
-				<view class="box bg-white" v-if="roleLevel!=500">
-					<navigator url="../shareEarnings/shareEarnings" hover-class="none" class="subtitle flex justify-between">
-						<view class="flex align-center">
-							<image src="../../static/mine/t02.png" style="width: 64rpx;" mode="widthFix"></image>
-							<view>导购收益</view>
-						</view>
-						<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-					</navigator>
-					<view class="money-box flex justify-between">
-						<view>
-							<view class="txt">订单(笔)</view>
-							<view class="num">{{info.shareIncome.orderNum}}</view>
-						</view>
-						<view>
-							<view class="txt">销售额(元)</view>
-							<view class="num">{{info.shareIncome.amount}}</view>
-						</view>
-						<view>
-							<view class="txt">累计收益(瑞币)</view>
-							<view class="num">{{info.shareIncome.historyIncome}}</view>
-						</view>
-					</view>
-				</view>
-
-				<view class="box bg-white" v-if="roleLevel==300||roleLevel==200||roleLevel==100">
-					<view class="subtitle flex justify-between" @tap="toTeamEarnings">
-						<view class="flex align-center">
-							<image src="../../static/mine/t03.png" style="width: 64rpx;" mode="widthFix"></image>
-							<view>团队收益</view>
-						</view>
-						<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-					</view>
-					<view class="money-box flex justify-between">
-						<view>
-							<view class="txt">团队销售额(元)</view>
-							<view class="num">{{info.teamIncome.orderNum}}</view>
-						</view>
-						<view>
-							<view class="txt">累计收益(瑞币)</view>
-							<view class="num">{{info.teamIncome.amount}}</view>
-						</view>
-						<view>
-							<view class="txt">团队成员(人)</view>
-							<view class="num">{{info.teamIncome.historyIncome}}</view>
-						</view>
-					</view>
-				</view>
-
 				<view class="box bg-white">
 					<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
 						<view>订单中心<text style="font-weight: normal;font-size: 26rpx;">(自购)</text></view>
@@ -214,15 +205,42 @@
 					</view>
 				</view>
 				<view class="box flex justify-around bg-white">
-					<view class="other-item flex-sub flex flex-direction justify-between align-center" v-for="(item,index) in otherOptions"
+				<!-- 	<view class="other-item flex-sub flex flex-direction justify-between align-center" v-for="(item,index) in otherOptions"
 					 :key="index" @tap="toPage(item.page)">
 						<image :src="item.icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
 						<view>{{item.text}}</view>
+					</view> -->
+					<view class="other-item flex-sub flex flex-direction justify-between align-center" 
+					 @tap="toPage(otherOptions[0].page)">
+						<image :src="otherOptions[0].icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
+						<view>{{otherOptions[0].text}}</view>
 					</view>
+					<view class="other-item flex-sub flex flex-direction justify-between align-center">
+						<button open-type='contact' class='customer-service'>
+								<image :src="otherOptions[1].icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
+						</button>
+						
+						<view>{{otherOptions[1].text}}</view>
+					</view>
+					<view class="other-item flex-sub flex flex-direction justify-between align-center"
+					 @tap="toPage(otherOptions[2].page)">
+						<image :src="otherOptions[2].icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
+						<view>{{otherOptions[2].text}}</view>
+					</view>
+					<view class="other-item flex-sub flex flex-direction justify-between align-center"
+					 @tap="toPage(otherOptions[3].page)">
+						<image :src="otherOptions[3].icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
+						<view>{{otherOptions[3].text}}</view>
+					</view>
+					<!-- 	<button open-type='contact' class='customer-service'>
+							<u-icon name="server-fill" size="48"></u-icon>
+						</button>
+ -->
 				</view>
 			</view>
 		</scroll-view>
 		<u-modal v-model="showTipModel" content="瑞币可随时转到余额,可提现" :confirm-style="{color:'#D5101A'}"></u-modal>
+		
 	</view>
 </template>
 
@@ -317,6 +335,18 @@
 			this.myIncome()
 		},
 		methods: {
+			toMineShopPage(){
+				uni.navigateTo({
+					url: "/packageA/mineShop/mineShop"
+				})
+			},
+			teamShare(){
+				console.log(11)
+				uni.navigateTo({
+				
+					url: "/packageA/myShop/teamAdd"
+				})
+			},
 			toMyInfo() {
 				uni.navigateTo({
 					url: "../myInfo/myInfo"
@@ -509,7 +539,31 @@
 		}
 	}
 
-
+	.shop-box{
+		padding: 0 10rpx;
+		.card{
+			position: relative;
+		
+			width: 340rpx;
+			height: 180rpx;
+			margin: 10rpx 0;
+			padding: 24rpx;
+			border-radius: 8rpx;
+			overflow: hidden;
+			z-index: 10;
+			font-size: 28rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #FFFFFF;
+			image{
+				z-index: -1;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		}
+	
+	}
 	.top-container {
 		position: relative;
 		border-radius: 80rpx/30rpx;

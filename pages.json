@@ -452,6 +452,14 @@
 			}
 		},
 		{
+			"path": "pages/ranking/ranking",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/myEquity/myEquity",
 			"style": {
 				"navigationBarTitleText": "我的权益",
@@ -570,6 +578,20 @@
 					"enablePullDownRefresh": false,
 					"navigationBarBackgroundColor": "#16182B",
 					"navigationBarTextStyle": "white"
+				}
+			},
+			{
+				"path": "myShop/teamAdd",
+				"style": {
+					"navigationBarTitleText": "邀请",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "mineShop/mineShop",
+				"style": {
+					"navigationBarTitleText": "我的团队",
+					"enablePullDownRefresh": false
 				}
 			},
 			{
@@ -717,10 +739,11 @@
 				"text": "特卖"
 			},
 			{
-				"pagePath": "pages/shop/shop",
+				// pages/hotRanking/hotRanking
+				"pagePath": "pages/ranking/ranking",
 				"iconPath": "static/tabbar/shop.png",
 				"selectedIconPath": "static/tabbar/shop_.png",
-				"text": "店铺"
+				"text": "排行榜"
 			},
 			{
 				"pagePath": "pages/find/find",

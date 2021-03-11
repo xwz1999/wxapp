@@ -224,7 +224,8 @@
 				currentCity: '', //当前城市，
 				cityName: "",
 				lunarDate: "", //农历信息
-				showBg: false
+				showBg: false,
+				
 			}
 		},
 		computed: {
