@@ -1,28 +1,16 @@
 <template>
 	<view class="">
 		<view class="swiper-dot flex justify-center align-center">
-			<view class="dot" :class="current===0?'color':''" >
-
-			</view>
-			<view class="dot" :class="current===1?'color':''" >
-
-			</view>
-			<view class="dot"  :class="current===2?'color':''" >
-
+			<view class="dot" :class="current===index?'color':''" v-for="index in imgUrlArr.length" :key='index'>
 			</view>
 		</view>
 		<!-- 轮播图 -->
 		<swiper class="swiper-box" :circular="true" interval="5000" duration="500" :current="current" @change="changeCurrent">
 			<!-- v-for="(item,index) in swipers" :key="index" @tap="toDeitail(item.goodsId,item.activityUrl)" -->
-			<swiper-item class="flex align-center">
-				<image src="https://testcdn.reecook.cn/static/photo/shareInvite_10824505831477540420_0.png" mode="widthFix"></image>
+			<swiper-item class="flex align-center" v-for="(item,index) in imgUrlArr" :key='index' >
+				<image :src="item" mode="widthFix"></image>
 			</swiper-item>
-			<swiper-item class="flex align-center">
-				<image src="https://testcdn.reecook.cn/static/photo/shareInvite_2415674388948005702_1.png" mode="widthFix"></image>
-			</swiper-item>
-			<swiper-item class="flex align-center">
-				<image src="https://testcdn.reecook.cn/static/photo/shareInvite_2415674388948005702_1.png" mode="widthFix"></image>
-			</swiper-item>
+			
 		</swiper>
 		<view class="save-btn flex align-center">
 			<view class="btn" @click='save'>保存图片到相册</view>
@@ -35,12 +23,27 @@
 		data() {
 			return {
 				current: 0,
-				imgUrl:'https://testcdn.reecook.cn/static/photo/shareInvite_2415674388948005702_1.png'
+				imgUrlArr:[],
+				invitationNo:this.$store.state.invitationNo
 			}
+		},
+		mounted() {
+			this.getData()
+			console.log(this.invitationNo)
 		},
 		methods: {
 			changeCurrent(e) {
 				this.current = e.detail.current
+			},
+			getData(){
+				this.$u.get(`/api/v1/shop/share_photo/${this.invitationNo}`).then(res => {
+					console.log(res)
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.imgUrlArr = res.data.data
+				})
 			},
 			//点击保存图片
 			save() {

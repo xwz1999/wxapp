@@ -71,14 +71,15 @@
 							<view class="num">{{info.myAssets.couponNum?info.balance:0}}</view>
 							<view>优惠券(张)</view>
 						</view> -->
-						<view @tap="toBalance">
-							<view class="num">{{info.balance?info.balance:0}}</view>
-							<view>余额（元）</view>
-						</view>
 						<view @tap="toMyMoney">
 							<view class="num">{{info.myAssets.coinNum?info.myAssets.coinNum:0}}</view>
 							<view>瑞币(个)<text class="cuIcon-question" @tap.stop="tipModel(true)"></text></view>
 						</view>
+						<view @tap="toBalance">
+							<view class="num">{{info.balance?info.balance:0}}</view>
+							<view>余额（元）</view>
+						</view>
+				
 						<view @tap="toCardPackage">
 							<view class="num">{{info.myAssets.cards?info.myAssets.cards:0}}</view>
 							<view>卡包(个)</view>
@@ -143,7 +144,7 @@
 								<text>0元创业·轻松赚</text>
 							</view>
 						</view>
-						<view class="card" @click="toMineShopPage" >
+						<view class="card" @click="toMineShopPage('team')" >
 							<image :src="`${IMAGE_URL}/mineShop/shop2.jpg`" mode="widthFix"></image>
 							<view class="">
 								<text>我的团队</text>
@@ -161,7 +162,7 @@
 								<text>推荐好友·福利双赢</text>
 							</view>
 						</view>
-						<view class="card" >
+						<view class="card"  @click="toMineShopPage('recommend')">
 							<image :src="`${IMAGE_URL}/mineShop/shop4.jpg`" mode="widthFix"></image>
 							<view class="">
 								<text>我的推荐</text>
@@ -180,7 +181,7 @@
 								<text>平台可靠·奖励多</text>
 							</view>
 						</view>
-						<view class="card">
+						<view class="card"  @click="toMineShopPage('reward')">
 							<image :src="`${IMAGE_URL}/mineShop/shop6.jpg`" mode="widthFix"></image>
 							<view class="">
 								<text>我的奖励</text>
@@ -335,9 +336,9 @@
 			this.myIncome()
 		},
 		methods: {
-			toMineShopPage(){
+			toMineShopPage(url){
 				uni.navigateTo({
-					url: "/packageA/mineShop/mineShop"
+					url: "/packageA/mineShop/mineShop?url=" + url
 				})
 			},
 			teamShare(){

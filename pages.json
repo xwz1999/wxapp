@@ -590,8 +590,8 @@
 			{
 				"path": "mineShop/mineShop",
 				"style": {
-					"navigationBarTitleText": "我的团队",
-					"enablePullDownRefresh": false
+					"navigationStyle": "custom", // 隐藏系统导航栏
+					"navigationBarTextStyle": "white"
 				}
 			},
 			{

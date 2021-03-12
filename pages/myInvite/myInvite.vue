@@ -6,7 +6,7 @@
 		</view>
 		<view v-else class="flex flex-direction" style="height: 100%;">
 			<view class="search-box bg-white flex justify-between">
-				<input class="flex-sub" type="text" v-model="keyword" placeholder-class="placeholder" placeholder="请输入昵称/备注/手机号" />
+				<input class="flex-sub" type="text" v-model="keyword" placeholder-class="placeholder" @confirm="inputSend" placeholder="请输入昵称/备注/手机号" />
 				<text class="cuIcon-search"></text>
 			</view>
 			<scroll-view scroll-y="true" class="scroll flex-sub" style="height: 0;">
@@ -41,6 +41,12 @@
 			this.getInviteList()
 		},
 		methods: {
+		inputSend(e) {
+			this.keyword = e.detail.value
+			if (e.detail.value) {
+				this.getInviteList()
+			}
+		},
 			getInviteList() {
 				this.$u.post('/api/v1/users/profile/invite/list', {
 					userID: uni.getStorageSync("userInfo").id,

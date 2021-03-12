@@ -39,10 +39,9 @@
 			<view class=" bg-white" v-if="message.status==1&&message.returnStatus==1">
 				<view class="flex" style="line-height: 50rpx;padding-bottom: 20rpx;">
 					<text class="text-black" style="font-weight: 900;font-size: 32rpx;">{{message.subtitle}}</text>
-					<text style="margin-left: 30rpx;font-size: 26rpx;">剩余</text>
-					<text class="text-red" style="font-size: 26rpx;margin-left: 5rpx;">{{message.residueHour}}小时</text>
+			
 				</view>
-				<view class="des">若平台超时未处理，则系统将自动通过该请求。</view>
+				<view class="des">若平台长时间未处理，请联系客服。</view>
 			</view>
 			<!-- 申请未通过 -->
 			<view class=" bg-white" v-if="message.status==7&&message.returnStatus==2">
@@ -121,7 +120,7 @@
 							<view class="des">{{message.skuName}}</view>
 						</view>
 						<view class="flex justify-between" style="font-size: 28rpx;">
-							<view class="">订单金额<text class="text-red" style="margin-left: 10rpx;">￥{{message.orderTotalAmount}}</text></view>
+							<view class="">订单金额<text class="text-red" style="margin-left: 10rpx;">￥{{message.refundAmount}}</text></view>
 							<view class="">购买数量<text class="text-black" style="margin-left: 10rpx;">{{message.quantity}}</text></view>
 						</view>
 					</view>
@@ -163,11 +162,6 @@
 				</view>
 			</view>
 		</view>
-		
-		
-		<view class="" style="height: 100rpx;"></view>
-		<!-- 待审核时显示 -->
-		<view class="bottom-btn text-white text-center" v-if="message.status==1&&message.returnStatus==1" @tap="cancle">撤销售后</view>
 		<!-- 要求用户寄回时显示 -->
 		<navigator :url="'../writelogistics/writelogistics?asId='+asId" v-if="message.returnStatus==3" class="bottom-btn text-white text-center">填写物流信息</navigator>
 	</view>

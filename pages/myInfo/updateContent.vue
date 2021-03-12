@@ -55,21 +55,21 @@
 					default:
 						break;
 				}
-				
 				this.$u.post(reqUrl, sendData).then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
 					}
-					
+					 //修改备注之后在店铺 团队 推荐 奖励 更新数据
+					uni.$emit("userInfoEidt", {
+						msg: '用户修改',
+					});
 					if(this.type=="remark"){
 						this.$store.state.userInfo.remarkName = this.content
 						uni.navigateBack()
 						return
 					}
-					
-					
 					switch (this.type){
 						case "nickname":
 							this.userInfo.nickname = this.content
@@ -96,6 +96,7 @@
 					let pages = getCurrentPages();
 					let prevPage = pages[pages.length - 2];  //上一个页面
 					prevPage.onLoad()
+					
 					uni.navigateBack()
 					// setTimeout(function(){
 					// 	uni.navigateBack()

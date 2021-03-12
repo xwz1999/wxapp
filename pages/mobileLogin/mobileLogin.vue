@@ -113,6 +113,7 @@
 					}
 					this.$store.commit('setinvitationNo', res.data.data.info.invitationNo);
 					let result = res.data.data
+					console.log(res.data.data.info.invitationNo)
 					uni.setStorageSync("auth",result.auth)
 					uni.setStorageSync("userInfo",result.info)
 					uni.showToast({
@@ -151,6 +152,7 @@
 						return
 					}
 					let result = res.data.data
+					this.$store.commit('setinvitationNo', res.data.data.info.invitationNo);
 					uni.setStorageSync("auth",result.auth)
 					uni.setStorageSync("userInfo",result.info)
 					uni.showToast({

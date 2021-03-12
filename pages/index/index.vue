@@ -450,67 +450,67 @@
 					for (let i = 0; i < this.cateList.length; i++) {
 						switch (this.cateList[i].name) {
 							case "分类":
-								this.cateList[i].icon = "/static/index/icon.png"
+								this.cateList[i].icon =this.IMAGE_URL + "/index/icon.png"
 								break;
 							case "医疗保健":
-								this.cateList[i].icon = "/static/index/icon01.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon01.png"
 								break;
 							case "休闲美食":
-								this.cateList[i].icon = "/static/index/icon02.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon02.png"
 								break;
 							case "美妆护肤":
-								this.cateList[i].icon = "/static/index/icon03.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon03.png"
 								break;
 							case "母婴用品":
-								this.cateList[i].icon = "/static/index/icon04.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon04.png"
 								break;
 							case "鞋靴箱包":
-								this.cateList[i].icon = "/static/index/icon05.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon05.png"
 								break;
 							case "图文教育":
-								this.cateList[i].icon = "/static/index/icon06.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon06.png"
 								break;
 							case "个护清洁":
-								this.cateList[i].icon = "/static/index/icon07.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon07.png"
 								break;
 							case "服饰内衣":
-								this.cateList[i].icon = "/static/index/icon08.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon08.png"
 								break;
 							case "日用百货":
-								this.cateList[i].icon = "/static/index/icon09.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon09.png"
 								break;
 							case "家用电器":
-								this.cateList[i].icon = "/static/index/icon10.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon10.png"
 								break;
 							case "有机食品":
-								this.cateList[i].icon = "/static/index/icon11.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon11.png"
 								break;
 							case "家具饰品":
-								this.cateList[i].icon = "/static/index/icon12.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon12.png"
 								break;
 							case "进口专区":
-								this.cateList[i].icon = "/static/index/icon13.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon13.png"
 								break;
 							case "会员专享":
-								this.cateList[i].icon = "/static/index/icon14.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon14.png"
 								break;
 							case "手机数码":
-								this.cateList[i].icon = "/static/index/icon15.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon15.png"
 								break;
 							case "柴米油盐":
-								this.cateList[i].icon = "/static/index/icon16.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon16.png"
 								break;
 							case "运动旅行":
-								this.cateList[i].icon = "/static/index/icon17.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon17.png"
 								break;
 							case "蔬果生鲜":
-								this.cateList[i].icon = "/static/index/icon18.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon18.png"
 								break;
 							case "酒饮冲调":
-								this.cateList[i].icon = "/static/index/icon19.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon19.png"
 								break;
 							default:
-								this.cateList[i].icon = "/static/index/icon19.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon19.png"
 								break;
 						}
 
