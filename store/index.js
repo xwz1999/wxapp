@@ -10,10 +10,14 @@ const store = new Vuex.Store({
 		userInfo:{},//邀请人的信息
 		videoDetail:{},//小视频详情
 		invitationNo: '' ,// 本人邀请码
+		roleLevel:500,//用户等级默认设置会员
 		invite: '' ,// 别人的邀请码
 		url: null, // 跳转到登录页面时原地址
 	},
 	mutations: {
+		setRoleLevel(state, val){
+			state.roleLevel = val
+		},
 		changeCity(state, name) {
 			state.selectCity = name
 		},

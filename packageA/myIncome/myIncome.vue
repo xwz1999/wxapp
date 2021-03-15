@@ -1,9 +1,8 @@
 <template>
 	<view class="content-box">
 		<view class="myNav">
-
 		</view>
-		<view class="tab-box">
+		<view class="tab-box"  :style="'background-image: url('+STATIC_URL+'bg.png);background-size: 100% auto;'">
 			<u-tabs :list="tabList" :is-scroll="false" :current="current" @change="change" active-color='#FF7473'></u-tabs>
 			<swiper class="flex-sub" :current="current" :indicator-dots="false" :autoplay="false" @change="changeCurrent">
 				<swiper-item v-for="(item,index) in tabList" :key='index'>
@@ -149,6 +148,7 @@
 	export default {
 		data() {
 			return {
+					STATIC_URL:this.STATIC_URL,
 				roleLevel: null,
 				info: null,
 				tabList: [{

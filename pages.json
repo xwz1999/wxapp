@@ -595,6 +595,18 @@
 				}
 			},
 			{
+				"path": "mineShop/recommendBg",
+				"style": {
+					"navigationBarTitleText": "推荐升级"
+				}
+			},
+			{
+				"path": "mineShop/rewardBg",
+				"style": {
+					"navigationBarTitleText": "获取平台奖励"
+				}
+			},
+			{
 				"path": "myIncome/purchase",
 				"style": {
 					"navigationBarTitleText": "自购收益",

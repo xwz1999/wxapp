@@ -3,7 +3,8 @@ import App from './App'
 //引入uview UI
 import uView from 'uview-ui';
 Vue.use(uView);
-
+// 引入过滤器
+import * as filters from 'plugins/filters.js'
 
 import store from './store'
 Vue.prototype.$store = store
@@ -31,6 +32,10 @@ Vue.prototype.STATIC_URL = Vue.prototype.IMAGE_URL + "/recook-weapp/"
 Vue.filter('toFixed', (param, num) => {
 	// console.log(param,typeof param,parseFloat(param))
 	return parseFloat(param).toFixed(num);
+})
+//全局过滤器
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
 })
 Vue.config.productionTip = false
 

@@ -1,9 +1,63 @@
 <template>
-	<view class="flex flex-direction" style="height: 100%;">
+	<view class="" style="width: 750rpx; overflow: hidden;">
 		<u-navbar title="累计收益" :background="{backgroundColor: '#16182B'}" back-icon-color="#fff" title-color="#fff"
 		 :border-bottom="false"></u-navbar>
-		 <view class="total-box">
-		 	<view class="total-box-con bg-img" :style="'background-image: url('+STATIC_URL+'bg.png);'">
+		<view class="myNav">
+		</view>
+		<view class="">
+			<text>收益汇总(瑞币)</text>
+			<view class="total-box">
+				<image :src="IMAGE_URL+'/totalEarnings-bg.png'" mode="widthFix"></image>
+				<view class="total-box-con">
+					<view class="con-box">
+						<view class="flex flex-wrap" style="align-content: space-between;height: 100%;">
+							<view style="width: 100%;">
+								<view class="">
+									<text>累计收益</text>
+									<view class="">
+										<text>18832.00</text>
+									</view>
+								</view>
+							</view>
+							<view class="flex flex-wrap" style="width: 100%;align-content: space-between;">
+								<view class="" style='width:33.33%'>
+									<text>累计收益</text>
+									<view class="">
+										<text>18832.00</text>
+									</view>
+								</view>
+								<view class="" style='width:33.33%'>
+									<text>累计收益</text>
+									<view class="">
+										<text>18832.00</text>
+									</view>
+								</view>
+								<view class="" style='width:33.33%'>
+									<text>累计收益</text>
+									<view class="">
+										<text>18832.00</text>
+									</view>
+								</view>
+								<view class="" style='width:33.33%'>
+									<text>累计收益</text>
+									<view class="">
+										<text>18832.00</text>
+									</view>
+								</view>
+								<view class="" style='width:33.33%'>
+									<text>累计收益</text>
+									<view class="">
+										<text>18832.00</text>
+									</view>
+								</view>
+							</view>
+
+						</view>
+					</view>
+
+				</view>
+			</view>
+			<!-- 	<view class="total-box-con bg-img" :style="'background-image: url('+IMAGE_URL+'/totalEarnings-bg.png);'">
 		 		<view class="con-box flex flex-direction justify-between">
 		 			<view>
 		 				<view class="text">累计收益</view>
@@ -24,8 +78,8 @@
 						</view>
 		 			</view>
 		 		</view>
-		 	</view>
-		 </view>
+		 	</view> -->
+		</view>
 		<view class="time-box flex justify-between">
 			<picker mode="date" start="1990-01-01" fields="year" :end="end_time" @change="chooseTime">
 				<view class="time bg-white text-black">{{time}}<text class="cuIcon-triangledownfill"></text></view>
@@ -71,17 +125,17 @@
 	export default {
 		data() {
 			return {
-				STATIC_URL:this.STATIC_URL,
+				IMAGE_URL: this.IMAGE_URL,
 				end_time: "",
 				time: "",
-				accumulateIncome:{
-					all:0,
-					selfShopping:0,
-					share:0,
-					team:0
+				accumulateIncome: {
+					all: 0,
+					selfShopping: 0,
+					share: 0,
+					team: 0
 				},
-				incomes:[],
-				yearIncome:0
+				incomes: [],
+				yearIncome: 0
 			}
 		},
 		onLoad() {
@@ -94,10 +148,10 @@
 				this.time = e.detail.value
 				this.getData()
 			},
-			getData(){
+			getData() {
 				this.$u.post('/api/v1/shop/shop_addup_income', {
 					userId: uni.getStorageSync("userInfo").id,
-					year:this.time
+					year: this.time
 				}).then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
@@ -123,63 +177,72 @@
 </script>
 
 <style lang="scss">
+	.myNav {
+		position: fixed;
+		top: 0;
+		left: -100rpx;
+		width: 950rpx;
+		height: 506rpx;
+		border-radius: 50%;
+		background: #16182B;
+		z-index: -1;
+	}
+
 	page {
 		background-color: #F5F5F5;
 		width: 100vw;
 		height: 100vh;
 	}
-	
+
 	.total-box {
-		padding: 30rpx;
-		background-color: #16182B;
-	
-		.total-box-con {
-			width: 690rpx;
-			height: 340rpx;
-			position: relative;
-			border-radius: 15rpx;
+		margin: 30rpx;
+		position: relative;
+		// .total-box-con {
+		// 	width: 100%;
+		// 	height: 100%;
+		// 	position: relative;
+		// 	border-radius: 15rpx;
+		// 	overflow: hidden;
+
+		.con-box {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			padding: 30rpx;
+			border-radius: 10rpx;
 			overflow: hidden;
-	
-			.con-box {
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				top: 0;
-				left: 0;
-				padding: 30rpx;
-				border-radius: 10rpx;
-				overflow: hidden;
-				box-shadow: 0 3rpx 10rpx 3rpx rgba(0, 0, 0, 0.1);
-	
-				.text {
-					color: #aaa;
-					font-size: 24rpx;
-					margin-bottom: 15rpx;
-				}
-	
-				.num {
-					color: #000;
-					font-size: 32rpx;
-				}
+			.text {
+				color: #aaa;
+				font-size: 24rpx;
+				margin-bottom: 15rpx;
+			}
+
+			.num {
+				color: #000;
+				font-size: 32rpx;
 			}
 		}
+
+		// }
 	}
 
 	.time-box {
 		line-height: 60rpx;
 		padding: 60rpx 30rpx 30rpx;
 		color: #AAAAAA;
-	
+
 		.time {
 			border-radius: 40rpx;
 			padding: 0 10rpx 0 20rpx;
 		}
-	
+
 	}
 
 	.month-earning-box {
 		margin: 30rpx;
-		box-shadow: 0 3rpx 10rpx 3rpx rgba(0,0,0,0.1);
+		box-shadow: 0 3rpx 10rpx 3rpx rgba(0, 0, 0, 0.1);
 		border-bottom-left-radius: 10rpx;
 		border-bottom-right-radius: 10rpx;
 

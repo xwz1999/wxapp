@@ -11,11 +11,43 @@
 					</view>
 				</view>
 			</view>
-			<view class="">
+			<view class="" style="margin-top: 18rpx;">
 				<swiper class="flex-sub" :current="current" :indicator-dots="false" :autoplay="false" @change="changeCurrent">
 					<swiper-item v-for="(item,index) in tabList" :key='index'>
-						<scroll-view scroll-y="true" style="height: 344rpx;width: 690rpx;background: #FFFFFF;margin: 20rpx auto;">
-							<view class="flex justify-center align-center text-center" style="width: 100%; height: 100%;">
+						<scroll-view scroll-y="true">
+							<view>
+								<view class="card-box">
+									<image :src="otherBg" mode="widthFix" style="border-radius:16rpx; "></image>
+									<view class="card flex  flex-wrap" style=" align-content: space-between;">
+										<view class="flex  justify-between align-end" style="width: 100%;">
+											<view class="">
+												<text style="font-size:36rpx;color:#6A6A6A;">预估收益(瑞币)</text>
+												<view class="">
+													<text style="font-size:56rpx;color:#333333;">{{tabsListData[current].purchase.amount}}</text>
+												</view>
+											</view>
+											<view class="">
+												<image :src="iconPic" mode="widthFix" style="width: 96rpx; height: 110rpx;"></image>
+											</view>
+										</view>
+										<view class="flex  justify-between" style="width: 100%;">
+											<view>
+												<text style="font-size:36rpx;color:#6A6A6A;">销售额(元)</text>
+												<view class="">
+													<text style="font-size:56rpx;color:#333333;">{{tabsListData[current].purchase.amount}}</text>
+												</view>
+											</view>
+											<view class="">
+												<text style="font-size:36rpx;color:#6A6A6A;">提成比例(%)</text>
+												<view class="">
+													<text style="font-size:56rpx;color:#333333;">{{tabsListData[current].purchase.amount}}</text>
+												</view>
+											</view>
+										</view>
+									</view>
+								</view>
+							</view>
+							<!-- <view class="flex justify-center align-center text-center" style="width: 100%; height: 100%;">
 								<view>
 									<view class="">
 										<text style="font-size:36rpx;color:#999999;">预估收益</text>
@@ -24,7 +56,7 @@
 										<text style="font-size:56rpx;color:#333333;">{{tabsListData[current].purchase.amount}}</text>
 									</view>
 								</view>
-							</view>
+							</view> -->
 						</scroll-view>
 					</swiper-item>
 				</swiper>
@@ -71,6 +103,10 @@
 	export default {
 		data() {
 			return {
+				IMAGE_URL: this.IMAGE_URL,
+				otherBg: null,
+				iconPic:null,
+				roleLevel: 0,
 				tabList: [{
 					name: '今日'
 				}, {
@@ -86,6 +122,10 @@
 			}
 		},
 		mounted() {
+
+			this.roleLevel = this.$store.state.roleLevel
+			this.otherBg = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'otherBg')
+			this.iconPic =  this.IMAGE_URL +this.$options.filters['roleFilter'](this.roleLevel, 'badge')
 			let today = new Date()
 			let nowYear = today.getFullYear()
 			let nowMonth = today.getMonth()
@@ -205,13 +245,24 @@
 		z-index: -1;
 	}
 
+	.card-box {
+		width: 690rpx;
+		margin: 0rpx auto;
+		position: relative;
+		.card {
+			position: absolute;
+			padding: 30rpx 40rpx 40rpx 40rpx;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			left: 0;
+		}
+
+	}
+
 	.content {
 		.tab-box {
-			// width: 690rpx;
-			// height: 344rpx;
-			// background: #5677FC;
 			margin: 0 30rpx;
-
 			.tabs {
 				.tab {
 					width: 120rpx;
@@ -225,7 +276,6 @@
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
 					color: #FFFFFF;
-
 					&.tab-active {
 						background: #FFFFFF;
 						color: #000000;
@@ -233,7 +283,6 @@
 				}
 			}
 		}
-
 		.table-list {
 			background-color: #FFFFFF;
 			margin-top: 20rpx;
@@ -241,10 +290,8 @@
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #333333;
-
 			.table-head {
 				font-size: 32rpx;
-
 				.table-title {
 					height: 90rpx;
 					line-height: 90rpx;
@@ -252,13 +299,10 @@
 					text-align: center;
 				}
 			}
-
 			.table-body {
 				font-size: 28rpx;
-
 				.table-column {
 					border-top: 2rpx solid #EEEEEE;
-
 					.table-td {
 						width: 25%;
 						height: 90rpx;

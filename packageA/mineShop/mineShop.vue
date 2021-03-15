@@ -2,11 +2,14 @@
 	<view style="height: 100vh;">
 		<u-navbar :title="navTitle"></u-navbar>
 		<view class="flex flex-direction" style="height: 100%;">
-			<view class="search-box bg-white flex justify-between">
-				<input class="flex-sub" type="text" v-model="keyword" placeholder-class="placeholder" @confirm="inputSend"
-				 placeholder="请输入昵称/备注/手机号" />
-				<text class="cuIcon-search"></text>
+			<view class="" style="position: relative;">
+				<view class="search-box bg-white flex justify-between">
+					<input class="flex-sub" type="text" v-model="keyword" placeholder-class="placeholder" @confirm="inputSend"
+					 placeholder="请输入昵称/备注/手机号" />
+					<text class="cuIcon-search"></text>
+				</view>
 			</view>
+
 			<view class="member-box">
 				<view class="member-title flex justify-between">
 					<view class="" style="width: 360rpx;">
@@ -26,44 +29,48 @@
 							</view>
 						</view>
 					</view>
-
 				</view>
+
 				<view class="member-table ">
-					<view class="member-list flex" v-for="(item,index) in screenList" :key='index' @tap="toUserInfo(item)">
-						<view class="">
-							<view class="avatar">
-								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" height="80" border-radius="50%"
-								 :loading-img="IMAGE_URL + '/null05.png'" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill"></u-lazy-load>
+					<scroll-view scroll-y="true" class="scroll flex-sub">
+						<view class="member-list flex" v-for="(item,index) in screenList" :key='index' @tap="toUserInfo(item)">
+							<view class="">
+								<view class="avatar">
+									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" height="80" border-radius="50%"
+									 :loading-img="IMAGE_URL + '/null05.png'" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill"></u-lazy-load>
+								</view>
+							</view>
+							<view class="" style="flex:1">
+								<view class="flex justify-between">
+									<view class="user-name">
+										{{item.nickname}}
+									</view>
+									<!-- 	<view class="user-price">
+												{{item.amount}}
+											</view> -->
+								</view>
+								<view class="flex align-center flex-wrap">
+									<view class="" style="width: 50%;padding: 10rpx 0;">
+										{{item.wechatNo}}
+									</view>
+									<view class="" style="width: 50%;padding: 10rpx 0;">
+										{{item.phone}}
+									</view>
+									<view class="" style="width: 50%;padding: 10rpx 0;">
+										{{item.nickname}}
+									</view>
+									<view class="" style="width: 50%;padding: 10rpx 0;">
+										{{item.count}}
+									</view>
+								</view>
 							</view>
 						</view>
-						<view class="" style="flex:1">
-							<view class="flex justify-between">
-								<view class="user-name">
-									{{item.nickname}}
-								</view>
-								<!-- 	<view class="user-price">
-											{{item.amount}}
-										</view> -->
-							</view>
-							<view class="flex align-center flex-wrap">
-								<view class="" style="width: 50%;padding: 10rpx 0;">
-									{{item.wechatNo}}
-								</view>
-								<view class="" style="width: 50%;padding: 10rpx 0;">
-									{{item.phone}}
-								</view>
-								<view class="" style="width: 50%;padding: 10rpx 0;">
-									{{item.nickname}}
-								</view>
-								<view class="" style="width: 50%;padding: 10rpx 0;">
-									{{item.count}}
-								</view>
-							</view>
-						</view>
-					</view>
+					</scroll-view>
 				</view>
 
 			</view>
+
+
 
 		</view>
 	</view>
@@ -158,11 +165,8 @@
 			})
 			// navTitle
 		}
-		,	
-		onReachBottom() {
-				console.log("00000000")
-		},
-		}
+
+	}
 </script>
 
 <style lang="scss">
@@ -184,7 +188,6 @@
 		border: 2rpx solid #EDEDED;
 		justify-content: center;
 		align-items: center;
-
 	}
 
 	.fill {
