@@ -4,7 +4,6 @@
 		<view class="goods-item" v-for="(item,index) in goodsList" :key="index" @tap="goPage(item.goodsId)">
 			<navigator hover-class="none" class="goods-item-con bg-white flex justify-between">
 				<view class="goods-pic clear" v-if="item.mainPhotoUrl">
-				
 					<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="260" border-radius="10"
 					 :loading-img="IMAGE_URL + '/null05.png'"  :error-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 					<view class="goods-mask flex justify-center" v-if="item.inventory==0">
@@ -13,6 +12,7 @@
 				</view>
 				<view class="goods-msg flex-sub clear flex flex-direction justify-between">
 					<view class="goods-msg-top flex align-start">
+
 						<view class="" style="flex: 1;">
 							<view class="goods-name two-line">
 								<view class="text-center text-white" 

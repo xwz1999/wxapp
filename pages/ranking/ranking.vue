@@ -34,7 +34,7 @@
 					</button>
 				</view>
 			</view>
-			<view class="cancle" @tap="isShow=false">取消</view>
+			<view class="cancle" @tap="hideModel">取消</view>
 		</u-popup>
 	</view>
 </template>
@@ -68,11 +68,8 @@
 				this.isShow = true
 				this.onShareData = data
 			},
-			// http://testh5.reecook.cn/#/goods/detail/8111/R7M1V9
 			copyLink(){
-				//  http://testh5.reecook.cn/#/goods/detail/
-				// let url = `/pages/goodsDetail/goodsDetail?id=${this.onShareData.id}`
-				let url = `http://testh5.reecook.cn/#/goods/detail/${this.onShareData.id}/${this.$store.state.invitationNo}`
+				let url = `/pages/goodsDetail/goodsDetail?id=${this.onShareData.id}`
 				uni.setClipboardData({
 				    data: url,
 				    success: function () {

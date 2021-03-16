@@ -311,6 +311,9 @@
 						page: "/pages/settings/settings"
 					}
 				],
+				
+				
+				
 				roleLevel: 500,
 				showTipModel: false,
 				info: {},
@@ -326,13 +329,8 @@
 				}
 			};
 		},
-		created() {
-				this.$store.commit('setIsLogin')
-				this.isLogin = this.$store.state.isLogin
-				this.roleLevel = this.$store.state.roleLevel
-		},
 		onLoad() {
-			if (this.isLogin) {
+			if (uni.getStorageSync("auth").token) {
 				this.getUserInfo()
 				this.getTotalEarning()
 			}
@@ -349,7 +347,9 @@
 			*/
 		},
 		onShow() {
-			if (this.isLogin) {
+			console.log(uni.getStorageSync("auth"))
+			if (uni.getStorageSync("auth").token) {
+				this.isLogin = true
 				this.userInfo.nickname = uni.getStorageSync("userInfo").nickname
 				this.userInfo.headImgUrl = uni.getStorageSync("userInfo").headImgUrl
 				this.myIncome()

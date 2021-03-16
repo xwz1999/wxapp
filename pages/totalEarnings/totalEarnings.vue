@@ -8,41 +8,47 @@
 			<text>收益汇总(瑞币)</text>
 			<view class="total-box">
 				<image :src="IMAGE_URL+'/totalEarnings-bg.png'" mode="widthFix"></image>
-				<view>
+				<view class="total-box-con">
 					<view class="con-box">
-						<view class="con-item flex flex-wrap" style="align-content: space-between;height: 100%;">
-							<view style="width: 100%; ">
+						<view class="flex flex-wrap" style="align-content: space-between;height: 100%;">
+							<view style="width: 100%;">
 								<view class="">
-									<view class="text">
-										<text>累计收益</text>
-									</view>
-									<view class="num">
-										<text>{{accumulateIncome.all}}</text>
+									<text>累计收益</text>
+									<view class="">
+										<text>18832.00</text>
 									</view>
 								</view>
 							</view>
-							<view class="flex flex-wrap con-item" style="width: 100%;align-content: space-between;">
-								<view style="width: 33.33%; ">
+							<view class="flex flex-wrap" style="width: 100%;align-content: space-between;">
+								<view class="" style='width:33.33%'>
+									<text>累计收益</text>
 									<view class="">
-										<view class="text">自购收益</view>
-										<view class="num">{{accumulateIncome.selfShopping}}</view>
+										<text>18832.00</text>
 									</view>
 								</view>
 								<view class="" style='width:33.33%'>
-									<view class="text">自购收益</view>
-									<view class="num">{{accumulateIncome.selfShopping}}</view>
+									<text>累计收益</text>
+									<view class="">
+										<text>18832.00</text>
+									</view>
 								</view>
 								<view class="" style='width:33.33%'>
-									<view class="text">团队收益</view>
-									<view class="num">{{accumulateIncome.team}}</view>
+									<text>累计收益</text>
+									<view class="">
+										<text>18832.00</text>
+									</view>
 								</view>
 								<view class="" style='width:33.33%'>
-									<view class="text">推荐收益</view>
-									<view class="num">{{accumulateIncome.team}}</view>
+									<text>累计收益</text>
+									<view class="">
+										<text>18832.00</text>
+									</view>
 								</view>
 								<view class="" style='width:33.33%'>
-									<view class="text">平台奖励</view>
-									<view class="num">{{accumulateIncome.team}}</view>
+									<text>累计收益</text>
+									<view class="">
+										<text>18832.00</text>
+									</view>
 								</view>
 							</view>
 
@@ -142,7 +148,6 @@
 				this.time = e.detail.value
 				this.getData()
 			},
-			
 			getData() {
 				this.$u.post('/api/v1/shop/shop_addup_income', {
 					userId: uni.getStorageSync("userInfo").id,
@@ -192,6 +197,12 @@
 	.total-box {
 		margin: 30rpx;
 		position: relative;
+		// .total-box-con {
+		// 	width: 100%;
+		// 	height: 100%;
+		// 	position: relative;
+		// 	border-radius: 15rpx;
+		// 	overflow: hidden;
 
 		.con-box {
 			position: absolute;
@@ -202,22 +213,16 @@
 			padding: 30rpx;
 			border-radius: 10rpx;
 			overflow: hidden;
-
-			.con-item {
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
-
-				.text {
-					font-size: 28rpx;
-					color: rgba(58,57,67,0.5);
-
-				}
-				.num {
-					font-size: 40rpx;
-					color: #333333;
-				}
+			.text {
+				color: #aaa;
+				font-size: 24rpx;
+				margin-bottom: 15rpx;
 			}
 
+			.num {
+				color: #000;
+				font-size: 32rpx;
+			}
 		}
 
 		// }
