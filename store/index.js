@@ -3,19 +3,27 @@ import Vuex from "vuex" // 引入vuex
 Vue.use(Vuex) // 让vue使用vuex
 const store = new Vuex.Store({
 	state: {
-		selectCity:"",//城市信息
-		preOrderMsg: {},//预购订单信息
-		returnGoodsMsg:{},//售后商品信息
-		logisticsDetail:[],//物流信息
-		userInfo:{},//邀请人的信息
-		videoDetail:{},//小视频详情
-		invitationNo: '' ,// 本人邀请码
-		roleLevel:500,//用户等级默认设置会员
-		invite: '' ,// 别人的邀请码
+		selectCity: "", //城市信息
+		preOrderMsg: {}, //预购订单信息
+		returnGoodsMsg: {}, //售后商品信息
+		logisticsDetail: [], //物流信息
+		userInfo: {}, //邀请人的信息
+		videoDetail: {}, //小视频详情
+		invitationNo: '', // 本人邀请码
+		invite: '', // 别人的邀请码
 		url: null, // 跳转到登录页面时原地址
+		roleLevel: 500, //用户等级默认设置会员
+		isLogin: false,
 	},
 	mutations: {
-		setRoleLevel(state, val){
+		setIsLogin(state) {
+			if (uni.getStorageSync("auth").token) {
+				state.isLogin = true
+			} else {
+				state.isLogin = false
+			}
+		},
+		setRoleLevel(state, val) {
 			state.roleLevel = val
 		},
 		changeCity(state, name) {
@@ -25,26 +33,26 @@ const store = new Vuex.Store({
 			let newObj = Object.assign({}, obj)
 			state.preOrderMsg = newObj
 		},
-		setReturnGoodsMsg(state,obj){
+		setReturnGoodsMsg(state, obj) {
 			let newObj = Object.assign({}, obj)
 			state.returnGoodsMsg = newObj
 		},
-		setLogisticsDetail(state,arr){
+		setLogisticsDetail(state, arr) {
 			let newArr = arr
 			state.logisticsDetail = newArr
 		},
-		setUserInfo(state,obj){
+		setUserInfo(state, obj) {
 			let newObj = Object.assign({}, obj)
 			state.userInfo = newObj
 		},
-		setVideoDetail(state,obj){
+		setVideoDetail(state, obj) {
 			let newObj = Object.assign({}, obj)
 			state.videoDetail = newObj
 		},
-		setinvitationNo(state,val){
+		setinvitationNo(state, val) {
 			state.invitationNo = val
 		},
-		setinvite(state,val){
+		setinvite(state, val) {
 			state.invite = val
 		},
 		setUrl(state, val) {
