@@ -2,6 +2,13 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			//邀请码 状态管理
+			if (uni.getStorageSync("userInfo").invitationNo) {
+				this.$store.commit('setinvitationNo', uni.getStorageSync("userInfo").invitationNo);
+			}
+			if( uni.getStorageSync("userInfo").roleLevel){
+				this.$store.commit('setRoleLevel', uni.getStorageSync("userInfo").roleLevel);
+			}
 			// uni.getSystemInfo({
 			// 	success: function(e) {
 			// 		// #ifndef MP
@@ -70,7 +77,7 @@
 		background-position: center;
 		background-size: cover;
 		background-repeat: no-repeat;
-		background-color: #F5F5F5;	
+		background-color: #F5F5F5;
 	}
 
 	image {
