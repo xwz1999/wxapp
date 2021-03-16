@@ -15,7 +15,7 @@
 											 border-radius="70" :loading-img="IMAGE_URL + '/null05.png'" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill"></u-lazy-load>
 										</view>
 									</navigator>
-								
+
 								</view>
 								<view class="" style="font-size: 40rpx;font-weight: 500; width: 100%;">
 									<text>{{userInfo.nickname}}</text>
@@ -28,7 +28,7 @@
 							</view>
 							<view class="" style=" flex:1;">
 								<view class="">
-									<text>注册时间2020-01-12</text>
+									<text>注册时间{{usercreatedAt}}</text>
 								</view>
 							</view>
 							<view class="flex  flex-wrap text-center" style="height: 238rpx;width: 112rpx;flex: 0;   align-content: space-between;">
@@ -58,14 +58,11 @@
 				</view>
 			</view>
 			<scroll-view class="flex-sub" scroll-y="true" style="height: 0;">
-				<view class="info-container" style="padding: 20rpx;">
-					<view class="box bg-white">
+				<!-- 				<view class="info-container" style="padding: 20rpx;"> -->
+				<view class="info-container">
+					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<view class="subtitle">我的资产</view>
 						<view class="flex justify-around text-center card-con">
-							<!-- 		<view @tap="toCoupons">
-								<view class="num">{{info.myAssets.couponNum?info.balance:0}}</view>
-								<view>优惠券(张)</view>
-							</view> -->
 							<view @tap="toMyMoney">
 								<view class="num">{{info.myAssets.coinNum?info.myAssets.coinNum:0}}</view>
 								<view>瑞币(个)<text class="cuIcon-question" @tap.stop="tipModel(true)"></text></view>
@@ -82,16 +79,139 @@
 						</view>
 					</view>
 
-					<view class="box bg-white">
-						<navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;">
+					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
+						<!-- <navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;"> -->
+						<view class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;">
 							<view>累计收益<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text></view>
 							<view class="flex more"><text style="font-size: 34rpx;color: #333333;">{{totalEarning}}</text><text class="cuIcon-right"></text></view>
-						</navigator>
+						</view>
 					</view>
+					<view>
+						<view class="box bg-white">
+							<view class="subtitle flex justify-between">
+								<view class="flex align-center">
+									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
+									<view>自购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text></view>
+								</view>
+								<view class="flex more">图表分析<text class="cuIcon-right"></text></view>
+							</view>
+							<view class="money-box flex justify-between align-center">
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
+									<view class="num">1513.47</view>
+								</view>
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+									<view class="num">100</view>
+								</view>
+								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
 
+								</view>
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">已到账收益(瑞币)</view>
+									<view class="num">1456.79</view>
+								</view>
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+									<view class="num">100</view>
+								</view>
+							</view>
+						</view>
 
-					<!-- 我的收益 -->
-					<view class="box bg-white" @click="toMyIncome">
+						<view class="box bg-white">
+							<view class="subtitle flex justify-between">
+								<view class="flex align-center">
+									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
+									<view>导购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text></view>
+								</view>
+								<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
+							</view>
+							<view class="money-box flex justify-between align-center">
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
+									<view class="num">1513.47</view>
+								</view>
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+									<view class="num">100</view>
+								</view>
+								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
+
+								</view>
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">已到账收益(瑞币)</view>
+									<view class="num">1456.79</view>
+								</view>
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+									<view class="num">100</view>
+								</view>
+							</view>
+						</view>
+						<view class="box bg-white">
+							<view class="subtitle flex justify-between">
+								<view class="flex align-center">
+									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
+									<view>店铺补贴 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text></view>
+								</view>
+								<view class="flex more">图表分析<text class="cuIcon-right"></text></view>
+							</view>
+							<view class="money-box flex justify-between align-center">
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
+									<view class="num">1513.47</view>
+								</view>
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+									<view class="num">100</view>
+								</view>
+								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
+
+								</view>
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">已到账收益(瑞币)</view>
+									<view class="num">1456.79</view>
+								</view>
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+									<view class="num">100</view>
+								</view>
+							</view>
+						</view>
+						<view class="box bg-white">
+							<view class="subtitle flex justify-between">
+								<view class="flex align-center">
+									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
+									<view>自购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text></view>
+								</view>
+								<view class="flex more">图表分析<text class="cuIcon-right"></text></view>
+							</view>
+							<view class="money-box flex justify-between align-center">
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
+									<view class="num">1513.47</view>
+								</view>
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+									<view class="num">100</view>
+								</view>
+								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
+
+								</view>
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">已到账收益(瑞币)</view>
+									<view class="num">1456.79</view>
+								</view>
+								<view>
+									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+									<view class="num">100</view>
+								</view>
+							</view>
+						</view>
+
+					</view>
+					<!-- 我的收益3.0版本 -->
+					<!-- 	<view class="box bg-white" @click="toMyIncome">
 						<view class="subtitle flex align-center justify-between"><text>我的收益</text> <text class="cuIcon-right"></text></view>
 						<view class="flex justify-around text-center align-center subtitle" style="line-height: 50rpx;font-size: 36rpx;color: #333333;padding: 16rpx 0 20rpx 0;font-weight: 400;">
 							<view>
@@ -124,7 +244,21 @@
 							</view>
 						</view>
 					</view>
-					<view class="box bg-white">
+					 -->
+					 <view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
+					 	<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
+					 		<view>订单中心<text style="font-weight: normal;font-size: 26rpx;">(自购)</text></view>
+					 		<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
+					 	</navigator>
+					 	<view class="order-con flex justify-around">
+					 		<view class="order-item flex flex-direction align-center" v-for="(item,index) in orderStatus" :key="index" @tap="toOrders(index)">
+					 			<image :src="item.icon" style="height: 56rpx;margin-bottom: 10rpx;width: auto;" mode="heightFix"></image>
+					 			<view style="font-size: 24rpx;color: #666;">{{item.text}}</view>
+					 			<view class="order-count" v-if="item.count">{{item.count}}</view>
+					 		</view>
+					 	</view>
+					 </view>
+					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<view class=" subtitle flex justify-between" style="border: none;">
 							<view>店铺管理</view>
 						</view>
@@ -149,7 +283,7 @@
 									<text>有福同享·真壕友</text>
 								</view>
 							</view>
-							<navigator url="/packageA/mineShop/recommendBg">
+							<!-- <navigator url="/packageA/mineShop/recommendBg">
 								<view class="card">
 									<image :src="`${IMAGE_URL}/mineShop/shop3.jpg`" mode="widthFix"></image>
 									<view class="">
@@ -193,22 +327,11 @@
 									<text>积少成多·奖励丰厚</text>
 								</view>
 							</view>
+						 -->
 						</view>
 					</view>
-					<view class="box bg-white">
-						<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
-							<view>订单中心<text style="font-weight: normal;font-size: 26rpx;">(自购)</text></view>
-							<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-						</navigator>
-						<view class="order-con flex justify-around">
-							<view class="order-item flex flex-direction align-center" v-for="(item,index) in orderStatus" :key="index" @tap="toOrders(index)">
-								<image :src="item.icon" style="height: 56rpx;margin-bottom: 10rpx;width: auto;" mode="heightFix"></image>
-								<view style="font-size: 24rpx;color: #666;">{{item.text}}</view>
-								<view class="order-count" v-if="item.count">{{item.count}}</view>
-							</view>
-						</view>
-					</view>
-					<view class="box flex justify-around bg-white">
+					
+					<view class="box flex justify-around bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;" >
 						<!-- 	<view class="other-item flex-sub flex flex-direction justify-between align-center" v-for="(item,index) in otherOptions"
 						 :key="index" @tap="toPage(item.page)">
 							<image :src="item.icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
@@ -263,6 +386,7 @@
 				background: {
 					backgroundColor: '#3A3943',
 				},
+				usercreatedAt: null,
 				myIncomeData: null, //
 				STATIC_URL: this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
@@ -327,10 +451,9 @@
 			};
 		},
 		created() {
-				this.$store.commit('setIsLogin')
-				this.isLogin = this.$store.state.isLogin
-				console.log(this.$store.state.isLogin)
-				this.roleLevel = this.$store.state.roleLevel
+			this.$store.commit('setIsLogin')
+			this.isLogin = this.$store.state.isLogin
+			this.usercreatedAt = uni.getStorageSync("userInfo").createdAt.substring(0, 10)
 		},
 		onLoad() {
 			if (this.isLogin) {
@@ -429,10 +552,10 @@
 					console.log(uni.getStorageSync("userId"))
 					this.roleLevel = this.info.roleLevel
 					this.bgImage = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'mineBg')
-					this.role =   this.$options.filters['roleFilter'](this.roleLevel, 'txt')
-					this.iconPic =  this.IMAGE_URL +this.$options.filters['roleFilter'](this.roleLevel, 'badge')
+					this.role = this.$options.filters['roleFilter'](this.roleLevel, 'txt')
+					this.iconPic = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'badge')
 					this.$store.commit('setRoleLevel', this.roleLevel);
-				
+
 					// switch (this.roleLevel) {
 					// 	case 500:
 					// 		this.role = "会员"
@@ -556,6 +679,7 @@
 		font-size: 34rpx;
 		font-weight: 700;
 		margin: 258rpx auto;
+
 		image {
 			width: 160rpx;
 			box-shadow: 5rpx 5rpx 10rpx 3rpx rgba(0, 0, 0, 0.3);
@@ -563,7 +687,8 @@
 			border-radius: 30rpx;
 		}
 	}
-	.login-btn{
+
+	.login-btn {
 		width: 50%;
 		margin: 0 auto;
 		line-height: 86rpx;
@@ -713,7 +838,7 @@
 	}
 
 	.box {
-		border-radius: 20rpx;
+		// border-radius: 20rpx;
 		overflow: hidden;
 		margin-bottom: 20rpx;
 

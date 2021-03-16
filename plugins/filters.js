@@ -1,4 +1,13 @@
-export function roleFilter(roleLevel,format) {
+/**
+ * Diamond1Level = 100    钻一店铺
+ *	Diamond2Level = 130    钻二店铺
+ *	Diamond3Level = 160    钻三店铺
+ *	GoldLevel    = 200    黄金店铺
+ *	SilverLevel  = 300    白银店铺
+ *	MasterLevel  = 400    店主 
+ *	VipLevel     = 500    会员
+ * */
+export function roleFilter(roleLevel, format) {
 	let roleText, badge, mineBg, otherBg
 	switch (roleLevel) {
 		case 500:
@@ -38,7 +47,7 @@ export function roleFilter(roleLevel,format) {
 		default:
 			break;
 	}
-	switch(format){
+	switch (format) {
 		case 'txt':
 			return roleText
 			break;
@@ -47,10 +56,10 @@ export function roleFilter(roleLevel,format) {
 			break;
 		case 'badge':
 			return badge
-			break;	
+			break;
 		case 'otherBg':
 			return otherBg
-			break;	
+			break;
 		default:
 			break;
 	}
