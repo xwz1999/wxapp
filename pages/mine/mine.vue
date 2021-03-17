@@ -258,6 +258,14 @@
 					 		</view>
 					 	</view>
 					 </view>
+					<!-- <view class="box bg-white">
+					 	<view class="">
+					 		黄金店铺考核
+							本次考核
+							
+					 	</view>
+
+					 </view> -->
 					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<view class=" subtitle flex justify-between" style="border: none;">
 							<view>店铺管理</view>
@@ -513,6 +521,7 @@
 						return
 					}
 					this.myIncomeData = res.data.data
+					console.log(res.data.data)
 				});
 			},
 			// 到我的收益页面

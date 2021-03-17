@@ -1,202 +1,137 @@
- <template>
-	<view>
-		
+<template>
+	<view class="box">
+		<canvas @click.stop="" canvas-id="my-canvas" :style="{ width: 750 + 'rpx',height:80+'vh'}"></canvas>
+		<view class="save-btn" @click.stop="saveImage">保存图片</view>
 	</view>
 </template>
-<!-- <template>
-	<view>
-		<view class="top">
-			<button @click='saveImage'>保存</button>
-			<text @click='eidtImage'>修改</text>
-		</view>
-		<painter @customActionStyle="customActionStyle" :palette="template" @imgOK="onImgOK" action="action" widthPixels="2080" />
-		 <image :src="image" style="width: 654rpx; height: 1000rpx; margin-left:40rpx;"/>
-	</view>
-</template>
-
 <script>
 	export default {
 		data() {
 			return {
-				template: {},
-				imagePath:'',
-				image:'',
-				paintPallette: {}
+				ctx: null,
+				canvasW: 0,
+				canvasH: 0,
+				canvasM: 0,
+				title:'21313123123'
 			}
 		},
-		mounted() {
+		created() {
 
-			// console.log(new LastMayday().palette())
+			this.canvasW = wx.getSystemInfoSync().windowWidth
+			this.canvasH = wx.getSystemInfoSync().windowHeight
+			console.log(wx.getSystemInfoSync())
+		},
+		mounted() {
+			this.__init()
+			this.canvasM = this.convert_length(30)
 		},
 		methods: {
-			eidtImage(){
-				this.template.views[3].text = '哈哈哈哈'
+			//初始化画布
+			async __init() {
+				this.ctx = uni.createCanvasContext('my-canvas', this)
+				this.ctx.setFillStyle("#FFFFFF")
+				this.ctx.fillRect(0, 0, this.canvasW, this.canvasH)
+				let headerImg = await this.getImageInfo(
+					'https://testcdn.reecook.cn/static/photo/0a8c3159cf4a6cfe2475e6837a5b3521.jpg')
+				this.ctx.drawImage(headerImg.path, 10, 0, this.canvasW * 0.8, this.canvasW * 0.8);
+				//绘制标题
+				this.ctx.setFontSize(this.convert_length(34)); //设置标题字体大小
+				this.ctx.setFillStyle('#333'); //设置标题文本颜色
+				this.ctx.fillText(this.title, 10,this.canvasW * 0.8 + 30 )
+				await this.ctx.draw()
 			},
-			// initData() {
-			// 	uni.showLoading({
-			// 		title: "拼命生成中...",
-			// 		mask: true,
-			// 	});
-			// 	this.template = new Card().palette()
-			// 	console.log(this.template)
-			// },
-			onImgOK(e) {
-				console.log(e)
-				this.imagePath = e.detail.path;
-				this.image = this.imagePath
-				if (this.isSave) {
-					this.saveImage(this.imagePath);
-				}
+			convert_length(length) {
+				return Math.round(wx.getSystemInfoSync().windowWidth * length / 750);
 			},
 			saveImage() {
-				if (this.imagePath && typeof this.imagePath === 'string') {
-					this.isSave = false;
-					wx.saveImageToPhotosAlbum({
-						filePath: this.imagePath,
+				//判断用户授权
+				uni.getSetting({
+					success(res) {
+						console.log('获取用户权限', res.authSetting)
+						if (Object.keys(res.authSetting).length > 0) {
+							//判断是否有相册权限
+							if (res.authSetting['scope.writePhotosAlbum'] == undefined) {
+								//打开设置权限
+								uni.openSetting({
+									success(res) {
+										console.log('设置权限', res.authSetting)
+									}
+								})
+							} else {
+								if (!res.authSetting['scope.writePhotosAlbum']) {
+									//打开设置权限
+									uni.openSetting({
+										success(res) {
+											console.log('设置权限', res.authSetting)
+										}
+									})
+								}
+							}
+						} else {
+							return
+						}
+					}
+				})
+				var that = this
+				uni.canvasToTempFilePath({
+					canvasId: 'my-canvas',
+					quality: 1,
+					x: 0,
+					y: 0,
+					width: that.canvasW * 5120 / wx.getSystemInfoSync().windowWidth,
+					height: that.canvasH * 5120 / wx.getSystemInfoSync().windowHeight,
+					//复制 * 750 / wx.getSystemInfoSync().windowWidth,换算成rpx；
+					destWidth: that.canvasW * 5120 / wx.getSystemInfoSync().windowWidth,
+					destHeight: that.canvasH * 5120 / wx.getSystemInfoSync().windowHeight,
+					complete: (res) => {
+						console.log('保存到相册', res);
+						uni.saveImageToPhotosAlbum({
+							filePath: res.tempFilePath,
+							success(res) {
+								uni.showToast({
+									title: '已保存到相册',
+									icon: 'success',
+									duration: 2000
+								})
+								setTimeout(() => {
+									that.isShow = false
+								}, 2000)
+							}
+						})
+					}
+				}, this);
+			},
+			//获取图片
+			getImageInfo(imgSrc) {
+				const that = this
+				return new Promise((resolve, reject) => {
+					uni.getImageInfo({
+						src: imgSrc,
+						destWidth: that.canvasW * 5120 / wx.getSystemInfoSync().windowWidth,
+						destHeight: that.canvasH * 5120 / wx.getSystemInfoSync().windowHeight,
+						success: (image) => {
+							console.log(image)
+							resolve(image);
+							console.log('获取图片成功', image)
+						},
+						fail: (err) => {
+							reject(err);
+							console.log('获取图片失败', err)
+						}
 					});
-				}
+				});
 			},
 		},
-		onLoad: function() {
-			this.template ={
-			"width": "720rpx",
-			"height": "1280rpx",
-			"background": "#f8f8f8",
-			"views": [{
-					"type": "image",
-					"url": "http://img1.maka.im/user/8982892/images/1c20d674cd6762877bc150a4850cc381.png",
-					"css": {
-						"width": "720rpx",
-						"height": "1280rpx",
-						"top": "0rpx",
-						"left": "0rpx",
-						"rotate": "0",
-						"borderRadius": "",
-						"borderWidth": "",
-						"borderColor": "#000000",
-						"shadow": "",
-						"mode": "scaleToFill"
-					}
-				},
-				{
-					"type": "image",
-					"url": "http://img1.maka.im/user/8982892/images/ebaecded1e3d015a3178aa790d8a45be.png",
-					"css": {
-						"width": "254rpx",
-						"height": "308rpx",
-						"top": "192rpx",
-						"left": "230rpx",
-						"rotate": "0",
-						"borderRadius": "",
-						"borderWidth": "",
-						"borderColor": "#000000",
-						"shadow": "",
-						"mode": "scaleToFill"
-					}
-				},
-				{
-					"type": "text",
-					"text": "努力做一个善良的人，做一个心态阳光的人，做一个积极向上的人，用正能量激发自己",
-					"css": {
-						"color": "#000000",
-						"background": "",
-						"width": "475rpx",
-						"height": "75.02rpx",
-						"top": "604rpx",
-						"left": "119rpx",
-						"rotate": "0",
-						"borderRadius": "",
-						"borderWidth": "",
-						"borderColor": "#000000",
-						"shadow": "",
-						"padding": "0rpx",
-						"fontSize": "20rpx",
-						"fontWeight": "normal",
-						// "maxLines": "2",
-						"lineHeight": "37.74rpx",
-						"textStyle": "fill",
-						"textDecoration": "none",
-						"fontFamily": "",
-						"textAlign": "center"
-					}
-				},
-				{
-					"type": "text",
-					"text": "微笑开始新的一天",
-					"css": {
-						"color": "#000000",
-						"background": "",
-						"width": "600rpx",
-						"height": "58.68rpx",
-						"top": "698rpx",
-						"left": "60rpx",
-						"rotate": "0",
-						"borderRadius": "",
-						"borderWidth": "",
-						"borderColor": "#000000",
-						"shadow": "",
-						"padding": "0rpx",
-						"fontSize": "36rpx",
-						"fontWeight": "normal",
-						"maxLines": "2",
-						"lineHeight": "59.94rpx",
-						"textStyle": "fill",
-						"textDecoration": "none",
-						"fontFamily": "",
-						"textAlign": "center"
-					}
-				},
-				{
-					"type": "image",
-					"url": "http://img1.maka.im/user/8982892/images/5ba0d49561a0e6be54b832bedb061320.jpg",
-					"css": {
-						"width": "127rpx",
-						"height": "127rpx",
-						"top": "1047rpx",
-						"left": "532rpx",
-						"rotate": "0",
-						"borderRadius": "",
-						"borderWidth": "",
-						"borderColor": "#000000",
-						"shadow": "",
-						"mode": "scaleToFill"
-					}
-				}
-			]
-		}
+		onLoad() {
+
+		},
+		onShow() {
 
 		}
 	}
 </script>
-
 <style lang="scss">
 	.box {
-		margin-top: 20rpx;
-
-		.item {
-			padding: 0 30rpx;
-			height: 100rpx;
-			border-bottom: 1rpx solid #f5f5f5;
-
-			&:last-child {
-				border: 0;
-			}
-
-			.default {
-				font-size: 24rpx;
-				color: #FA6400;
-				border: 1rpx solid #FA6400;
-				border-radius: 5rpx;
-				margin-left: 5rpx;
-				padding: 0 5rpx;
-			}
-		}
-	}
-
-	.btn-box {
-		position: fixed;
-		width: 100%;
-		bottom: 0;
+		background-color: #F8F8F8;
 	}
 </style>
- -->

@@ -9,7 +9,7 @@
 			if( uni.getStorageSync("userInfo").roleLevel){
 				this.$store.commit('setRoleLevel', uni.getStorageSync("userInfo").roleLevel);
 			}
-			console.log(uni.getStorageSync("userInfo"))
+			// console.log(uni.getStorageSync("userInfo"))
 			// uni.getSystemInfo({
 			// 	success: function(e) {
 			// 		// #ifndef MP

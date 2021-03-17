@@ -3,8 +3,12 @@
 		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
 	},
 	"pages": [
-
 		{
+			"path": "pages/poster/poster",
+			"style": {
+				"navigationBarTitleText": "分享海报"
+			}
+		},{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarBackgroundColor": "#5B80A0",
@@ -530,13 +534,8 @@
 				"enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 			}
-		},
-		{
-			"path": "pages/poster/poster",
-			"style": {
-				"navigationBarTitleText": "分享海报"
-			}
 		}
+		
 	],
 	// 分包配置项(由于小程序代码包大小限制，需要分包)
 	/**
