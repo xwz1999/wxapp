@@ -65,7 +65,7 @@
 						<view class="flex justify-around text-center card-con">
 							<view @tap="toMyMoney">
 								<view class="num">{{info.myAssets.coinNum?info.myAssets.coinNum:0}}</view>
-								<view>瑞币(个)<text class="cuIcon-question" @tap.stop="tipModel(true)"></text></view>
+								<view>瑞币(个)<text class="cuIcon-question" @tap.stop="tipModel(true,'myAssets')"></text></view>
 							</view>
 							<view @tap="toBalance">
 								<view class="num">{{info.balance?info.balance:0}}</view>
@@ -81,39 +81,42 @@
 
 					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<!-- <navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;"> -->
-						<view class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;">
+						<navigator url="/packageA/myIncome/cumulative" :hover-class="false" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;">
 							<view>累计收益<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text></view>
 							<view class="flex more"><text style="font-size: 34rpx;color: #333333;">{{totalEarning}}</text><text class="cuIcon-right"></text></view>
-						</view>
+						</navigator>
 					</view>
 					<view>
 						<view class="box bg-white">
 							<view class="subtitle flex justify-between">
 								<view class="flex align-center">
 									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
-									<view>自购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text></view>
+									<view>自购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
+										 @tap.stop="tipModel(true,'purchase')"></text></view>
 								</view>
-								<view class="flex more">图表分析<text class="cuIcon-right"></text></view>
+								<navigator url="/packageA/myIncome/purchase" :hover-class="false" class="flex more">
+									图表分析<text class="cuIcon-right"></text>
+								</navigator>
 							</view>
 							<view class="money-box flex justify-between align-center">
 								<view>
 									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
-									<view class="num">1513.47</view>
+									<view class="num">{{myIncomeData.purchase.expectAmount?myIncomeData.purchase.expectAmount:0}}</view>
 								</view>
 								<view>
 									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">100</view>
+									<view class="num">{{myIncomeData.purchase.expectCount?myIncomeData.purchase.expectCount:0}}</view>
 								</view>
 								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
 
 								</view>
 								<view>
 									<view class="txt" style="margin-bottom: 20rpx;">已到账收益(瑞币)</view>
-									<view class="num">1456.79</view>
+									<view class="num">{{myIncomeData.purchase.amount?myIncomeData.purchase.amount:0}}</view>
 								</view>
 								<view>
 									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">100</view>
+									<view class="num">{{myIncomeData.purchase.count?myIncomeData.purchase.count:0}}</view>
 								</view>
 							</view>
 						</view>
@@ -122,93 +125,66 @@
 							<view class="subtitle flex justify-between">
 								<view class="flex align-center">
 									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
-									<view>导购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text></view>
+									<view>导购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
+										 @tap.stop="tipModel(true,'guide')"></text></view>
 								</view>
 								<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
 							</view>
 							<view class="money-box flex justify-between align-center">
 								<view>
 									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
-									<view class="num">1513.47</view>
+									<view class="num">{{myIncomeData.guide.expectAmount?myIncomeData.guide.expectAmount:0}}</view>
 								</view>
 								<view>
 									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">100</view>
+									<view class="num">{{myIncomeData.guide.expectCount?myIncomeData.guide.expectCount:0}}</view>
 								</view>
 								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
 
 								</view>
 								<view>
 									<view class="txt" style="margin-bottom: 20rpx;">已到账收益(瑞币)</view>
-									<view class="num">1456.79</view>
+									<view class="num">{{myIncomeData.guide.amount?myIncomeData.guide.amount:0}}</view>
 								</view>
 								<view>
 									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">100</view>
+									<view class="num">{{myIncomeData.guide.count?myIncomeData.guide.count:0}}</view>
 								</view>
 							</view>
 						</view>
-						<view class="box bg-white">
+						<view class="box bg-white" v-if="myIncomeData.hasTeam">
 							<view class="subtitle flex justify-between">
 								<view class="flex align-center">
 									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
-									<view>店铺补贴 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text></view>
+									<view>店铺补贴 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
+										 @tap.stop="tipModel(true,'team')"></text></view>
 								</view>
-								<view class="flex more">图表分析<text class="cuIcon-right"></text></view>
+								<navigator url="/packageA/myIncome/shopSubsidy" :hover-class="false" class="flex more">
+									图表分析<text class="cuIcon-right"></text>
+								</navigator>
 							</view>
 							<view class="money-box flex justify-between align-center">
 								<view>
 									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
-									<view class="num">1513.47</view>
+									<view class="num">{{myIncomeData.team.expectAmount?myIncomeData.team.expectAmount:0}}</view>
 								</view>
 								<view>
 									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">100</view>
+									<view class="num">{{myIncomeData.team.expectCount?myIncomeData.team.expectCount:0}}</view>
 								</view>
 								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
 
 								</view>
 								<view>
 									<view class="txt" style="margin-bottom: 20rpx;">已到账收益(瑞币)</view>
-									<view class="num">1456.79</view>
+									<view class="num">{{myIncomeData.team.amount?myIncomeData.team.amount:0}}</view>
 								</view>
 								<view>
 									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">100</view>
+									<view class="num">{{myIncomeData.team.count?myIncomeData.team.count:0}}</view>
 								</view>
 							</view>
 						</view>
-						<view class="box bg-white">
-							<view class="subtitle flex justify-between">
-								<view class="flex align-center">
-									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
-									<view>自购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text></view>
-								</view>
-								<view class="flex more">图表分析<text class="cuIcon-right"></text></view>
-							</view>
-							<view class="money-box flex justify-between align-center">
-								<view>
-									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
-									<view class="num">1513.47</view>
-								</view>
-								<view>
-									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">100</view>
-								</view>
-								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
-
-								</view>
-								<view>
-									<view class="txt" style="margin-bottom: 20rpx;">已到账收益(瑞币)</view>
-									<view class="num">1456.79</view>
-								</view>
-								<view>
-									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">100</view>
-								</view>
-							</view>
-						</view>
-
 					</view>
 					<!-- 我的收益3.0版本 -->
 					<!-- 	<view class="box bg-white" @click="toMyIncome">
@@ -245,19 +221,19 @@
 						</view>
 					</view>
 					 -->
-					 <view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
-					 	<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
-					 		<view>订单中心<text style="font-weight: normal;font-size: 26rpx;">(自购)</text></view>
-					 		<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-					 	</navigator>
-					 	<view class="order-con flex justify-around">
-					 		<view class="order-item flex flex-direction align-center" v-for="(item,index) in orderStatus" :key="index" @tap="toOrders(index)">
-					 			<image :src="item.icon" style="height: 56rpx;margin-bottom: 10rpx;width: auto;" mode="heightFix"></image>
-					 			<view style="font-size: 24rpx;color: #666;">{{item.text}}</view>
-					 			<view class="order-count" v-if="item.count">{{item.count}}</view>
-					 		</view>
-					 	</view>
-					 </view>
+					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
+						<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
+							<view>订单中心<text style="font-weight: normal;font-size: 26rpx;">(自购)</text></view>
+							<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
+						</navigator>
+						<view class="order-con flex justify-around">
+							<view class="order-item flex flex-direction align-center" v-for="(item,index) in orderStatus" :key="index" @tap="toOrders(index)">
+								<image :src="item.icon" style="height: 56rpx;margin-bottom: 10rpx;width: auto;" mode="heightFix"></image>
+								<view style="font-size: 24rpx;color: #666;">{{item.text}}</view>
+								<view class="order-count" v-if="item.count">{{item.count}}</view>
+							</view>
+						</view>
+					</view>
 					<!-- <view class="box bg-white">
 					 	<view class="">
 					 		黄金店铺考核
@@ -338,13 +314,8 @@
 						 -->
 						</view>
 					</view>
-					
-					<view class="box flex justify-around bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;" >
-						<!-- 	<view class="other-item flex-sub flex flex-direction justify-between align-center" v-for="(item,index) in otherOptions"
-						 :key="index" @tap="toPage(item.page)">
-							<image :src="item.icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
-							<view>{{item.text}}</view>
-						</view> -->
+
+					<view class="box flex justify-around bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<view class="other-item flex-sub flex flex-direction justify-between align-center" @tap="toPage(otherOptions[0].page)">
 							<image :src="otherOptions[0].icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
 							<view>{{otherOptions[0].text}}</view>
@@ -353,7 +324,6 @@
 							<button open-type='contact' class='customer-service'>
 								<image :src="otherOptions[1].icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
 							</button>
-
 							<view>{{otherOptions[1].text}}</view>
 						</view>
 						<view class="other-item flex-sub flex flex-direction justify-between align-center" @tap="toPage(otherOptions[2].page)">
@@ -364,14 +334,9 @@
 							<image :src="otherOptions[3].icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
 							<view>{{otherOptions[3].text}}</view>
 						</view>
-						<!-- 	<button open-type='contact' class='customer-service'>
-								<u-icon name="server-fill" size="48"></u-icon>
-							</button>
-	-->
 					</view>
 				</view>
 			</scroll-view>
-			<u-modal v-model="showTipModel" content="瑞币可随时转到余额,可提现" :confirm-style="{color:'#D5101A'}"></u-modal>
 		</view>
 		<view class="" v-else>
 			<view class="logo-box">
@@ -383,14 +348,17 @@
 				</view>
 			</view>
 		</view>
+		<tip-model :show='showTipModel' :title='tipModelTitle' @confirm='tipConfirm'></tip-model>
 	</view>
 
 </template>
 
 <script>
 	export default {
+
 		data() {
 			return {
+				tipModelTitle: '',
 				background: {
 					backgroundColor: '#3A3943',
 				},
@@ -514,15 +482,25 @@
 			},
 			// 我的收益
 			myIncome() {
-				this.$u.post('/api/v2/app/user/income', {}).then(res => {
+				// /api/v2/app/user/member/income_data
+				this.$u.post('/api/v2/app/user/member/income_data').then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
 					}
 					this.myIncomeData = res.data.data
-					console.log(res.data.data)
+					// console.log(res.data.data)
 				});
+				// this.$u.post('/api/v2/app/user/income', {}).then(res => {
+				// 	console.log(res.data);
+				// 	if (res.data.code == "FAIL") {
+				// 		this.$u.toast(res.data.msg);
+				// 		return
+				// 	}
+				// 	this.myIncomeData = res.data.data
+				// 	console.log(res.data.data)
+				// });
 			},
 			// 到我的收益页面
 			toMyIncome() {
@@ -633,8 +611,12 @@
 					url: "../login/login"
 				})
 			},
-			tipModel(flag) {
+			tipModel(flag, title) {
 				this.showTipModel = flag
+				this.tipModelTitle = title
+			},
+			tipConfirm() {
+				this.showTipModel = false
 			},
 			toTeamEarnings() {
 				uni.navigateTo({

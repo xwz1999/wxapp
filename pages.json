@@ -3,12 +3,7 @@
 		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
 	},
 	"pages": [
-		{
-			"path": "pages/poster/poster",
-			"style": {
-				"navigationBarTitleText": "分享海报"
-			}
-		},{
+	{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarBackgroundColor": "#5B80A0",
@@ -579,6 +574,7 @@
 					"navigationBarTextStyle": "white"
 				}
 			},
+		
 			{
 				"path": "myShop/teamAdd",
 				"style": {
@@ -590,6 +586,15 @@
 				"path": "mineShop/mineShop",
 				"style": {
 					"navigationStyle": "custom", // 隐藏系统导航栏
+					"navigationBarTextStyle": "white"
+				}
+			},
+			{
+				"path": "myIncome/cumulative",
+				"style": {
+					"navigationBarTitleText": "累计总收益",
+					"enablePullDownRefresh": false,
+					"navigationBarBackgroundColor": "#16182B",
 					"navigationBarTextStyle": "white"
 				}
 			},
@@ -615,41 +620,58 @@
 				}
 			},
 			{
-				"path": "myIncome/guide",
+				"path": "myIncome/shopSubsidy",
 				"style": {
-					"navigationBarTitleText": "导购收益",
+					"navigationBarTitleText": "店铺补贴",
 					"enablePullDownRefresh": false,
 					"navigationBarBackgroundColor": "#16182B",
 					"navigationBarTextStyle": "white"
 				}
 			},
 			{
-				"path": "myIncome/team",
+				"path": "myIncome/shopSubsidyDetails",
 				"style": {
-					"navigationBarTitleText": "团队收益",
-					"enablePullDownRefresh": false,
-					"navigationBarBackgroundColor": "#16182B",
+					"navigationBarTitleText": "店铺补贴",
+					"navigationStyle": "custom", // 隐藏系统导航栏
 					"navigationBarTextStyle": "white"
 				}
 			},
-			{
-				"path": "myIncome/recommend",
-				"style": {
-					"navigationBarTitleText": "推荐收益",
-					"enablePullDownRefresh": false,
-					"navigationBarBackgroundColor": "#16182B",
-					"navigationBarTextStyle": "white"
-				}
-			},
-			{
-				"path": "myIncome/reward",
-				"style": {
-					"navigationBarTitleText": "平台收益",
-					"enablePullDownRefresh": false,
-					"navigationBarBackgroundColor": "#16182B",
-					"navigationBarTextStyle": "white"
-				}
-			},
+			// {
+			// 	"path": "myIncome/guide",
+			// 	"style": {
+			// 		"navigationBarTitleText": "导购收益",
+			// 		"enablePullDownRefresh": false,
+			// 		"navigationBarBackgroundColor": "#16182B",
+			// 		"navigationBarTextStyle": "white"
+			// 	}
+			// },
+			// {
+			// 	"path": "myIncome/team",
+			// 	"style": {
+			// 		"navigationBarTitleText": "团队收益",
+			// 		"enablePullDownRefresh": false,
+			// 		"navigationBarBackgroundColor": "#16182B",
+			// 		"navigationBarTextStyle": "white"
+			// 	}
+			// },
+			// {
+			// 	"path": "myIncome/recommend",
+			// 	"style": {
+			// 		"navigationBarTitleText": "推荐收益",
+			// 		"enablePullDownRefresh": false,
+			// 		"navigationBarBackgroundColor": "#16182B",
+			// 		"navigationBarTextStyle": "white"
+			// 	}
+			// },
+			// {
+			// 	"path": "myIncome/reward",
+			// 	"style": {
+			// 		"navigationBarTitleText": "平台收益",
+			// 		"enablePullDownRefresh": false,
+			// 		"navigationBarBackgroundColor": "#16182B",
+			// 		"navigationBarTextStyle": "white"
+			// 	}
+			// },
 			{
 				"path": "agreement/share",
 				"style": {

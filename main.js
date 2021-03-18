@@ -13,6 +13,8 @@ Vue.prototype.$store = store
 import goodsList from 'components/goodsList.vue'
 import orderGoods from 'components/orderGoods.vue'
 import largeImageList from 'components/largeImageList.vue'
+import tipModel from 'components/userTipModel.vue'
+Vue.component('tip-model', tipModel)
 Vue.component('goods-list', goodsList)
 Vue.component('order-goods', orderGoods)
 Vue.component('large-image-list', largeImageList)
