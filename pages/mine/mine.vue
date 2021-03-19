@@ -696,7 +696,6 @@
 		position: relative;
 		z-index: 10;
 		font-size: 20rpx;
-
 		.top-nav-box {
 			position: absolute;
 			top: 0;

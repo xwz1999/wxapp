@@ -1,62 +1,71 @@
 <template>
-	<view class="">
-		<view class="card-box" :style="'background-image: url('+bgImage+');background-size: 100% auto;'">
-			<view class="flex justify-between" style="height: 200rpx; padding: 40rpx;">
-				<view class="card-title">
-					<view class="txt" style="width: 100%;">
-						累计未到账补贴(瑞币)
+	<view class="flex flex-direction" style="height: 100vh;width:100vw;">
+		<view style="position: relative;">
+			<view class="card-box" :style="'background-image: url('+bgImage+');background-size: 100% auto;'">
+				<view class="flex justify-between" style="height: 200rpx; padding: 40rpx;">
+					<view class="card-title">
+						<view class="txt" style="width: 100%;">
+							累计未到账补贴(瑞币)
+						</view>
+						<view class="num">
+							10000.00
+						</view>
 					</view>
-					<view class="num">
-						10000.00
+					<view class="">
+						<image :src="badgeImage" mode="widthFix" style="width: 96rpx;"></image>
 					</view>
 				</view>
-				<view class="">
-					<image :src="badgeImage" mode="widthFix" style="width: 96rpx;"></image>
+				<view class="foot-box flex  align-center">
+					<view class="item" @click="cardChange(0)" :class="cardIndex === 0?'active':''">
+						<view class="">
+							自营补贴
+						</view>
+					</view>
+					<view class="foot-line">
+			
+					</view>
+					<view class="item" @click="cardChange(1)" :class="cardIndex === 1?'active':''">
+						<view class="">
+							分销补贴
+						</view>
+					</view>
 				</view>
 			</view>
-			<view class="foot-box flex  align-center">
-				<view class="item" @click="cardChange(0)" :class="cardIndex === 0?'active':''">
+			<view class="">
+				<view class="time-box flex justify-between">
+					<!-- <picker mode="date" start="1990-01-01" fields="month" :end="end_time" @change="chooseTime">
+						<view class="time bg-white text-black">{{time}}<text class="cuIcon-triangledownfill"></text></view>
+					</picker> -->
+					<view class="" style="color: #333333;">
+						{{time}}
+					</view>
 					<view class="">
-						自营补贴
+						本月未到账收益：<text style="color: #D5101A;">60.00</text>
 					</view>
 				</view>
-				<view class="foot-line">
-
+			</view>
+			<view>
+				<view class="flex align-center text-center" style="background: #FFFFFF;height: 88rpx; line-height: 88rpx; font-size: 32rpx;">
+					<view class='' style="flex: 1;"><text>日期</text></view>
+					<view class='' style="flex: 1;"><text>销售额</text></view>
+					<view class='' style="flex: 1;"><text>订单数</text></view>
+					<view class='' style="width: 246rpx;"><text>未到账补贴(瑞币)</text></view>
 				</view>
-				<view class="item" @click="cardChange(1)" :class="cardIndex === 1?'active':''">
-					<view class="">
-						分销补贴
-					</view>
-				</view>
+				
 			</view>
 		</view>
-		<view class="">
-			<view class="time-box flex justify-between">
-				<!-- <picker mode="date" start="1990-01-01" fields="month" :end="end_time" @change="chooseTime">
-					<view class="time bg-white text-black">{{time}}<text class="cuIcon-triangledownfill"></text></view>
-				</picker> -->
-				<view class="" style="color: #333333;">
-					{{time}}
-				</view>
-				<view class="">
-					本月未到账收益：<text style="color: #D5101A;">60.00</text>
-				</view>
-			</view>
-		</view>
-		<view>
-			<view class="flex align-center text-center" style="background: #FFFFFF;height: 88rpx; line-height: 88rpx; font-size: 32rpx;">
-				<view class='' style="flex: 1;"><text>日期</text></view>
-				<view class='' style="flex: 1;"><text>销售额</text></view>
-				<view class='' style="flex: 1;"><text>订单数</text></view>
-				<view class='' style="width: 246rpx;"><text>未到账补贴(瑞币)</text></view>
-			</view>
-				<view class="flex align-center text-center" v-for="index of 4" :key='index' style="background: #FFFFFF;height: 88rpx; line-height: 88rpx; border-top: 1rpx solid  #F5F5F5; font-size: 32rpx;">
+		
+		<scroll-view class="flex-sub" scroll-y="true" style="height: 0;" >
+			
+			<view class="" style="margin-bottom: 40rpx;">
+				<view class="flex align-center text-center" v-for="index of 9" :key='index' style="background: #FFFFFF;height: 88rpx; line-height: 88rpx; border-top: 1rpx solid  #F5F5F5; font-size: 32rpx; ">
 					<view class='' style="flex: 1;"><text>2月28日</text></view>
 					<view class='' style="flex: 1;"><text>100.00</text></view>
 					<view class='' style="flex: 1;"><text>2</text></view>
 					<view class='' style="width: 246rpx; color: #D5101A;" @click="toShopDetails"><text>20.00</text></view>
 				</view>
-		</view>
+			</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -97,7 +106,7 @@
 				// console.log(newDate)
 				return newDate
 			},
-			toShopDetails(){
+			toShopDetails() {
 				uni.navigateTo({
 					url: "/packageA/myIncome/shopSubsidyDetails"
 				})

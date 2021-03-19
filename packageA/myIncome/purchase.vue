@@ -1,46 +1,75 @@
 <template>
-	<view class="">
-		<view class="card-box" :style="'background-image: url('+bgImage+');background-size: 100% auto;'">
-			<view class="flex justify-between" style="height: 200rpx; padding: 40rpx;">
-				<view class="card-title">
-					<view class="txt" style="width: 100%;">
-						累计总收益(瑞币)
+	<view class="flex flex-direction" style="height: 100vh;width:100vw;">
+		<view class="">
+			<view class="card-box" :style="'background-image: url('+bgImage+');background-size: 100% auto;'">
+				<view class="flex justify-between" style="height: 200rpx; padding: 40rpx;">
+					<view class="card-title">
+						<view class="txt" style="width: 100%;">
+							累计总收益(瑞币)
+						</view>
+						<view class="num">
+							10000.00
+						</view>
 					</view>
-					<view class="num">
-						10000.00
-					</view>
-				</view>
-				<view class="">
-					<image :src="badgeImage" mode="widthFix" style="width: 96rpx;"></image>
-				</view>
-			</view>
-			<view class="foot-box flex  align-center">
-				<view class="item" @click="cardChange(0)" :class="cardIndex === 0?'active':''">
 					<view class="">
-						未到账明细(月)
+						<image :src="badgeImage" mode="widthFix" style="width: 96rpx;"></image>
 					</view>
 				</view>
-				<view class="foot-line">
+				<view class="foot-box flex  align-center">
+					<view class="item" @click="cardChange(0)" :class="cardIndex === 0?'active':''">
+						<view class="">
+							未到账明细(月)
+						</view>
+					</view>
+					<view class="foot-line">
+
+					</view>
+					<view class="item" @click="cardChange(1)" :class="cardIndex === 1?'active':''">
+						<view class="">
+							未到账明细(年)
+						</view>
+					</view>
+				</view>
+				<view>
+					<view class="flex align-center text-center" style="background: #FFFFFF;height: 88rpx; line-height: 88rpx; font-size: 32rpx;">
+						<view class='' style="flex: 1;"><text>日期</text></view>
+						<view class='' style="flex: 1;"><text>销售额</text></view>
+						<view class='' style="flex: 1;"><text>订单数</text></view>
+						<view class='' style="width: 246rpx;"><text>未到账补贴(瑞币)</text></view>
+					</view>
 
 				</view>
-				<view class="item" @click="cardChange(1)" :class="cardIndex === 1?'active':''">
+			</view>
+			<view class="">
+				<view class="time-box flex justify-between">
+					<picker mode="date" start="1990-01-01" fields="month" :end="end_time" @change="chooseTime">
+						<view class="time bg-white text-black">{{time}}<text class="cuIcon-triangledownfill"></text></view>
+					</picker>
 					<view class="">
-						未到账明细(年)
+						本月未到账收益：<text style="color: #D5101A;">60.00</text>
 					</view>
 				</view>
 			</view>
-		</view>
-		<view class="">
-			<view class="time-box flex justify-between">
-				<picker mode="date" start="1990-01-01" fields="month" :end="end_time" @change="chooseTime">
-					<view class="time bg-white text-black">{{time}}<text class="cuIcon-triangledownfill"></text></view>
-				</picker>
-				<view class="">
-					本月未到账收益：<text style="color: #D5101A;">60.00</text>
+			<view>
+				<view class="flex align-center text-center" style="background: #FFFFFF;height: 88rpx; line-height: 88rpx; font-size: 32rpx;">
+					<view class='' style="flex: 1;"><text>日期</text></view>
+					<view class='' style="flex: 1;"><text>销售额</text></view>
+					<view class='' style="flex: 1;"><text>订单数</text></view>
+					<view class='' style="width: 246rpx;"><text>未到账补贴(瑞币)</text></view>
 				</view>
 			</view>
-		
 		</view>
+		<scroll-view class="flex-sub" scroll-y="true" style="height: 0;">
+
+			<view class="" style="margin-bottom: 40rpx;">
+				<view class="flex align-center text-center" v-for="index of 9" :key='index' style="background: #FFFFFF;height: 88rpx; line-height: 88rpx; border-top: 1rpx solid  #F5F5F5; font-size: 32rpx; ">
+					<view class='' style="flex: 1;"><text>2月28日</text></view>
+					<view class='' style="flex: 1;"><text>100.00</text></view>
+					<view class='' style="flex: 1;"><text>2</text></view>
+					<view class='' style="width: 246rpx; color: #D5101A;" @click="toShopDetails"><text>20.00</text></view>
+				</view>
+			</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -48,11 +77,11 @@
 	export default {
 		data() {
 			return {
-				bgImage: this.STATIC_URL + 'bg01.png',
+				bgImage: this.IMAGE_URL + 'bg01.png',
 				roleLevel: 0,
 				badgeImage: '',
 				end_time: "",
-				time:'',
+				time: '',
 				cardIndex: 0
 			}
 		},
@@ -121,12 +150,14 @@
 		line-height: 60rpx;
 		padding: 20rpx 30rpx;
 		color: #AAAAAA;
+
 		.time {
 			border-radius: 40rpx;
 			padding: 0 10rpx 0 20rpx;
 		}
-	
+
 	}
+
 	.card-box {
 		width: 608rpx;
 		height: 304rpx;
