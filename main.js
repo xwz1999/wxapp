@@ -14,6 +14,8 @@ import goodsList from 'components/goodsList.vue'
 import orderGoods from 'components/orderGoods.vue'
 import largeImageList from 'components/largeImageList.vue'
 import tipModel from 'components/userTipModel.vue'
+// import Progress from 'components/Progress.vue'
+// Vue.component('Progress', Progress)
 Vue.component('tip-model', tipModel)
 Vue.component('goods-list', goodsList)
 Vue.component('order-goods', orderGoods)
@@ -37,7 +39,7 @@ Vue.filter('toFixed', (param, num) => {
 })
 //全局过滤器
 Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
+	Vue.filter(key, filters[key])
 })
 Vue.config.productionTip = false
 

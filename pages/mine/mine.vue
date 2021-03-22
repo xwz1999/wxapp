@@ -355,7 +355,6 @@
 
 <script>
 	export default {
-
 		data() {
 			return {
 				tipModelTitle: '',
@@ -490,17 +489,8 @@
 						return
 					}
 					this.myIncomeData = res.data.data
-					// console.log(res.data.data)
+					this.totalEarning = this.myIncomeData.purchase.amount + this.myIncomeData.team.amount + this.myIncomeData.guide.amount
 				});
-				// this.$u.post('/api/v2/app/user/income', {}).then(res => {
-				// 	console.log(res.data);
-				// 	if (res.data.code == "FAIL") {
-				// 		this.$u.toast(res.data.msg);
-				// 		return
-				// 	}
-				// 	this.myIncomeData = res.data.data
-				// 	console.log(res.data.data)
-				// });
 			},
 			// 到我的收益页面
 			toMyIncome() {
@@ -518,7 +508,7 @@
 						return
 					}
 					let info = res.data.data
-					this.totalEarning = info.accumulateIncome.all
+					// this.totalEarning = info.accumulateIncome.all
 				});
 			},
 			//获取我的全部信息
@@ -696,6 +686,7 @@
 		position: relative;
 		z-index: 10;
 		font-size: 20rpx;
+
 		.top-nav-box {
 			position: absolute;
 			top: 0;

@@ -241,7 +241,9 @@
 		padding: 0 30rpx;
 		background: #FFFFFF;
 		box-shadow: 0rpx 4rpx 8rpx 0rpx rgba(0, 0, 0, 0.11);
-
+		// .cuIcon-*{
+			
+		// }
 		.member-head {
 			padding: 48rpx 0 20rpx 0;
 			font-size: 28rpx;
