@@ -16,7 +16,8 @@ const store = new Vuex.Store({
 		isLogin: false,
 	},
 	mutations: {
-		setIsLogin(state) {
+		setIsLogin(state,val) {
+			
 			if (uni.getStorageSync("auth").token) {
 				state.isLogin = true
 			} else {

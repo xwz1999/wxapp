@@ -1,10 +1,11 @@
 <template name="liveVideos">
 	<view class="flex flex-direction" style="height: 100%;">
-		<!-- <view class="">
-			这里是我关注的主播直播列表scroll-view
-		</view> -->
+	
 		<scroll-view class="flex-sub" style="height: 0;" scroll-y="true" @scrolltolower="getVideos">
 			<view class="live-container flex justify-between flex-wrap">
+			<!-- 	<view class="">
+					这里是我关注的主播直播列表scroll-view
+				</view> -->
 				<view class="live-item bg-white" v-for="(item,index) in liveVideos" :key="index">
 					<view class="live-main-pic">
 						<u-lazy-load threshold="-100" :image="item.cover" :index="index" :error-img="IMAGE_URL + '/null05.png'"  @click="toLiveDetail(item.id)"></u-lazy-load>

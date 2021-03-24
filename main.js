@@ -14,8 +14,8 @@ import goodsList from 'components/goodsList.vue'
 import orderGoods from 'components/orderGoods.vue'
 import largeImageList from 'components/largeImageList.vue'
 import tipModel from 'components/userTipModel.vue'
-// import Progress from 'components/Progress.vue'
-// Vue.component('Progress', Progress)
+import Progress from 'components/Progress.vue'
+Vue.component('Progress', Progress)
 Vue.component('tip-model', tipModel)
 Vue.component('goods-list', goodsList)
 Vue.component('order-goods', orderGoods)
@@ -23,10 +23,11 @@ Vue.component('large-image-list', largeImageList)
 // 测试域名
 Vue.prototype.BASE_URL = "https://testapi.reecook.cn"
 Vue.prototype.IMAGE_URL = "https://testcdn.reecook.cn/static"
-
+Vue.prototype.H5_BASE_URL = "https://testh5.reecook.cn"
 // 正式域名
 // Vue.prototype.BASE_URL = "https://api.reecook.cn"
 // Vue.prototype.IMAGE_URL = "https://cdn.reecook.cn/static"
+// Vue.prototype.H5_BASE_URL = "https://testh5.reecook.cn"
 
 //腾讯地图key
 Vue.prototype.MAP_KEY = "SPVBZ-2EXWJ-WTEFC-K7ANJ-VG7G6-V7FQ6"

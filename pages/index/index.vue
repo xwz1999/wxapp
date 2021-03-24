@@ -291,15 +291,19 @@
 				this.isShow = true
 				this.onShareData = data
 			},
+			hideModel() {
+				this.isShow = false
+			},
 			// 分享面板 复制链接
 			copyLink(){
+				const that = this
 				// /pages/goodsDetail/goodsDetail?id=' + this.onShareData.id 
 				// https://h5.reecook.cn/#/goods/detail/14337/R7M1V9
-				let url = `/pages/goodsDetail/goodsDetail?id=${this.onShareData.id}`
+				let url = `${this.H5_BASE_URL}/#/goods/detail/${this.onShareData.id}/${this.$store.state.invitationNo}`
 				uni.setClipboardData({
 				    data: url,
 				    success: function () {
-				        console.log('success');
+				        that.copyLink()
 				    }
 				});
 			},
@@ -366,9 +370,7 @@
 				});
 			},
 
-			hideModel() {
-				this.isShow = false
-			},
+		
 			// 轮播图切换
 			changeSwiper(e) {
 				let index = e.detail.current

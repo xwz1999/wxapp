@@ -7,7 +7,7 @@
 				<view class="top-nav-box">
 					<view class="nav-box" :style="'background-image: url('+bgImage+');'">
 						<view class="flex justify-between align-end">
-							<view class="flex  flex-wrap" style="height: 238rpx; margin-right: 68rpx;flex: 0; align-content: space-between;">
+							<view class="flex  flex-wrap" style="height: 238rpx;flex: 1; align-content: space-between;">
 								<view class="flex justify-center">
 									<navigator url="/pages/myInfo/myInfo" hover-class="none">
 										<view class="avatar">
@@ -94,7 +94,9 @@
 									<view>自购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
 										 @tap.stop="tipModel(true,'purchase')"></text></view>
 								</view>
-								<navigator url="/packageA/myIncome/purchase" :hover-class="false" class="flex more">
+
+								<!-- <navigator url="/packageA/myIncome/purchase"  :hover-class="false" class="flex more"> -->
+								<navigator url="/packageA/myIncome/purchase" v-if="0" :hover-class="false" class="flex more">
 									图表分析<text class="cuIcon-right"></text>
 								</navigator>
 							</view>
@@ -128,7 +130,7 @@
 									<view>导购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
 										 @tap.stop="tipModel(true,'guide')"></text></view>
 								</view>
-								<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
+								<view class="flex more" v-if="0">查看明细<text class="cuIcon-right"></text></view>
 							</view>
 							<view class="money-box flex justify-between align-center">
 								<view>
@@ -159,7 +161,7 @@
 									<view>店铺补贴 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
 										 @tap.stop="tipModel(true,'team')"></text></view>
 								</view>
-								<navigator url="/packageA/myIncome/shopSubsidy" :hover-class="false" class="flex more">
+								<navigator v-if="0" url="/packageA/myIncome/shopSubsidy" :hover-class="false" class="flex more">
 									图表分析<text class="cuIcon-right"></text>
 								</navigator>
 							</view>
@@ -221,34 +223,42 @@
 						</view>
 					</view>
 					 -->
-					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
-						<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
-							<view>订单中心<text style="font-weight: normal;font-size: 26rpx;">(自购)</text></view>
-							<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-						</navigator>
-						<view class="order-con flex justify-around">
-							<view class="order-item flex flex-direction align-center" v-for="(item,index) in orderStatus" :key="index" @tap="toOrders(index)">
-								<image :src="item.icon" style="height: 56rpx;margin-bottom: 10rpx;width: auto;" mode="heightFix"></image>
-								<view style="font-size: 24rpx;color: #666;">{{item.text}}</view>
-								<view class="order-count" v-if="item.count">{{item.count}}</view>
+
+					<view class="box bg-white" style="padding: 30rpx 30rpx;" v-if="progressShow">
+						<view class=" flex align-center" style="margin-bottom: 14rpx;">
+							<view class="line" style="width: 5rpx; height: 36rpx;background: #D5101A;margin-right: 10rpx;">
+							</view>
+							<view class="" style="font-size: 32rpx;font-weight: 500; color: #333333;">
+								<text>店铺考核</text>
 							</view>
 						</view>
+						<view class="" style="font-size: 24rpx;color: #999999;">
+							<view class="">
+								<view class="">
+									<text>本考核期5月1日至5月31日，将于6月1日考核。</text>
+								</view>
+								<view class="">
+									考核目标：店铺销售额5000元
+								</view>
+							</view>
+						</view>
+						<view class="progress-box flex justify-center align-center">
+							<canvas class="progress" canvas-id="progress"></canvas>
+							<view class="progress-core">
+								<text class="cuIcon-moneybag" :style="{color:progressColor.end}" ></text>
+							</view>
+						</view>
+						<view class="text-center">
+							<text>还需店铺销售额：{{needAmount}}元</text>
+						</view>
 					</view>
-					<!-- <view class="box bg-white">
-					 	<view class="">
-					 		黄金店铺考核
-							本次考核
-							
-					 	</view>
 
-					 </view> -->
 					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<view class=" subtitle flex justify-between" style="border: none;">
 							<view>店铺管理</view>
 						</view>
-
-						<view class="shop-box flex justify-between flex-wrap">
-							<view class="card" @click="teamShare">
+						<view class="shop-box flex justify-between flex-wrap" >
+							<view class="card" @click="isShow = true">
 								<image :src="`${IMAGE_URL}/mineShop/shop1.jpg`" mode="widthFix"></image>
 								<view class="">
 									<text>团队扩招</text>
@@ -313,8 +323,21 @@
 							</view>
 						 -->
 						</view>
-					</view>
 
+					</view>
+					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
+						<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
+							<view>订单中心<text style="font-weight: normal;font-size: 26rpx;">(自购)</text></view>
+							<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
+						</navigator>
+						<view class="order-con flex justify-around">
+							<view class="order-item flex flex-direction align-center" v-for="(item,index) in orderStatus" :key="index" @tap="toOrders(index)">
+								<image :src="item.icon" style="height: 56rpx;margin-bottom: 10rpx;width: auto;" mode="heightFix"></image>
+								<view style="font-size: 24rpx;color: #666;">{{item.text}}</view>
+								<view class="order-count" v-if="item.count">{{item.count}}</view>
+							</view>
+						</view>
+					</view>
 					<view class="box flex justify-around bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<view class="other-item flex-sub flex flex-direction justify-between align-center" @tap="toPage(otherOptions[0].page)">
 							<image :src="otherOptions[0].icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
@@ -348,6 +371,26 @@
 				</view>
 			</view>
 		</view>
+		<!-- 分享弹出框 -->
+		<u-popup v-model="isShow" mode="bottom" border-radius="15">
+			<view class="share-box flex justify-between">
+
+				<view class="flex-sub flex justify-center">
+					<button class="flex flex-direction justify-center align-center" @tap="copyLink">
+						<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
+						<view class="txt">复制链接</view>
+					</button>
+				</view>
+				<view class="flex-sub flex justify-center">
+					<button class="flex flex-direction justify-center align-center" @click="teamShare">
+						<image class="share-icon" src="/static/mine/post.png" mode="widthFix"></image>
+						<view class="txt">二维码海报</view>
+					</button>
+				</view>
+			</view>
+			<view class="cancle" @tap="hideModel">取消</view>
+		</u-popup>
+
 		<tip-model :show='showTipModel' :title='tipModelTitle' @confirm='tipConfirm'></tip-model>
 	</view>
 
@@ -357,18 +400,26 @@
 	export default {
 		data() {
 			return {
-				tipModelTitle: '',
-				background: {
+				isShow: false, //分享显示隐藏
+				tipModelTitle: '', //模态窗
+				showTipModel: false, //模态窗显示隐藏
+				needAmount: 0, //canvas 进度条 销售总额
+				progressShow: true, //进度条显示隐藏
+				progressColor:{   //进度条渐变色
+					start:'#B2C1CF',
+					end:'#364C53'
+				},
+				background: { // 导航栏颜色
 					backgroundColor: '#3A3943',
 				},
-				usercreatedAt: null,
-				myIncomeData: null, //
+				usercreatedAt: null, //会员创建时间
+				myIncomeData: null, // 各种收益
 				STATIC_URL: this.STATIC_URL,
 				IMAGE_URL: this.IMAGE_URL,
-				isLogin: false,
-				bgImage: this.STATIC_URL + 'bg01.png',
-				iconPic: "",
-				role: "",
+				isLogin: false, //是否登录
+				bgImage: this.STATIC_URL + 'bg01.png', //背景
+				iconPic: "", //徽章
+				role: "", //徽章
 				orderStatus: [{
 						icon: "../../static/mine/p1.png",
 						text: "待付款"
@@ -410,8 +461,8 @@
 						page: "/pages/settings/settings"
 					}
 				],
-				roleLevel: 500,
-				showTipModel: false,
+				roleLevel: 500, //会员等级
+
 				info: {},
 				userInfo: {
 					nickname: "",
@@ -435,36 +486,117 @@
 				this.getUserInfo()
 				this.getTotalEarning()
 			}
-			/*
-			else {
-				this.$u.toast("游客无法使用该功能，请登录");
-				setTimeout(() => {
-					uni.navigateTo({
-						url: "../login/login"
-					})
-				}, 1500)
-				return false;
-			}
-			*/
 		},
 		onShow() {
 			if (this.isLogin) {
 				this.userInfo.nickname = uni.getStorageSync("userInfo").nickname
 				this.userInfo.headImgUrl = uni.getStorageSync("userInfo").headImgUrl
+				if(this.$store.state.roleLevel === 200){
+					console.log(this.$store.state.roleLevel)
+					this.progressColor.start = '#ECD5A7' 
+					this.progressColor.end = '#E0AE5C'
+				}
 				this.myIncome()
+				this.check()
 			}
-
 		},
 		methods: {
+			//分享
+			shareBtn(data) {
+				this.isShow = true
+				this.onShareData = data
+			},
+			//弹出层隐藏
+			hideModel() {
+				this.isShow = false
+			},
+			// 复制链接
+			copyLink() {
+				const that = this
+				let url = `${this.H5_BASE_URL}/#/user/appRegister/${this.$store.state.invitationNo}`
+				uni.setClipboardData({
+					data: url,
+					success: function() {
+						console.log('success');
+						that.hideModel()
+					}
+				});
+			},
+			//进度条数据 以及是否显示
+			check() {
+				this.$u.post('/api/v2/app/user/check', {
+					month: '2021-03'
+				}).then(res => {
+					console.log(res.data);
+					if (res.data.code == "FAIL") {
+						// this.$u.toast(res.data.msg);
+						this.progressShow = false
+						return
+					}
+					let result = res.data.data
+					this.needAmount = result.needAmount
+
+					let r = this.convert_length(80)
+					if (result.cardType) {
+						this.Progressbar(100, 100, r, this.progressColor.start, this.progressColor.end);
+					} else {
+						this.Progressbar(result.amount, result.needAmount, r, this.progressColor.start, this.progressColor.end);
+					}
+				});
+			},
+			//进度条
+			Progressbar(remain, total, r, colorStart, colorEnd) {
+				const setLineWidth = this.convert_length(10)
+				const context = wx.createContext();
+				// 打底灰色曲线
+				context.beginPath();
+				context.arc(this.convert_length(120), this.convert_length(120), r, 0, 2 * Math.PI);
+				context.setLineWidth(setLineWidth);
+				context.setStrokeStyle('#FFFFFF');
+				context.stroke();
+				//绘制打底曲线的边线
+				context.beginPath();
+				context.arc(this.convert_length(120), this.convert_length(120), r - (setLineWidth / 2), 0, 2 * Math.PI);
+				context.setLineWidth(this.convert_length(2));
+				context.setStrokeStyle(colorStart);
+				context.stroke();
+				//绘制打底曲线的边线
+				context.beginPath();
+				context.arc(this.convert_length(120), this.convert_length(120), r + (setLineWidth / 2), 0, 2 * Math.PI);
+				context.setLineWidth(this.convert_length(2));
+				context.setStrokeStyle(colorStart);
+				context.stroke();
+
+				// 圆弧角度
+				const deg = ((remain / total).toFixed(2)) * 2 * Math.PI;
+				// 画渐变曲线
+				const grd = context.createLinearGradient(0, 50, 50, 0);
+				grd.addColorStop('0', colorStart);
+				grd.addColorStop('1.0', colorEnd);
+				context.setStrokeStyle(grd);
+				context.lineCap = 'round';
+				context.setLineWidth(setLineWidth);
+				context.beginPath();
+				context.arc(this.convert_length(120), this.convert_length(120), r, -0.5 * Math.PI, -0.5 * Math.PI + deg);
+				context.stroke();
+
+				wx.drawCanvas({
+					canvasId: 'progress',
+					actions: context.getActions()
+				});
+			},
+			// 辅助函数，用于转换小程序中的rpx
+			convert_length(length) {
+				return Math.round(wx.getSystemInfoSync().windowWidth * length / 750);
+			},
+		
 			toMineShopPage(url) {
-				uni.navigateTo({
-					url: "/packageA/mineShop/mineShop?url=" + url
-				})
+				// uni.navigateTo({
+				// 	url: "/packageA/mineShop/mineShop?url=" + url
+				// })
 			},
 			teamShare() {
-				console.log(11)
 				uni.navigateTo({
-
 					url: "/packageA/myShop/teamAdd"
 				})
 			},
@@ -481,7 +613,6 @@
 			},
 			// 我的收益
 			myIncome() {
-				// /api/v2/app/user/member/income_data
 				this.$u.post('/api/v2/app/user/member/income_data').then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
@@ -532,43 +663,6 @@
 					this.role = this.$options.filters['roleFilter'](this.roleLevel, 'txt')
 					this.iconPic = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'badge')
 					this.$store.commit('setRoleLevel', this.roleLevel);
-
-					// switch (this.roleLevel) {
-					// 	case 500:
-					// 		this.role = "会员"
-					// 		// this.bgImage = this.STATIC_URL + 'bg01.png'
-					// 		this.iconPic = this.IMAGE_URL + '/badge00.png'
-					// 		this.bgImage = this.IMAGE_URL + "/mine/role00.png"
-					// 		break;
-					// 	case 400:
-					// 		this.role = "店主"
-					// 		// this.bgImage = this.IMAGE_URL + 'bg02.png'
-					// 		this.iconPic = this.IMAGE_URL + '/badge01.png'
-					// 		this.bgImage = this.IMAGE_URL + "/mine/role01.png"
-					// 		break;
-					// 	case 300:
-					// 		this.role = "白银店铺"
-					// 		// this.bgImage = this.IMAGE_URL + 'bg03.png'
-					// 		this.iconPic = this.IMAGE_URL + '/badge02.png'
-					// 		this.bgImage = this.IMAGE_URL + "/mine/role02.png"
-					// 		break;
-					// 	case 200:
-					// 		this.role = "黄金店铺"
-					// 		// this.bgImage = this.IMAGE_URL + 'bg04.png'
-					// 		this.iconPic = this.IMAGE_URL + '/badge03.png'
-					// 		this.bgImage = this.IMAGE_URL + "/mine/role03.png"
-					// 		break;
-					// 	case 100:
-					// 		this.role = "钻石店铺"
-					// 		// this.bgImage = this.IMAGE_URL + 'bg05.png'
-					// 		this.iconPic = this.IMAGE_URL + '/badge04.png'
-					// 		this.bgImage = this.IMAGE_URL + "/mine/role04.png"
-					// 		break;
-					// 	default:
-					// 		break;
-					// }
-
-					// this.roleLevel = 200
 					// 订单数量提醒
 					this.orderStatus[0].count = this.info.orderCenter.waitPay
 					this.orderStatus[1].count = this.info.orderCenter.waitSend
@@ -647,11 +741,70 @@
 					url: "../orders/orders?type=" + type
 				})
 			}
-		}
+		},
+		watch: {
+			isShow: function(val) {
+				if (val) {
+					uni.hideTabBar()
+				} else {
+					uni.showTabBar()
+				}
+			}
+		},
 	}
 </script>
 
 <style lang="scss">
+	.progress-box {
+		width: 100%;
+		position: relative;
+
+		.progress-core {
+			position: absolute;
+			font-size: 40rpx;
+			transform: 50%;
+		}
+
+		.progress {
+			// display: inline-block;
+			width: 240rpx;
+			margin: 0 auto;
+			height: 240rpx;
+		}
+	}
+
+	.share-box {
+		padding: 50rpx 0;
+
+		.share-icon {
+			width: 80rpx;
+			height: 80rpx;
+			border-radius: 50%;
+			margin-bottom: 10rpx;
+		}
+
+		.txt {
+			font-size: 26rpx;
+		}
+
+		button {
+			border: 0;
+			padding: 0;
+			background-color: #FFFFFF;
+			line-height: normal;
+		}
+
+		button::after {
+			content: none;
+		}
+	}
+
+	.cancle {
+		border-top: 1rpx solid #f1f1f1;
+		line-height: 90rpx;
+		text-align: center;
+	}
+
 	page {
 		background-color: #F3F4F6;
 	}

@@ -6,19 +6,21 @@
 					<text class="cuIcon-my" style="font-size: 48rpx;color: #888888;"></text>
 				</view> -->
 				<view class="flex-sub">
-					<u-tabs :list="list" :is-scroll="false" height="90" :current="currentIndex" duration="0.2" bar-width="100" :bold="false" active-color="red" @change="chooseTabs"></u-tabs>
+					<u-tabs :list="list" :is-scroll="false" height="90" :current="currentIndex" duration="0.2" bar-width="100" :bold="false"
+					 active-color="red" @change="chooseTabs"></u-tabs>
 				</view>
 			</view>
-			
+
 			<swiper class="flex-sub" :current="currentIndex" :duration="300" :indicator-dots="false" :autoplay="false" @change="changeCurrent">
 				<!-- 直播回放列表 -->
-				<!-- <swiper-item>
+				<swiper-item>
+				
 					<live-videos></live-videos>
-				</swiper-item> -->
+				</swiper-item>
 				<!-- 小视频列表 -->
-				<!-- <swiper-item>
+				<swiper-item>
 					<small-videos></small-videos>
-				</swiper-item> -->
+				</swiper-item>
 				<!-- 图文动态列表 -->
 				<swiper-item>
 					<dynamics :showGoodsLink="true"></dynamics>
@@ -35,34 +37,37 @@
 	export default {
 		data() {
 			return {
-				showMybtn:false,
-				currentIndex:0,
-				list: [
-				// {
-				// 	name: '视频'
-				// }, 
-				{
-					name: '图文'
-				}]
+				showMybtn: false,
+				currentIndex: 0,
+				list: [{
+						name: '直播'
+					},
+					{
+						name: '视频'
+					},
+					{
+						name: '图文'
+					}
+				]
 			};
 		},
-		components:{
+		components: {
 			liveVideos,
 			smallVideos,
 			dynamics
 		},
 		onLoad() {
-			if(uni.getStorageSync("userInfo")){
+			if (uni.getStorageSync("userInfo")) {
 				this.showMybtn = true
 			}
 		},
 		methods: {
-			toMyHomePage(){
+			toMyHomePage() {
 				uni.navigateTo({
-					url:"../userHomePage/userHomePage"
+					url: "../userHomePage/userHomePage"
 				})
 			},
-			chooseTabs(index){
+			chooseTabs(index) {
 				this.currentIndex = index
 			},
 			changeCurrent(e) {
@@ -83,7 +88,8 @@
 			if (res.from === 'button') { // 来自页面内分享按钮
 				shareObj = {
 					title: "我在看" + res.target.dataset.goods.name + ",快来加入吧！",
-					path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.goods.id + "&type=share&invite=" + this.$store.state.invitationNo,
+					path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.goods.id + "&type=share&invite=" + this.$store.state
+						.invitationNo,
 					imageUrl: this.IMAGE_URL + res.target.dataset.goods.mainPhotoURL
 				}
 			}

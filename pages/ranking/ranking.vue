@@ -68,12 +68,17 @@
 				this.isShow = true
 				this.onShareData = data
 			},
+			hideModel(){
+				this.isShow = false
+			},
 			copyLink(){
-				let url = `/pages/goodsDetail/goodsDetail?id=${this.onShareData.id}`
+				const that =  this
+				let url = `${this.H5_BASE_URL}/#/goods/detail/${this.onShareData.id}/${this.$store.state.invitationNo}`
 				uni.setClipboardData({
 				    data: url,
 				    success: function () {
 				        console.log('success');
+						that.hideModel()
 				    }
 				});
 			},

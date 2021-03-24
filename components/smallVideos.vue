@@ -100,6 +100,7 @@
 						return
 					}
 					if (list.length < 20) {
+						this.stopLoad = true
 						this.loadStatus = "nomore"
 					}
 					list.map(item=>{

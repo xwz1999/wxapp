@@ -61,6 +61,7 @@ const install = (Vue, vm) => {
 		}
 		if (res.data.msg == "游客无法使用该功能，请登录"||res.data.msg == "登录失效") {
 			console.log("响应拦截")
+			uni.clearStorageSync()
 			vm.$u.toast(res.data);
 			setTimeout(() => {
 				vm.$u.route('/pages/login/login')
