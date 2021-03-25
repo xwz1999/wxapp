@@ -57,7 +57,9 @@
 					</view>
 				</view>
 			</view>
-			<scroll-view class="flex-sub" scroll-y="true" style="height: 0;">
+			<!-- <scroll-view class="flex-sub" scroll-y="true" style="height: 0;"> -->
+				<view class="flex-sub">
+		
 				<!-- 				<view class="info-container" style="padding: 20rpx;"> -->
 				<view class="info-container">
 					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
@@ -359,7 +361,9 @@
 						</view>
 					</view>
 				</view>
-			</scroll-view>
+				
+				</view>
+			<!-- </scroll-view> -->
 		</view>
 		<view class="" v-else>
 			<view class="logo-box">
@@ -591,9 +595,9 @@
 			},
 		
 			toMineShopPage(url) {
-				// uni.navigateTo({
-				// 	url: "/packageA/mineShop/mineShop?url=" + url
-				// })
+				uni.navigateTo({
+					url: "/packageA/mineShop/mineShop?url=" + url
+				})
 			},
 			teamShare() {
 				uni.navigateTo({

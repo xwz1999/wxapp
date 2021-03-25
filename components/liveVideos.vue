@@ -1,14 +1,16 @@
 <template name="liveVideos">
 	<view class="flex flex-direction" style="height: 100%;">
-	
-		<scroll-view class="flex-sub" style="height: 0;" scroll-y="true" @scrolltolower="getVideos">
+
+		<scroll-view class="flex-sub" style="height: 0;" scroll-y="true" :refresher-threshold="100" :refresher-enabled='refresherEnabled'
+		 @refresherpulling="onPulling" @refresherrefresh="onRefresh" @refresherrestore="onRestore" @refresherabort="onAbort"
+		 :refresher-triggered="triggered">
 			<view class="live-container flex justify-between flex-wrap">
-			<!-- 	<view class="">
+				<!-- 	<view class="">
 					这里是我关注的主播直播列表scroll-view
 				</view> -->
 				<view class="live-item bg-white" v-for="(item,index) in liveVideos" :key="index">
 					<view class="live-main-pic">
-						<u-lazy-load threshold="-100" :image="item.cover" :index="index" :error-img="IMAGE_URL + '/null05.png'"  @click="toLiveDetail(item.id)"></u-lazy-load>
+						<u-lazy-load threshold="-100" :image="item.cover" :index="index" :error-img="IMAGE_URL + '/null05.png'" @click="toLiveDetail(item.id,item.isLive)"></u-lazy-load>
 						<view class="icon text-white flex">
 							<text class="cuIcon-playfill"></text>
 							<text style="padding: 0 8rpx;">{{item.look}}人看过</text>
@@ -19,14 +21,15 @@
 							<view class="live-title two-line">{{item.title}}</view>
 							<view class="live-user-msg flex">
 								<view class="avatar">
-									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'"  height="40" border-radius="20" mg-mode="aspectFill"></u-lazy-load>
+									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'"
+									 height="40" border-radius="20" mg-mode="aspectFill"></u-lazy-load>
 								</view>
 								<view class="user-name text-hidden flex-sub">{{item.nickname}}</view>
 							</view>
 						</view>
 						<view class="live-con-right">
 							<view class="goods-pic">
-								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'" 
+								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'"
 								 height="100" mg-mode="aspectFill"></u-lazy-load>
 							</view>
 							<view class="text-center price">￥{{item.originalPrice}}</view>
@@ -34,7 +37,7 @@
 					</view>
 				</view>
 			</view>
-			<u-loadmore :status="loadStatus2" margin-top="10" margin-bottom="20"/>
+			<u-loadmore :status="loadStatus2" margin-top="10" margin-bottom="20" />
 		</scroll-view>
 	</view>
 </template>
@@ -45,12 +48,17 @@
 		data() {
 			return {
 				IMAGE_URL: this.IMAGE_URL,
+				// 开启下拉
+				refresherEnabled: true,
+				//
+				triggered: false,
+
 				page1: 1,
 				limit1: 15,
 				page2: 1,
 				limit2: 15,
 				stopLoad2: false,
-				loadStatus2:'loadmore',
+				loadStatus2: 'loadmore',
 				liveVideos: [],
 				followList: []
 			};
@@ -59,10 +67,34 @@
 
 		},
 		mounted() {
-			// this.getFollowList()
+			this.getFollowList()
 			this.getVideos()
 		},
 		methods: {
+			//下拉过程的函数
+			onPulling(e) {
+			},
+			//松手后执行下拉事件的函数
+			onRefresh() {
+				console.log('onRefresh')
+				if (this._freshing) return;
+				this.triggered = 'restore';
+				setTimeout(() => {
+					this.triggered = false;
+					this._freshing = false;
+				}, 1000)
+				this.page2  = 0
+				this.liveVideos = []
+				 this.getVideos()
+			},
+			//开始结束下拉的函数
+			onRestore() {
+				this.triggered = 'restore'; // 关闭动画
+			},
+			//结束下拉函数
+			onAbort() {
+				console.log('onAbort')
+			},
 			getFollowList() {
 				this.$u.post("/api/v1/live/live/follow_list", {
 					page: this.page1,
@@ -102,9 +134,10 @@
 					this.liveVideos.push(...list)
 				});
 			},
-			toLiveDetail(id){
+			toLiveDetail(id,isLive) {
 				uni.navigateTo({
-					url:"/pages/livePlayback/livePlayback?id="+id
+					url:`/pages/livePlayback/livePlayback?id=${id}&isLive=${isLive}`
+					// url: "/pages/livePlayback/livePlayback?id=" + id
 				})
 			}
 		}

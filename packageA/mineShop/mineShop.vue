@@ -2,76 +2,36 @@
 	<view style="height: 100vh;">
 		<u-navbar :title="navTitle"></u-navbar>
 		<view class="flex flex-direction" style="height: 100%;">
-			<view class="" style="position: relative;">
-				<view class="search-box bg-white flex justify-between">
-					<input class="flex-sub" type="text" v-model="keyword" placeholder-class="placeholder" @confirm="inputSend"
-					 placeholder="请输入昵称/备注/手机号" />
-					<text class="cuIcon-search"></text>
-				</view>
-			</view>
-
-			<view class="member-box">
-				<view class="member-title flex justify-between">
-					<view class="" style="width: 360rpx;">
-						<text>团队贡献榜{{list.length}}</text>
+			<view class="card-box" :style="'background-image: url('+bgImage+');background-size: 100% auto;'">
+				<view class="flex justify-center" style="height: 200rpx; padding: 40rpx;">
+					<view class="">
+						<image :src="badgeImage" mode="widthFix" style="width: 96rpx;"></image>
 					</view>
-					<view class="flex">
-						<text>团队人数：{{totalCount}}</text>
-						<view class="" v-if="navTitle === '我的团队'">
-							<view class="screen-box">
-								<view class="screen" @click="screen()">
+				</view>
+				<view class="foot-box flex  align-center">
+					<view class="item" @click="cardChange(0)" :class="cardIndex === 0?'active':''">
+						<view class="">
+							自营补贴
+						</view>
+					</view>
+					<view class="foot-line">
 
-									<view class="fill row-translateX" :class="{'translateX':isTranslateX}">
-										<text v-if="isTranslateX">推荐</text>
-										<text v-else>筛选</text>
-									</view>
-								</view>
-							</view>
+					</view>
+					<view class="item" @click="cardChange(1)" :class="cardIndex === 1?'active':''">
+						<view class="">
+							分销店铺
+						</view>
+					</view>
+					<view class="foot-line">
+					
+					</view>
+					<view class="item" @click="cardChange(2)" :class="cardIndex === 2?'active':''">
+						<view class="">
+							代理店铺
 						</view>
 					</view>
 				</view>
-
-				<view class="member-table ">
-					<scroll-view scroll-y="true" class="scroll flex-sub">
-						<view class="member-list flex" v-for="(item,index) in screenList" :key='index' @tap="toUserInfo(item)">
-							<view class="">
-								<view class="avatar">
-									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" height="80" border-radius="50%"
-									 :loading-img="IMAGE_URL + '/null05.png'" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill"></u-lazy-load>
-								</view>
-							</view>
-							<view class="" style="flex:1">
-								<view class="flex justify-between">
-									<view class="user-name">
-										{{item.nickname}}
-									</view>
-									<!-- 	<view class="user-price">
-												{{item.amount}}
-											</view> -->
-								</view>
-								<view class="flex align-center flex-wrap">
-									<view class="" style="width: 50%;padding: 10rpx 0;">
-										{{item.wechatNo}}
-									</view>
-									<view class="" style="width: 50%;padding: 10rpx 0;">
-										{{item.phone}}
-									</view>
-									<view class="" style="width: 50%;padding: 10rpx 0;">
-										{{item.nickname}}
-									</view>
-									<view class="" style="width: 50%;padding: 10rpx 0;">
-										{{item.count}}
-									</view>
-								</view>
-							</view>
-						</view>
-					</scroll-view>
-				</view>
-
 			</view>
-
-
-
 		</view>
 	</view>
 </template>
@@ -80,55 +40,23 @@
 	export default {
 		data() {
 			return {
-				IMAGE_URL: this.IMAGE_URL,
-				keyword: "",
-				list: [],
-				isNull: false,
-				"isTranslateX": false,
 				url: '', //设置请求接口
-				checked: false,
 				navTitle: '',
-				totalCount: 0 //团队人数
+				bgImage: this.STATIC_URL + 'bg01.png',
+				roleLevel: 0,
+				badgeImage: '',
+				end_time: "",
+				cardIndex: 0
 			};
 		},
-		computed: {
-			// 筛选错 flag
-			screenList() {
-				let params = this.list
-				if (this.isTranslateX) {
-					params = params.filter(item => item.flag > 0)
-				}
-				return params
-			}
+		created() {
+			this.roleLevel = this.$store.state.roleLevel
+			this.bgImage = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'otherBg')
+			this.badgeImage = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'badge')
 		},
 		methods: {
-			inputSend(e) {
-				this.keyword = e.detail.value
-				this.userShop()
-			},
-			screen() {
-				this.isTranslateX = !this.isTranslateX
-				console.log(this.isTranslateX)
-			},
-			userShop() {
-				// 
-				// url
-				this.$u.post(`/api/v2/app/user/${this.url}`, {
-					keyword: this.keyword
-				}).then(res => {
-					console.log(res);
-					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
-						return
-					}
-					this.list = res.data.data
-					let total = 0
-					this.list.map(item => {
-						total += item.count
-					})
-					this.totalCount = total
-				});
-
+			cardChange(index) {
+				this.cardIndex = index
 			},
 			toUserInfo(item) {
 				this.$store.commit('setUserInfo', item);
@@ -138,14 +66,10 @@
 			}
 		},
 		onLoad(options) {
-
 			this.url = options.url
-
-			this.userShop()
-
 			switch (options.url) {
 				case 'team':
-					this.navTitle = '我的团队'
+					this.navTitle = '我的店铺'
 					break;
 				case 'recommend':
 					this.navTitle = '我的推荐'
@@ -161,7 +85,7 @@
 			uni.$on("userInfoEidt", res => {
 				console.log(res)
 
-				this.userShop()
+				// this.userShop()
 			})
 			// navTitle
 		}
@@ -203,23 +127,60 @@
 		background: #9C9C9C;
 	}
 
-	.row-translateX {
-		transition-duration: 0.3s;
-		transform: translateX(0px);
+	.card-box {
+		width: 608rpx;
+		height: 304rpx;
+		overflow: hidden;
+		border-radius: 8rpx;
+		margin: 40rpx auto;
+		box-shadow: 5rpx 5rpx 10rpx 3rpx rgba(0, 0, 0, 0.3);
 	}
 
-	.translateX {
+	.card-title {
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
 
-		background: #FD6661;
-		transform: translateX(45rpx);
+		.txt {
+			font-size: 32rpx;
+			color: rgba(58, 57, 67, 0.5);
+		}
+
+		.num {
+			font-size: 68rpx;
+			color: rgba(58, 57, 67, 1);
+		}
 	}
 
-	page {
-		width: 100vw;
-		height: 100vh;
+	.foot-box {
+		height: 124rpx;
+		background: #FCFCFC;
+
+		.item {
+			text-align: center;
+			flex: 1;
+			font-size: 28rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #999999;
+
+			&.active {
+				color: #333333;
+			}
+		}
+
+		.foot-line {
+			width: 2rpx;
+			height: 44rpx;
+			background: #D8D8D8;
+			border: 2rpx solid #979797;
+		}
 	}
+
+
 
 	.member-box {
+		background: #FFFFFF;
+
 		.member-list {
 			margin: 20rpx 30rpx;
 			border-radius: 4rpx;

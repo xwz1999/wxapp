@@ -17,8 +17,8 @@
 				<text class="cuIcon-close" style="font-size: 48rpx;" @tap="back"></text>
 			</view>
 		</view>
-
 		<video class="video flex-sub" :src="videoDetail.playUrl" controls></video>
+		<!-- <live-player class="video flex-sub" :src="videoDetail.playUrl" mode="RTC" autoplay/> -->
 		<view class="flex justify-between align-end bottom">
 			<image src="../../static/shop/more.png" style="width: 60rpx;" mode="widthFix"></image>
 			<view class="" style="position: relative;" @tap="isShow = true">
@@ -72,14 +72,18 @@
 				IMAGE_URL:this.IMAGE_URL,
 				id: 0,
 				videoDetail: null,
-				isShow:false
+				isShow:false,
+				isLive:0, //是否是直播
 			};
 		},
 		onLoad(options) {
+			console.log(options)
 			if (options.id) {
 				this.id = parseInt(options.id)
+				this.isLive = parseInt(options.isLive)
 				this.getDetail()
 			}
+			
 		},
 		methods: {
 			getDetail() {
@@ -118,7 +122,8 @@
 						return
 					}
 					this.$u.toast("关注成功");
-					this.videoDetail.isFollow==1
+					// this.videoDetail.isFollow==1
+					this.$set(this.videoDetail,'isFollow', 1 )
 				});
 			}
 		}
