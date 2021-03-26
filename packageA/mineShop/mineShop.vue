@@ -1,7 +1,7 @@
 <template>
 	<view style="height: 100vh;">
-		<u-navbar :title="navTitle"></u-navbar>
-		<view class="flex flex-direction" style="height: 100%;">
+		<u-navbar title="我的店铺"></u-navbar>
+		<view>
 			<view class="card-box" :style="'background-image: url('+bgImage+');background-size: 100% auto;'">
 				<view class="flex justify-center" style="height: 200rpx; padding: 40rpx;">
 					<view class="">
@@ -9,7 +9,7 @@
 					</view>
 				</view>
 				<view class="foot-box flex  align-center">
-					<view class="item" @click="cardChange(0)" :class="cardIndex === 0?'active':''">
+					<view class="item" @click="cardChange(0,'team')" :class="cardIndex === 0?'active':''">
 						<view class="">
 							自营补贴
 						</view>
@@ -17,22 +17,93 @@
 					<view class="foot-line">
 
 					</view>
-					<view class="item" @click="cardChange(1)" :class="cardIndex === 1?'active':''">
+					<view class="item" @click="cardChange(1,'recommend')" :class="cardIndex === 1?'active':''">
 						<view class="">
 							分销店铺
 						</view>
 					</view>
 					<view class="foot-line">
-					
+
 					</view>
-					<view class="item" @click="cardChange(2)" :class="cardIndex === 2?'active':''">
+					<view class="item" @click="cardChange(2,'reward')" :class="cardIndex === 2?'active':''">
 						<view class="">
 							代理店铺
 						</view>
 					</view>
 				</view>
 			</view>
+			<scroll-view scroll-y="true" style="height: 100%;">
+				<view class="search-box bg-white flex justify-between">
+					<input class="flex-sub" type="text" v-model="keyword" placeholder-class="placeholder" @confirm="inputSend"
+					 placeholder="请输入昵称/备注/手机号" />
+					<text class="cuIcon-search"></text>
+				</view>
+				<view class="member-line">
+					<view class="line">
+					</view>
+				</view>
+				<view>
+					<view class="member-box">
+						<view class="member-head flex justify-between align-center">
+							<view class="">
+								自营店铺贡献榜
+							</view>
+							<view class="flex">
+								<view class="">
+									<text class="cuIcon-friend"></text>
+								</view>
+							</view>
+						</view>
+						<view class="flex member-list" v-for="(item,index) in memberList" :key='index'>
+							<view class="member-avatar text-center">
+								<view class="avatar">
+									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" height="80" border-radius="70"
+									 :loading-img="IMAGE_URL + '/null05.png'" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill"></u-lazy-load>
+								</view>
+								<view class="">
+									<text class="cuIcon-command"></text>
+								</view>
+							</view>
+							<view class="list" style="flex: 1;">
+								<view class="flex align-start">
+									<view class="title flex-sub">
+										<text>{{item.nickname}}</text>
+									</view>
+									<view class="">
+
+									</view>
+								</view>
+								<view class="icon-box flex align-end">
+									<view class="icon-item">
+										<view class="">
+											<text class="cuIcon-phone"></text>										
+											<text>{{item.phone}}</text>
+										</view>
+										<view class="">
+											<text class="cuIcon-friend"></text> 
+												<text>{{item.count}}</text>
+										</view>
+									</view>
+									<view class="icon-item">
+										<view class="">
+											<text class="cuIcon-weixin"></text> 
+											<text>{{item.wechatNo}}</text>
+										</view>
+										<view class="">
+											<text class="cuIcon-recharge"></text>
+											<text>{{item.amount}}</text>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+
+			</scroll-view>
+
 		</view>
+
 	</view>
 </template>
 
@@ -46,48 +117,62 @@
 				roleLevel: 0,
 				badgeImage: '',
 				end_time: "",
-				cardIndex: 0
+				cardIndex: 0,
+				keyword: '',
+				memberList:[],
 			};
 		},
 		created() {
 			this.roleLevel = this.$store.state.roleLevel
 			this.bgImage = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'otherBg')
 			this.badgeImage = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'badge')
+		
 		},
 		methods: {
-			cardChange(index) {
-				this.cardIndex = index
+			inputSend(e) {
+				this.keyword = e.detail.value
+				if (e.detail.value) {   //有输入值
+					this.getData()
+				}
 			},
-			toUserInfo(item) {
-				this.$store.commit('setUserInfo', item);
-				uni.navigateTo({
-					url: "../../pages/userInfo/userInfo"
-				})
-			}
+			cardChange(index,url) {
+				if(index === this.cardIndex) return   //重复点击无效
+				this.cardIndex = index 
+				this.url = url
+				this.getData()
+			},
+			// 请求后台
+			getData() {
+				this.$u.post(`/api/v2/app/user/${this.url}`, {
+					keyword:this.keyword
+				}).then(res => {
+					console.log(res)
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.memberList = res.data.data
+				});
+			},
+
 		},
 		onLoad(options) {
+			console.log(options)
 			this.url = options.url
-			switch (options.url) {
-				case 'team':
-					this.navTitle = '我的店铺'
-					break;
-				case 'recommend':
-					this.navTitle = '我的推荐'
-					break;
-				case 'reward':
-					this.navTitle = '我的奖励'
-					break;
-				default:
-					break;
-			}
-			// 在用户页面修改之后调用
-			uni.$off('userInfoEidt');
-			uni.$on("userInfoEidt", res => {
-				console.log(res)
-
-				// this.userShop()
-			})
-			// navTitle
+				this.getData()
+			// switch (options.url) {
+			// 	case 'team':
+			// 		this.navTitle = '我的店铺'
+			// 		break;
+			// 	case 'recommend':
+			// 		this.navTitle = '我的推荐'
+			// 		break;
+			// 	case 'reward':
+			// 		this.navTitle = '我的奖励'
+			// 		break;
+			// 	default:
+			// 		break;
+			// }
 		}
 
 	}
@@ -176,34 +261,80 @@
 		}
 	}
 
+	.member-line {
+		width: 722rpx;
+		margin: 20rpx auto 0;
+		padding: 6rpx 8rpx;
+		background: #E3E3E3;
+		box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.25);
+		border-radius: 14rpx;
+		z-index: 10;
 
+		.line {
+			width: 706rpx;
+			height: 8rpx;
+			background: #6A6A6A;
+			box-shadow: 0rpx 4rpx 8rpx 0rpx rgba(0, 0, 0, 0.39);
+			border-radius: 14rpx;
+			opacity: 0.31;
+		}
+	}
 
 	.member-box {
+		margin: 0 30rpx;
+		position: relative;
+		top: -6rpx;
+		z-index: 100;
+		padding: 0 30rpx;
 		background: #FFFFFF;
+		box-shadow: 0rpx 4rpx 8rpx 0rpx rgba(0, 0, 0, 0.11);
+		// .cuIcon-*{
+
+		// }
+		.member-head {
+			padding: 48rpx 0 20rpx 0;
+			font-size: 28rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #333333;
+		}
 
 		.member-list {
-			margin: 20rpx 30rpx;
-			border-radius: 4rpx;
-			padding: 20rpx 30rpx;
-			background: #FFFFFF;
-		}
+			.member-avatar {
+				padding: 20rpx 0 30rpx 0;
+				width: 80rpx;
+				margin-right: 22rpx;
 
-		.avatar {
-			width: 80rpx;
-			height: 80rpx;
-			border-radius: 50%;
-			overflow: hidden;
-			margin-right: 20rpx;
-		}
+				.avatar {
+					width: 80rpx;
+					height: 80rpx;
+				}
+			}
 
-		.member-title {
-			font-size: 24rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #333333;
-			margin-top: 30rpx;
-			padding: 30rpx 40rpx 0rpx 40rpx;
+			.list {
+				padding: 26rpx 0;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				border-bottom: 2rpx solid #EEEEEE;
 
+				.title {
+					font-size: 28rpx;
+					color: #333333;
+				}
+
+				.icon-box {
+					font-size: 22rpx;
+					color: #999999;
+
+					.icon-item {
+						min-width: 165rpx;
+						margin-right: 30rpx;
+						padding-bottom: 12rpx;
+
+					}
+				}
+
+			}
 		}
 	}
 

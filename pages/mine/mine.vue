@@ -6,32 +6,18 @@
 				<image :src="`${IMAGE_URL}/mine/mine-bg.png`" mode="widthFix" style="width: 750rpx;"></image>
 				<view class="top-nav-box">
 					<view class="nav-box" :style="'background-image: url('+bgImage+');'">
-						<view class="flex justify-between align-end">
-							<view class="flex  flex-wrap" style="height: 238rpx;flex: 1; align-content: space-between;">
-								<view class="flex justify-center">
+						<view class="flex align-center">
+							<view class="flex-sub">
+								<view class="flex">
 									<navigator url="/pages/myInfo/myInfo" hover-class="none">
 										<view class="avatar">
 											<u-lazy-load threshold="-100" :image="IMAGE_URL+userInfo.headImgUrl" :index="index" height="140"
 											 border-radius="70" :loading-img="IMAGE_URL + '/null05.png'" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill"></u-lazy-load>
 										</view>
 									</navigator>
-
-								</view>
-								<view class="" style="font-size: 40rpx;font-weight: 500; width: 100%;">
-									<text>{{userInfo.nickname}}</text>
-								</view>
-								<view class="">
-									<view class="">
-										<text>NO.{{info.identifier}}</text>
-									</view>
 								</view>
 							</view>
-							<view class="" style=" flex:1;">
-								<view class="">
-									<text>注册时间{{usercreatedAt}}</text>
-								</view>
-							</view>
-							<view class="flex  flex-wrap text-center" style="height: 238rpx;width: 112rpx;flex: 0;   align-content: space-between;">
+							<view class="" style="width: 112rpx;">
 								<view class="flex justify-around align-center" style="width: 100%;color: #FFFFFF;">
 									<navigator url="../myCollect/myCollect" hover-class="none" style="margin-right: 30rpx;">
 										<u-icon name="heart" size="48"></u-icon>
@@ -44,14 +30,27 @@
 										<view>客服</view>
 									</view>
 								</view>
-								<view class="flex justify-center" style="width: 100%;">
-									<image :src="iconPic" mode="widthFix" style="width: 96rpx; height: 110rpx;"></image>
+							</view>
+						</view>
+						<view class="flex align-center">
+							<view class="flex-sub">
+								<view class="" style="font-size: 40rpx;font-weight: 500;">
+									<text>{{userInfo.nickname}}</text>
 								</view>
-								<view class="" style="width: 100%;">
-									<view class="">
-										<text>({{role}})</text>
-									</view>
-								</view>
+							</view>
+							<view class="flex justify-center" style="width: 112rpx;margin-top: -10rpx;">
+								<image :src="iconPic" mode="widthFix" style="width: 96rpx; height: 110rpx;"></image>
+							</view>
+						</view>
+						<view class="flex align-center">
+							<view class="flex-sub">
+								<text>NO.{{info.identifier}}</text>
+							</view>
+							<view class="flex-sub">
+									<text>注册时间{{usercreatedAt}}</text>
+							</view>
+							<view class="" style="width: 112rpx; text-align: center;">
+								<text>({{role}})</text>
 							</view>
 						</view>
 					</view>
@@ -620,7 +619,7 @@
 				this.$u.post('/api/v2/app/user/member/income_data').then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
+						// this.$u.toast(res.data.msg);
 						return
 					}
 					this.myIncomeData = res.data.data

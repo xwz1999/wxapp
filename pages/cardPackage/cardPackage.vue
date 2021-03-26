@@ -1,71 +1,99 @@
 <template>
 	<view class="flex flex-direction" style="height: 100vh;">
-		
 		<view class="" style="border-bottom: 1rpx solid #f1f1f1;">
 			<u-tabs :list="list" :is-scroll="false" height="90" :current="currentIndex" duration="0.2" bar-width="100" :bold="false"
 			 active-color="red" @change="chooseTabs"></u-tabs>
 		</view>
-		
-		
 		<swiper class="flex-sub" :current="currentIndex" :duration="300" :indicator-dots="false" :autoplay="false" @change="changeCurrent">
 			<swiper-item v-for="(item1,index1) in list" :key="index1">
-				<scroll-view scroll-y="true" style="height: 100%;">
-					<view class="null flex-sub flex flex-direction justify-center align-center" v-if="item1.cards.length==0" style="height: 70vh;">
-						<image :src="IMAGE_URL + '/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
+				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower='cardMore'>
+					<view class="null flex-sub flex flex-direction justify-center align-center" v-if="cards.length==0" style="height: 70vh;">
+						<image :src="IMAGE_URL + '/null05.png'" style="width: 300rpx;" mode="widthFix"></image>
 						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无卡券</view>
 					</view>
-					<view class="card-box" v-else>
-						<view v-for="(item2,index2) in item1.cards" :key="index2">
-							
-							
-							<!-- 未使用 -->
-							<view v-if="index1==0" class="card-item bg-img" :style="item2.isUpcode?'background-image: url('+STATIC_URL+'card01.png);':'background-image: url('+STATIC_URL+'card02.png);'">
-								<view v-if="item2.isUpcode" class="con-left flex flex-direction justify-between text-colorA">
-									<view class="con-top">
-										<view style="font-size: 36rpx;font-weight: 900;">升级卡</view>
-										<view style="font-size: 28rpx;">Upgrade Card</view>
+					<view v-else class="">
+						<view class="card-box">
+							<view v-for="(item2,index2) in cards" :key="index2">
+								<!-- 未使用 -->
+								<view v-if="currentIndex === 0" class="card-item bg-img" :style="'background-image: url('+IMAGE_URL+`/card${item2.type}.png);`">
+									<view class="con-left flex flex-direction justify-between text-colorA">
+										<view class="con-top">
+											<view style="font-size: 36rpx;font-weight: 900;">{{item2.type===1?'黄金卡':'白银卡'}}</view>
+											<view style="font-size: 28rpx;">{{item2.type===1?'Gold':'Sliver'}} Card</view>
+										</view>
+										<view class="">
+											<view class="con-bottom">编号{{item2.code}}</view>
+											<view style="font-size: 24rpx;">{{item2.scourceName}}</view>
+										</view>
 									</view>
-									<view class="con-bottom">{{item2.code}}</view>
-								</view>
-								<view v-else class="con-left flex flex-direction justify-between text-colorB">
-									<view class="con-top">
-										<view style="font-size: 36rpx;font-weight: 900;">保级卡</view>
-										<view style="font-size: 28rpx;">Renewal Card</view>
+									<view class="con-btn flex flex-direction justify-center">
+										<view class="btn-item text-white" @tap="useCard(item2.id,item2.type)">使用</view>
+										<view class="btn-item text-white" @tap="sendCard">赠送</view>
 									</view>
-									<view class="con-bottom">{{item2.code}}</view>
-								</view>
-								<view class="con-btn flex flex-direction justify-center">
-									<view class="btn-item text-white" @tap="useCard">使用</view>
-									<view class="btn-item text-white" @tap="sendCard">赠送</view>
-								</view>
-							</view>
-							
-							<!-- 已使用 -->
-							<view v-if="index1==1" class="card-item bg-img" :style="item2.isUpcode?'background-image: url('+STATIC_URL+'card_01.png);':'background-image: url('+STATIC_URL+'card_02.png);'">
-								<view v-if="item2.isUpcode" class="con-left flex flex-direction justify-between text-colorA">
-									<view class="con-top">
-										<view style="font-size: 36rpx;font-weight: 900;">升级卡</view>
-										<view style="font-size: 28rpx;">Upgrade Card</view>
+									<view class="">
+
 									</view>
-									<view class="con-bottom">{{item2.code}}</view>
 								</view>
-								<view v-else class="con-left flex flex-direction justify-between text-colorB">
-									<view class="con-top">
-										<view style="font-size: 36rpx;font-weight: 900;">保级卡</view>
-										<view style="font-size: 28rpx;">Renewal Card</view>
+								<!-- 已使用 -->
+								<view class="" v-if="currentIndex === 1">
+									<view class="used-card">
+										<view class="used-li flex align-center">
+											<view class="used-lf">
+												<text>卡类型：</text>
+											</view>
+											<view class="used-rg">
+												<text>{{item2.type===1?'黄金卡':'白银卡'}}</text>
+											</view>
+										</view>
+										<view class="used-li flex align-center">
+											<view class="used-lf">
+												<text>编号：</text>
+											</view>
+											<view class="used-rg">
+												<text>{{item2.code}}</text>
+											</view>
+										</view>
+										<view class="used-li flex align-center">
+											<view class="used-lf">
+												<text>使用时间：</text>
+											</view>
+											<view class="used-rg">
+												<text>{{item2.useAt}}</text>
+											</view>
+										</view>
+										<view class="used-li flex align-center">
+											<view class="used-lf">
+												<text>发放时间：</text>
+											</view>
+											<view class="used-rg">
+												<text>{{item2.createdAt}}</text>
+											</view>
+										</view>
 									</view>
-									<view class="con-bottom">{{item2.code}}</view>
-								</view>
-								<view class="con-btn flex flex-direction justify-center">
-									<view class="btn-item text-white" @tap="useCard">使用</view>
-									<view class="btn-item text-white" @tap="sendCard">赠送</view>
 								</view>
 							</view>
 						</view>
+							<u-loadmore :status="loadStatus2" margin-top="10" margin-bottom="20" />
 					</view>
+				
 				</scroll-view>
-			</swiper-item>		
+			</swiper-item>
 		</swiper>
+		<u-modal v-model="modalShow" :confirm-text="`使用${cardType}卡`" @confirm="confirm" cancel-text='取消' :show-cancel-button='true'
+		 confirm-color='#DD2C4E'>
+			<view class="slot-content">
+				<view class="">
+					<view class="" style="padding:30rpx 20rpx;">
+						<view class="" style="padding: 20rpx 0;">
+							<text>{{cardType}}卡使用后将于4月1日考核时生效</text>
+						</view>
+						<view style="color:#DD2C4E;">
+							您使用了{{cardType}}卡，将于下月1日生效，若店铺考核未达到{{cardType}}考核标准,则消耗一张{{cardType}}卡成为{{cardType}}店铺，享受{{cardType}}店铺权益；若店铺考核达到{{cardType}}店铺标准，则{{cardType}}卡将返还至您的卡包。
+						</view>
+					</view>
+				</view>
+			</view>
+		</u-modal>
 	</view>
 </template>
 
@@ -73,7 +101,9 @@
 	export default {
 		data() {
 			return {
-				STATIC_URL: this.STATIC_URL,
+				IMAGE_URL: this.IMAGE_URL,
+				modalShow: false,
+				cardType: '', //卡片类型 黄金或者白银
 				list: [{
 					name: '未使用',
 					cards: []
@@ -82,105 +112,112 @@
 					cards: []
 				}],
 				currentIndex: 0,
-				cards: []
+				cards: [],
+				page: 1,
+				limit: 10,
+				loadStatus2: 'loadmore',
+				moreShow: false,
 			};
 		},
 		onLoad() {
-			this.getCards("no")
-			this.getCards("yes")
+			this.getCardList()
 		},
 		methods: {
-			useCard(){
-				this.$u.toast("功能暂未开放，敬请期待~");
+			// 加载更多
+			cardMore() {
+				if (this.moreShow) {
+					this.page++
+					this.getCardList()
+				}
 			},
-			sendCard(){
+			getCardList() {
+				this.loadStatus2 = "loading"
+				let sendData = {
+					page: this.page,
+					limit: this.limit,
+					type: this.currentIndex,
+				}
+				this.$u.post('/api/v2/app/user/welfare/lists', sendData).then(res => {
+					console.log(res)
+					let list = res.data.data.list
+					if (list.length < this.limit) {
+						this.moreShow = false
+						this.loadStatus2 = "nomore"
+						this.cards.push(...list)
+						return
+					}
+					this.moreShow = true
+					this.cards.push(...list)
+				})
+			},
+			useCard(id, type) {
+				this.modalShow = true
+				this.cardType = type === 1 ? '黄金' : '白银'
 				// this.$u.toast("功能暂未开放，敬请期待~");
+			},
+			confirm(){
+				// 使用卡片
+				
+			},
+			sendCard() {
 				uni.navigateTo({
-					url:"../myInvite/myInvite"
+					url: "../myInvite/myInvite"
 				})
 			},
 			changeCurrent(e) {
+				console.log(e)
 				this.currentIndex = e.detail.current
+				this.cards = []
+				this.page = 1
+				this.moreShow = false
+				this.getCardList()
+
 			},
 			chooseTabs(index) {
+				// console.log(index)
 				this.currentIndex = index
+				// this.cards = []
+				// this.page = 1
+				// this.moreShow = false
+				// this.getCardList()
 			},
-			getCards(type) {
-				this.$u.post('/api/v1/users/role/query_up_code', {
-					userID: uni.getStorageSync("userInfo").id,
-					isUsed: type
-				}).then(res => {
-					console.log(res.data);
-					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
-						return
-					}
-					let result = res.data.data
-					switch (type) {
-						case "no":
-							if(result.upCode.unusedCode&&result.upCode.unusedCode.length!=0){
-								result.upCode.unusedCode.map(item=>{
-									this.list[0].cards.push({
-										isUpcode:true,
-										id:item.id,
-										code:item.code
-									})
-								})
-							}
-							if(result.keepCode.unusedCode&&result.keepCode.unusedCode.length!=0){
-								result.keepCode.unusedCode.map(item=>{
-									this.list[0].cards.push({
-										isUpcode:false,
-										id:item.id,
-										code:item.code
-									})
-								})
-							}
-							break;
-						case "yes":
-							if(result.upCode.usedCode&&result.upCode.usedCode.length!=0){
-								result.upCode.usedCode.map(item=>{
-									this.list[1].cards.push({
-										isUpcode:true,
-										id:item.id,
-										code:item.code
-									})
-								})
-							}
-							if(result.keepCode.usedCode&&result.keepCode.usedCode.length!=0){
-								result.keepCode.usedCode.map(item=>{
-									this.list[1].cards.push({
-										isUpcode:false,
-										id:item.id,
-										code:item.code
-									})
-								})
-							}
-							break;
-						default:
-							break;
-					}
-				});
-				console.log(this.list)
-			}
 		}
 	}
 </script>
 
 <style lang="scss">
 	page {
-		background-color: #FFFFFF;
+		background-color: #F5F5F5;
 	}
 
 	.card-box {
 		padding: 20rpx 30rpx;
+
+		.used-card {
+			width: 686rpx;
+			background: #FFFFFF;
+			padding: 20rpx;
+			border-radius: 10rpx;
+			margin-bottom: 20rpx;
+
+			.used-li {
+				font-size: 28rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #333333;
+				margin-bottom: 8rpx;
+
+				.used-lf {
+					width: 25%;
+				}
+			}
+		}
 
 		.card-item {
 			width: 690rpx;
 			height: 386rpx;
 			margin-bottom: 20rpx;
 			position: relative;
-			background-color: #FFFFFF;
 
 			.con-left {
 				position: absolute;
@@ -191,7 +228,8 @@
 				padding-right: 0;
 
 				.con-bottom {
-					font-size: 60rpx;
+					font-size: 32rpx;
+					font-weight: 500;
 				}
 			}
 

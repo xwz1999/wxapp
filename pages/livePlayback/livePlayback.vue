@@ -17,8 +17,8 @@
 				<text class="cuIcon-close" style="font-size: 48rpx;" @tap="back"></text>
 			</view>
 		</view>
-		<video class="video flex-sub" :src="videoDetail.playUrl" controls></video>
-		<!-- <live-player class="video flex-sub" :src="videoDetail.playUrl" mode="RTC" autoplay/> -->
+		<live-player v-if="isLive" class="video flex-sub" :src="videoDetail.playUrl" mode="RTC" autoplay/>
+		<video v-else  class="video flex-sub" :src="videoDetail.playUrl" controls></video>
 		<view class="flex justify-between align-end bottom">
 			<image src="../../static/shop/more.png" style="width: 60rpx;" mode="widthFix"></image>
 			<view class="" style="position: relative;" @tap="isShow = true">
@@ -83,20 +83,34 @@
 				this.isLive = parseInt(options.isLive)
 				this.getDetail()
 			}
-			
 		},
 		methods: {
 			getDetail() {
-				this.$u.post("/api/v1/live/live/video_info", {
-					id: this.id
-				}).then(res => {
-					console.log(res.data);
-					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
-						return
-					}
-					this.videoDetail = res.data.data
-				});
+				if(this.isLive){
+					this.$u.post("/api/v1/live/live/live_info", {
+						id: this.id
+					}).then(res => {
+						console.log(res.data);
+						if (res.data.code == "FAIL") {
+							this.$u.toast(res.data.msg);
+							return
+						}
+						this.videoDetail = res.data.data
+					});
+				}else{
+					this.$u.post("/api/v1/live/live/video_info", {
+						id: this.id
+					}).then(res => {
+						console.log(res.data);
+						if (res.data.code == "FAIL") {
+							this.$u.toast(res.data.msg);
+							return
+						}
+						this.videoDetail = res.data.data
+					});
+				}
+				
+				
 			},
 			back() {
 				uni.navigateBack()

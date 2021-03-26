@@ -93,7 +93,11 @@
 								<view style="padding: 0 10rpx;">|</view>
 								<view class="">{{item.goodsCount}}个宝贝</view>
 							</view>
-							<view class="cover-pic">
+							<!-- uni.navigateTo({
+					url:`/pages/livePlayback/livePlayback?id=${id}&isLive=${isLive}`
+					// url: "/pages/livePlayback/livePlayback?id=" + id
+				}) -->
+							<view class="cover-pic" @tap="toLivePlayback(item.id)">
 								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.cover" :index="index" borderRadius="10" :error-img="IMAGE_URL + '/null05.png'"  :loading-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>
 								<view class="mask flex flex-direction justify-center align-center">
 									<text class="cuIcon-videofill text-white"></text>
@@ -150,6 +154,12 @@
 			this.handleTime()
 		},
 		methods: {
+		
+			toLivePlayback(id){
+				uni.navigateTo({
+					url:`/pages/livePlayback/livePlayback?id=${id}&isLive=0`
+				})
+			},
 			toAnchorCenter() {
 				uni.navigateTo({
 					url: "../anchorCenter/anchorCenter"

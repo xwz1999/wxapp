@@ -14,7 +14,6 @@
 			<swiper class="flex-sub" :current="currentIndex" :duration="300" :indicator-dots="false" :autoplay="false" @change="changeCurrent">
 				<!-- 直播回放列表 -->
 				<swiper-item>
-				
 					<live-videos></live-videos>
 				</swiper-item>
 				<!-- 小视频列表 -->
