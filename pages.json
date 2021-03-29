@@ -59,6 +59,13 @@
 			}
 		},
 		{
+			"path": "pages/cardPackage/userCard",
+			"style": {
+				"navigationBarTitleText": "权益卡",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/makeDynamic/makeDynamic",
 			"style": {
 				"navigationBarTitleText": "发布素材",
@@ -594,7 +601,7 @@
 				"path": "myIncome/cumulative",
 				"style": {
 					"navigationBarTitleText": "累计总收益",
-					"enablePullDownRefresh": false,
+					"enablePullDownRefresh": true,
 					"navigationBarBackgroundColor": "#16182B",
 					"navigationBarTextStyle": "white"
 				}

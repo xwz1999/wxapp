@@ -1,5 +1,7 @@
 <template name="smallVideos">
-	<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getVideos">
+	<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getVideos" :refresher-threshold="100" :refresher-enabled='refresherEnabled'
+		 @refresherpulling="onPulling" @refresherrefresh="onRefresh" @refresherrestore="onRestore" @refresherabort="onAbort"
+		 :refresher-triggered="triggered">
 		<view class="null flex flex-direction justify-center align-center" v-if="isNull" style="height: 70vh;width: 100vw;">
 			<image :src="IMAGE_URL + '/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
 			<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无动态</view>
@@ -58,16 +60,46 @@
 			return {
 				IMAGE_URL: this.IMAGE_URL,
 				flowList: [],
-				page: 0,
+				page: 1,
+				limit:16,
 				stopLoad: false,
 				loadStatus:'loadmore',
-				isNull:false
+				isNull:false,
+				// 开启下拉
+				refresherEnabled: true,
+				//
+				triggered: false,
 			};
 		},
 		mounted() {
 			this.getVideos()
 		},
 		methods: {
+			//下拉过程的函数
+			onPulling(e) {
+			},
+			//松手后执行下拉事件的函数
+			onRefresh() {
+				console.log('onRefresh')
+				if (this._freshing) return;
+				this.triggered = 'restore';
+				setTimeout(() => {
+					this.triggered = false;
+					this._freshing = false;
+				}, 1000)
+				this.page  = 1
+				this.stopLoad = false
+				this.flowList = []
+				 this.getVideos()
+			},
+			//开始结束下拉的函数
+			onRestore() {
+				this.triggered = 'restore'; // 关闭动画
+			},
+			//结束下拉函数
+			onAbort() {
+				console.log('onAbort')
+			},
 			// refreshVideo(){
 			// 	this.page = 0
 			// 	this.stopLoad = false
@@ -80,8 +112,10 @@
 				this.loadStatus = "loading"
 				let sendData = {
 					page: this.page,
-					limit: 20
+					limit: this.limit
 				}
+				console.log(sendData)
+				
 				this.page++
 				this.$u.post('/api/v1/live/short/list', sendData).then(res => {
 					console.log(res.data);
@@ -90,23 +124,30 @@
 						return
 					}
 					let list = res.data.data.list
-					if (list.length == 0) {
+					if (list.length < this.limit) {
 						this.stopLoad = true
 						this.loadStatus = "nomore"
-						if (this.page == 1) {
-							console.log("没有数据")
-							this.isNull = true
-						}
-						return
+							this.flowList.push(...list)
+							list.map(item=>{
+								item.headImgUrl = this.IMAGE_URL+item.headImgUrl
+							})
+							return
 					}
-					if (list.length < 20) {
-						this.stopLoad = true
-						this.loadStatus = "nomore"
-					}
+					// if (list.length == 0) {
+					// 	this.stopLoad = true
+					// 	this.loadStatus = "nomore"
+					// 	if (this.page == 1) {
+					// 		console.log("没有数据")
+					// 		this.isNull = true
+					// 	}
+					// 	return
+					// }
+					
 					list.map(item=>{
 						item.headImgUrl = this.IMAGE_URL+item.headImgUrl
 					})
 					this.flowList.push(...list)
+					console.log(this.flowList)
 				});
 			},
 			getVideoDetail(obj){

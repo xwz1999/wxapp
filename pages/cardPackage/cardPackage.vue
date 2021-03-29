@@ -6,7 +6,9 @@
 		</view>
 		<swiper class="flex-sub" :current="currentIndex" :duration="300" :indicator-dots="false" :autoplay="false" @change="changeCurrent">
 			<swiper-item v-for="(item1,index1) in list" :key="index1">
-				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower='cardMore'>
+				<scroll-view  style="height: 100%;" @scrolltolower='cardMore' scroll-y="true" :refresher-threshold="100" :refresher-enabled='refresherEnabled'
+		 @refresherpulling="onPulling" @refresherrefresh="onRefresh" @refresherrestore="onRestore" @refresherabort="onAbort"
+		 :refresher-triggered="triggered">
 					<view class="null flex-sub flex flex-direction justify-center align-center" v-if="cards.length==0" style="height: 70vh;">
 						<image :src="IMAGE_URL + '/null05.png'" style="width: 300rpx;" mode="widthFix"></image>
 						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无卡券</view>
@@ -28,7 +30,7 @@
 									</view>
 									<view class="con-btn flex flex-direction justify-center">
 										<view class="btn-item text-white" @tap="useCard(item2.id,item2.type)">使用</view>
-										<view class="btn-item text-white" @tap="sendCard">赠送</view>
+										<view class="btn-item text-white" @tap="sendCard(item2.id)">赠送</view>
 									</view>
 									<view class="">
 
@@ -58,7 +60,7 @@
 												<text>使用时间：</text>
 											</view>
 											<view class="used-rg">
-												<text>{{item2.useAt}}</text>
+												<text>{{ (item2.useAt*1000)|formatDate('datetime')}}</text>
 											</view>
 										</view>
 										<view class="used-li flex align-center">
@@ -66,7 +68,7 @@
 												<text>发放时间：</text>
 											</view>
 											<view class="used-rg">
-												<text>{{item2.createdAt}}</text>
+												<text>{{(item2.createdAt*1000) |formatDate('datetime')}}</text>
 											</view>
 										</view>
 									</view>
@@ -85,7 +87,7 @@
 				<view class="">
 					<view class="" style="padding:30rpx 20rpx;">
 						<view class="" style="padding: 20rpx 0;">
-							<text>{{cardType}}卡使用后将于4月1日考核时生效</text>
+							<text>{{cardType}}卡使用后将于{{checkDate | formatDate('checkDate')}}考核时生效</text>
 						</view>
 						<view style="color:#DD2C4E;">
 							您使用了{{cardType}}卡，将于下月1日生效，若店铺考核未达到{{cardType}}考核标准,则消耗一张{{cardType}}卡成为{{cardType}}店铺，享受{{cardType}}店铺权益；若店铺考核达到{{cardType}}店铺标准，则{{cardType}}卡将返还至您的卡包。
@@ -117,12 +119,46 @@
 				limit: 10,
 				loadStatus2: 'loadmore',
 				moreShow: false,
+				checkDate:null   ,//考核日期
+				// 开启下拉
+				refresherEnabled: true,
+				//
+				triggered: false,
+				cardId:0,
+				
 			};
+		},
+		created() {
+				this.checkDate= new Date();
 		},
 		onLoad() {
 			this.getCardList()
 		},
 		methods: {
+			//下拉过程的函数
+			onPulling(e) {
+			},
+			//松手后执行下拉事件的函数
+			onRefresh() {
+				console.log('onRefresh')
+				if (this._freshing) return;
+				this.triggered = 'restore';
+				setTimeout(() => {
+					this.triggered = false;
+					this._freshing = false;
+				}, 1000)
+				this.page  = 1
+				this.cards = []
+				 this.getCardList()
+			},
+			//开始结束下拉的函数
+			onRestore() {
+				this.triggered = 'restore'; // 关闭动画
+			},
+			//结束下拉函数
+			onAbort() {
+				console.log('onAbort')
+			},
 			// 加载更多
 			cardMore() {
 				if (this.moreShow) {
@@ -139,6 +175,10 @@
 				}
 				this.$u.post('/api/v2/app/user/welfare/lists', sendData).then(res => {
 					console.log(res)
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
 					let list = res.data.data.list
 					if (list.length < this.limit) {
 						this.moreShow = false
@@ -152,16 +192,20 @@
 			},
 			useCard(id, type) {
 				this.modalShow = true
+				this.cardId = id
 				this.cardType = type === 1 ? '黄金' : '白银'
 				// this.$u.toast("功能暂未开放，敬请期待~");
 			},
 			confirm(){
 				// 使用卡片
-				
-			},
-			sendCard() {
+				console.log(this.cardId)
 				uni.navigateTo({
-					url: "../myInvite/myInvite"
+					url: "../cardPackage/userCard?cardId=" + this.cardId
+				})
+			},
+			sendCard(id) {
+				uni.navigateTo({
+					url: "../myInvite/myInvite?cardId=" + id
 				})
 			},
 			changeCurrent(e) {

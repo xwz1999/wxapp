@@ -1,7 +1,7 @@
 <template name="liveVideos">
 	<view class="flex flex-direction" style="height: 100%;">
 
-		<scroll-view class="flex-sub" style="height: 0;" scroll-y="true" :refresher-threshold="100" :refresher-enabled='refresherEnabled'
+		<scroll-view class="flex-sub" style="height: 0;" @scrolltolower="getVideos"  scroll-y="true" :refresher-threshold="100" :refresher-enabled='refresherEnabled'
 		 @refresherpulling="onPulling" @refresherrefresh="onRefresh" @refresherrestore="onRestore" @refresherabort="onAbort"
 		 :refresher-triggered="triggered">
 			<view class="live-container flex justify-between flex-wrap">
@@ -56,7 +56,7 @@
 				page1: 1,
 				limit1: 15,
 				page2: 1,
-				limit2: 15,
+				limit2: 5,
 				stopLoad2: false,
 				loadStatus2: 'loadmore',
 				liveVideos: [],
@@ -83,7 +83,9 @@
 					this.triggered = false;
 					this._freshing = false;
 				}, 1000)
-				this.page2  = 0
+				this.page1  = 1
+				this.stopLoad2 = false
+				this.page2  = 1
 				this.liveVideos = []
 				 this.getVideos()
 			},
@@ -118,6 +120,7 @@
 					page: this.page2,
 					limit: this.limit2
 				}
+				console.log(sendData)
 				this.page2++
 				this.$u.post("/api/v1/live/live/list", sendData).then(res => {
 					console.log(res.data);
@@ -126,12 +129,14 @@
 						return
 					}
 					let list = res.data.data
-					if (list.length == 0) {
+					if (list.length < this.limit2) {
 						this.stopLoad2 = true
 						this.loadStatus2 = "nomore"
+						this.liveVideos.push(...list)
 						return
 					}
 					this.liveVideos.push(...list)
+					console.log(this.liveVideos)
 				});
 			},
 			toLiveDetail(id,isLive) {

@@ -44,6 +44,20 @@ export function roleFilter(roleLevel, format) {
 			mineBg = "/mine/role04.png"
 			otherBg = "/role04.jpg"
 			break;
+		case 160:
+			roleText = "钻石店铺"
+			//  bgImage =   'bg05.png'
+			badge = '/badge04.png'
+			mineBg = "/mine/role04.png"
+			otherBg = "/role04.jpg"
+			break;
+		case 130:
+			roleText = "钻石店铺"
+			//  bgImage =   'bg05.png'
+			badge = '/badge04.png'
+			mineBg = "/mine/role04.png"
+			otherBg = "/role04.jpg"
+			break;
 		default:
 			break;
 	}
@@ -64,4 +78,65 @@ export function roleFilter(roleLevel, format) {
 			break;
 	}
 
+}
+
+export function formatDate(date, format) {
+	date = new Date(date);
+	let year = date.getFullYear()
+	let month = date.getMonth() + 1;
+	let nextMonth = month + 1
+	let day = date.getDate();
+	let hour = date.getHours();
+	let minutes = date.getMinutes()
+
+	if (month < 10) {
+		month = '0' + month
+	}
+	if (day < 10) {
+		day = '0' + day
+	}
+	if (hour < 10) {
+		hour = '0' + hour
+	}
+	if (minutes < 10) {
+		minutes = '0' + minutes
+	}
+	switch (format) {
+		case "yy-mm-dd":
+			return `${year}-${month}-${day}`;
+			break;
+		case "mm-dd":
+			return `${month}-${day}`;
+			break;
+		case "mm-dd":
+			return `${month}月${day}日`;
+			break;
+		case 'datetime':
+			return `${year}-${month}-${day} ${hour}:${minutes}`;
+			break;
+		case 'yy-mm':
+			return `${year}-${month}`;
+			break;
+		
+		
+		// 考核日期
+		case 'checkStartDate':
+			return `${month}月01日`;
+			break;
+		case 'checkEndDate':
+			let str = new Date(year, month, 0);
+			let m = str.getMonth() + 1;
+			let d = str.getDate();
+			return `${m}月${d}日`;
+			break;
+		case 'checkDate':
+			
+			if (nextMonth < 10) {
+				nextMonth = '0' + nextMonth
+			}
+			return `${nextMonth}月01日`;
+			break;
+		default:
+			break;
+	}
 }

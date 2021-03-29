@@ -24,7 +24,7 @@ Vue.component('large-image-list', largeImageList)
 Vue.prototype.BASE_URL = "https://testapi.reecook.cn"
 Vue.prototype.IMAGE_URL = "https://testcdn.reecook.cn/static"
 Vue.prototype.H5_BASE_URL = "https://testh5.reecook.cn"
-// 正式域名
+// // 正式域名
 // Vue.prototype.BASE_URL = "https://api.reecook.cn"
 // Vue.prototype.IMAGE_URL = "https://cdn.reecook.cn/static"
 // Vue.prototype.H5_BASE_URL = "https://testh5.reecook.cn"
@@ -36,6 +36,9 @@ Vue.prototype.STATIC_URL = Vue.prototype.IMAGE_URL + "/recook-weapp/"
 //过滤器 保留两位小数
 Vue.filter('toFixed', (param, num) => {
 	// console.log(param,typeof param,parseFloat(param))
+	if(!param){
+		return '0.00';
+	}
 	return parseFloat(param).toFixed(num);
 })
 //全局过滤器

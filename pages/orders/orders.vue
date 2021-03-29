@@ -48,7 +48,7 @@
 									<view class="flex justify-between order-btn">
 										<view class="">
 											<button v-if="item2.status==1&&item2.expressStatus!=0" class="cu-btn lines-gray text-gray round" @tap.stop="checkExpress(item2.id)">查看物流</button>
-											<button v-if="item2.status==4" class="cu-btn lines-gray text-gray round" @tap.stop="evaluate(index2,item2.id)">查看物流</button>
+											<button v-if="item2.status==4" class="cu-btn lines-gray text-gray round" @tap.stop="checkExpress(index2,item2.id)">查看物流</button>
 												
 										</view>
 										<view>共{{item2.totalGoodsCount}}件商品 总计<text class="text-red">￥{{item2.goodsTotalAmount | toFixed(2)}}</text></view>

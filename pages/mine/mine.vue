@@ -16,6 +16,7 @@
 										</view>
 									</navigator>
 								</view>
+							
 							</view>
 							<view class="" style="width: 112rpx;">
 								<view class="flex justify-around align-center" style="width: 100%;color: #FFFFFF;">
@@ -47,7 +48,7 @@
 								<text>NO.{{info.identifier}}</text>
 							</view>
 							<view class="flex-sub">
-									<text>注册时间{{usercreatedAt}}</text>
+								<text>注册时间{{usercreatedAt}}</text>
 							</view>
 							<view class="" style="width: 112rpx; text-align: center;">
 								<text>({{role}})</text>
@@ -56,16 +57,17 @@
 					</view>
 				</view>
 			</view>
-			<!-- <scroll-view class="flex-sub" scroll-y="true" style="height: 0;"> -->
-				<view class="flex-sub">
-		
+			<scroll-view class="flex-sub" scroll-y="true" style="height: 0;" :refresher-threshold="100" :refresher-enabled='refresherEnabled'
+		 @refresherpulling="onPulling" @refresherrefresh="onRefresh" @refresherrestore="onRestore" @refresherabort="onAbort"
+		 :refresher-triggered="triggered">
+			<!-- <view class="flex-sub"> -->
 				<!-- 				<view class="info-container" style="padding: 20rpx;"> -->
 				<view class="info-container">
 					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<view class="subtitle">我的资产</view>
 						<view class="flex justify-around text-center card-con">
 							<view @tap="toMyMoney">
-								<view class="num">{{info.myAssets.coinNum?info.myAssets.coinNum:0}}</view>
+								<view class="num">{{info.myAssets.coinNum?info.myAssets.coinNum:0 }}</view>
 								<view>瑞币(个)<text class="cuIcon-question" @tap.stop="tipModel(true,'myAssets')"></text></view>
 							</view>
 							<view @tap="toBalance">
@@ -74,7 +76,7 @@
 							</view>
 
 							<view @tap="toCardPackage">
-								<view class="num">{{info.myAssets.cards?info.myAssets.cards:0}}</view>
+								<view class="num">{{welfareTotal?welfareTotal:0}}</view>
 								<view>卡包(个)</view>
 							</view>
 						</view>
@@ -83,12 +85,13 @@
 					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<!-- <navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;"> -->
 						<navigator url="/packageA/myIncome/cumulative" :hover-class="false" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;">
-							<view>累计收益<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text></view>
-							<view class="flex more"><text style="font-size: 34rpx;color: #333333;">{{totalEarning}}</text><text class="cuIcon-right"></text></view>
+							<view>累计收益<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text><text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
+										 @tap.stop="tipModel(true,'totalEarning')"></text></view>
+							<view class="flex more"><text style="font-size: 34rpx;color: #333333;">{{totalEarning|toFixed(2)}}</text><text class="cuIcon-right"></text></view>
 						</navigator>
 					</view>
 					<view>
-						<view class="box bg-white">
+						<view class="box bg-white" v-if="roleLevel !== 500">
 							<view class="subtitle flex justify-between">
 								<view class="flex align-center">
 									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
@@ -123,8 +126,7 @@
 								</view>
 							</view>
 						</view>
-
-						<view class="box bg-white">
+						<view class="box bg-white" v-if="roleLevel !== 500">
 							<view class="subtitle flex justify-between">
 								<view class="flex align-center">
 									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
@@ -155,7 +157,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="box bg-white" v-if="myIncomeData.hasTeam">
+						<view class="box bg-white" v-if="myIncomeData.hasTeam  && roleLevel !== 500">
 							<view class="subtitle flex justify-between">
 								<view class="flex align-center">
 									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
@@ -224,7 +226,6 @@
 						</view>
 					</view>
 					 -->
-
 					<view class="box bg-white" style="padding: 30rpx 30rpx;" v-if="progressShow">
 						<view class=" flex align-center" style="margin-bottom: 14rpx;">
 							<view class="line" style="width: 5rpx; height: 36rpx;background: #D5101A;margin-right: 10rpx;">
@@ -236,21 +237,26 @@
 						<view class="" style="font-size: 24rpx;color: #999999;">
 							<view class="">
 								<view class="">
-									<text>本考核期5月1日至5月31日，将于6月1日考核。</text>
+									<!-- startDate -->
+									<text>本考核期{{checkDate | formatDate('checkStartDate')}}至{{checkDate | formatDate('checkEndDate')}}，将于{{checkDate | formatDate('checkDate')}}考核。</text>
 								</view>
-								<view class="">
-									考核目标：店铺销售额5000元
+								<view class="" >
+									考核目标：店铺销售额{{needAmount}}元
 								</view>
+							
 							</view>
 						</view>
 						<view class="progress-box flex justify-center align-center">
 							<canvas class="progress" canvas-id="progress"></canvas>
 							<view class="progress-core">
-								<text class="cuIcon-moneybag" :style="{color:progressColor.end}" ></text>
+								<text class="cuIcon-moneybag" :style="{color:progressColor.end}"></text>
 							</view>
 						</view>
-						<view class="text-center">
+						<view class="text-center" v-if="!cardType">
 							<text>还需店铺销售额：{{needAmount}}元</text>
+						</view>
+						<view class="text-center" v-else>
+							已满足黄金店铺考核标准
 						</view>
 					</view>
 
@@ -258,7 +264,7 @@
 						<view class=" subtitle flex justify-between" style="border: none;">
 							<view>店铺管理</view>
 						</view>
-						<view class="shop-box flex justify-between flex-wrap" >
+						<view class="shop-box flex justify-between flex-wrap">
 							<view class="card" @click="isShow = true">
 								<image :src="`${IMAGE_URL}/mineShop/shop1.jpg`" mode="widthFix"></image>
 								<view class="">
@@ -360,9 +366,9 @@
 						</view>
 					</view>
 				</view>
-				
-				</view>
-			<!-- </scroll-view> -->
+
+			<!-- </view> -->
+			</scroll-view>
 		</view>
 		<view class="" v-else>
 			<view class="logo-box">
@@ -403,14 +409,20 @@
 	export default {
 		data() {
 			return {
+				// 开启下拉
+				refresherEnabled: true,
+				//
+				triggered: false,
 				isShow: false, //分享显示隐藏
 				tipModelTitle: '', //模态窗
 				showTipModel: false, //模态窗显示隐藏
 				needAmount: 0, //canvas 进度条 销售总额
+				cardType: 0, //canvas 是否使用升级卡
+				checkDate: null, //考核日期
 				progressShow: true, //进度条显示隐藏
-				progressColor:{   //进度条渐变色
-					start:'#B2C1CF',
-					end:'#364C53'
+				progressColor: { //进度条渐变色
+					start: '#B2C1CF',
+					end: '#364C53'
 				},
 				background: { // 导航栏颜色
 					backgroundColor: '#3A3943',
@@ -465,7 +477,7 @@
 					}
 				],
 				roleLevel: 500, //会员等级
-
+				welfareTotal:0,//卡包数量
 				info: {},
 				userInfo: {
 					nickname: "",
@@ -476,38 +488,59 @@
 					amount: 0,
 					historyIncome: 0,
 					orderNum: 0
-				}
+				},
+
 			};
 		},
 		created() {
 			this.$store.commit('setIsLogin')
 			this.isLogin = this.$store.state.isLogin
 			this.usercreatedAt = uni.getStorageSync("userInfo").createdAt.substring(0, 10)
+			this.checkDate = new Date();
+
 		},
 		onLoad() {
 			if (this.isLogin) {
 				this.getUserInfo()
 				this.getTotalEarning()
+				this.welfare()
 			}
 		},
 		onShow() {
 			if (this.isLogin) {
 				this.userInfo.nickname = uni.getStorageSync("userInfo").nickname
 				this.userInfo.headImgUrl = uni.getStorageSync("userInfo").headImgUrl
-				if(this.$store.state.roleLevel === 200){
-					console.log(this.$store.state.roleLevel)
-					this.progressColor.start = '#ECD5A7' 
-					this.progressColor.end = '#E0AE5C'
-				}
+				
 				this.myIncome()
 				this.check()
 			}
 		},
 		methods: {
-			//分享
-			shareBtn(data) {
-				this.isShow = true
-				this.onShareData = data
+			//下拉过程的函数
+			onPulling(e) {
+			},
+			//松手后执行下拉事件的函数
+			onRefresh() {
+				console.log('onRefresh')
+				if (this._freshing) return;
+				this.triggered = 'restore';
+				setTimeout(() => {
+					this.triggered = false;
+					this._freshing = false;
+				}, 1000)
+				 this.getUserInfo() 
+				 this.getTotalEarning()
+				 this.myIncome()
+				 this.check()
+				 this.welfare()
+			},
+			//开始结束下拉的函数
+			onRestore() {
+				this.triggered = 'restore'; // 关闭动画
+			},
+			//结束下拉函数
+			onAbort() {
+				console.log('onAbort')
 			},
 			//弹出层隐藏
 			hideModel() {
@@ -525,10 +558,28 @@
 					}
 				});
 			},
+			// 卡包数量
+			welfare(){
+				let sendData = {
+					page: 1,
+					limit: 10,
+					type: 0,
+				}
+				this.$u.post('/api/v2/app/user/welfare/lists', sendData).then(res => {
+					if (res.data.code == "FAIL") {
+						return
+					}
+					console.log(res)
+					this.welfareTotal = res.data.data.total
+				})
+			},
+			
 			//进度条数据 以及是否显示
 			check() {
+				// yy-mm
+				let month = this.$options.filters['formatDate'](this.checkDate, 'yy-mm') 
 				this.$u.post('/api/v2/app/user/check', {
-					month: '2021-03'
+					month: month
 				}).then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
@@ -538,7 +589,11 @@
 					}
 					let result = res.data.data
 					this.needAmount = result.needAmount
-
+					this.cardType = result.cardType
+					if (this.roleLevel === 200) {
+						this.progressColor.start = '#ECD5A7'
+						this.progressColor.end = '#E0AE5C'
+					}
 					let r = this.convert_length(80)
 					if (result.cardType) {
 						this.Progressbar(100, 100, r, this.progressColor.start, this.progressColor.end);
@@ -592,7 +647,7 @@
 			convert_length(length) {
 				return Math.round(wx.getSystemInfoSync().windowWidth * length / 750);
 			},
-		
+
 			toMineShopPage(url) {
 				uni.navigateTo({
 					url: "/packageA/mineShop/mineShop?url=" + url

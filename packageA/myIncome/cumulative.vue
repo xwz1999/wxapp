@@ -87,7 +87,13 @@
 		},
 		onLoad() {
 			this.getData()
-		}
+		},
+		onPullDownRefresh() {
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 1000);
+			this.getData()
+		},
 	}
 </script>
 
