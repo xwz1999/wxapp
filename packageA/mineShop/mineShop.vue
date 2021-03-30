@@ -63,13 +63,13 @@
 						</view>
 					</view>
 					<view class="flex member-list" v-for="(item,index) in memberList" :key='index'>
-						<view class="member-avatar text-center">
+						<view class="member-avatar text-center flex flex-direction">
 							<view class="avatar">
 								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" height="80" border-radius="70"
 								 :loading-img="IMAGE_URL + '/null05.png'" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill"></u-lazy-load>
 							</view>
-							<view class="">
-								<text class="cuIcon-command"></text>
+							<view class="flex flex-sub justify-center align-center" style="">
+								<image :src="item.levelIcon" mode="widthFix" style="width: 22rpx;"></image>
 							</view>
 						</view>
 						<view class="list" style="flex: 1;">
@@ -78,7 +78,6 @@
 									<text>{{item.nickname}}</text>
 								</view>
 								<view class="">
-
 								</view>
 							</view>
 							<view class="icon-box flex align-end">
@@ -183,10 +182,14 @@
 						return
 					}
 					this.memberList = res.data.data
+				
 					let num = 0
 					this.memberList.map(item => {
 						num += item.count
+						let url =this.IMAGE_URL + this.$options.filters['roleFilter'](item.roleLevel, 'levelIcon')
+						this.$set(item,'levelIcon', url)	
 					})
+					console.log(this.memberList)
 					this.totalMember = num
 				});
 			},

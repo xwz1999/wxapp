@@ -34,8 +34,8 @@
 									<text>{{item.wechatNo?item.wechatNo:'-'}}</text>
 					
 								</view>
-								<view class="">
-									<text class="cuIcon-friend"></text>
+								<view class="flex align-center">
+									<image :src="item.levelIcon" mode="widthFix" style="width: 26rpx; padding-right: 8rpx;"></image>
 									<text>{{item.roleLevel | roleFilter('txt')}}</text>
 								</view>
 							</view>
@@ -123,6 +123,11 @@
 						return
 					}
 					this.list = res.data.data
+					this.list.map(item => {
+					
+						let url =this.IMAGE_URL + this.$options.filters['roleFilter'](item.roleLevel, 'levelIcon')
+						this.$set(item,'levelIcon', url)	
+					})
 					if (this.list.length == 0) {
 						this.isNull = true
 						return

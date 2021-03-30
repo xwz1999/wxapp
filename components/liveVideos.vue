@@ -10,7 +10,7 @@
 				</view> -->
 				<view class="live-item bg-white" v-for="(item,index) in liveVideos" :key="index">
 					<view class="live-main-pic">
-						<u-lazy-load threshold="-100" :image="item.cover" :index="index" :error-img="IMAGE_URL + '/null05.png'" @click="toLiveDetail(item.id,item.isLive)"></u-lazy-load>
+						<u-lazy-load threshold="-100" :image="item.cover"  :loading-img="IMAGE_URL + '/null05.png'" :index="index" :error-img="IMAGE_URL + '/null05.png'" @click="toLiveDetail(item.id,item.isLive)"></u-lazy-load>
 						<view class="icon text-white flex">
 							<text class="cuIcon-playfill"></text>
 							<text style="padding: 0 8rpx;">{{item.look}}人看过</text>

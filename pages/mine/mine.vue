@@ -16,7 +16,7 @@
 										</view>
 									</navigator>
 								</view>
-							
+
 							</view>
 							<view class="" style="width: 112rpx;">
 								<view class="flex justify-around align-center" style="width: 100%;color: #FFFFFF;">
@@ -58,9 +58,9 @@
 				</view>
 			</view>
 			<scroll-view class="flex-sub" scroll-y="true" style="height: 0;" :refresher-threshold="100" :refresher-enabled='refresherEnabled'
-		 @refresherpulling="onPulling" @refresherrefresh="onRefresh" @refresherrestore="onRestore" @refresherabort="onAbort"
-		 :refresher-triggered="triggered">
-			<!-- <view class="flex-sub"> -->
+			 @refresherpulling="onPulling" @refresherrefresh="onRefresh" @refresherrestore="onRestore" @refresherabort="onAbort"
+			 :refresher-triggered="triggered">
+				<!-- <view class="flex-sub"> -->
 				<!-- 				<view class="info-container" style="padding: 20rpx;"> -->
 				<view class="info-container">
 					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
@@ -85,9 +85,10 @@
 					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<!-- <navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;"> -->
 						<navigator url="/packageA/myIncome/cumulative" :hover-class="false" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;">
-							<view>累计收益<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text><text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
-										 @tap.stop="tipModel(true,'totalEarning')"></text></view>
-							<view class="flex more"><text style="font-size: 34rpx;color: #333333;">{{totalEarning|toFixed(2)}}</text><text class="cuIcon-right"></text></view>
+							<view>累计收益<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text><text class="text-gray cuIcon-question"
+								 style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;" @tap.stop="tipModel(true,'totalEarning')"></text></view>
+							<view class="flex more"><text style="font-size: 34rpx;color: #333333;">{{totalEarning|toFixed(2)}}</text><text
+								 class="cuIcon-right"></text></view>
 						</navigator>
 					</view>
 					<view>
@@ -240,10 +241,10 @@
 									<!-- startDate -->
 									<text>本考核期{{checkDate | formatDate('checkStartDate')}}至{{checkDate | formatDate('checkEndDate')}}，将于{{checkDate | formatDate('checkDate')}}考核。</text>
 								</view>
-								<view class="" >
+								<view class="">
 									考核目标：店铺销售额{{needAmount}}元
 								</view>
-							
+
 							</view>
 						</view>
 						<view class="progress-box flex justify-center align-center">
@@ -261,12 +262,80 @@
 					</view>
 
 					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
-						<view class=" subtitle flex justify-between" style="border: none;">
-							<view>店铺管理</view>
+						<view v-if="roleLevel !==500">
+							<view class=" subtitle flex justify-between" style="border: none;">
+								<view>店铺管理</view>
+							</view>
+							<view class="shop-box flex justify-between flex-wrap">
+								<view class="card" @click="isShow = true">
+									<image :src="`${IMAGE_URL}/mineShop/shop1.jpg`" mode="widthFix"></image>
+									<view class="">
+										<text>团队扩招</text>
+									</view>
+									<view class="" style="font-size: 20rpx;">
+										<text>0元创业·轻松赚</text>
+									</view>
+								</view>
+
+								<view class="card" @click="toMineShopPage('team')">
+									<image :src="`${IMAGE_URL}/mineShop/shop2.jpg`" mode="widthFix"></image>
+									<view class="">
+										<text>我的店铺</text>
+									</view>
+									<view class="" style="font-size: 20rpx;">
+										<text>有福同享·真壕友</text>
+									</view>
+								</view>
+								<!-- <navigator url="/packageA/mineShop/recommendBg">
+										<view class="card">
+											<image :src="`${IMAGE_URL}/mineShop/shop3.jpg`" mode="widthFix"></image>
+											<view class="">
+												<text>推荐钻石店铺</text>
+											</view>
+											<view class="" style="font-size: 20rpx;">
+												<text>推荐好友·福利双赢</text>
+											</view>
+										</view>
+									</navigator>
+								
+								
+									<view class="card" @click="toMineShopPage('recommend')">
+										<image :src="`${IMAGE_URL}/mineShop/shop4.jpg`" mode="widthFix"></image>
+										<view class="">
+											<text>我的推荐</text>
+										</view>
+										<view class="" style="font-size: 20rpx;">
+											<text>呼朋唤友·享收益
+											</text>
+										</view>
+									</view>
+									<navigator url="/packageA/mineShop/rewardBg">
+										<view class="card">
+											<image :src="`${IMAGE_URL}/mineShop/shop5.jpg`" mode="widthFix"></image>
+											<view class="">
+												<text>获取平台奖励</text>
+											</view>
+											<view class="" style="font-size: 20rpx;">
+												<text>平台可靠·奖励多</text>
+											</view>
+										</view>
+									</navigator>
+								
+									<view class="card" @click="toMineShopPage('reward')">
+										<image :src="`${IMAGE_URL}/mineShop/shop6.jpg`" mode="widthFix"></image>
+										<view class="">
+											<text>我的奖励</text>
+										</view>
+										<view class="" style="font-size: 20rpx;">
+											<text>积少成多·奖励丰厚</text>
+										</view>
+									</view>
+								 -->
+							</view>
 						</view>
-						<view class="shop-box flex justify-between flex-wrap">
-							<view class="card" @click="isShow = true">
-								<image :src="`${IMAGE_URL}/mineShop/shop1.jpg`" mode="widthFix"></image>
+						<view v-else class="shop-box">
+							<view class="card" @click="isShow = true" style="width: 100%;">
+								<image :src="`${IMAGE_URL}/mineShop/shop-big.jpg`" mode="widthFix" style="width: 100%;"></image>
 								<view class="">
 									<text>团队扩招</text>
 								</view>
@@ -274,63 +343,8 @@
 									<text>0元创业·轻松赚</text>
 								</view>
 							</view>
-
-							<view class="card" @click="toMineShopPage('team')">
-								<image :src="`${IMAGE_URL}/mineShop/shop2.jpg`" mode="widthFix"></image>
-								<view class="">
-									<text>我的团队</text>
-								</view>
-								<view class="" style="font-size: 20rpx;">
-									<text>有福同享·真壕友</text>
-								</view>
-							</view>
-							<!-- <navigator url="/packageA/mineShop/recommendBg">
-								<view class="card">
-									<image :src="`${IMAGE_URL}/mineShop/shop3.jpg`" mode="widthFix"></image>
-									<view class="">
-										<text>推荐钻石店铺</text>
-									</view>
-									<view class="" style="font-size: 20rpx;">
-										<text>推荐好友·福利双赢</text>
-									</view>
-								</view>
-							</navigator>
-
-
-							<view class="card" @click="toMineShopPage('recommend')">
-								<image :src="`${IMAGE_URL}/mineShop/shop4.jpg`" mode="widthFix"></image>
-								<view class="">
-									<text>我的推荐</text>
-								</view>
-								<view class="" style="font-size: 20rpx;">
-									<text>呼朋唤友·享收益
-									</text>
-								</view>
-							</view>
-							<navigator url="/packageA/mineShop/rewardBg">
-								<view class="card">
-									<image :src="`${IMAGE_URL}/mineShop/shop5.jpg`" mode="widthFix"></image>
-									<view class="">
-										<text>获取平台奖励</text>
-									</view>
-									<view class="" style="font-size: 20rpx;">
-										<text>平台可靠·奖励多</text>
-									</view>
-								</view>
-							</navigator>
-
-							<view class="card" @click="toMineShopPage('reward')">
-								<image :src="`${IMAGE_URL}/mineShop/shop6.jpg`" mode="widthFix"></image>
-								<view class="">
-									<text>我的奖励</text>
-								</view>
-								<view class="" style="font-size: 20rpx;">
-									<text>积少成多·奖励丰厚</text>
-								</view>
-							</view>
-						 -->
 						</view>
-
+					
 					</view>
 					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
@@ -367,7 +381,7 @@
 					</view>
 				</view>
 
-			<!-- </view> -->
+				<!-- </view> -->
 			</scroll-view>
 		</view>
 		<view class="" v-else>
@@ -477,7 +491,7 @@
 					}
 				],
 				roleLevel: 500, //会员等级
-				welfareTotal:0,//卡包数量
+				welfareTotal: 0, //卡包数量
 				info: {},
 				userInfo: {
 					nickname: "",
@@ -510,15 +524,14 @@
 			if (this.isLogin) {
 				this.userInfo.nickname = uni.getStorageSync("userInfo").nickname
 				this.userInfo.headImgUrl = uni.getStorageSync("userInfo").headImgUrl
-				
+
 				this.myIncome()
 				this.check()
 			}
 		},
 		methods: {
 			//下拉过程的函数
-			onPulling(e) {
-			},
+			onPulling(e) {},
 			//松手后执行下拉事件的函数
 			onRefresh() {
 				console.log('onRefresh')
@@ -528,11 +541,11 @@
 					this.triggered = false;
 					this._freshing = false;
 				}, 1000)
-				 this.getUserInfo() 
-				 this.getTotalEarning()
-				 this.myIncome()
-				 this.check()
-				 this.welfare()
+				this.getUserInfo()
+				this.getTotalEarning()
+				this.myIncome()
+				this.check()
+				this.welfare()
 			},
 			//开始结束下拉的函数
 			onRestore() {
@@ -559,7 +572,7 @@
 				});
 			},
 			// 卡包数量
-			welfare(){
+			welfare() {
 				let sendData = {
 					page: 1,
 					limit: 10,
@@ -573,11 +586,11 @@
 					this.welfareTotal = res.data.data.total
 				})
 			},
-			
+
 			//进度条数据 以及是否显示
 			check() {
 				// yy-mm
-				let month = this.$options.filters['formatDate'](this.checkDate, 'yy-mm') 
+				let month = this.$options.filters['formatDate'](this.checkDate, 'yy-mm')
 				this.$u.post('/api/v2/app/user/check', {
 					month: month
 				}).then(res => {

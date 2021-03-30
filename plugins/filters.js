@@ -8,13 +8,14 @@
  *	VipLevel     = 500    会员
  * */
 export function roleFilter(roleLevel, format) {
-	let roleText, badge, mineBg, otherBg
+	let roleText, badge, mineBg, otherBg,levelIcon
 	switch (roleLevel) {
 		case 500:
 			roleText = "会员"
 			badge = '/badge00.png'
 			mineBg = "/mine/role00.png"
 			otherBg = "/role00.jpg"
+			levelIcon = "/level00.png"
 			break;
 		case 400:
 			roleText = "店主"
@@ -22,6 +23,7 @@ export function roleFilter(roleLevel, format) {
 			badge = '/badge01.png'
 			mineBg = "/mine/role01.png"
 			otherBg = "/role01.jpg"
+			levelIcon = "/level01.png"
 			break;
 		case 300:
 			roleText = "白银店铺"
@@ -29,34 +31,35 @@ export function roleFilter(roleLevel, format) {
 			badge = '/badge02.png'
 			mineBg = "/mine/role02.png"
 			otherBg = "/role02.jpg"
+			levelIcon = "/level02.png"
 			break;
 		case 200:
 			roleText = "黄金店铺"
-			//  bgImage =   'bg04.png'
 			badge = '/badge03.png'
 			mineBg = "/mine/role03.png"
 			otherBg = "/role03.jpg"
+			levelIcon = "/level03.png"
 			break;
 		case 100:
 			roleText = "钻石店铺"
-			//  bgImage =   'bg05.png'
 			badge = '/badge04.png'
 			mineBg = "/mine/role04.png"
 			otherBg = "/role04.jpg"
+			levelIcon = "/level04.png"
 			break;
 		case 160:
 			roleText = "钻石店铺"
-			//  bgImage =   'bg05.png'
 			badge = '/badge04.png'
 			mineBg = "/mine/role04.png"
 			otherBg = "/role04.jpg"
+			levelIcon = "/level04.png"
 			break;
 		case 130:
 			roleText = "钻石店铺"
-			//  bgImage =   'bg05.png'
 			badge = '/badge04.png'
 			mineBg = "/mine/role04.png"
 			otherBg = "/role04.jpg"
+			levelIcon = "/level04.png"
 			break;
 		default:
 			break;
@@ -73,6 +76,9 @@ export function roleFilter(roleLevel, format) {
 			break;
 		case 'otherBg':
 			return otherBg
+			break;
+		case 'levelIcon':
+			return levelIcon;
 			break;
 		default:
 			break;
@@ -117,9 +123,9 @@ export function formatDate(date, format) {
 		case 'yy-mm':
 			return `${year}-${month}`;
 			break;
-		
-		
-		// 考核日期
+
+
+			// 考核日期
 		case 'checkStartDate':
 			return `${month}月01日`;
 			break;
@@ -130,7 +136,7 @@ export function formatDate(date, format) {
 			return `${m}月${d}日`;
 			break;
 		case 'checkDate':
-			
+
 			if (nextMonth < 10) {
 				nextMonth = '0' + nextMonth
 			}
