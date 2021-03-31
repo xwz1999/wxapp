@@ -50,6 +50,10 @@ const install = (Vue, vm) => {
 		config.header["X-Recook-ID"] = id
 		config.header["X-Recook-Token"] = token
 		config.header["Device-Type"] = "wxapp"
+		config.header["X-Recook-System"] = 'wxapp'
+		// 当前版本 281 32
+		config.header["X-Recook-version"] = "32"
+		
 		// console.log("请求参数为========",config.data)
 		config.data = Encrypt(config.data)
 	}

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view v-if="type !== 'share'" style="position: absolute; top: 25px; right: 16px;" @tap="toMobileLogin">手机号登录</view>
+		<!-- <view v-if="type !== 'share'" style="position: absolute; top: 25px; right: 16px;" @tap="toMobileLogin">手机号登录</view> -->
 		<view class="logo-box flex flex-direction align-center">
 			<image :src="IMAGE_URL+'/logo.png'" mode="widthFix"></image>
 			<view class="">享受指尖的购物乐趣</view>

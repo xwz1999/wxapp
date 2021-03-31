@@ -611,7 +611,13 @@
 					if (result.cardType) {
 						this.Progressbar(100, 100, r, this.progressColor.start, this.progressColor.end);
 					} else {
-						this.Progressbar(result.amount, result.needAmount, r, this.progressColor.start, this.progressColor.end);
+						let amount = result.amount
+						let needAmount = result.needAmount
+						if(needAmount === 0){
+							amount = 0
+							needAmount = 100
+						}
+						this.Progressbar(amount, needAmount, r, this.progressColor.start, this.progressColor.end);
 					}
 				});
 			},

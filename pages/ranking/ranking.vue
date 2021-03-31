@@ -27,12 +27,12 @@
 						<view class="txt">复制链接</view>
 					</button>
 				</view>
-				<view class="flex-sub flex justify-center">
+			<!-- 	<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" @tap="postShare">
 						<image class="share-icon" src="/static/mine/post.png" mode="widthFix"></image>
 						<view class="txt">二维码海报</view>
 					</button>
-				</view>
+				</view> -->
 			</view>
 			<view class="cancle" @tap="hideModel">取消</view>
 		</u-popup>
