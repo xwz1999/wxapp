@@ -1,5 +1,18 @@
 <template>
 	<view>
+		<view class="tips flex align-center" v-if="tipsShow">
+			<view class="flex align-center justify-between">
+				<view class="tips-icon">
+					<text class="cuIcon-notice"></text>
+				</view>
+				<view class="tips-center">
+					<text>海关提醒：跨境订单订购人和支付人信息不一致，可能会影响订单通关，请务必认证</text>
+				</view>
+				<view class="tips-right" @click="toRealName">
+					<text>去认证 > </text>
+				</view>
+			</view>
+		</view>
 		<view class="box flex align-center address-box" @tap="toAddressList">
 			<image src="../../static/index/add.png" style="width: 50rpx;" mode="widthFix"></image>
 			<view class="flex-sub address-con" v-if="preOrderMsg.addr">
@@ -18,7 +31,7 @@
 			</view>
 			<view class="item flex justify-between align-center">
 				<view class="">买家留言</view>
-				<input type="text" v-model="note" placeholder="留言(选填)" placeholder-class="placeholder" @blur="setNote"/>
+				<input type="text" v-model="note" placeholder="留言(选填)" placeholder-class="placeholder" @blur="setNote" />
 			</view>
 		</view>
 		<view class="box goods-msg-box">
@@ -47,7 +60,8 @@
 					<view>可用:￥{{preOrderMsg.coinStatus.coin}}</view>
 					<view>本次可抵￥{{preOrderMsg.coinTotalAmount | toFixed(2)}}</view>
 				</view>
-				<u-switch v-model="preOrderMsg.coinStatus.isUseCoin" :disabled="!preOrderMsg.coinStatus.isEnable" active-color="red" inactive-color="#F5F5F5" size="36" @change="changeUseCoin"></u-switch>
+				<u-switch v-model="preOrderMsg.coinStatus.isUseCoin" :disabled="!preOrderMsg.coinStatus.isEnable" active-color="red"
+				 inactive-color="#F5F5F5" size="36" @change="changeUseCoin"></u-switch>
 			</view>
 			<!-- <view class="item flex justify-between">
 				<view class="">余额</view>
@@ -86,8 +100,9 @@
 			</view>
 		</view>
 		<view class="agree_box" v-if="preOrderMsg.isImport">
-			<u-checkbox-group >
-				<u-checkbox  v-model="agree" shape="circle" active-color="red">同意并接受 </u-checkbox ><text style="color: #007AFF;" @click="toPage">《跨境商品用户通知协议》</text>
+			<u-checkbox-group>
+				<u-checkbox v-model="agree" shape="circle" active-color="red">同意并接受 </u-checkbox><text style="color: #007AFF;"
+				 @click="toPage">《跨境商品用户通知协议》</text>
 			</u-checkbox-group>
 		</view>
 		<view class="" style="height: 200rpx;"></view>
@@ -100,9 +115,9 @@
 				<button class="cu-btn round text-white" :class="agree?'':'prevent'" @tap="submitOrder">提交订单</button>
 			</block>
 			<block v-else>
-				<button class="cu-btn round text-white"  @tap="submitOrder">提交订单</button>
+				<button class="cu-btn round text-white" @tap="submitOrder">提交订单</button>
 			</block>
-			
+
 			<!-- &&preOrderMsg.isImport -->
 		</view>
 	</view>
@@ -112,39 +127,72 @@
 	export default {
 		data() {
 			return {
-				agree:false,//是否接受协议
+				agree: false, //是否接受协议
 				useBalance: false, //是否使用余额
 				canUseMoney: true, //是否禁用瑞币
 				canUseBalance: true, //是否禁用余额
 				IMAGE_URL: this.IMAGE_URL,
-				note:""
+				note: "",
+				tipsShow: false,
+				RealList: [], // 过滤商品不为国内仓和无
 			};
 		},
 		computed: {
 			preOrderMsg() {
+
 				return this.$store.state.preOrderMsg
 			}
 		},
-		mounted() {
-		console.log(this.$store.state.preOrderMsg)	
-		},
+		mounted() {},
 		watch: {
 			preOrderMsg: function(val) {
-				console.log("预览订单信息发生改变",this.preOrderMsg)
+				console.log("预览订单信息发生改变", this.preOrderMsg)
+			}
+		},
+		onShow() {
+			let realInfoStatus = uni.getStorageSync("userInfo").realInfoStatus
+
+			if (!realInfoStatus) {
+				// 未实名认证 判断是否需要实名认证
+
+				let newArr = [];
+				// 循环过滤
+				this.$store.state.preOrderMsg.brands.forEach((value, index) => {
+					newArr[index] = value.goods;
+					newArr[index] = newArr[index].filter(
+						// 过滤商品不为国内仓和无 1和0
+						item => item.storehouse !== 0 && item.storehouse !== 1)
+				})
+				// 过滤商品不为国内仓和无 则需要实名认证
+				newArr.map(item => {
+					if (item.length) {
+						this.tipsShow = true
+					}
+				})
+				// 过滤商品不为国内仓和无
+				this.RealList = newArr
+			} else {
+				// 已实名认证
+				this.tipsShow = true
 			}
 		},
 		methods: {
-			toPage(){
+			toPage() {
 				uni.navigateTo({
-					url:'../../packageA/agreement/goods'
+					url: '../../packageA/agreement/goods'
+				})
+			},
+			toRealName() {
+				uni.navigateTo({
+					url: "/pages/realname/realname"
 				})
 			},
 			// 设置买家留言信息
-			setNote(){
+			setNote() {
 				this.$u.post('/api/v1/order_preview/buyer_message/update', {
 					userId: uni.getStorageSync("userInfo").id,
 					orderId: this.preOrderMsg.id,
-					message:this.note
+					message: this.note
 				}).then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
@@ -154,7 +202,7 @@
 				});
 			},
 			//切换瑞币抵扣开关
-			changeUseCoin(value){
+			changeUseCoin(value) {
 				console.log(value)
 				this.$u.post('/api/v1/order_preview/coin_onoff', {
 					userId: uni.getStorageSync("userInfo").id,
@@ -171,6 +219,24 @@
 			},
 			//提交订单
 			submitOrder() {
+				let submitBool = true
+				let realInfoStatus = uni.getStorageSync("userInfo").realInfoStatus
+				
+				if (!realInfoStatus) {
+					// 用户未实名认证
+					this.RealList.map(item => {
+						// 未实名认证时 包含国内仓商品和无 商品  不能提交订单
+						if (item.length) {
+							submitBool = false
+						}
+					})
+				}
+				
+				if (!submitBool) {
+					// 未实名认证 并且商品包含国内仓商品和无 
+					this.$u.toast('请先实名认证', 2000);
+					return
+				}
 				this.$u.post('/api/v1/order/submit', {
 					userId: uni.getStorageSync("userInfo").id,
 					previewOrderId: this.preOrderMsg.id
@@ -203,17 +269,42 @@
 </script>
 
 <style lang="scss">
-	.prevent{
+	.tips {
+		margin: 20rpx 30rpx 20rpx 10rpx;
+		height: 120rpx;
+		padding: 20rpx;
+		border-radius: 10rpx 120rpx 120rpx 10rpx;
+		background-color: #fff2cb;
+		color: #d1893f;
+		font-size: 28rpx;
+
+		.tips-icon {
+			font-size: 44rpx;
+		}
+
+		.tips-center {
+			width: 75%;
+		}
+
+		// .tips-right{
+		// 	width: 180rpx;
+		// }
+	}
+
+	.prevent {
 		color: #C8C9CC !important;
 		background: #AAAAAA !important;
 		pointer-events: none;
 	}
+
 	page {
 		background-color: #f3f3f3;
 	}
-.agree_box{
-	margin: 20rpx 30rpx;
-}
+
+	.agree_box {
+		margin: 20rpx 30rpx;
+	}
+
 	.box {
 		margin: 20rpx 30rpx;
 		border-radius: 10rpx;

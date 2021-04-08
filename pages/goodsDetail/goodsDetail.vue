@@ -351,7 +351,7 @@
 
 
 		<!-- 服务说明介绍弹框 -->
-		<u-popup v-model="showTip" mode="bottom" border-radius="20" :closeable="true">
+	<!-- 	<u-popup v-model="showTip" mode="bottom" border-radius="20" :closeable="true">
 			<view class="text-center text-black" style="line-height: 100rpx;font-size: 32rpx;font-weight: 900;">服务保障</view>
 			<view class="tip-box">
 				<view class="tip-item">
@@ -387,7 +387,7 @@
 				<view @tap="tipModel(false)">完成</view>
 			</view>
 		</u-popup>
-		<!-- 规格弹框 -->
+	 -->	<!-- 规格弹框 -->
 		<u-popup v-model="parameterShow" mode="bottom" border-radius="20">
 			<view class="text-center text-black" style="line-height: 100rpx;font-size: 32rpx;font-weight: 900;">产品参数</view>
 			<view class="parameter-box" style="height: 40vh;">
@@ -593,7 +593,7 @@
 				this.current = e.detail.current
 			},
 			tipModel(flag) {
-				this.showTip = flag
+				// this.showTip = false
 			},
 			specModel(flag) {
 				this.showSpecs = flag
