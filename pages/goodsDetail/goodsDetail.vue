@@ -275,8 +275,16 @@
 										<view class="video" v-if="goodsDetail.video">
 											<video :src="IMAGE_URL+goodsDetail.video.url" style="width: 100%;display: block;" controls></video>
 										</view>
+										 <view class="detail-pics  brandFirstImg" v-if="brandFirstImg">
+										 	<u-lazy-load threshold="-100" :image="IMAGE_URL+brandFirstImg" 
+										 	 :index="index" :loading-img="IMAGE_URL + '/null05.png'"  :error-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>
+										 </view>
 										<view class="detail-pics">
 											<u-lazy-load threshold="-100" :image="IMAGE_URL+item.url" v-for="(item,index) in pictures" :key="index"
+											 :index="index" :loading-img="IMAGE_URL + '/null05.png'"  :error-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>
+										</view>
+										<view class="detail-pics brandLastImg" v-if="brandLastImg">
+											<u-lazy-load threshold="-100" :image="IMAGE_URL+brandLastImg" 
 											 :index="index" :loading-img="IMAGE_URL + '/null05.png'"  :error-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>
 										</view>
 									</view>
@@ -492,7 +500,9 @@
 				dynamics: [], //动态列表,
 				showBtn: false, //是否显示发布按钮
 				addressList: [],
-				address: null
+				address: null,
+				brandFirstImg:'',//图文详情第一张图片
+				brandLastImg:'',//图文详情最后一张图片
 			}
 		},
 		components: {
@@ -504,9 +514,7 @@
 			} else {
 				this.isLogin = false
 			}
-			console.log(options)
-			console.log('1234565')
-			console.log(options.invite)
+		
 			if(options.invite){
 				this.$store.commit('setinvite', options.invite);
 			}
@@ -524,7 +532,6 @@
 				this.showBtn = true
 			}
 			this.id = parseInt(options.id)
-			console.log(this.id + '-------')
 			this.getGoodsDetail()
 		},
 		computed: {
@@ -658,6 +665,11 @@
 						this.$u.toast(res.data.msg);
 						return
 					}
+					// firstImg lastImg
+					this.brandFirstImg = res.data.data.brand.firstImg
+					this.brandLastImg = res.data.data.brand.lastImg
+					console.log(this.brandFirstImg ,
+this.brandLastImg)
 					this.pictures = res.data.data.list
 				});
 			},

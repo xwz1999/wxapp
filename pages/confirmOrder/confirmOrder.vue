@@ -151,10 +151,9 @@
 		},
 		onShow() {
 			let realInfoStatus = uni.getStorageSync("userInfo").realInfoStatus
-
+			console.log(realInfoStatus)
 			if (!realInfoStatus) {
 				// 未实名认证 判断是否需要实名认证
-
 				let newArr = [];
 				// 循环过滤
 				this.$store.state.preOrderMsg.brands.forEach((value, index) => {
@@ -173,7 +172,7 @@
 				this.RealList = newArr
 			} else {
 				// 已实名认证
-				this.tipsShow = true
+				this.tipsShow = false
 			}
 		},
 		methods: {
@@ -221,7 +220,6 @@
 			submitOrder() {
 				let submitBool = true
 				let realInfoStatus = uni.getStorageSync("userInfo").realInfoStatus
-				
 				if (!realInfoStatus) {
 					// 用户未实名认证
 					this.RealList.map(item => {
@@ -231,7 +229,6 @@
 						}
 					})
 				}
-				
 				if (!submitBool) {
 					// 未实名认证 并且商品包含国内仓商品和无 
 					this.$u.toast('请先实名认证', 2000);
