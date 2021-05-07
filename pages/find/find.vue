@@ -13,13 +13,13 @@
 
 			<swiper class="flex-sub" :current="currentIndex" :duration="300" :indicator-dots="false" :autoplay="false" @change="changeCurrent">
 				<!-- 直播回放列表 -->
-			<!-- 	<swiper-item>
+				<swiper-item>
 					<live-videos></live-videos>
-				</swiper-item> -->
+				</swiper-item>
 				<!-- 小视频列表 -->
-		<!-- 		<swiper-item>
+				<swiper-item>
 					<small-videos></small-videos>
-				</swiper-item> -->
+				</swiper-item>
 				<!-- 图文动态列表 -->
 				<swiper-item>
 					<dynamics :showGoodsLink="true"></dynamics>
@@ -30,8 +30,8 @@
 </template>
 
 <script>
-	// import liveVideos from 'components/liveVideos.vue'
-	// import smallVideos from 'components/smallVideos.vue'
+	import liveVideos from 'components/liveVideos.vue'
+	import smallVideos from 'components/smallVideos.vue'
 	import dynamics from 'components/dynamics.vue'
 	export default {
 		data() {
@@ -39,12 +39,12 @@
 				showMybtn: false,
 				currentIndex: 0,
 				list: [
-					// {
-					// 	name: '直播'
-					// },
-					// {
-					// 	name: '视频'
-					// },
+					{
+						name: '直播'
+					},
+					{
+						name: '视频'
+					},
 					{
 						name: '图文'
 					}
@@ -52,8 +52,8 @@
 			};
 		},
 		components: {
-			// liveVideos,
-			// smallVideos,
+			liveVideos,
+			smallVideos,
 			dynamics
 		},
 		onLoad() {

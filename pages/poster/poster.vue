@@ -54,6 +54,7 @@
 
 				this.ctx.drawImage(headerImg.path, this.canvasW * 0.1, this.convert_length(20) + 60, this.canvasW * 0.8, this.canvasW *
 					0.8 * 0.8);
+					
 				//绘制标题
 				// this.ctx.setFontSize(this.convert_length(34)); //设置标题字体大小
 				// this.ctx.setFillStyle('#333'); //设置标题文本颜色

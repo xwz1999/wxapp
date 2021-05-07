@@ -607,6 +607,7 @@
 			},
 			// 获取商品详情信息
 			getGoodsDetail() {
+				
 				this.$u.post('/api/v1/goods/detail/summary', {
 					userID: uni.getStorageSync("userInfo").id,
 					GoodsID: this.id
@@ -618,6 +619,17 @@
 						return
 					}
 					this.goodsDetail = res.data.data
+					// 商样图片  根据type判断放在什么位置
+					if(res.data.data.notice.type === 1){
+						this.brandFirstImg = res.data.data.notice.img
+						this.brandLastImg = ''
+					}else if(res.data.data.notice.type === 2){
+						this.brandFirstImg =  ''
+						this.brandLastImg =  res.data.data.notice.img
+					}else{
+						this.brandFirstImg = res.data.data.notice.img
+						this.brandLastImg =  res.data.data.notice.img
+					}
 					// 规格只有一个 默认选中
 					if (this.goodsDetail.attributes.length === 1 && this.goodsDetail.attributes[0].children.length === 1) {
 						this.selectName[0] = this.goodsDetail.attributes[0].children[0].name
@@ -625,6 +637,7 @@
 						this.subIndex[0] = 0
 					}
 					console.log(res.data.data)
+					
 					this.swiperImgList = res.data.data.mainPhotos
 
 					//获取商品详情图片列表
@@ -665,13 +678,9 @@
 						this.$u.toast(res.data.msg);
 						return
 					}
-					// firstImg lastImg
-					this.brandFirstImg = res.data.data.brand.firstImg
-					this.brandLastImg = res.data.data.brand.lastImg
-					console.log(this.brandFirstImg ,
-this.brandLastImg)
 					this.pictures = res.data.data.list
 				});
+			
 			},
 
 

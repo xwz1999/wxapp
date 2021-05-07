@@ -26,7 +26,7 @@
 				<view class="text-center goods-num">{{videoDetail.goodsLists.length}}</view>
 			</view>
 		</view>
-		<u-popup v-model="isShow" mode="bottom" border-radius="20">
+		<u-popup v-model="isShow" mode="bottom" border-radius="20" height="60%">
 			<view class="goods-container">
 				<view class="item" v-for="(item,index) in videoDetail.goodsLists" :key="index">
 					<view class="item-con flex justify-between">
@@ -76,13 +76,29 @@
 				isLive:0, //是否是直播
 			};
 		},
+		onHide() {
+			console.log('21333333333333333')
+		},
 		onLoad(options) {
 			console.log(options)
 			if (options.id) {
 				this.id = parseInt(options.id)
 				this.isLive = parseInt(options.isLive)
+				if(this.isLive){
+					wx.enableAlertBeforeUnload({
+					      message: "是否确认离开直播间？",
+					      success: function (res) {
+					        console.log("方法注册成功：", res);
+					      },
+					      fail: function (errMsg) {
+					        console.log("方法注册失败：", errMsg);
+					      },
+					    });
+				}
 				this.getDetail()
 			}
+			
+	
 		},
 		methods: {
 			getDetail() {
@@ -140,7 +156,7 @@
 					this.$set(this.videoDetail,'isFollow', 1 )
 				});
 			}
-		}
+		},
 	}
 </script>
 

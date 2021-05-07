@@ -278,8 +278,9 @@
 					}
 					let preViewMsg = res.data.data
 					this.$store.commit('updatePreOrderMsg',preViewMsg);
+					// pages/confirmOrder/confirmOrder
 					uni.navigateTo({
-						url: "../confirmOrder/confirmOrder"
+						url: "/pages/confirmOrder/confirmOrder"
 					})
 				});
 

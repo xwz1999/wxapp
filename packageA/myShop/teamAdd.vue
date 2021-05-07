@@ -24,6 +24,7 @@
 			return {
 				current: 0,
 				imgUrlArr:[],
+				imgUrl:'',
 				invitationNo:this.$store.state.invitationNo
 			}
 		},
@@ -34,6 +35,8 @@
 		methods: {
 			changeCurrent(e) {
 				this.current = e.detail.current
+			
+				console.log(e)
 			},
 			getData(){
 				this.$u.get(`/api/v1/shop/share_photo/${this.invitationNo}`).then(res => {
@@ -85,13 +88,14 @@
 			},
 			//保存图片到相册，提示保存成功
 			savePhoto() {
-				let that = this
+				let  imgUrl = this.imgUrlArr[this.current]
 				wx.downloadFile({
-					url: that.imgUrl,
+					url:imgUrl,
 					success: function(res) {
 						wx.saveImageToPhotosAlbum({
 							filePath: res.tempFilePath,
 							success(res) {
+								console.log(res.tempFilePath)
 								wx.showToast({
 									title: '保存成功',
 									icon: "success",
