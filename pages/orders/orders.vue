@@ -34,7 +34,9 @@
 									<view class="order-item-top flex justify-between align-center">
 										<view class="flex align-center">
 											<view class="text-center text-white buy" style="">买</view>
-											<view class="flex" style="font-size: 32rpx;color: #000000;">{{item2.createdAt}}<text class="cuIcon-right"
+											<view v-if="currentIndex === 0" class="flex" style="font-size: 32rpx;color: #000000;">{{item2.createdAt}}<text class="cuIcon-right"
+												 style="color: #ccc;"></text></view>
+											<view v-else class="flex" style="font-size: 32rpx;color: #000000;">{{timeFormat(item2.createdAt, 'yyyy-mm-dd hh:MM:ss')}}<text class="cuIcon-right"
 												 style="color: #ccc;"></text></view>
 										</view>
 										<view class="text-red" v-if="item2.status==0">未付款</view>
@@ -44,17 +46,19 @@
 										<view class="text-red" v-if="item2.status==4">交易已完成</view>
 										<view class="text-red" v-if="item2.status==5">交易已关闭</view>
 									</view>
-									<order-goods :goodsList="item2.goodsList"></order-goods>
+									<order-goods v-if="currentIndex === 0" :goodsList="item2.goodsList"></order-goods>
+									<guide-order-goods v-else :goodsList="item2.goods" ></guide-order-goods >
+									
 									<view class="flex justify-between order-btn">
-										<view class="">
+										<view class="" v-if="currentIndex === 0">
 											<button v-if="item2.status==1&&item2.expressStatus!=0" class="cu-btn lines-gray text-gray round" @tap.stop="checkExpress(item2.id)">查看物流</button>
 											<button v-if="item2.status==4" class="cu-btn lines-gray text-gray round" @tap.stop="checkExpress(index2,item2.id)">查看物流</button>
-												
 										</view>
-										<view>共{{item2.totalGoodsCount}}件商品 总计<text class="text-red">￥{{item2.goodsTotalAmount | toFixed(2)}}</text></view>
+										<view v-if="currentIndex === 0">共{{item2.totalGoodsCount}}件商品 总计<text class="text-red">￥{{item2.goodsTotalAmount | toFixed(2)}}</text></view>
+										<view v-else>共{{item2.goods.length}}件商品 总计<text class="text-red">￥{{item2.goodsTotalAmount | toFixed(2)}}</text></view>
 									</view>
 
-									<view class="order-btn flex justify-end align-center" hover-stop-propagation>
+									<view class="order-btn flex justify-end align-center" hover-stop-propagation v-if="currentIndex === 0">
 										<view class="">
 											<view class="" v-if="item2.status==0">
 												<button class="cu-btn lines-gray text-gray round" @tap.stop="cancelOrder(index2,item2.id)" style="margin-right: 15rpx;">取消订单</button>
@@ -81,7 +85,11 @@
 </template>
 
 <script>
+	import guideOrderGoods from '@/components/guideOrderGoods.vue'
 	export default {
+		components:{
+			guideOrderGoods
+		},
 		data() {
 			return {
 				show: true, // 提醒文案是否显示
@@ -126,10 +134,39 @@
 			})
 		},
 		methods: {
+			timeFormat(timestamp, fmt) {
+				// 其他更多是格式化有如下:
+				// yyyy:mm:dd|yyyy:mm|yyyy年mm月dd日|yyyy年mm月dd日 hh时MM分等,可自定义组合
+				timestamp = parseInt(timestamp);
+				// 如果为null,则格式化当前时间
+				if (!timestamp) timestamp = Number(new Date());
+				// 判断用户输入的时间戳是秒还是毫秒,一般前端js获取的时间戳是毫秒(13位),后端传过来的为秒(10位)
+				if (timestamp.toString().length == 10) timestamp *= 1000;
+				let date = new Date(timestamp);
+				let ret;
+				let opt = {
+					"y+": date.getFullYear().toString(), // 年
+					"m+": (date.getMonth() + 1).toString(), // 月
+					"d+": date.getDate().toString(), // 日
+					"h+": date.getHours().toString(), // 时
+					"M+": date.getMinutes().toString(), // 分
+					"s+": date.getSeconds().toString() // 秒
+					// 有其他格式化字符需求可以继续添加，必须转化成字符串
+				};
+				for (let k in opt) {
+					ret = new RegExp("(" + k + ")").exec(fmt);
+					if (ret) {
+						fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+					};
+				};
+				return fmt;
+			},
 			OrdersDetails(id, index) {
-				uni.navigateTo({
-					url: "../orderDetail/orderDetail?orderId=" + id
-				})
+				if (this.currentIndex === 0) {
+					uni.navigateTo({
+						url: "../orderDetail/orderDetail?orderId=" + id
+					})
+				}
 			},
 			toOrderPay(id) {
 				// 跳转支付页面携带参数（支付价格，创建时间）
