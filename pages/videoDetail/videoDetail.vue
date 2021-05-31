@@ -34,7 +34,7 @@
 			<view class="flex flex-direction justify-around text-white btns-con">
 				<!-- 视频转发功能，接口需要改动（最好详情接口把所有数据返回，要么前端将数据全部带出去，接收者进入页面是加判断是否有参数接收，有则修改vuex状态管理中视频详情的值） -->
 				<!-- <button class="btn-item" open-type="share"><text class="cuIcon-forwardfill"></text></button> -->
-				<button class="btn-item" @tap="showCommentsModel"><text class="cuIcon-commentfill"></text></button>
+				<!-- <button class="btn-item" @tap="showCommentsModel"><text class="cuIcon-commentfill"></text></button> -->
 				<button class="btn-item" @tap="setPraiseVideo"><text class="cuIcon-likefill" :class="videoDetail.isPraise?'red':''"></text></button>
 			</view>
 		</view>

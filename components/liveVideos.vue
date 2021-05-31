@@ -10,9 +10,10 @@
 				</view> -->
 				<view class="live-item bg-white" v-for="(item,index) in liveVideos" :key="index">
 					<view class="live-main-pic">
-						<u-lazy-load threshold="-100" :image="item.cover"  :loading-img="IMAGE_URL + '/null05.png'" :index="index" :error-img="IMAGE_URL + '/null05.png'" @click="toLiveDetail(item.id,item.isLive)"></u-lazy-load>
+						<u-lazy-load threshold="-100" :image="judgeCover(item.cover)"  :loading-img="IMAGE_URL + '/null05.png'" :index="index" :error-img="IMAGE_URL + '/null05.png'" @click="toLiveDetail(item.id,item.isLive)"></u-lazy-load>
 						<view class="icon text-white flex">
-							<text class="cuIcon-playfill"></text>
+							<image class="liveStatus" v-if="item.isLive === 1" src="../static/play.gif"></image>
+							<text class="cuIcon-playfill" v-else></text>
 							<text style="padding: 0 8rpx;">{{item.look}}人看过</text>
 						</view>
 					</view>
@@ -144,6 +145,14 @@
 					url:`/pages/livePlayback/livePlayback?id=${id}&isLive=${isLive}`
 					// url: "/pages/livePlayback/livePlayback?id=" + id
 				})
+			},
+			
+			judgeCover (val) {
+				let arr = val.split('/')
+				if (arr[0] === 'http:') {
+					return val
+				}
+				return this.IMAGE_URL + val
 			}
 		}
 
@@ -167,6 +176,9 @@
 
 				image {
 					background-color: #FFFFFF;
+				}
+				.liveStatus{
+					width: 32rpx;
 				}
 
 				.icon {

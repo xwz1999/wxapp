@@ -521,6 +521,9 @@
 			if (options.q !== undefined) {
 				let url = decodeURIComponent(options.q)
 				options.id = url.split("/")[6];
+				if( url.split("/")[7] != undefined){
+					this.$store.commit('setinvite', url.split("/")[7]);
+				}
 			}
 			if (uni.getStorageSync("userInfo").roleLevel) {
 				this.roleLevel = uni.getStorageSync("userInfo").roleLevel
@@ -636,6 +639,15 @@
 						this.selectArr[0] = this.goodsDetail.attributes[0].children[0].id
 						this.subIndex[0] = 0
 					}
+					if (this.goodsDetail.attributes.length > 1) {
+						let arr = []
+						if (this.goodsDetail.attributes[0].children[0].id < this.goodsDetail.attributes[1].children[0].id) {
+							this.goodsDetail.attributes.forEach((item) => {
+								arr.unshift(item)
+							})
+							this.$set(this.goodsDetail, 'attributes', arr)
+						}
+					}
 					console.log(res.data.data)
 					
 					this.swiperImgList = res.data.data.mainPhotos
@@ -664,7 +676,7 @@
 				for (let i in this.goodsDetail.sku) {
 					this.shopItemInfo[this.goodsDetail.sku[i].combineId.split(",").reverse().join(",")] = this.goodsDetail.sku[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
 				}
-				console.log(this.shopItemInfo)
+				// console.log(this.shopItemInfo)
 				this.checkItem();
 			},
 
@@ -733,6 +745,7 @@
 		
 
 			createOrder() {
+				console.log(this.sku_id)
 				console.log(this.checkedSku)
 				if (!this.sku_id) {
 					this.$u.toast("请选择商品规格")
@@ -808,7 +821,7 @@
 				for (let i in option) {
 					result[i] = this.selectArr[i] ? this.selectArr[i] : '';
 				}
-				// console.log(result)
+				console.log(option)
 				for (let i in option) {
 					let last = result[i]; //把选中的值存放到字符串last去
 					for (let k in option[i].children) {
@@ -828,12 +841,13 @@
 				this.$forceUpdate(); //重绘
 			},
 			isMay(result) {
+				console.log(this.shopItemInfo, result)
 				for (var i in result) {
 					if (result[i] == '') {
 						return true; //如果数组里有为空的值，那直接返回true
 					}
 				}
-				// console.log(this.shopItemInfo[result])
+				console.log(this.shopItemInfo[result])
 				return this.shopItemInfo[result].inventory == 0 ? false : true; //匹配选中的数据的库存，若不为空返回true反之返回false
 			},
 			chooseAddress(e) {
