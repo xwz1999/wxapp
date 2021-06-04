@@ -13,9 +13,9 @@
 
 			<swiper class="flex-sub" :current="currentIndex" :duration="300" :indicator-dots="false" :autoplay="false" @change="changeCurrent">
 				<!-- 直播回放列表 -->
-				<swiper-item>
+				<!-- <swiper-item>
 					<live-videos></live-videos>
-				</swiper-item>
+				</swiper-item> -->
 				<!-- 小视频列表 -->
 				<swiper-item>
 					<small-videos></small-videos>
@@ -39,9 +39,9 @@
 				showMybtn: false,
 				currentIndex: 0,
 				list: [
-					{
-						name: '直播'
-					},
+					// {
+					// 	name: '直播'
+					// },
 					{
 						name: '视频'
 					},

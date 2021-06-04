@@ -140,6 +140,7 @@
 			},
 			// 手机登录 未注册
 			regist(){
+				
 				console.log(this.invitationNo)
 				this.$u.post('/api/v1/users/profile/mobile/register-wxapp', {
 					mobile: this.mobile,
@@ -179,6 +180,18 @@
 			},
 			// 微信注册 绑定手机号
 			wxRegist(){
+				var myreg = /^[1][0-9]{10}$/;
+				if (!myreg.test(this.mobile)) {
+					return this.$u.toast("请输入正确的手机格式");
+				}
+				if(!this.mobile){
+					this.$u.toast("请输入手机号");
+					return
+				}
+				if(!this.sms){
+					this.$u.toast("请输入验证码");
+					return
+				}
 				this.$u.post('/api/v1/users/profile/wx/register', {
 					mobile:this.mobile,
 					sms:this.sms,
