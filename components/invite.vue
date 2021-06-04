@@ -47,21 +47,21 @@
 					<view class="code-bottom">
 						<view class="txt">专属权益</view>
 						<view class="item flex align-center">
-							<image src="/static/shop/01.png" mode="widthFix"></image>
+							<image :src="IMAGE_URL + '/shop/01.png'" mode="widthFix"></image>
 							<view class="">
 								<view class="txt">自购省钱</view>
 								<view class="num">自己购物，平台返还5%-50%佣金</view>
 							</view>
 						</view>
 						<view class="item flex align-center">
-							<image src="/static/shop/02.png" mode="widthFix"></image>
+							<image :src="IMAGE_URL + '/shop/02.png'" mode="widthFix"></image>
 							<view class="">
 								<view class="txt">分享赚钱</view>
 								<view class="num">分享商品链接，用户购买无退货获得佣金</view>
 							</view>
 						</view>
 						<view class="item flex align-center">
-							<image src="/static/shop/03.png" mode="widthFix"></image>
+							<image :src="IMAGE_URL + '/shop/03.png'" mode="widthFix"></image>
 							<view class="">
 								<view class="txt">0元开店</view>
 								<view class="num">零成本、零库存、零风险、零门槛
@@ -69,7 +69,7 @@
 							</view>
 						</view>
 						<view class="item flex align-center">
-							<image src="/static/shop/04.png" mode="widthFix"></image>
+							<image :src="IMAGE_URL + '/shop/04.png'" mode="widthFix"></image>
 							<view class="">
 								<view class="txt">专属培训</view>
 								<view class="num">享受专属老师教授营销技巧，轻松创业</view>
@@ -77,14 +77,14 @@
 						</view>
 						<template v-if="roleLevel!=500">
 							<view class="item flex align-center">
-								<image src="/static/shop/05.png" mode="widthFix"></image>
+								<image :src="IMAGE_URL + '/shop/05.png'" mode="widthFix"></image>
 								<view class="">
 									<view class="txt">店主晋升</view>
 									<view class="num">有机会晋升至白银店铺，享受团队红利</view>
 								</view>
 							</view>
 							<view class="item flex align-center">
-								<image src="/static/shop/06.png" mode="widthFix"></image>
+								<image :src="IMAGE_URL + '/shop/06.png'" mode="widthFix"></image>
 								<view class="">
 									<view class="txt">权益卡包</view>
 									<view class="num">有机会获得权益卡，畅享升级或保级绿色通道</view>
@@ -97,25 +97,25 @@
 				
 				<view class="steps-box bg-white">
 					<view class="flex justify-center align-end" style="padding: 15rpx 0;">
-						<image class="steps-t-pic" src="/static/shop/left1.png" mode="widthFix"></image>
+						<image class="steps-t-pic" :src="IMAGE_URL + '/shop/left1.png'" mode="widthFix"></image>
 						<view class="step-title">简单三步 立享财富</view>
-						<image class="steps-t-pic" src="/static/shop/right2.png" mode="widthFix"></image>
+						<image class="steps-t-pic" :src="IMAGE_URL + '/shop/right2.png'" mode="widthFix"></image>
 					</view>
 					<view class="steps-con flex justify-center">
 						<view class="flex flex-direction align-center">
-							<image class="steps-pic" src="/static/shop/icon01.png" mode="widthFix"></image>
+							<image class="steps-pic" :src="IMAGE_URL + '/shop/icon01.png'" mode="widthFix"></image>
 							<view class="">分享链接</view>
 							<view class="">给好友</view>
 						</view>
 						<view class="line"></view>
 						<view class="flex flex-direction align-center">
-							<image class="steps-pic" src="/static/shop/icon02.png" mode="widthFix"></image>
+							<image class="steps-pic" :src="IMAGE_URL + '/shop/icon02.png'" mode="widthFix"></image>
 							<view class="">好友打开链接</view>
 							<view class="">注册信息</view>
 						</view>
 						<view class="line"></view>
 						<view class="flex flex-direction align-center">
-							<image class="steps-pic" src="/static/shop/icon03.png" mode="widthFix"></image>
+							<image class="steps-pic" :src="IMAGE_URL + '/shop/icon03.png'" mode="widthFix"></image>
 							<view class="">好友下载APP</view>
 							<view class="">邀请成功</view>
 						</view>

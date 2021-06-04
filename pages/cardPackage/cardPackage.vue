@@ -205,7 +205,7 @@
 			},
 			sendCard(id) {
 				uni.navigateTo({
-					url: "../myInvite/myInvite?cardId=" + id
+					url: "/packageA/myInvite/myInvite?cardId=" + id
 				})
 			},
 			changeCurrent(e) {

@@ -17,13 +17,13 @@
 			<view class="share-box flex justify-between">
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" open-type="share" >
-						<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
+						<image class="share-icon" :src="IMAGE_URL + '/mine/wx.png'" mode="widthFix"></image>
 						<view class="txt">微信好友</view>
 					</button>
 				</view>
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center"  @tap="copyLink">
-						<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
+						<image class="share-icon" :src="IMAGE_URL + '/mine/wx.png'" mode="widthFix"></image>
 						<view class="txt">复制链接</view>
 					</button>
 				</view>

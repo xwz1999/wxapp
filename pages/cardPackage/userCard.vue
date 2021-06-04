@@ -1,8 +1,8 @@
 <template>
 	<view class="">
 		<view class="img">
-			<image v-if="status" src="../../static/shop/img_recharge_success.png" mode="widthFix" style="width: 136rpx;"></image>
-			<image v-else src="../../static/shop/img_recharge_error.png" mode="widthFix" style="width: 136rpx;"></image>
+			<image v-if="status" :src="IMAGE_URL + '/shop/img_recharge_success.png'" mode="widthFix" style="width: 136rpx;"></image>
+			<image v-else :src="IMAGE_URL + '/shop/img_recharge_error.png'" mode="widthFix" style="width: 136rpx;"></image>
 		</view>
 		<view class="txt">
 			<view class="text-center" v-if="status">

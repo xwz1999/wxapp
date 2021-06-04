@@ -98,7 +98,7 @@
 				    success: (res) =>{
 				        if (res.confirm) {
 				           uni.navigateTo({
-				           	url: `../cardPackage/userCard?cardId=${that.cardId}&giveUserId=${id}`
+				           	url: `/pages/cardPackage/userCard?cardId=${that.cardId}&giveUserId=${id}`
 				           })
 				        } else if (res.cancel) {
 				            console.log('用户点击取消');
@@ -153,7 +153,7 @@
 			toUserInfo(item) {
 				this.$store.commit('setUserInfo', item);
 				uni.navigateTo({
-					url: "../userInfo/userInfo"
+					url: "/pages/userInfo/userInfo"
 				})
 			}
 		}

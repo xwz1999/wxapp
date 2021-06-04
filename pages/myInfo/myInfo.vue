@@ -145,7 +145,7 @@
 			},
 			toRealname(){
 				uni.navigateTo({
-					url:"../realname/realname"
+					url:"/packageA/realname/realname"
 				})
 			},
 			//选择图片

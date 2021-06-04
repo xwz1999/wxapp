@@ -20,7 +20,7 @@
 							</view>
 							<view class="" style="width: 112rpx;">
 								<view class="flex justify-around align-center" style="width: 100%;color: #FFFFFF;">
-									<navigator url="../myCollect/myCollect" hover-class="none" style="margin-right: 30rpx;">
+									<navigator url="/packageA/myCollect/myCollect" hover-class="none" style="margin-right: 30rpx;">
 										<u-icon name="heart" size="48"></u-icon>
 										<view>收藏</view>
 									</navigator>
@@ -95,7 +95,7 @@
 						<view class="box bg-white" v-if="roleLevel !== 500">
 							<view class="subtitle flex justify-between">
 								<view class="flex align-center">
-									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
+									<image :src="IMAGE_URL + '/mine/t01.png'" style="width: 64rpx;" mode="widthFix"></image>
 									<view>自购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
 										 @tap.stop="tipModel(true,'purchase')"></text></view>
 								</view>
@@ -130,7 +130,7 @@
 						<view class="box bg-white" v-if="roleLevel !== 500">
 							<view class="subtitle flex justify-between">
 								<view class="flex align-center">
-									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
+									<image :src="IMAGE_URL + '/mine/t02.png'" style="width: 64rpx;" mode="widthFix"></image>
 									<view>导购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
 										 @tap.stop="tipModel(true,'guide')"></text></view>
 								</view>
@@ -161,7 +161,7 @@
 						<view class="box bg-white" v-if="myIncomeData.hasTeam  && roleLevel !== 500">
 							<view class="subtitle flex justify-between">
 								<view class="flex align-center">
-									<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
+									<image :src="IMAGE_URL + '/mine/t03.png'" style="width: 64rpx;" mode="widthFix"></image>
 									<view>店铺补贴 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
 										 @tap.stop="tipModel(true,'team')"></text></view>
 								</view>
@@ -400,13 +400,13 @@
 
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" @tap="copyLink">
-						<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
+						<image class="share-icon" :src="IMAGE_URL + '/mine/wx.png'" mode="widthFix"></image>
 						<view class="txt">复制链接</view>
 					</button>
 				</view>
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" @click="teamShare">
-						<image class="share-icon" src="/static/mine/post.png" mode="widthFix"></image>
+						<image class="share-icon" :src="IMAGE_URL + '/mine/post.png'" mode="widthFix"></image>
 						<view class="txt">二维码海报</view>
 					</button>
 				</view>
@@ -450,42 +450,42 @@
 				iconPic: "", //徽章
 				role: "", //徽章
 				orderStatus: [{
-						icon: "../../static/mine/p1.png",
+						icon: this.IMAGE_URL +"/mine/p1.png",
 						text: "待付款"
 					},
 					{
-						icon: "../../static/mine/p2.png",
+						icon: this.IMAGE_URL + "/mine/p2.png",
 						text: "待发货"
 					},
 					{
-						icon: "../../static/mine/p3.png",
+						icon: this.IMAGE_URL + "/mine/p3.png",
 						text: "待收货"
 					},
 					{
-						icon: "../../static/mine/p4.png",
+						icon: this.IMAGE_URL + "/mine/p4.png",
 						text: "待评价"
 					},
 					{
-						icon: "../../static/mine/p5.png",
+						icon: this.IMAGE_URL + "/mine/p5.png",
 						text: "售后/退货"
 					}
 				],
 				otherOptions: [{
-						icon: "../../static/mine/b01.png",
+						icon: this.IMAGE_URL + "/mine/b01.png",
 						text: "地址",
 						page: "/pages/address/index"
 					},
 					{
-						icon: "../../static/mine/b02.png",
+						icon: this.IMAGE_URL + "/mine/b02.png",
 						text: "帮助"
 					},
 					{
-						icon: "../../static/mine/b03.png",
+						icon: this.IMAGE_URL + "/mine/b03.png",
 						text: "商务合作",
 						page: "/pages/cooperation/cooperation"
 					},
 					{
-						icon: "../../static/mine/b04.png",
+						icon: this.IMAGE_URL + "/mine/b04.png",
 						text: "设置",
 						page: "/pages/settings/settings"
 					}
@@ -754,7 +754,7 @@
 			},
 			toCoupons() {
 				uni.navigateTo({
-					url: "../coupons/coupons"
+					url: "/packageA/coupons/coupons"
 				})
 			},
 			toMyMoney() {

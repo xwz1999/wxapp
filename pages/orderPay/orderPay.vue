@@ -50,10 +50,10 @@
 			return {
 				payment: [{
 					text: "余额支付",
-					icon: "/static/mine/pay01.png"
+					icon: this.IMAGE_URL + "/mine/pay01.png"
 				}, {
 					text: "微信支付",
-					icon: "/static/mine/pay02.png"
+					icon: this.IMAGE_URL + "/mine/pay02.png"
 				}],
 				currentIndex: -1,
 				showPwdModel: false,

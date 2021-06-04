@@ -43,7 +43,7 @@
 					<view class="flex justify-between">
 						<view class="time">{{item.time}}</view>
 						<view class="flex-sub clear item-con">
-							<navigator url="/pages/videoDetail/videoDetail" class="cover-pic" @tap="getVideoDetail(item)">
+							<navigator url="/packageA/videoDetail/videoDetail" class="cover-pic" @tap="getVideoDetail(item)">
 								<u-lazy-load threshold="-100" :image="item.short.cover_url" :index="index" borderRadius="10" :error-img="IMAGE_URL + '/null05.png'"  :loading-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>
 								<view class="mask flex flex-direction justify-center align-center">
 									<text class="cuIcon-videofill text-white"></text>

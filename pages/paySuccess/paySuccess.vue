@@ -3,7 +3,7 @@
 		<view class="tui-bg"></view>
 		<view class="tui-content">
 			<view class="tui-form">
-				<image src="../../static/shop/img_recharge_success.png" class="tui-icon"></image>
+				<image :src="IMAGE_URL + '/shop/img_recharge_success.png'" class="tui-icon"></image>
 				<view class="tui-title">订单已支付成功</view>
 				<view class="tui-sub-title">非常感谢您的购买</view>
 				<view class="tui-btn-box">
@@ -25,6 +25,7 @@
 	export default {
 		data() {
 			return {
+				IMAGE_URL: this.IMAGE_URL,
 				orderId: 0
 			};
 		},

@@ -15,7 +15,7 @@
 						<view style="font-size: 24rpx;">({{role}})</view>
 					</view>
 					<view class="shop-line-box">
-						<image class="luotuo" src="../../static/shop/luotuo.png" mode="heightFix"></image>
+						<image class="luotuo" :src="IMAGE_URL + '/shop/luotuo.png'" mode="heightFix"></image>
 						<view class="text-bg text-up">
 							<view class="">距下一节点还</view>
 							<view class="">差{{card.need}}万元</view>
@@ -59,7 +59,7 @@
 					<navigator url="../selfBuyEarnings/selfBuyEarnings" hover-class="none" class="subtitle flex justify-between">
 						<view class="flex">
 							<view class="flex align-center" style="width: 220rpx;">
-								<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
+								<image :src="IMAGE_URL + '/mine/t01.png'" style="width: 64rpx;" mode="widthFix"></image>
 								<view class="">自购收益</view>
 							</view>
 							<view class="time-box flex align-center" hover-stop-propagation>
@@ -89,7 +89,7 @@
 					<navigator url="../shareEarnings/shareEarnings" hover-class="none" class="subtitle flex justify-between">
 						<view class="flex">
 							<view class="flex align-center" style="width: 220rpx;">
-								<image src="../../static/mine/t02.png" style="width: 64rpx;" mode="widthFix"></image>
+								<image :src="IMAGE_URL + '/mine/t02.png'" style="width: 64rpx;" mode="widthFix"></image>
 								<view class="">导购收益</view>
 							</view>
 							<view class="time-box flex align-center" hover-stop-propagation>
@@ -119,7 +119,7 @@
 					<view class="subtitle flex justify-between" @tap="toTeamEarnings">
 						<view class="flex">
 							<view class="flex align-center" style="width: 220rpx;">
-								<image src="../../static/mine/t03.png" style="width: 64rpx;" mode="widthFix"></image>
+								<image :src="IMAGE_URL + '/mine/t03.png'" style="width: 64rpx;" mode="widthFix"></image>
 								<view class="">团队收益</view>
 							</view>
 							<view class="time-box flex align-center" hover-stop-propagation>
@@ -177,7 +177,7 @@
 				<view class="box bg-white">
 					<view class="subtitle" style="line-height: 60rpx;border: 0;">邀请升级</view>
 					<view class="invite-box flex justify-between text-white" v-if="roleLevel==100">
-						<navigator  url="../invite/invite" class="bg-img" :style="'width: 260rpx;height: 300rpx;background-image: url('+STATIC_URL+'t03.png'">
+						<navigator  url="/packageA/invite/invite" class="bg-img" :style="'width: 260rpx;height: 300rpx;background-image: url('+STATIC_URL+'t03.png'">
 							<view class="">推荐钻石店铺</view>
 							<view class="">邀请好友·福利双赢</view>
 						</navigator>
@@ -187,7 +187,7 @@
 									<view class="">我的推荐</view>
 									<view class="">呼朋唤友·享收益</view>
 								</navigator>
-								<navigator url="../myInvite/myInvite" class="bg-img" :style="'width: 204rpx;height: 150rpx;background-image: url('+STATIC_URL+'t05.png);'">
+								<navigator url="/packageA/myInvite/myInvite" class="bg-img" :style="'width: 204rpx;height: 150rpx;background-image: url('+STATIC_URL+'t05.png);'">
 									<view class="">我的团队</view>
 									<view class="">有福同享·真壕友</view>
 								</navigator>
@@ -199,11 +199,11 @@
 						</view>
 					</view>
 					<view class="invite-box flex justify-between text-white" v-else>
-						<navigator :url="'../inviteMakeShop/inviteMakeShop?roleLevel='+roleLevel" class="bg-img" :style="'width: 340rpx;height: 150rpx;background-image: url('+IMAGE_URL+'/photo/FuIbH1pm8UsP94fk1b7KQl_6GA4n.png);'">
+						<navigator :url="'/packageA/inviteMakeShop/inviteMakeShop?roleLevel='+roleLevel" class="bg-img" :style="'width: 340rpx;height: 150rpx;background-image: url('+IMAGE_URL+'/photo/FuIbH1pm8UsP94fk1b7KQl_6GA4n.png);'">
 							<view class="">邀请开店</view>
 							<view class="">0元创业·轻松赚</view>
 						</navigator>
-						<navigator url="../myInvite/myInvite" class="bg-img" :style="'width: 340rpx;height: 150rpx;background-image: url('+IMAGE_URL+'/photo/Fp3Y8ZUI7kJx0uj4JlNJzmpY7vSx.png);'">
+						<navigator url="/packageA/myInvite/myInvite" class="bg-img" :style="'width: 340rpx;height: 150rpx;background-image: url('+IMAGE_URL+'/photo/Fp3Y8ZUI7kJx0uj4JlNJzmpY7vSx.png);'">
 							<view class="">我的邀请</view>
 							<view style="">有福同享·真壕友</view>
 						</navigator>
@@ -234,13 +234,13 @@
 				<view class="share-box flex justify-between">
 					<view class="flex-sub flex justify-center">
 						<button class="flex flex-direction justify-center align-center" open-type="share" @tap="hideModel">
-							<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
+							<image class="share-icon" :src="IMAGE_URL + '/mine/wx.png'" mode="widthFix"></image>
 							<view class="txt">微信好友</view>
 						</button>
 					</view>
 					<view class="flex-sub flex justify-center">
 						<button class="flex flex-direction justify-center align-center" @tap="postShare">
-							<image class="share-icon" src="/static/mine/post.png" mode="widthFix"></image>
+							<image class="share-icon" :src="IMAGE_URL + '/mine/post.png'" mode="widthFix"></image>
 							<view class="txt">二维码海报</view>
 						</button>
 					</view>

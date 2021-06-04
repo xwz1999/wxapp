@@ -17,7 +17,7 @@
 				<view style="font-size: 28rpx;">{{subTitle}}</view>
 			</view>
 			<view class="box flex align-center address-box">
-				<image src="../../static/index/add.png" style="width: 50rpx;" mode="widthFix"></image>
+				<image :src="IMAGE_URL+'/add.png'" style="width: 50rpx;" mode="widthFix"></image>
 				<view class="flex-sub address-con">
 					<view class=""><text class="text-black" style="font-size: 32rpx;margin-right: 15rpx;font-weight: 900;">{{orderDetail.addr.receiverName}}</text>{{orderDetail.addr.mobile}}</view>
 					<view class="address-detail">{{orderDetail.addr.province+orderDetail.addr.city+orderDetail.addr.district+orderDetail.addr.address}}</view>

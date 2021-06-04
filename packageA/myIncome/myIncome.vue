@@ -25,7 +25,7 @@
 			<view class="box bg-white">
 				<navigator url="./purchase" hover-class="none" class="subtitle flex justify-between">
 					<view class="flex align-center">
-						<image src="../../static/mine/t01.png" style="width: 64rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/mine/t01.png'" style="width: 64rpx;" mode="widthFix"></image>
 						<view>自购收益</view>
 					</view>
 					<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
@@ -49,7 +49,7 @@
 			<view class="box bg-white">
 				<navigator url="./guide" hover-class="none" class="subtitle flex justify-between">
 					<view class="flex align-center">
-						<image src="../../static/mine/t02.png" style="width: 64rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/mine/t02.png'" style="width: 64rpx;" mode="widthFix"></image>
 						<view>导购收益</view>
 					</view>
 					<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
@@ -74,7 +74,7 @@
 			
 				<navigator url="./team" hover-class="none" class="subtitle flex justify-between">
 					<view class="flex align-center">
-						<image src="../../static/mine/t03.png" style="width: 64rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/mine/t03.png'" style="width: 64rpx;" mode="widthFix"></image>
 						<view>团队收益</view>
 					</view>
 					<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
@@ -97,7 +97,7 @@
 			<view class="box bg-white">
 				<navigator url="./recommend" hover-class="none" class="subtitle flex justify-between">
 					<view class="flex align-center">
-						<image src="../../static/mine/t02.png" style="width: 64rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/mine/t02.png'" style="width: 64rpx;" mode="widthFix"></image>
 						<view>推荐收益</view>
 					</view>
 					<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
@@ -120,7 +120,7 @@
 			<view class="box bg-white">
 				<navigator url="./reward" hover-class="none" class="subtitle flex justify-between">
 					<view class="flex align-center">
-						<image src="../../static/mine/t02.png" style="width: 64rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/mine/t02.png'" style="width: 64rpx;" mode="widthFix"></image>
 						<view>平台奖励</view>
 					</view>
 					<view class="flex more">查看明细<text class="cuIcon-right"></text></view>

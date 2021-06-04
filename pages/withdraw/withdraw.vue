@@ -82,28 +82,28 @@
 				</view>
 				<view class="tip-con" style="padding: 40rpx 30rpx 20rpx;">
 					<view class="tip-item flex align-start">
-						<image src="../../static/mine/t-tip.png" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/mine/t-tip.png'" mode="widthFix"></image>
 						<view class="flex-sub clear">
 							<view class="">提现需要审核，每个月的<text class="text-red">10日和25日</text>，是提现审核日</view>
 							<view class="text-red">审核日当天17:00前提交申请，可在当天审核</view>
 						</view>
 					</view>
 					<view class="tip-item flex align-start">
-						<image src="../../static/mine/t-tip.png" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/mine/t-tip.png'" mode="widthFix"></image>
 						<view class="flex-sub clear">
 							<view class="">提现可以选择储蓄卡。收款账户信息需要和您的会员名称保持一致</view>
 							<view class="text-red">(您的会员名称：{{name}})</view>
 						</view>
 					</view>
 					<view class="tip-item flex align-start">
-						<image src="../../static/mine/t-tip.png" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/mine/t-tip.png'" mode="widthFix"></image>
 						<view class="flex-sub clear">
 							<view class="">审核成功后，需要等待3个工作日，资金才会到达账户</view>
 							<view class="text-red">(您的会员名称：{{name}})</view>
 						</view>
 					</view>
 					<view class="tip-item flex align-start">
-						<image src="../../static/mine/t-tip.png" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/mine/t-tip.png'" mode="widthFix"></image>
 						<view class="flex-sub clear">
 							<view class="">单笔金额需<text class="text-red">大于10元</text>以上才可提现</view>
 						</view>
@@ -208,7 +208,7 @@
 			},
 			toRealname() {
 				uni.navigateTo({
-					url: "../realname/realname"
+					url: "/packageA/realname/realname"
 				})
 			},
 			toWithdrawRecord() {

@@ -20,7 +20,7 @@
 			</view>
 		</view>
 		<view class="goods-box flex justify-between text-white">
-			<navigator :url="'../goodsDetail/goodsDetail?id='+videoDetail.goods.id" class="goods-left bg-white">
+			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+videoDetail.goods.id" class="goods-left bg-white">
 				<view class="goods-pic">
 					<u-lazy-load threshold="-100" :image="IMAGE_URL+videoDetail.goods.mainPhotoURL" :index="index" height="180"
 					 :error-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>
@@ -113,7 +113,7 @@
 				// 这边由于视频列表没有判断是否关注的字段,所以暂时先没有跳转
 				return
 				uni.navigateTo({
-					url: "../userHomePage/userHomePage?userId=" + id
+					url: "/pages/userHomePage/userHomePage?userId=" + id
 				})
 			},
 			//获取动态评论列表

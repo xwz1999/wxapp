@@ -2,12 +2,12 @@
 	<view>
 		<view class="status-icon flex justify-around bg-white">
 			<view class="flex flex-direction align-center">
-				<image src="../../static/mine/t1.png" style="width: 54rpx;" mode="widthFix"></image>
+				<image :src="IMAGE_URL + '/mine/t1.png'" style="width: 54rpx;" mode="widthFix"></image>
 				<view class="text">提交申请</view>
 				<view>{{detail.created_at}}</view>
 			</view>
 			<view class="flex flex-direction align-center">
-				<image src="../../static/mine/t1.png" style="width: 54rpx;" mode="widthFix"></image>
+				<image :src="IMAGE_URL + '/mine/t1.png'" style="width: 54rpx;" mode="widthFix"></image>
 				<view class="text">提现成功</view>
 				<view v-if="detail.doneTime">{{detail.doneTime}}</view>
 			</view>

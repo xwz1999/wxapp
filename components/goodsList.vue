@@ -37,11 +37,11 @@
 						<view class="ticket-box flex justify-between align-center" style="margin-bottom: 5rpx;">
 							<view class="ticket-con flex align-center">
 								<view style="position: relative;margin-right: 10rpx;" v-if="item.coupon">
-									<image class="tic-pic" src="/static/index/tic.png" mode="heightFix"></image>
+									<image class="tic-pic" :src="IMAGE_URL+'/tic.png'" mode="heightFix"></image>
 									<view class="tic-txt text-white">{{item.coupon}}元券</view>
 								</view>
 								<view style="position: relative;" v-if="item.commissionDesc&&!hideShareBtn">
-									<image class="tic-pic" src="/static/index/tic2.png" mode="heightFix"></image>
+									<image class="tic-pic" :src="IMAGE_URL+'/tic2.png'" mode="heightFix"></image>
 									<view class="tic-txt text-red">{{item.commissionDesc}}</view>
 								</view>
 							</view>

@@ -9,23 +9,23 @@
 				<view class="">角色</view>
 				<view class="level-box flex justify-center align-center">
 					<template v-if="userInfo.roleLevel==500">
-						<image src="../../static/mine/level00.png" mode="widthFix" style="width: 24rpx;"></image>
+						<image :src="IMAGE_URL + '/mine/level00.png'" mode="widthFix" style="width: 24rpx;"></image>
 						<view style="margin-left: 3rpx;">会员</view>
 					</template>
 					<template v-if="userInfo.roleLevel==400">
-						<image src="../../static/mine/level01.png" mode="widthFix" style="width: 24rpx;"></image>
+						<image :src="IMAGE_URL + '/mine/level01.png'" mode="widthFix" style="width: 24rpx;"></image>
 						<view style="margin-left: 3rpx;">店主</view>
 					</template>
 					<template v-if="userInfo.roleLevel==300">
-						<image src="../../static/mine/level02.png" mode="widthFix" style="width: 24rpx;"></image>
+						<image :src="IMAGE_URL + '/mine/level02.png'" mode="widthFix" style="width: 24rpx;"></image>
 						<view style="margin-left: 3rpx;">白银店铺</view>
 					</template>
 					<template v-if="userInfo.roleLevel==200">
-						<image src="../../static/mine/level03.png" mode="widthFix" style="width: 24rpx;"></image>
+						<image :src="IMAGE_URL + '/mine/level03.png'" mode="widthFix" style="width: 24rpx;"></image>
 						<view style="margin-left: 3rpx;">黄金店铺</view>
 					</template>
 					<template v-if="userInfo.roleLevel==100">
-						<image src="../../static/mine/level04.png" mode="widthFix" style="width: 24rpx;"></image>
+						<image :src="IMAGE_URL + '/mine/level04.png'" mode="widthFix" style="width: 24rpx;"></image>
 						<view style="margin-left: 3rpx;">钻石店铺</view>
 					</template>
 				</view>

@@ -64,7 +64,7 @@
 				</view>
 			</scroll-view>
 			<view class="flex flex-direction justify-center align-center" style="width: 100rpx;" @tap="toClassify()">
-				<image src="/static/index/icon.png" mode="widthFix"></image>
+				<image :src="IMAGE_URL+'/icon.png'" mode="widthFix"></image>
 				<view class="" style="font-size: 22rpx;">分类</view>
 			</view>
 		</view>
@@ -100,7 +100,7 @@
 		<!-- 首页推荐商品列表 -->
 		<view class="recommend-box" v-if="promotion.length!=0">
 			<view class="flex justify-center" style="padding: 20rpx 0;">
-				<image src="../../static/index/rec.png" style="width: 232rpx;" mode="widthFix"></image>
+				<image :src="IMAGE_URL+'/rec.png'" style="width: 232rpx;" mode="widthFix"></image>
 			</view>
 			
 			<!-- 活动时间段导航  u-sticky为吸顶-->
@@ -126,13 +126,13 @@
 			<view class="share-box flex justify-between">
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" open-type="share" >
-						<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
+						<image class="share-icon" :src="IMAGE_URL + '/mine/wx.png'" mode="widthFix"></image>
 						<view class="txt">微信好友</view>
 					</button>
 				</view>
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center"  @tap="copyLink">
-						<image class="share-icon" src="/static/mine/wx.png" mode="widthFix"></image>
+						<image class="share-icon" :src="IMAGE_URL + '/mine/wx.png'" mode="widthFix"></image>
 						<view class="txt">复制链接</view>
 					</button>
 				</view>
@@ -164,52 +164,52 @@
 				options1: [{
 						text: "瑞库制品",
 						page: "/pages/hotRanking/hotRanking?fromView=ruiku",
-						icon: "/static/index/index06.png"
+						icon: this.IMAGE_URL + "/index06.png"
 					},
 					{
 						text: "家居生活",
 						page: "/pages/hotRanking/hotRanking?fromView=jiaju",
-						icon: "/static/index/index07.png"
+						icon: this.IMAGE_URL + "/index07.png"
 					},
 					{
 						text: "数码家电",
 						page: "/pages/hotRanking/hotRanking?fromView=shuma",
-						icon: "/static/index/index08.png"
+						icon: this.IMAGE_URL + "/index08.png"
 					},
 					{
 						text: "热销榜单",
 						page: "/pages/hotRanking/hotRanking?fromView=rexiao",
-						icon: "/static/index/index04.png"
+						icon: this.IMAGE_URL + "/index04.png"
 					},
 					{
 						text: "全部分类",
 						page: "/pages/classify/classify",
-						icon: "/static/index/index05.png"
+						icon: this.IMAGE_URL + "/index05.png"
 					},
 				],
 				options2: [{
 						text: "我的权益",
 						page: "/pages/myEquity/myEquity",
-						icon: "/static/index/index01.png"
+						icon: this.IMAGE_URL + "/index01.png"
 					},
 					{
 						text: "一键邀请",
-						icon: "/static/index/index02.png"
+						icon: this.IMAGE_URL + "/index02.png"
 					},
 					{
 						text: "我的店铺",
 						page: "/pages/shop/shop",
-						icon: "/static/index/index03.png"
+						icon: this.IMAGE_URL + "/index03.png"
 					},
 					{
 						text: "热销榜单",
 						page: "/pages/hotRanking/hotRanking?fromView=rexiao",
-						icon: "/static/index/index04.png"
+						icon: this.IMAGE_URL + "/index04.png"
 					},
 					{
 						text: "全部分类",
 						page: "/pages/classify/classify",
-						icon: "/static/index/index05.png"
+						icon: this.IMAGE_URL + "/index05.png"
 					},
 				],
 				posts: null,
@@ -622,21 +622,21 @@
 						url: url
 					})
 				} else {
-					switch (idx) {
-						case 0:
-							this.$u.toast("功能暂未开放，敬请期待~");
-							return;
-						case 1:
-							this.isShow = true
-							break;
-						case 2:
-							uni.switchTab({
-								url: "../shop/shop"
-							})
-							return;
-						default:
-							break;
-					}
+					// switch (idx) {
+					// 	case 0:
+					// 		this.$u.toast("功能暂未开放，敬请期待~");
+					// 		return;
+					// 	case 1:
+					// 		this.isShow = true
+					// 		break;
+					// 	case 2:
+					// 		uni.switchTab({
+					// 			url: "../shop/shop"
+					// 		})
+					// 		return;
+					// 	default:
+					// 		break;
+					// }
 					uni.navigateTo({
 						url: url
 					})

@@ -29,37 +29,37 @@
 			return {
 				STATIC_URL: this.STATIC_URL,
 				list: [{
-						icon: "/static/mine/h01.png",
+						icon: this.IMAGE_URL + "/mine/h01.png",
 						txt: "母婴亲子·运动旅行",
 						website: "Fonnie@cn-recook.com"
 					},
 					{
-						icon: "/static/mine/h02.png",
+						icon: this.IMAGE_URL + "/mine/h02.png",
 						txt: "服饰内衣·箱包",
 						website: "Hedy@cn-recook.com"
 					},
 					{
-						icon: "/static/mine/h03.png",
+						icon: this.IMAGE_URL + "/mine/h03.png",
 						txt: "农副产品·蔬果生鲜",
 						website: "Helen@cn-recook.com"
 					},
 					{
-						icon: "/static/mine/h04.png",
+						icon: this.IMAGE_URL + "/mine/h04.png",
 						txt: "美妆个护·个护清洁",
 						website: "Martin@cn-recook.com"
 					},
 					{
-						icon: "/static/mine/h05.png",
+						icon: this.IMAGE_URL + "/mine/h05.png",
 						txt: "电器·3C产品",
 						website: "Shawn@cn-recook.com"
 					},
 					{
-						icon: "/static/mine/h06.png",
+						icon: this.IMAGE_URL + "/mine/h06.png",
 						txt: "其他",
 						website: "Franco@cn-recook.com"
 					},
 					{
-						icon: "/static/mine/h07.png",
+						icon: this.IMAGE_URL + "/mine/h07.png",
 						txt: "家装家居·美食酒水·进口食品",
 						website: "Michelle@cn-recook.com"
 					},

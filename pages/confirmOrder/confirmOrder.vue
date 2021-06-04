@@ -14,7 +14,7 @@
 			</view>
 		</view>
 		<view class="box flex align-center address-box" @tap="toAddressList">
-			<image src="../../static/index/add.png" style="width: 50rpx;" mode="widthFix"></image>
+			<image :src="IMAGE_URL+'/add.png'" style="width: 50rpx;" mode="widthFix"></image>
 			<view class="flex-sub address-con" v-if="preOrderMsg.addr">
 				<view class=""><text class="text-black" style="font-size: 32rpx;margin-right: 15rpx;font-weight: 900;">{{preOrderMsg.addr.receiverName}}</text>{{preOrderMsg.addr.mobile}}</view>
 				<view class="address-detail">{{preOrderMsg.addr.province+preOrderMsg.addr.city+preOrderMsg.addr.district+preOrderMsg.addr.address}}</view>
@@ -183,7 +183,7 @@
 			},
 			toRealName() {
 				uni.navigateTo({
-					url: "/pages/realname/realname"
+					url: "/packageA/realname/realname"
 				})
 			},
 			// 设置买家留言信息

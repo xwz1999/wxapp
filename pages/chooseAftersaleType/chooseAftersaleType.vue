@@ -15,7 +15,7 @@
 				</view>
 			</view>
 			<view class="type-box">
-				<navigator :url="'../returnGoods/returnGoods?type='+index" class="type-item flex" v-for="(item,index) in list" :key="index">
+				<navigator :url="'/packageA/returnGoods/returnGoods?type='+index" class="type-item flex" v-for="(item,index) in list" :key="index">
 					<view class="flex-sub flex">
 						<image :src="item.icon" mode="widthFix"></image>
 						<view class="flex-sub flex justify-between item-right">
@@ -41,17 +41,17 @@
 				IMAGE_URL:this.IMAGE_URL,
 				list:[
 					{
-						icon:"../../static/shop/a01.png",
+						icon: this.IMAGE_URL + "/shop/a01.png",
 						type:"我要退款(无需退货)",
 						des:"没收到货，或与平台协商同意不用退货只退款"
 					},
 					{
-						icon:"../../static/shop/a02.png",
+						icon: this.IMAGE_URL + "/shop/a02.png",
 						type:"我要退货退款",
 						des:"已收到货，需要退还已收到的货物"
 					}
 					// {
-					// 	icon:"../../static/shop/a03.png",
+					// 	icon: IMAGE_URL + "/shop/a03.png",
 					// 	type:"我要换货",
 					// 	des:"已收到货，需要更换已收到的货物"
 					// }

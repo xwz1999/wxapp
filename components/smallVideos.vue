@@ -10,7 +10,7 @@
 			<view class="wrap" style="padding: 0 10rpx;">
 				<u-waterfall v-model="flowList" ref="uWaterfall">
 					<template v-slot:left="{ leftList }">
-						<navigator url="/pages/videoDetail/videoDetail" class="demo-warter" v-for="(item, index) in leftList" :key="index" @tap="getVideoDetail(item)">
+						<navigator url="/packageA/videoDetail/videoDetail" class="demo-warter" v-for="(item, index) in leftList" :key="index" @tap="getVideoDetail(item)">
 							<!-- 微信小程序需要hx2.8.11版本才支持在template中引入其他组件，比如下方的u-lazy-load组件 -->
 							<u-lazy-load threshold="-100" :image="item.coverUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>			
 							<view class="demo-con">
@@ -29,7 +29,7 @@
 						</navigator>
 					</template>
 					<template v-slot:right="{ rightList }">
-						<navigator url="/pages/videoDetail/videoDetail" class="demo-warter" v-for="(item, index) in rightList" :key="index" @tap="getVideoDetail(item)">
+						<navigator url="/packageA/videoDetail/videoDetail" class="demo-warter" v-for="(item, index) in rightList" :key="index" @tap="getVideoDetail(item)">
 							<u-lazy-load threshold="-100" :image="item.coverUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>		
 							<view class="demo-con">
 								<view class="demo-title two-line">{{ item.content }}</view>

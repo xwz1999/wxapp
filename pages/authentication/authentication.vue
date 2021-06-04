@@ -89,7 +89,7 @@
 					}
 					//验证成功则跳转下一步设置密码
 					uni.redirectTo({
-						url: "../setPassword/setPassword"
+						url: "/packageA/setPassword/setPassword"
 					})
 				});
 			}

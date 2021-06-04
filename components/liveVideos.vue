@@ -12,7 +12,7 @@
 					<view class="live-main-pic">
 						<u-lazy-load threshold="-100" :image="judgeCover(item.cover)"  :loading-img="IMAGE_URL + '/null05.png'" :index="index" :error-img="IMAGE_URL + '/null05.png'" @click="toLiveDetail(item.id,item.isLive)"></u-lazy-load>
 						<view class="icon text-white flex">
-							<image class="liveStatus" v-if="item.isLive === 1" src="../static/play.gif"></image>
+							<image class="liveStatus" v-if="item.isLive === 1" :src="IMAGE_URL +'/play.gif'"></image>
 							<text class="cuIcon-playfill" v-else></text>
 							<text style="padding: 0 8rpx;">{{item.look}}人看过</text>
 						</view>
@@ -142,7 +142,7 @@
 			},
 			toLiveDetail(id,isLive) {
 				uni.navigateTo({
-					url:`/pages/livePlayback/livePlayback?id=${id}&isLive=${isLive}`
+					url:`/packageA/livePlayback/livePlayback?id=${id}&isLive=${isLive}`
 					// url: "/pages/livePlayback/livePlayback?id=" + id
 				})
 			},

@@ -28,15 +28,6 @@
 			}
 
 		},
-
-		{
-			"path": "pages/videoDetail/videoDetail",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-			}
-		},
 		{
 			"path": "pages/paySuccess/paySuccess",
 			"style": {
@@ -125,13 +116,6 @@
 			}
 		},
 		{
-			"path": "pages/inviteMakeShop/inviteMakeShop",
-			"style": {
-				"navigationBarTitleText": "会员邀请店主",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "",
@@ -197,13 +181,6 @@
 			}
 		},
 		{
-			"path": "pages/realname/realname",
-			"style": {
-				"navigationBarTitleText": "实名认证",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/writelogistics/writelogistics",
 			"style": {
 				"navigationBarTitleText": "单号提交",
@@ -231,15 +208,6 @@
 			"style": {
 				"navigationBarTitleText": "选择售后类型",
 				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/returnGoods/returnGoods",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#C92219",
-				"navigationBarTextStyle": "white"
 			}
 		},
 		{
@@ -335,13 +303,6 @@
 			}
 		},
 		{
-			"path": "pages/myInvite/myInvite",
-			"style": {
-				"navigationBarTitleText": "我的邀请",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/teamEarnings/teamEarnings",
 			"style": {
 				"navigationBarTitleText": "团队收益",
@@ -368,13 +329,6 @@
 			"path": "pages/whiteInfo/whiteInfo",
 			"style": {
 				"navigationBarTitleText": "填写资料",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/coupons/coupons",
-			"style": {
-				"navigationBarTitleText": "优惠券",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -406,20 +360,6 @@
 				// "navigationBarTitleText": "",
 				// "enablePullDownRefresh": false,
 				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/myCollect/myCollect",
-			"style": {
-				"navigationBarTitleText": "我的收藏",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/setPassword/setPassword",
-			"style": {
-				"navigationBarTitleText": "设置密码",
-				"enablePullDownRefresh": false
 			}
 		},
 		{
@@ -473,26 +413,11 @@
 				"enablePullDownRefresh": false
 			}
 
-		}, {
-			"path": "pages/live/live",
-			"style": {
-				"navigationBarTitleText": "直播",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
+		},{
 			"path": "pages/anchorCenter/anchorCenter",
 			"style": {
 				"navigationBarTitleText": "主播中心",
 				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/livePlayback/livePlayback",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
 			}
 
 		}, {
@@ -520,14 +445,6 @@
 			"path": "pages/apply/success",
 			"style": {
 				"navigationBarTitleText": "提交成功"
-			}
-		},
-		{
-			"path": "pages/invite/invite",
-			"style": {
-				"navigationBarTitleText": "推荐升级",
-				"enablePullDownRefresh": false
-				// "navigationStyle": "custom"
 			}
 		},
 		{
@@ -643,6 +560,71 @@
 					"navigationStyle": "custom", // 隐藏系统导航栏
 					"navigationBarTextStyle": "white"
 				}
+			}, {
+				"path": "live/live",
+				"style": {
+					"navigationBarTitleText": "直播",
+					"enablePullDownRefresh": false
+				}
+			},  {
+				"path": "livePlayback/livePlayback",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false,
+					"navigationStyle": "custom"
+				}
+			},
+			{
+				"path": "videoDetail/videoDetail",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false,
+					"navigationStyle": "custom"
+				}
+			},
+			{
+				"path": "returnGoods/returnGoods",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false,
+					"navigationBarBackgroundColor": "#C92219",
+					"navigationBarTextStyle": "white"
+				}
+			},
+			{
+				"path": "setPassword/setPassword",
+				"style": {
+					"navigationBarTitleText": "设置密码",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "myCollect/myCollect",
+				"style": {
+					"navigationBarTitleText": "我的收藏",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "myInvite/myInvite",
+				"style": {
+					"navigationBarTitleText": "我的邀请",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "coupons/coupons",
+				"style": {
+					"navigationBarTitleText": "优惠券",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "realname/realname",
+				"style": {
+					"navigationBarTitleText": "实名认证",
+					"enablePullDownRefresh": false
+				}
 			},
 			// {
 			// 	"path": "myIncome/guide",
@@ -757,8 +739,22 @@
 					"navigationBarTitleText": "发票详情",
 					"enablePullDownRefresh": false
 				}
+			},
+			{
+				"path": "invite/invite",
+				"style": {
+					"navigationBarTitleText": "推荐升级",
+					"enablePullDownRefresh": false
+					// "navigationStyle": "custom"
+				}
+			},
+			{
+				"path": "inviteMakeShop/inviteMakeShop",
+				"style": {
+					"navigationBarTitleText": "会员邀请店主",
+					"enablePullDownRefresh": false
+				}
 			}
-
 		]
 	}],
 
