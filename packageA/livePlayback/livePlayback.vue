@@ -2,31 +2,133 @@
 	<view class="flex flex-direction container">
 		<view class="top-box">
 			<u-navbar :is-fixed="false" :is-back="false" background="transparent" :border-bottom="false"></u-navbar>
-			<view class="flex justify-between text-white align-center top-con">
-				<view class="flex align-center top-left round">
-					<view class="avatar">
+			<!-- <cover-view class="flex justify-between text-white align-center top-con">
+				<cover-view class="flex align-center top-left round">
+					<cover-view class="avatar">
 						<u-lazy-load threshold="-100" :image="IMAGE_URL+videoDetail.headImgUrl" :index="index" height="70" border-radius="35"
 						 :error-img="IMAGE_URL + '/null05.png'"  @click="toUserHomePage(videoDetail.userId,videoDetail.isFollow)"></u-lazy-load>
+					</cover-view>
+					<cover-view class="user-info">
+						<cover-view style="font-size: 26rpx;">{{videoDetail.nickname}}</cover-view>
+						<cover-view style="font-size: 20rpx;">点赞数 {{videoDetail.praise}}</cover-view>
+					</cover-view>
+					<cover-view class="btn round bg-red shadow" v-if="videoDetail.isFollow==0" @tap="addFollow">+关注</cover-view>
+				</cover-view>
+				<cover-view class="cuIcon-close" style="font-size: 48rpx;" @tap="back"></cover-view>
+			</cover-view> -->
+		</view>
+		
+		<view class="videoBox">
+			<live-player v-if="isLive" class="video flex-sub" :src="videoDetail.playUrl" style="position: relative;z-index: 10;" @statechange="statechange" mode="RTC" autoplay >
+				<cover-view style="position: absolute; top: 100px;" class="flex justify-between text-white align-center top-con">
+					<cover-view style="margin-left: 25px;" class="flex align-center top-left round">
+						<cover-view class="avatar">
+							<!-- <u-lazy-load threshold="-100" :image="IMAGE_URL+videoDetail.headImgUrl" :index="index" height="70" border-radius="35"
+							 :error-img="IMAGE_URL + '/null05.png'"  @click="toUserHomePage(videoDetail.userId,videoDetail.isFollow)"></u-lazy-load> -->
+							 <cover-image :src="IMAGE_URL+videoDetail.headImgUrl" @click="toUserHomePage(videoDetail.userId,videoDetail.isFollow)" style="height: 35px; border-radius: 35px;"></cover-image>
+						</cover-view>
+						<cover-view class="user-info">
+							<cover-view style="font-size: 26rpx;">{{videoDetail.nickname}}</cover-view>
+							<cover-view style="font-size: 20rpx;">点赞数 {{videoDetail.praise}}</cover-view>
+						</cover-view>
+						<cover-view class="btn round bg-red shadow" v-if="videoDetail.isFollow==0" @tap="addFollow">+关注</cover-view>
+					</cover-view>
+					<cover-view class="cuIcon-close" style="margin-right: 25px;font-size: 48rpx;color: white;" @tap="back"></cover-view>
+				</cover-view>
+				<view class="flex justify-between align-end bottom" bindrendererror='play' style="width: 100%;z-index: 999999;">
+					<image :src="IMAGE_URL + '/shop/more.png'" style="width: 60rpx;margin-left: 30px;" mode="widthFix"></image >
+					<view class="" style="position: relative; margin-right: 30px;" @tap="isShow = true">
+						<image  :src="IMAGE_URL + '/shop/pack.png'" style="width: 90rpx;" mode="widthFix"></image >
+						<view class="text-center goods-num">{{videoDetail.goodsLists.length}}</view>
 					</view>
-					<view class="user-info">
-						<view style="font-size: 26rpx;">{{videoDetail.nickname}}</view>
-						<view style="font-size: 20rpx;">点赞数 {{videoDetail.praise}}</view>
-					</view>
-					<view class="btn round bg-red shadow" v-if="videoDetail.isFollow==0" @tap="addFollow">+关注</view>
 				</view>
-				<text class="cuIcon-close" style="font-size: 48rpx;" @tap="back"></text>
+			</live-player> 
+			
+			<video v-else  class="video flex-sub" :src="videoDetail.playUrl" style="position: relative;" controls>
+				<cover-view style="position: absolute; top: 100px;" class="flex justify-between text-white align-center top-con">
+					<cover-view style="margin-left: 25px;" class="flex align-center top-left round">
+						<cover-view class="avatar">
+							<cover-image :src="IMAGE_URL+videoDetail.headImgUrl" @click="toUserHomePage(videoDetail.userId,videoDetail.isFollow)" style="height: 35px; border-radius: 35px;"></cover-image>
+						</cover-view>
+						<cover-view class="user-info">
+							<cover-view style="font-size: 26rpx;">{{videoDetail.nickname}}</cover-view>
+							<cover-view style="font-size: 20rpx;">点赞数 {{videoDetail.praise}}</cover-view>
+						</cover-view>
+						<cover-view class="btn round bg-red shadow" v-if="videoDetail.isFollow==0" @tap="addFollow">+关注</cover-view>
+					</cover-view>
+					<cover-view class="cuIcon-close" style="margin-right: 25px;font-size: 48rpx;" @tap="back"></cover-view>
+				</cover-view>
+				<cover-view class="flex justify-between align-end bottom" style="width: 100%;position: absolute; bottom: 20px;">
+					<cover-image :src="IMAGE_URL + '/shop/more.png'" style="width: 60rpx;margin-left: 30px;" mode="widthFix"></cover-image >
+					<cover-view class="" style="position: relative; margin-right: 30px;" @tap="isShow = true">
+						<cover-image  :src="IMAGE_URL + '/shop/pack.png'" style="width: 90rpx;" mode="widthFix"></cover-image >
+						<cover-view class="text-center goods-num">{{videoDetail.goodsLists.length}}</cover-view>
+					</cover-view>
+				</cover-view>
+				<cover-view v-show="isShow" class="bottom-box" style="padding-bottom: 40px;">
+					<cover-image :src="IMAGE_URL + '/mine/fail.png'" @tap="isShow = false" style="width: 20px;height: 20px;position: relative; left: 90%; "></cover-image>
+					<cover-view class="goods-container" style="height: 100%; overflow-y: scroll;position: relative;">
+						<!-- <cover-view class="cuIcon-close " style="text-align: right;font-size: 48rpx;color: #000000;" @tap="isShow = false"></cover-view> -->
+						<cover-view class="item" v-for="(item,index) in videoDetail.goodsLists" :key="index">
+							<cover-view class="item-con flex justify-between">
+								<cover-view class="goods-pic">
+									<cover-image :src='IMAGE_URL+item.mainPhotoUrl' style="height: 200rpx;border-radius: 10px;"  @click="toGoodsDetail(item.id)"></cover-image>
+									<cover-view class="no">{{index+1}}</cover-view>
+								</cover-view>
+								<cover-view class="goods-con flex-sub flex flex-direction justify-between">
+									<cover-view class="">
+										<cover-view class="goods-name two-line" style="width:95%;display:inline-block;white-space: pre-wrap; word-wrap: break-word;height: auto;">{{item.goodsName}}</cover-view>
+										<cover-view class="goods-remark">{{item.description}}</cover-view>
+									</cover-view>
+									<cover-view class="">
+										<cover-view class="flex justify-between">
+											<cover-view class="coupon text-white">
+												<cover-image class='cimage' style='width: 51.9444px;' :src="IMAGE_URL+'/tic.png'" mode="heightFix"></cover-image>
+												<cover-view class="coupon-price">{{item.coupon}}元券</cover-view>
+											</cover-view>
+											<cover-view class="goods-store">
+												<cover-view>
+													剩余
+												</cover-view>
+												<cover-view class="text-red" style="padding: 0px 2px; margin: 0px;">{{item.inventory}}</cover-view>
+												<cover-view>
+													件
+												</cover-view>
+											</cover-view>
+										</cover-view>
+										<cover-view class="right-bottom flex justify-between align-end">
+											<cover-view class="flex align-end" style="font-size: 24rpx;flex-grow: 1;height: 100%;">
+												<cover-view class="text-orange text">券后</cover-view>
+												<cover-view class="text-red text">￥</cover-view>
+												<cover-view class="text-red text center" style="font-size: 36rpx;line-height: 36rpx;font-weight: 700;min-width: 40px;">{{item.discountPrice}}</cover-view> 
+												<cover-view class="text-gray text center" style="text-decoration: line-through;margin-left: 10rpx;min-width: 40px;">￥{{item.originalPrice}}</cover-view>
+											</cover-view>
+											<cover-view class="text-white bg-red round shadow buy" @tap="toGoodsDetail(item.id)">马上抢</cover-view>
+										</cover-view>
+									</cover-view>
+								</cover-view>
+							</cover-view>
+						</cover-view>
+					</cover-view>
+				</cover-view>
+			</video>
+		</view>
+		
+		<view class="flex justify-between align-end bottom" style="width: 100%;position: absolute; bottom: 20px;z-index: 999999;">
+			<image :src="IMAGE_URL + '/shop/more.png'" style="width: 60rpx;margin-left: 30px;" mode="widthFix"></image >
+			<view class="" style="position: relative; margin-right: 30px;" @tap="isShow = true">
+				<image  :src="IMAGE_URL + '/shop/pack.png'" style="width: 90rpx;" mode="widthFix"></image >
+				<view class="text-center goods-num">{{videoDetail.goodsLists.length}}</view>
 			</view>
 		</view>
-		<live-player v-if="isLive" class="video flex-sub" :src="videoDetail.playUrl" mode="RTC" autoplay/>
-		<video v-else  class="video flex-sub" :src="videoDetail.playUrl" controls></video>
-		<view class="flex justify-between align-end bottom">
+		<!-- <view class="flex justify-between align-end bottom">
 			<image :src="IMAGE_URL + '/shop/more.png'" style="width: 60rpx;" mode="widthFix"></image>
 			<view class="" style="position: relative;" @tap="isShow = true">
 				<image :src="IMAGE_URL + '/shop/pack.png'" style="width: 90rpx;" mode="widthFix"></image>
 				<view class="text-center goods-num">{{videoDetail.goodsLists.length}}</view>
 			</view>
-		</view>
-		<!-- <u-popup v-model="isShow" mode="bottom" border-radius="20" height="60%">
+		</view> -->
+		<u-popup v-model="isShow" mode="bottom" border-radius="20" height="60%">
 			<view class="goods-container">
 				<view class="item" v-for="(item,index) in videoDetail.goodsLists" :key="index">
 					<view class="item-con flex justify-between">
@@ -61,14 +163,13 @@
 					</view>
 				</view>
 			</view>
-		</u-popup> -->
-		
-		<u-popup v-model="isShow" mode="bottom" border-radius="20" height="60%">
+		</u-popup>
+		<!-- <u-popup v-model="isShow" mode="bottom" border-radius="20" height="40%">
 			<cover-view class="goods-container">
 				<cover-view class="item" v-for="(item,index) in videoDetail.goodsLists" :key="index">
 					<cover-view class="item-con flex justify-between">
 						<cover-view class="goods-pic">
-							<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="200" border-radius="10" :error-img="IMAGE_URL + '/null05.png'"  @click="toGoodsDetail(item.id)"></u-lazy-load>
+							<cover-image :src='IMAGE_URL+item.mainPhotoUrl' style="height: 200rpx;border-radius: 10px;"  @click="toGoodsDetail(item.id)"></cover-image>
 							<cover-view class="no">{{index+1}}</cover-view>
 						</cover-view>
 						<cover-view class="goods-con flex-sub flex flex-direction justify-between">
@@ -84,7 +185,7 @@
 									</cover-view>
 									<cover-view class="goods-store">
 										剩余
-										<cover-view class="text-red">{{item.inventory}}</cover-view>
+										<cover-view class="text-red" style="padding: 0px; margin: 0px;">{{item.inventory}}</cover-view>
 										件
 									</cover-view>
 								</cover-view>
@@ -103,7 +204,7 @@
 				</cover-view>
 			</cover-view>
 		</u-popup>
-		
+		 -->
 	</view>
 </template>
 
@@ -138,20 +239,29 @@
 						console.log("方法注册失败：", errMsg);
 					  },
 					});
-					// this.createdLive()
+					this.createdLive()
 				}
 				this.getDetail()
 			}
 		},
 		destroyed() {
-			let promise = this.tim.logout();
-			promise.then(function(imResponse) {
-			  console.log(imResponse.data); // 登出成功
-			}).catch(function(imError) {
-			  console.warn('logout error:', imError);
-			})
+			if (this.tim) {
+				let promise = this.tim.logout();
+				promise.then(function(imResponse) {
+				  console.log(imResponse.data); // 登出成功
+				}).catch(function(imError) {
+				  console.warn('logout error:', imError);
+				})
+			}
 		},
 		methods: {
+			play(e) {
+				console.log(e)
+			},
+			statechange(e) {
+				console.log(e)
+			    console.log('live-player code:', e.detail.code)
+			  },
 			async createdLive () {
 				let options = {
 				    SDKAppID: 1400435566
@@ -316,7 +426,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 	page {
 		background-color: #000000;
 	}
@@ -334,55 +444,58 @@
 		background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
 		z-index: 100;
 
-		.top-con {
-			padding: 0 30rpx;
+	}
+	.top-con {
+		width: 100%;
+		.top-left {
+			padding: 10rpx;
+			overflow: hidden;
+			background-color: rgba(0, 0, 0, 0.3);
 
-			.top-left {
-				padding: 10rpx;
+			.avatar {
+				width: 70rpx;
+				height: 70rpx;
+				border-radius: 50%;
 				overflow: hidden;
-				background-color: rgba(0, 0, 0, 0.3);
-
-				.avatar {
-					width: 70rpx;
-					height: 70rpx;
-					border-radius: 50%;
-					overflow: hidden;
-				}
-
-				.user-info {
-					margin: 0 15rpx;
-					line-height: 35rpx;
-				}
-
-				.avatar {
-					width: 70rpx;
-					height: 70rpx;
-					border-radius: 50%;
-					overflow: hidden;
-				}
-
-				.user-info {
-					margin: 0 15rpx;
-					line-height: 35rpx;
-				}
 			}
 
-			.btn {
-				height: 50rpx;
-				line-height: 50rpx;
-				padding: 0 20rpx;
-				text-align: center;
-				font-size: 26rpx;
+			.user-info {
+				margin: 0 15rpx;
+				line-height: 35rpx;
+			}
+
+			.avatar {
+				width: 70rpx;
+				height: 70rpx;
+				border-radius: 50%;
+				overflow: hidden;
+			}
+
+			.user-info {
+				margin: 0 15rpx;
+				line-height: 35rpx;
 			}
 		}
-	}
 
+		.btn {
+			height: 50rpx;
+			line-height: 50rpx;
+			padding: 0 20rpx;
+			text-align: center;
+			font-size: 26rpx;
+		}
+	}
+	.videoBox {
+		width: 100%;
+		height: 100%;
+	}
 	.video {
 		width: 100%;
+		height: 100%;
 	}
 
 	.bottom {
-		padding: 0 30rpx 30rpx;
+		padding: 0 0 40rpx;
 		height: 120rpx;
 		.goods-num{
 			position: absolute;width: 100%;
@@ -391,9 +504,12 @@
 		}
 	}
 	.goods-container{
+		background-color: white;
 		padding: 30rpx 25rpx;
 		.item{
 			margin: 20rpx 0;
+			padding-bottom: 20px;
+			margin-right: 20px;
 			.item-con{
 				.goods-pic{
 					width: 200rpx;
@@ -446,22 +562,50 @@
 						}
 					}
 					.goods-store{
-						line-height: 40rpx;
+						justify-content: flex-end;
 						font-size: 20rpx;
 						display: flex;
 						align-items: center;
-						cover-view{
-							display: inline-block;
-						}
+						// cover-view{
+						// 	display: inline-block;
+						// }
 					}
 				}
 				.right-bottom{
 					margin-top: 5rpx;
+					flex-grow: 1;
 					.buy{
 						padding: 0 20rpx;
+					}
+					.text{
+						width: auto;
+						height: 100%;
 					}
 				}
 			}
 		}
 	}
+</style>
+
+<style lang="scss" scoped>
+.container {
+	cover-view{
+		line-height: normal;
+		height: auto;
+		// overflow: auto;
+	}
+	.center{
+		text-align: center;
+	}
+	.bottom-box{
+		padding-top: 10px;
+		background: white;
+		position: absolute;
+		left: 50%;
+		transform: translate(-50%);
+		bottom: 0px;
+		width: 100%;
+		height: 40%;
+	}
+}
 </style>
