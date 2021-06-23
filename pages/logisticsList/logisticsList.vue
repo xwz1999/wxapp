@@ -49,7 +49,7 @@
 			toDetail(data){
 				this.$store.commit('setLogisticsDetail',data);
 				uni.navigateTo({
-					url:"../logisticsDetail/logisticsDetail"
+					url:"/packageA/logisticsDetail/logisticsDetail"
 				})
 			}
 		}

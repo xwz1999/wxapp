@@ -149,7 +149,7 @@
 			
 			judgeCover (val) {
 				let arr = val.split('/')
-				if (arr[0] === 'http:') {
+				if (arr[0] === 'http:' || arr[0] === 'https:') {
 					return val
 				}
 				return this.IMAGE_URL + val

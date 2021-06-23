@@ -163,7 +163,7 @@
 			</view>
 		</view>
 		<!-- 要求用户寄回时显示 -->
-		<navigator :url="'../writelogistics/writelogistics?asId='+asId" v-if="message.returnStatus==3" class="bottom-btn text-white text-center">填写物流信息</navigator>
+		<navigator :url="'/packageA/writelogistics/writelogistics?asId='+asId" v-if="message.returnStatus==3" class="bottom-btn text-white text-center">填写物流信息</navigator>
 	</view>
 </template>
 

@@ -622,21 +622,21 @@
 						url: url
 					})
 				} else {
-					// switch (idx) {
-					// 	case 0:
-					// 		this.$u.toast("功能暂未开放，敬请期待~");
-					// 		return;
-					// 	case 1:
-					// 		this.isShow = true
-					// 		break;
-					// 	case 2:
-					// 		uni.switchTab({
-					// 			url: "../shop/shop"
-					// 		})
-					// 		return;
-					// 	default:
-					// 		break;
-					// }
+					switch (idx) {
+						case 0:
+							this.$u.toast("功能暂未开放，敬请期待~");
+							return;
+						case 1:
+							this.isShow = true
+							break;
+						case 2:
+							uni.navigateTo({
+								url: "../shop/shop"
+							})
+							return;
+						default:
+							break;
+					}
 					uni.navigateTo({
 						url: url
 					})

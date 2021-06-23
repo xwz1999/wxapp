@@ -181,13 +181,6 @@
 			}
 		},
 		{
-			"path": "pages/writelogistics/writelogistics",
-			"style": {
-				"navigationBarTitleText": "单号提交",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/afterSaleDetail/afterSaleDetail",
 			"style": {
 				"navigationBarTitleText": "售后详情",
@@ -326,13 +319,6 @@
 			}
 		},
 		{
-			"path": "pages/whiteInfo/whiteInfo",
-			"style": {
-				"navigationBarTitleText": "填写资料",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/withdrawRecord/withdrawRecord",
 			"style": {
 				"navigationBarTitleText": "提现记录",
@@ -364,13 +350,6 @@
 		},
 		{
 			"path": "pages/logisticsList/logisticsList",
-			"style": {
-				"navigationBarTitleText": "物流详情",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/logisticsDetail/logisticsDetail",
 			"style": {
 				"navigationBarTitleText": "物流详情",
 				"enablePullDownRefresh": false
@@ -626,6 +605,20 @@
 					"enablePullDownRefresh": false
 				}
 			},
+			{
+				"path": "whiteInfo/whiteInfo",
+				"style": {
+					"navigationBarTitleText": "填写资料",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "writelogistics/writelogistics",
+				"style": {
+					"navigationBarTitleText": "单号提交",
+					"enablePullDownRefresh": false
+				}
+			},
 			// {
 			// 	"path": "myIncome/guide",
 			// 	"style": {
@@ -752,6 +745,13 @@
 				"path": "inviteMakeShop/inviteMakeShop",
 				"style": {
 					"navigationBarTitleText": "会员邀请店主",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "logisticsDetail/logisticsDetail",
+				"style": {
+					"navigationBarTitleText": "物流详情",
 					"enablePullDownRefresh": false
 				}
 			}

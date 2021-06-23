@@ -13,9 +13,9 @@
 
 		</view>
 		<!-- https://h5.reecook.cn/app/autoopen.html -->
-	<!-- 	<u-popup v-model="show" mode="center">
+		<!-- <u-popup v-model="show" mode="center">
 			<view>
-				<image src="../../static/wx.png" mode="widthFix" style="width: 400rpx;"></image>
+				<image :src="IMAGE_URL + '/wx.png'" mode="widthFix" style="width: 400rpx;"></image>
 			</view>
 		</u-popup> -->
 		<button class="btn" @click="toWebview">
