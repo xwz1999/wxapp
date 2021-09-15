@@ -4,26 +4,27 @@
 			<!-- 背景随轮播图模糊变色 -->
 			<view class="blur-bg">
 				<view class="blur-bg-con" :style="'background-image: url('+bgImage+');'"></view>
-			</view>			
+			</view>
 			<!-- 搜索框  u-sticky为吸顶 -->
-			
+
 			<!-- <u-sticky bg-color="transparent" @fixed="changebg" @unfixed="hidebg"> -->
-				<view class="search-box flex justify-between text-white" :class="showBg?'search-bg':'hide-bg'">
-					<view class="flex location text-hidden" @tap="toLocation">
-						<text class="cuIcon-locationfill"></text>
-						<view class="text-hidden cityname">{{cityName}}</view>
-					</view>
-					<view class="search-con flex-sub flex text-white">
-						<text class="cuIcon-search"></text>
-						<input type="text" class="flex-sub" v-model="keyword" confirm-type="search" placeholder="请输入关键字" placeholder-class="placeholder" @confirm="toSearch" />
-					</view>
-					<view class="icon-box flex">
-						<!-- <u-icon name="server-fill"></u-icon> -->
-						<u-icon name="scan" @tap="scan"></u-icon>
-					</view>
+			<view class="search-box flex justify-between text-white" :class="showBg?'search-bg':'hide-bg'">
+				<view class="flex location text-hidden" @tap="toLocation">
+					<text class="cuIcon-locationfill"></text>
+					<view class="text-hidden cityname">{{cityName}}</view>
 				</view>
+				<view class="search-con flex-sub flex text-white">
+					<text class="cuIcon-search"></text>
+					<input type="text" class="flex-sub" v-model="keyword" confirm-type="search" placeholder="请输入关键字"
+						placeholder-class="placeholder" @confirm="toSearch" />
+				</view>
+				<view class="icon-box flex">
+					<!-- <u-icon name="server-fill"></u-icon> -->
+					<u-icon name="scan" @tap="scan"></u-icon>
+				</view>
+			</view>
 			<!-- </u-sticky> -->
-			
+
 			<!-- 天气信息 -->
 			<view class="weather-box text-white flex justify-between align-center">
 				<view class="flex align-center" v-show="weatherMsg">
@@ -33,29 +34,32 @@
 					</view>
 					<view class="">
 						<view>{{weatherMsg.wea}}</view>
-						<view class="">湿度：{{weatherMsg.humidity}} 温度{{weatherMsg.tem2}}-{{weatherMsg.tem1}}℃ {{weatherMsg.air}}{{weatherMsg.air_level}}</view>
+						<view class="">湿度：{{weatherMsg.humidity}} 温度{{weatherMsg.tem2}}-{{weatherMsg.tem1}}℃
+							{{weatherMsg.air}}{{weatherMsg.air_level}}
+						</view>
 					</view>
 				</view>
 				<view class="text-right" v-show="weatherMsg">
-					<view class="">{{lunarDate}}</view>
 					<view class="">{{weatherMsg.date}} {{weatherMsg.week}}</view>
+					<view class="">{{lunarDate}}</view>
 				</view>
 			</view>
 
 			<!-- 轮播图 -->
-			<swiper class="swiper-box screen-swiper square-dot" :circular="true" :autoplay="true" interval="5000" duration="500"
-			 @change="changeSwiper">
-				<swiper-item v-for="(item,index) in swipers" :key="index" @tap="toDeitail(item.goodsId,item.activityUrl)">
+			<swiper class="swiper-box screen-swiper square-dot" :circular="true" :autoplay="true" interval="5000"
+				duration="500" @change="changeSwiper">
+				<swiper-item v-for="(item,index) in swipers" :key="index"
+					@tap="toDeitail(item.goodsId,item.activityUrl)">
 					<image :src="item.url" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 		</view>
-		
-		
+
+
 		<!-- 分类导航 -->
 		<view class="navbar-box flex">
 			<scroll-view scroll-x class="bg-white nav" style="width: 610rpx;background-color: transparent;"
-			 scroll-with-animation>
+				scroll-with-animation>
 				<view class="cu-item" v-for="(item,index) in cateList" :key="index" @tap="toClassify(index,item.id)">
 					<view class="flex flex-direction justify-center align-center" style="height: 90rpx;">
 						<image :src="item.icon" mode="widthFix"></image>
@@ -70,7 +74,8 @@
 		</view>
 
 		<view class="classify-box bg-white flex justify-around">
-			<view class="cla-item text-center" v-for="(item,index) in options" :key="index" @tap="toPage(index,item.page)">
+			<view class="cla-item text-center" v-for="(item,index) in options" :key="index"
+				@tap="toPage(index,item.page)">
 				<image :src="item.icon" mode="widthFix"></image>
 				<view class="cla-txt">{{item.text}}</view>
 			</view>
@@ -81,18 +86,22 @@
 		<!-- 四张海报活动入口 -->
 		<view class="ad-box">
 			<view class="ad-item" v-if="IMAGE_URL+posts.a.logoUrl">
-				<image :src="IMAGE_URL+posts.a.logoUrl" style="width: 100%;" mode="widthFix" @click="toWebview(posts.a.website)"></image>
+				<image :src="IMAGE_URL+posts.a.logoUrl" style="width: 100%;" mode="widthFix"
+					@click="toWebview(posts.a.website)"></image>
 			</view>
 			<view class="flex justify-between" style="margin: 10rpx 0;">
 				<view class="ad-item flex-sub" style="margin-right: 10rpx;">
-					<image :src="IMAGE_URL+posts.b.logoUrl" style="width: 100%;" mode="widthFix" @click="toWebview(posts.b.website)"></image>
+					<image :src="IMAGE_URL+posts.b.logoUrl" style="width: 100%;" mode="widthFix"
+						@click="toWebview(posts.b.website)"></image>
 				</view>
 				<view class="ad-item flex-sub">
-					<image :src="IMAGE_URL+posts.c.logoUrl" style="width: 100%;" mode="widthFix" @click="toWebview(posts.c.website)"></image>
+					<image :src="IMAGE_URL+posts.c.logoUrl" style="width: 100%;" mode="widthFix"
+						@click="toWebview(posts.c.website)"></image>
 				</view>
 			</view>
 			<view class="ad-item">
-				<image :src="IMAGE_URL+posts.d.logoUrl" style="width: 100%;" mode="widthFix" @click="toWebview(posts.d.website)"></image>
+				<image :src="IMAGE_URL+posts.d.logoUrl" style="width: 100%;" mode="widthFix"
+					@click="toWebview(posts.d.website)"></image>
 			</view>
 		</view>
 
@@ -102,16 +111,18 @@
 			<view class="flex justify-center" style="padding: 20rpx 0;">
 				<image :src="IMAGE_URL+'/rec.png'" style="width: 232rpx;" mode="widthFix"></image>
 			</view>
-			
+
 			<!-- 活动时间段导航  u-sticky为吸顶-->
 			<!-- <u-sticky offset-top="250" bg-color="transparent" @fixed="changebg" @unfixed="hidebg"> -->
-				<scroll-view scroll-x class="bg-white nav" :class="showBg?'white-bg':'hide-bg'" scroll-with-animation :scroll-left="scrollLeft">
-					<view class="time-item flex flex-direction justify-center text-center" v-for="(item,index) in promotion" :key="index"
-					 @tap="tabSelect" :data-id="item.id" :data-index="index" :class="TabCur==index?'now':index<nowIndex?'before':'after'">
-						<view class="time">{{getActTime(item.startTime)}}</view>
-						<view class="status">{{item.showName}}</view>
-					</view>
-				</scroll-view>
+			<scroll-view scroll-x class="bg-white nav" :class="showBg?'white-bg':'hide-bg'" scroll-with-animation
+				:scroll-left="scrollLeft">
+				<view class="time-item flex flex-direction justify-center text-center" v-for="(item,index) in promotion"
+					:key="index" @tap="tabSelect" :data-id="item.id" :data-index="index"
+					:class="TabCur==index?'now':index<nowIndex?'before':'after'">
+					<view class="time">{{getActTime(item.startTime)}}</view>
+					<view class="status">{{item.showName}}</view>
+				</view>
+			</scroll-view>
 			<!-- </u-sticky> -->
 
 			<!-- 商品列表组件 -->
@@ -124,24 +135,24 @@
 		<!-- 分享弹出框 -->
 		<u-popup v-model="isShow" mode="bottom" border-radius="15">
 			<view class="share-box flex justify-between">
-				<view class="flex-sub flex justify-center">
-					<button class="flex flex-direction justify-center align-center" open-type="share" >
+<!-- 				<view class="flex-sub flex justify-center">
+					<button class="flex flex-direction justify-center align-center" open-type="share">
 						<image class="share-icon" :src="IMAGE_URL + '/mine/wx.png'" mode="widthFix"></image>
 						<view class="txt">微信好友</view>
 					</button>
-				</view>
+				</view> -->
 				<view class="flex-sub flex justify-center">
-					<button class="flex flex-direction justify-center align-center"  @tap="copyLink">
+					<button class="flex flex-direction justify-center align-center" @tap="copyLink">
 						<image class="share-icon" :src="IMAGE_URL + '/mine/wx.png'" mode="widthFix"></image>
 						<view class="txt">复制链接</view>
 					</button>
 				</view>
-		<!-- 		<view class="flex-sub flex justify-center">
+				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" @tap="postShare">
-						<image class="share-icon" src="/static/mine/post.png" mode="widthFix"></image>
+						<image class="share-icon"  :src="IMAGE_URL + '/mine/post.png'" mode="widthFix"></image>
 						<view class="txt">二维码海报</view>
 					</button>
-				</view> -->
+				</view>
 			</view>
 			<view class="cancle" @tap="hideModel">取消</view>
 		</u-popup>
@@ -149,11 +160,12 @@
 </template>
 
 <script>
-	let calendar = require('@/utils/calendar.js');
+	// let calendar = require('@/utils/calendar.js');
+	import {calendar} from '@/utils/calendar.js'
 	export default {
 		data() {
 			return {
-				onShareData:{},
+				onShareData: {},
 				TabCur: -1, //选中的时段
 				nowIndex: -1, //当前的时段
 				scrollLeft: 0,
@@ -182,8 +194,8 @@
 						icon: this.IMAGE_URL + "/index04.png"
 					},
 					{
-						text: "全部分类",
-						page: "/pages/classify/classify",
+						text: "进口专区",
+						page: "/packageA/abroad/abroad",
 						icon: this.IMAGE_URL + "/index05.png"
 					},
 				],
@@ -192,14 +204,14 @@
 						page: "/pages/myEquity/myEquity",
 						icon: this.IMAGE_URL + "/index01.png"
 					},
+
 					{
+						text: "发现生活",
+						page: "/pages/find/find",
+						icon: this.IMAGE_URL + "/index03.png"
+					}, {
 						text: "一键邀请",
 						icon: this.IMAGE_URL + "/index02.png"
-					},
-					{
-						text: "我的店铺",
-						page: "/pages/shop/shop",
-						icon: this.IMAGE_URL + "/index03.png"
 					},
 					{
 						text: "热销榜单",
@@ -207,8 +219,8 @@
 						icon: this.IMAGE_URL + "/index04.png"
 					},
 					{
-						text: "全部分类",
-						page: "/pages/classify/classify",
+						text: "进口专区",
+						page: "/packageA/abroad/abroad",
 						icon: this.IMAGE_URL + "/index05.png"
 					},
 				],
@@ -225,7 +237,7 @@
 				cityName: "",
 				lunarDate: "", //农历信息
 				showBg: false,
-				
+
 			}
 		},
 		computed: {
@@ -249,29 +261,20 @@
 		},
 		onLoad() {
 			// uni.getStorageSync("userInfo").id
-			
+
 			let pages = getCurrentPages() // 获取加载的页面
 			let currentPage = pages[pages.length - 1] // 获取当前页面的对象
 			let url = currentPage.route // 当前页面url
 			let options = currentPage.options // 如果要获取url中所带的参数可以查看options
 			console.log(options)
-			
-			  
-			if(options.invite){
+
+
+			if (options.invite) {
 				console.log(options)
 				this.$store.commit('setinvite', options.invite);
 			}
-			
-			if (uni.getStorageSync("localCity")) {
-				//已授权定位
-				this.currentCity = this.cityName = uni.getStorageSync("localCity")
-			} else {
-				//未授权定位，进入默认先请求一个显示城市的天气，
-				//用户同意授权定位后再更新用户当前城市的天气信息
-				this.cityName = "深圳"
-				this.getCityName()
-			}
-			this.getWeather()
+
+			this.getCityName()
 			if (uni.getStorageSync("userInfo").roleLevel) {
 				this.roleLevel = uni.getStorageSync("userInfo").roleLevel
 			}
@@ -287,31 +290,29 @@
 		},
 		methods: {
 			// 子组件分享按钮 获取分享内容 打开分享面板
-			shareBtn(data){
+			shareBtn(data) {
 				this.isShow = true
 				this.onShareData = data
 			},
 			hideModel() {
 				this.isShow = false
 			},
-			// 分享面板 复制链接
-			copyLink(){
-				const that = this
-				// /pages/goodsDetail/goodsDetail?id=' + this.onShareData.id 
-				// https://h5.reecook.cn/#/goods/detail/14337/R7M1V9
-				let url = `${this.H5_BASE_URL}/#/goods/detail/${this.onShareData.id}/${this.$store.state.invitationNo}`
-				uni.setClipboardData({
-				    data: url,
-				    success: function () {
-				        that.copyLink()
-				    }
-				});
-			},
+		// 复制链接
+		copyLink() {
+			const that = this
+			let url = `${this.H5_BASE_URL}/#/user/appRegister/${this.$store.state.invitationNo}`
+			uni.setClipboardData({
+				data: url,
+				success: function() {
+					console.log('success');
+					that.hideModel()
+				}
+			});
+		},
 			// 分享海报
 			postShare() {
-				// this.$u.toast("功能暂未开放，敬请期待~");
 				uni.navigateTo({
-					url:'/pages/poster/poster'
+					url: '/packageA/postShare/postShare'
 				})
 			},
 			// 获取用户当前城市
@@ -319,8 +320,6 @@
 				uni.getLocation({
 					type: 'gcj02',
 					success: (res) => {
-						// console.log('当前位置的经度：' + res.longitude);
-						// console.log('当前位置的纬度：' + res.latitude);
 						let longitude = res.longitude
 						let latitude = res.latitude
 						wx.request({
@@ -331,15 +330,46 @@
 							},
 							method: 'GET',
 							success: (res) => {
-								// console.log('用户位置信息', res.data.result);
 								let result = res.data.result
 								let cityName = result.ad_info.city
 								if (cityName.substring(cityName.length - 1) == "市") {
 									cityName = cityName.substr(0, cityName.length - 1);
 								}
-								this.currentCity = this.cityName = cityName
-								uni.setStorageSync("localCity", cityName)
-								this.getWeather()
+								if (uni.getStorageSync("localCity")) {
+									//已授权定位
+									if (uni.getStorageSync("localCity") == cityName) {
+										this.currentCity = this.cityName = cityName
+										this.getWeather()
+									} else {
+										uni.showModal({
+											title: '提示',
+											content: '当前位置与已选择城市不符，是否切换到当前所在城市？',
+											success: (res) => {
+												if (res.confirm) {
+													console.log('用户点击确定');
+													uni.setStorageSync("localCity",
+														cityName)
+													this.currentCity = this.cityName =
+														cityName
+													this.getWeather()
+												} else if (res.cancel) {
+													console.log('用户点击取消');
+													this.currentCity = this.cityName =
+														uni.getStorageSync("localCity")
+													this.getWeather()
+												}
+											}
+										});
+									}
+								} else {
+									// 城市无缓存信息
+									uni.setStorageSync("localCity",
+										cityName)
+									this.currentCity = this.cityName =
+										cityName
+									this.getWeather()
+								}
+
 							}
 						});
 					}
@@ -356,21 +386,16 @@
 						this.$u.toast(res.data.msg);
 						return
 					}
-					// console.log(JSON.parse(res.data.data))
 					this.weatherMsg = JSON.parse(res.data.data)
-					console.log()
+					this.$set(this.weatherMsg,'date',this.weatherMsg.date.replace(/-/g,'.'))
 					// 日期转农历格式
-					let year = new Date().getFullYear()
-					let lunar = calendar.getLunarDate();
-					let lunarDetail = calendar.getLunarDateString(lunar);
-					// console.log(lunarDetail)
-					this.lunarDate = lunarDetail.tg + lunarDetail.dz + lunarDetail.year + "年(" + year + ") " + lunarDetail.month +
-						"月" + lunarDetail.day
-					console.log(this.lunarDate)
+					let cur_date = this.weatherMsg.date.split('.')				
+					let lunarDetail = calendar.solar2lunar(cur_date[0], cur_date[1], cur_date[2])
+					this.lunarDate = lunarDetail.gzYear + "年"+ lunarDetail.IMonthCn + lunarDetail.IDayCn
 				});
 			},
 
-		
+
 			// 轮播图切换
 			changeSwiper(e) {
 				let index = e.detail.current
@@ -417,7 +442,7 @@
 						return
 					}
 					let nowTime = new Date()
-					
+
 					for (let i = 0; i < this.promotion.length; i++) {
 						// console.log(nowTime,new Date(this.promotion[i].startTime.replace(/-/g, "/")))
 						// console.log(i, nowTime >= new Date(this.promotion[i].startTime.replace(/-/g, "/")), nowTime <= new Date(this.promotion[i].endTime))
@@ -452,7 +477,7 @@
 					for (let i = 0; i < this.cateList.length; i++) {
 						switch (this.cateList[i].name) {
 							case "分类":
-								this.cateList[i].icon =this.IMAGE_URL + "/index/icon.png"
+								this.cateList[i].icon = this.IMAGE_URL + "/index/icon.png"
 								break;
 							case "医疗保健":
 								this.cateList[i].icon = this.IMAGE_URL + "/index/icon01.png"
@@ -541,8 +566,8 @@
 				let M = timestr.split(" ")[1].split(":")[1]
 				return H + ":" + M
 			},
-			
-			
+
+
 			// 扫码
 			scan() {
 				let that = this
@@ -550,7 +575,9 @@
 					success: function(res) {
 						console.log(res)
 						let code = res.result
-						that.$u.post('/api/v1/goods/code/search', {code: code}).then(res => {
+						that.$u.post('/api/v1/goods/code/search', {
+							code: code
+						}).then(res => {
 							console.log(res)
 							if (res.code === 'FAIL') {
 								return
@@ -561,40 +588,41 @@
 								})
 							}
 							uni.navigateTo({
-								url: "/pages/goodsDetail/goodsDetail?id=" + res.data.data.goodsId
+								url: "/pages/goodsDetail/goodsDetail?id=" + res.data.data
+									.goodsId
 							})
 						});
 					}
 				});
 			},
-			
-			
-			toDeitail(id,src){
-				if(src !== ''){
+
+
+			toDeitail(id, src) {
+				if (src !== '') {
 					let data = {
-						dataSrc:src
+						dataSrc: src
 					}
-						uni.navigateTo({
-							// url: "../webview/webview?src=" + src
-							url:"/pages/webview/webview?dataSrc="+ encodeURIComponent(JSON.stringify(data))
-						})
-				}else{
+					uni.navigateTo({
+						// url: "../webview/webview?src=" + src
+						url: "/pages/webview/webview?dataSrc=" + encodeURIComponent(JSON.stringify(data))
+					})
+				} else {
 					uni.navigateTo({
 						url: "/pages/goodsDetail/goodsDetail?id=" + id
 					})
 				}
-				
+
 			},
 			// 跳转webview网页
 			toWebview(src) {
 				uni.navigateTo({
-					url:'/pages/webview/webview?src='+src
+					url: '/pages/webview/webview?src=' + src
 				})
 			},
 			// 跳转城市索引页面
 			toLocation() {
 				uni.navigateTo({
-					url: "../location/location?currentCity=" + this.currentCity
+					url: "/packageA/location/location?currentCity=" + this.currentCity
 				})
 			},
 			// 选择时间段
@@ -624,16 +652,18 @@
 				} else {
 					switch (idx) {
 						case 0:
-							this.$u.toast("功能暂未开放，敬请期待~");
-							return;
-						case 1:
-							this.isShow = true
-							break;
-						case 2:
 							uni.navigateTo({
-								url: "../shop/shop"
+								url: url
 							})
 							return;
+						case 1:
+							uni.switchTab({
+								url: url
+							})
+							return;
+						case 2:
+							this.isShow = true
+							break;
 						default:
 							break;
 					}
@@ -664,12 +694,13 @@
 		},
 		onShareAppMessage(res) {
 			if (res.from === 'button') { // 来自页面内分享按钮
-				return  {
+				return {
 					title: "我在买" + this.onShareData.name + ",快来看看吧！",
-					path: '/pages/goodsDetail/goodsDetail?id=' + this.onShareData.id + "&type=share&invite=" + this.$store.state.invitationNo,
+					path: '/pages/goodsDetail/goodsDetail?id=' + this.onShareData.id + "&type=share&invite=" + this.$store
+						.state.invitationNo,
 					imageUrl: this.IMAGE_URL + this.onShareData.url
 				}
-			} 
+			}
 			// let shareObj = {
 			// 	title: '',
 			// 	path: "/pages/index/index?invite=" + this.$store.state.invitationNo,
@@ -691,7 +722,6 @@
 			// 		}
 			// 	}
 			// } else {
-				
 			// }
 			// console.log(shareObj)
 			// return shareObj

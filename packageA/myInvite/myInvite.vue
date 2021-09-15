@@ -153,7 +153,7 @@
 			toUserInfo(item) {
 				this.$store.commit('setUserInfo', item);
 				uni.navigateTo({
-					url: "/pages/userInfo/userInfo"
+					url: "/packageA/userInfo/userInfo"
 				})
 			}
 		}

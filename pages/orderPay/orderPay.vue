@@ -59,6 +59,7 @@
 				showPwdModel: false,
 				password: '',
 				orderId: 0,
+				canUseMoney:true,
 				finalPrice: 0,
 				time: "",
 				balance: 0,
@@ -113,6 +114,10 @@
 			},
 			//选择支付方式
 			choosePayment(i) {
+				if(!this.canUseMoney&& i == 0){
+					this.$u.toast("跨境商品不支持余额支付")
+					return
+				}
 				this.currentIndex = i
 			},
 			//输入支付密码
@@ -222,8 +227,10 @@
 			}
 		},
 		onLoad(options) {
-			if (options.orderId) {
+			if (options.orderId&&'undefinded'!==typeof(options.canUseMoney)) {
 				this.orderId = parseInt(options.orderId)
+				if(options.canUseMoney =='false')
+				this.canUseMoney = false
 			}
 			wx.enableAlertBeforeUnload({
 			      message: "您的订单尚未完成支付，确认要离开？",

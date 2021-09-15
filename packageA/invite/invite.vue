@@ -39,7 +39,7 @@
 			let code = uni.getStorageSync("userInfo").introCode
 			return {
 				title: "瑞库客邀你玩转店铺，快来一起体验吧！",
-				path: '/pages/apply/apply?code=' + code + "&type=share"
+				path: '/packageA/apply/apply?code=' + code + "&type=share"
 			}
 		},
 		// onShareAppMessage(res) {

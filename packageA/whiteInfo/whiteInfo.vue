@@ -50,7 +50,7 @@
 		methods:{
 			submit(){
 				uni.redirectTo({
-					url:"../addInfoSuccess/addInfoSuccess"
+					url:"/packageA/addInfoSuccess/addInfoSuccess"
 				})
 			}
 		}

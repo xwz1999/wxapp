@@ -86,7 +86,7 @@
 				</view>
 
 				<view class="box bg-white">
-					<navigator url="../shareEarnings/shareEarnings" hover-class="none" class="subtitle flex justify-between">
+					<navigator url="/packageA/shareEarnings/shareEarnings" hover-class="none" class="subtitle flex justify-between">
 						<view class="flex">
 							<view class="flex align-center" style="width: 220rpx;">
 								<image :src="IMAGE_URL + '/mine/t02.png'" style="width: 64rpx;" mode="widthFix"></image>
@@ -420,7 +420,7 @@
 			},
 			toTeamEarnings() {
 				uni.navigateTo({
-					url: "../teamEarnings/teamEarnings"
+					url: "/packageA/teamEarnings/teamEarnings"
 				})
 			},
 			toOrders(index) {
@@ -615,8 +615,6 @@
 			color: #000;
 			font-size: 32rpx;
 		}
-
-		,
 		.txt {
 			font-size: 24rpx;
 			color: #999999;

@@ -1,32 +1,46 @@
 <template name="largeImageList">
 	<view class="goods-container flex flex-wrap justify-between">
 		<view class="goods-item bg-white" v-for="(item,index) in goodsList" :key="index">
-			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" class="goods-pic bg-img">
-				<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="328" :loading-img='IMAGE_URL+"/null05.png"' :error-img='IMAGE_URL+"/null05.png"' img-mode="aspectFill"></u-lazy-load>
+			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+(situation==3?item.id:item.goodsId)" class="goods-pic bg-img">
+				<u-lazy-load threshold="-100" :image="IMAGE_URL+(situation==2?item.main_photo_url:item.mainPhotoUrl)" :index="index" height="328" :loading-img='IMAGE_URL+"/null05.png"' :error-img='IMAGE_URL+"/null05.png"' img-mode="aspectFill"></u-lazy-load>
 				<view class="goods-mask flex justify-center" v-if="item.inventory==0">
 					<image :src="STATIC_URL+'sale_out.png'" mode="widthFix"></image>
 				</view>
 			</navigator>
 			<view class="goods-name-box">
-				<view class="goods-name two-line">{{item.goodsName}}</view>
+				<view class="goods-name two-line">
+					<image v-if="item.isImport" :src="IMAGE_URL+item.country_icon"></image>
+					<image v-else-if=country_icon :src="IMAGE_URL+country_icon" ></image>
+					<text>{{situation==2?item.goods_name:item.goodsName}}</text>
+				</view>
+			</view>
+			<view class="shop-msg flex align-center" style="margin: 16rpx 0;" @tap.stop="">
+				<view class="shop-logo">
+					<u-lazy-load threshold="-100" :image="IMAGE_URL+(situation==2?item.brand_logo:item.brandImg)" :index="index"
+						height="30" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill">
+					</u-lazy-load>
+				</view>
+				<navigator :url="'/pages/search/search?brandId='+item.brandId" hover-class="none"
+					class="shop-name text-red text-hidden" style="font-size: 24rpx;">{{situation==2?item.brand_name:item.brandName}}
+				</navigator>
 			</view>
 			<view class="ticket-con flex align-center">
 				<view style="position: relative;margin-right: 10rpx;" v-if="item.coupon">
 					<image class="tic-pic" :src="IMAGE_URL+'/tic.png'" mode="heightFix"></image>
 					<view class="tic-txt text-white">{{item.coupon}}元券</view>
 				</view>
-				<view style="position: relative;" v-if="item.commissionDesc">
+				<view style="position: relative;" v-if="(situation==2||situation==3)?item.commission:item.commissionDesc">
 					<image class="tic-pic" :src="IMAGE_URL+'/tic2.png'" mode="heightFix"></image>
-					<view class="tic-txt text-red">{{item.commissionDesc}}</view>
+					<view class="tic-txt text-red">赚{{(situation==2||situation==3)?item.commission:item.commissionDesc}}</view>
 				</view>
 			</view>
 			<view class="price-con flex justify-between">
-				<view style="color: #AAAAAA;text-decoration: line-through;">￥{{item.primePrice}}</view>
-				<view style="color: #666666;">累计已售{{item.totalSalesVolume}}件</view>
+				<view style="color: #AAAAAA;text-decoration: line-through;">￥{{situation==3?item.originalPrice:item.primePrice}}</view>
+				<view style="color: #666666;">累计已售{{(situation==2||situation==3)?item.salesVolume:item.totalSalesVolume}}件</view>
 			</view>
 			<view class="flex justify-between align-end">
-				<view class="text-red" style="font-size: 26rpx;">券后￥<text style="font-size: 36rpx;font-weight: 700;">{{item.price}}</text></view>
-				<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" class="buy-btn text-white round" :class="item.inventory==0?'bg-aaa':'bg-red'">{{item.inventory==0?'已售完':'自购'}}</navigator>
+				<view class="text-red" style="font-size: 26rpx;">券后￥<text style="font-size: 36rpx;font-weight: 700;">{{situation==3?item.discountPrice:item.price}}</text></view>
+				<navigator :url="'/pages/goodsDetail/goodsDetail?id='+(situation==3?item.id:item.goodsId)" class="buy-btn text-white round" :class="item.inventory==0?'bg-aaa':'bg-red'">{{item.inventory==0?'已售完':'自购'}}</navigator>
 			</view>
 		</view>
 	</view>
@@ -45,6 +59,20 @@
 			goodsList: {
 				type: Array,
 				value: [],
+			},
+			// situation :  不同场景接口返回的list字段名不同，因此按数据分为不同situation
+			//    0  21/09月前开发场景使用
+			//    1  发现-发布素材
+			//    2  进口商品
+			//    3  购物车-猜你喜欢
+			situation:{
+				type:Number,
+				value:0
+			},
+			// 进口商品 名称前国家标识
+			country_icon:{
+				type:String,
+				value:null
 			}
 		},
 		methods: {

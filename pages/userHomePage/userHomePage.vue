@@ -162,7 +162,7 @@
 			},
 			toAnchorCenter() {
 				uni.navigateTo({
-					url: "../anchorCenter/anchorCenter"
+					url: "/packageA/anchorCenter/anchorCenter"
 				})
 			},
 			chooseNav(i) {

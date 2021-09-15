@@ -73,7 +73,7 @@
 						uni.setStorageSync("userInfo", this.userInfo)
 					}
 					uni.redirectTo({
-						url: "/pages/results/results?status=" + status
+						url: "/packageA/results/results?status=" + status
 					})
 				});
 			}

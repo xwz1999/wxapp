@@ -17,20 +17,20 @@
 						<view v-for="(item,index) in remarkList" :key='index'>
 							<view class="order-box">
 								<view class="flex justify-between">
-									<view class="lf bg-img" :style="'background-image: url('+IMAGE_URL+item.mainPhotoUrl+');'">
+									<view class="lf bg-img" :style="'background-image: url('+IMAGE_URL+item.my_order_goods_dea.mainPhotoUrl+');'">
 									</view>
 									<view class="rg flex flex-wrap" style="align-content: space-between; flex: 1;">
 										<view class="head" style="width: 100%;">
 											<view class="black title">
-												<text>{{item.goodsName}}</text>
+												<text>{{item.my_order_goods_dea.goodsName}}</text>
 											</view>
 											<view class="pic">
-												<text>规格型号 {{item.skuName}}</text>
+												<text>规格型号 {{item.my_order_goods_dea.skuName}}</text>
 											</view>
 										</view>
 										<view class="flex justify-between" style="width: 80%;">
-											<text>订单金额<text class="black">￥{{item.goodsAmount}}</text></text>
-											<text>购买数量<text class="black">{{item.quantity}}</text></text>
+											<text>订单金额<text class="black">￥{{item.my_order_goods_dea.goodsAmount}}</text></text>
+											<text>购买数量<text class="black">{{item.my_order_goods_dea.quantity}}</text></text>
 										</view>
 									</view>
 								</view>

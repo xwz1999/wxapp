@@ -86,7 +86,7 @@
 			postShare() {
 
 				uni.navigateTo({
-					url:'/pages/poster/poster'
+					url:'/packageA/poster/poster'
 				})
 			},
 			getList(url) {

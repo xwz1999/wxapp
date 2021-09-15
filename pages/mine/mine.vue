@@ -9,7 +9,7 @@
 						<view class="flex align-center">
 							<view class="flex-sub">
 								<view class="flex">
-									<navigator url="/pages/myInfo/myInfo" hover-class="none">
+									<navigator url="/packageA/myInfo/myInfo" hover-class="none">
 										<view class="avatar">
 											<u-lazy-load threshold="-100" :image="IMAGE_URL+userInfo.headImgUrl" :index="index" height="140"
 											 border-radius="70" :loading-img="IMAGE_URL + '/null05.png'" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill"></u-lazy-load>
@@ -101,30 +101,29 @@
 								</view>
 
 								<!-- <navigator url="/packageA/myIncome/purchase"  :hover-class="false" class="flex more"> -->
-								<navigator url="/packageA/myIncome/purchase" v-if="0" :hover-class="false" class="flex more">
+							<!-- 	<navigator url="/packageA/myIncome/purchase" v-if="1" :hover-class="false" class="flex more">
 									图表分析<text class="cuIcon-right"></text>
-								</navigator>
+								</navigator> -->
 							</view>
 							<view class="money-box flex justify-between align-center">
-								<view>
+							
+								<navigator url="/packageA/myIncome/index">
 									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
 									<view class="num">{{myIncomeData.purchase.expectAmount?myIncomeData.purchase.expectAmount:0}}</view>
-								</view>
-								<view>
+								</navigator>
+								<navigator url="/packageA/myIncome/index">
 									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
 									<view class="num">{{myIncomeData.purchase.expectCount?myIncomeData.purchase.expectCount:0}}</view>
-								</view>
-								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
-
-								</view>
-								<view>
+								</navigator>
+								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;"></view>
+								<navigator url="/packageA/myIncome/index">
 									<view class="txt" style="margin-bottom: 20rpx;">已到账收益(瑞币)</view>
 									<view class="num">{{myIncomeData.purchase.amount?myIncomeData.purchase.amount:0}}</view>
-								</view>
-								<view>
+								</navigator>
+								<navigator url="/packageA/myIncome/index">
 									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
 									<view class="num">{{myIncomeData.purchase.count?myIncomeData.purchase.count:0}}</view>
-								</view>
+								</navigator>
 							</view>
 						</view>
 						<view class="box bg-white" v-if="roleLevel !== 500">
@@ -134,7 +133,7 @@
 									<view>导购收益 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
 										 @tap.stop="tipModel(true,'guide')"></text></view>
 								</view>
-								<view class="flex more" v-if="0">查看明细<text class="cuIcon-right"></text></view>
+								<!-- <view class="flex more" v-if="1">查看明细<text class="cuIcon-right"></text></view> -->
 							</view>
 							<view class="money-box flex justify-between align-center">
 								<view>
@@ -165,7 +164,7 @@
 									<view>店铺补贴 <text class="text-gray cuIcon-question" style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
 										 @tap.stop="tipModel(true,'team')"></text></view>
 								</view>
-								<navigator v-if="0" url="/packageA/myIncome/shopSubsidy" :hover-class="false" class="flex more">
+								<navigator  url="/packageA/myIncome/shopSubsidy" :hover-class="false" class="flex more">
 									图表分析<text class="cuIcon-right"></text>
 								</navigator>
 							</view>
@@ -232,7 +231,7 @@
 							<view class="line" style="width: 5rpx; height: 36rpx;background: #D5101A;margin-right: 10rpx;">
 							</view>
 							<view class="" style="font-size: 32rpx;font-weight: 500; color: #333333;">
-								<text>店铺考核</text>
+								<text>{{role}}考核</text>
 							</view>
 						</view>
 						<view class="" style="font-size: 24rpx;color: #999999;">
@@ -261,11 +260,29 @@
 						</view>
 					</view>
 
+				
+					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
+						<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
+							<view>订单中心
+							<!-- <text style="font-weight: normal;font-size: 26rpx;">(自购)</text> -->
+							</view>
+							<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
+						</navigator>
+						<view class="order-con flex justify-around">
+							<view class="order-item flex flex-direction align-center" v-for="(item,index) in orderStatus" :key="index" @tap="toOrders(index)">
+								<image :src="item.icon" style="height: 56rpx;margin-bottom: 10rpx;width: auto;" mode="heightFix"></image>
+								<view style="font-size: 24rpx;color: #666;">{{item.text}}</view>
+								<view class="order-count" v-if="item.count">{{item.count}}</view>
+							</view>
+						</view>
+					</view>
+					
+					
 					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<view v-if="roleLevel !==500">
-							<view class=" subtitle flex justify-between" style="border: none;">
+						<!-- 	<view class=" subtitle flex justify-between" style="border: none;">
 								<view>店铺管理</view>
-							</view>
+							</view> -->
 							<view class="shop-box flex justify-between flex-wrap">
 								<view class="card" @click="isShow = true">
 									<image :src="`${IMAGE_URL}/mineShop/shop1.jpg`" mode="widthFix"></image>
@@ -276,7 +293,7 @@
 										<text>0元创业·轻松赚</text>
 									</view>
 								</view>
-
+					
 								<view class="card" @click="toMineShopPage('team')">
 									<image :src="`${IMAGE_URL}/mineShop/shop2.jpg`" mode="widthFix"></image>
 									<view class="">
@@ -346,19 +363,8 @@
 						</view>
 					
 					</view>
-					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
-						<navigator url="../orders/orders" hover-class="none" class="subtitle flex justify-between">
-							<view>订单中心<text style="font-weight: normal;font-size: 26rpx;">(自购)</text></view>
-							<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
-						</navigator>
-						<view class="order-con flex justify-around">
-							<view class="order-item flex flex-direction align-center" v-for="(item,index) in orderStatus" :key="index" @tap="toOrders(index)">
-								<image :src="item.icon" style="height: 56rpx;margin-bottom: 10rpx;width: auto;" mode="heightFix"></image>
-								<view style="font-size: 24rpx;color: #666;">{{item.text}}</view>
-								<view class="order-count" v-if="item.count">{{item.count}}</view>
-							</view>
-						</view>
-					</view>
+					
+					
 					<view class="box flex justify-around bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
 						<view class="other-item flex-sub flex flex-direction justify-between align-center" @tap="toPage(otherOptions[0].page)">
 							<image :src="otherOptions[0].icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;" mode="heightFix"></image>
@@ -390,7 +396,7 @@
 			</view>
 			<view class="login-btn">
 				<view class="" @click="toLogin">
-					登陆
+					登录
 				</view>
 			</view>
 		</view>
@@ -473,7 +479,7 @@
 				otherOptions: [{
 						icon: this.IMAGE_URL + "/mine/b01.png",
 						text: "地址",
-						page: "/pages/address/index"
+						page: "/packageA/address/index"
 					},
 					{
 						icon: this.IMAGE_URL + "/mine/b02.png",
@@ -482,12 +488,12 @@
 					{
 						icon: this.IMAGE_URL + "/mine/b03.png",
 						text: "商务合作",
-						page: "/pages/cooperation/cooperation"
+						page: "/packageA/cooperation/cooperation"
 					},
 					{
 						icon: this.IMAGE_URL + "/mine/b04.png",
 						text: "设置",
-						page: "/pages/settings/settings"
+						page: "/packageA/settings/settings"
 					}
 				],
 				roleLevel: 500, //会员等级
@@ -679,7 +685,7 @@
 			},
 			toMyInfo() {
 				uni.navigateTo({
-					url: "../myInfo/myInfo"
+					url: "/packageA/myInfo/myInfo"
 				})
 			},
 			toBalance() {
@@ -703,7 +709,7 @@
 			// 到我的收益页面
 			toMyIncome() {
 				uni.navigateTo({
-					url: "/packageA/myIncome/myIncome"
+					url: "/packageA/myIncome/cumulative"
 				})
 			},
 			getTotalEarning() {
@@ -749,7 +755,7 @@
 			},
 			toWithdraw() {
 				uni.navigateTo({
-					url: "../withdraw/withdraw"
+					url: "/packageA/withdraw/withdraw"
 				})
 			},
 			toCoupons() {
@@ -781,7 +787,7 @@
 			},
 			toTeamEarnings() {
 				uni.navigateTo({
-					url: "../teamEarnings/teamEarnings"
+					url: "/packageA/teamEarnings/teamEarnings"
 				})
 			},
 			toPage(page) {
@@ -1058,7 +1064,7 @@
 			line-height: 84rpx;
 			font-size: 32rpx;
 			color: #000;
-			border-bottom: 2rpx solid #E6E6E6;
+			// border-bottom: 2rpx solid #E6E6E6;
 			font-weight: 700;
 
 			.more {
@@ -1124,9 +1130,12 @@
 		&>view {
 			padding: 20rpx 0;
 			line-height: 45rpx;
-
 			// flex: 1;	
-
+		}
+		&>navigator {
+			padding: 20rpx 0;
+			line-height: 45rpx;
+			// flex: 1;	
 		}
 	}
 

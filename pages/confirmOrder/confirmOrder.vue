@@ -58,11 +58,13 @@
 				<view class="">瑞币</view>
 				<view class="flex-sub flex justify-between" style="padding: 0 20rpx;color: #888;font-size: 24rpx;">
 					<view>可用:￥{{preOrderMsg.coinStatus.coin}}</view>
-					<view>本次可抵￥{{preOrderMsg.coinTotalAmount | toFixed(2)}}</view>
+					<view v-if="canUseMoney">本次可抵￥{{preOrderMsg.coinTotalAmount | toFixed(2)}}</view>
+						<view v-else>不可用</view>
 				</view>
-				<u-switch v-model="preOrderMsg.coinStatus.isUseCoin" :disabled="!preOrderMsg.coinStatus.isEnable" active-color="red"
+				<u-switch v-model="preOrderMsg.coinStatus.isUseCoin" :disabled="!canUseMoney" active-color="red"
 				 inactive-color="#F5F5F5" size="36" @change="changeUseCoin"></u-switch>
 			</view>
+			
 			<!-- <view class="item flex justify-between">
 				<view class="">余额</view>
 				<view class="flex-sub flex justify-between" style="padding: 0 20rpx;color: #888;font-size: 24rpx;">
@@ -135,6 +137,7 @@
 				note: "",
 				tipsShow: false,
 				RealList: [], // 过滤商品不为国内仓和无
+				
 			};
 		},
 		computed: {
@@ -150,18 +153,18 @@
 			}
 		},
 		onShow() {
-			let realInfoStatus = uni.getStorageSync("userInfo").realInfoStatus
-			console.log(realInfoStatus)
-			if (!realInfoStatus) {
-				// 未实名认证 判断是否需要实名认证
-				let newArr = [];
-				// 循环过滤
-				this.$store.state.preOrderMsg.brands.forEach((value, index) => {
+			let realInfoStatus = uni.getStorageSync("userInfo").realInfoStatus			
+			let newArr = [];
+			// 循环过滤
+			this.$store.state.preOrderMsg.brands.forEach((value, index) => {
 					newArr[index] = value.goods;
 					newArr[index] = newArr[index].filter(
 						// 过滤商品不为国内仓和无 1和0
 						item => item.storehouse !== 0 && item.storehouse !== 1)
-				})
+			})
+			this.canUseMoney = Boolean(newArr[0].length==0)
+				// 未实名认证 判断是否需要实名认证
+			if (!realInfoStatus) {
 				// 过滤商品不为国内仓和无 则需要实名认证
 				newArr.map(item => {
 					if (item.length) {
@@ -174,11 +177,12 @@
 				// 已实名认证
 				this.tipsShow = false
 			}
+
 		},
 		methods: {
 			toPage() {
 				uni.navigateTo({
-					url: '../../packageA/agreement/goods'
+					url: '/packageA/agreement/goods'
 				})
 			},
 			toRealName() {
@@ -248,7 +252,7 @@
 					// this.$store.commit('setOrderDetail',orderDetail);
 					//提交成功
 					uni.redirectTo({
-						url: "../orderPay/orderPay?orderId=" + orderDetail.id,
+						url: "../orderPay/orderPay?orderId=" + orderDetail.id+"&canUseMoney="+this.canUseMoney,
 						// url: "../orderDetail/orderDetail?orderId=" + orderDetail.id,
 						success: (res) => {
 							this.$u.toast(msg);
@@ -258,7 +262,7 @@
 			},
 			toAddressList() {
 				uni.navigateTo({
-					url: "../address/index?fromPage=confirmOrder"
+					url: "/packageA/address/index?fromPage=confirmOrder"
 				})
 			}
 		}

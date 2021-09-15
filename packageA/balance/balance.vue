@@ -42,7 +42,7 @@
 		</view>
 		<view class="btn-box" @click="toBalance">
 			<view class="btn">
-				<text>转到余额</text>
+				<text>余额提现</text>
 			</view>
 		</view>
 	</view>
@@ -87,7 +87,7 @@
 			toBalance() {
 				// pages/withdraw/withdraw
 				uni.navigateTo({
-					url: "/pages/withdraw/withdraw"
+					url: "/packageA/withdraw/withdraw"
 				})
 			},
 			getTotal() {

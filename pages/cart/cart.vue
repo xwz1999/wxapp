@@ -54,8 +54,7 @@
 						</view>
 					</view>
 				</view>
-			
-			
+
 				<view class="cart-bottom bg-white flex justify-between align-center">
 					<view class="all-select-box flex align-center" @tap="selectAll">
 						<text :class="allChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'"></text>
@@ -77,11 +76,16 @@
 					</view>
 				</view>
 			</template>
+			<view class="split_text">
+				猜你喜欢
+			</view>
+					<large-image-list situation=3 :goodsList="like_goodsList"></large-image-list>	
 		</view>
 	</view>
 </template>
 
 <script>
+		import largeImageList from '@/components/largeImageList.vue'
 	export default {
 		data() {
 			return {
@@ -94,13 +98,30 @@
 				totalNum: 0,
 				selectGoodsIds: [],
 				totalCommission: 0,
-				showLoading:true
+				showLoading:true,
+				like_goodsList:[]
 			};
+		},
+		components:{
+			largeImageList
 		},
 		onShow() {
 			this.getCartGoods()
 		},
+		onLoad(){
+			this.getGoodsList()
+		},
 		methods: {
+			getGoodsList() {
+				let user_id = uni.getStorageSync("userInfo").id
+			this.$u.post('/api/v2/app/shopping_cart/view_like_maybe', {user_id}).then(res => {
+				if (res.data.code == "FAIL") {
+					this.$u.toast(res.data.msg);
+					return
+				}
+				this.like_goodsList = res.data.data
+				})
+				},
 			editCart() {
 				this.isEdit = !this.isEdit
 			},
@@ -292,7 +313,9 @@
 	page {
 		background-color: #f3f3f3;
 	}
-
+.split_text{
+	text-align: center;
+}
 	.cart-top {
 		position: fixed;
 		width: 100%;

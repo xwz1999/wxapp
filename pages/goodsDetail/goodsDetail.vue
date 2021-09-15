@@ -27,7 +27,7 @@
 								<view class="banner-con bg-img" :style="'background-image: url('+STATIC_URL+'goods-bg.png);'">
 									<view class="pic-con">
 										<view class="flex quan-top">
-											<view class="quan">20元优惠券</view>
+											<view class="quan">{{goodsDetail.sku[0].coupon}}元优惠券</view>
 											<view class="price">
 												￥{{goodsDetail.price.min.originalPrice}}
 												<template v-if="goodsDetail.price.min.originalPrice!=goodsDetail.price.max.originalPrice">
@@ -60,10 +60,7 @@
 								<view class="goods-msg-box bg-white" style="margin-bottom: 25rpx;padding-top: 20rpx;">
 									<view class="flex goods-name-box justify-between align-start">
 										<view class="goods-name flex-sub">
-											<view class="text-center text-white" style="display: inline-block; background: #CC1B4F;font-size: 20rpx; width:48rpx;height: 40rpx;line-height: 40rpx; border-radius: 6rpx;margin-right: 8rpx;"
-											 v-if="goodsDetail.isImport">
-												<text>进口</text>
-											</view> {{goodsDetail.goodsName}}
+											<image v-if="goodsDetail.isImport" :src="IMAGE_URL+goodsDetail.country_icon"></image> <text>{{goodsDetail.goodsName}}</text>
 										</view>
 										<button v-if="roleLevel!=500" class="text-center share-btn" type="default" open-type="share">
 											<text class="cuIcon-share" style="margin-right: 5rpx;"></text>分享
@@ -1091,6 +1088,13 @@
 			line-height: 45rpx;
 			padding: 0 20rpx;
 			font-weight: 700;
+			image {
+				width: 48rpx;
+				height: 32rpx;
+				margin-right: 10rpx;
+				display: inline-block;
+				vertical-align: text-bottom;
+			}
 		}
 
 		.share-btn {
