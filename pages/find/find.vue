@@ -1,15 +1,12 @@
 <template>
 	<view>
 		<view class="flex flex-direction" style="height: 100vh;">
-			<view class="flex justify-between bg-white">
-				<!-- <view class="flex flex-direction justify-center mine align-center" style="width: 90rpx;" v-if="showMybtn" @tap="toMyHomePage">
-					<text class="cuIcon-my" style="font-size: 48rpx;color: #888888;"></text>
-				</view> -->
+	<!-- 		<view class="flex justify-between bg-white">
 				<view class="flex-sub">
 					<u-tabs :list="list" :is-scroll="false" height="90" :current="currentIndex" duration="0.2"
 						bar-width="100" :bold="false" active-color="red" @change="chooseTabs"></u-tabs>
 				</view>
-			</view>
+			</view> -->
 
 			<swiper class="flex-sub" :current="currentIndex" :duration="300" :indicator-dots="false" :autoplay="false"
 				@change="changeCurrent">
@@ -29,10 +26,12 @@
 		</view>
 		<u-popup v-model="showPop" class="pop" @close="closePop" mode="bottom" border-radius="20">
 			<view class="line">
-				<navigator class="iconText" v-for="(item,index) in list" :url=item.url>
-					<image :src="IMAGE_URL+item.image" mode=""></image>
-					<text>{{item.name}}</text>
-				</navigator>
+				<template v-for="(item,index) in list">
+					<navigator class="iconText" v-if="item.name!='直播'" :url=item.url>
+						<image :src="IMAGE_URL+item.image" mode=""></image>
+						<text>{{item.name}}</text>
+					</navigator>
+				</template>
 			</view>
 			<view class="cancel" @tap="closePop">取消</view>
 		</u-popup>
@@ -40,28 +39,29 @@
 </template>
 
 <script>
-	import liveVideos from 'components/liveVideos.vue'
-	import smallVideos from 'components/smallVideos.vue'
+	// import liveVideos from 'components/liveVideos.vue'
+	// import smallVideos from 'components/smallVideos.vue'
 	import dynamics from 'components/dynamics.vue'
 	export default {
 		data() {
 			return {
 				IMAGE_URL: this.IMAGE_URL,
 				showMybtn: false,
-				currentIndex: 0,
-				list: [{
-						name: '直播',
-						image: '/uni-program/icon/add_stream.png',
-						url:''
-					},
-					{
-						name: '视频',
-						image: '/uni-program/icon/add_video.png',
-						url:''
-					},
+				currentIndex: 2,
+				list: [
+					// {
+					// 	name: '直播',
+					// 	image: '/uni-program/icon/add_stream.png',
+					// 	url:''
+					// },
+					// {
+					// 	name: '视频',
+					// 	image: '/uni-program/icon/add_video.png',
+					// 	url:'./createImageArticle?_type=2'
+					// },
 					{
 						name: '图文',
-						image: '/uni-program/icon/add_image.png',
+						image: '/wxapp/uni-program/icon/add_image.png',
 						url:'./createImageArticle'
 					}
 				],
@@ -70,14 +70,17 @@
 			};
 		},
 		components: {
-			liveVideos,
-			smallVideos,
+			// liveVideos,
+			// smallVideos,
 			dynamics
 		},
 		onTabItemTap(item) {
 			if (this.onTabItemTapPop) {
-				uni.hideTabBar({})
-				this.showPop = true
+				// uni.hideTabBar({})
+				// this.showPop = true
+				wx.navigateTo({
+				url:'./createImageArticle'
+				})
 			}
 			this.onTabItemTapPop = true
 		},
@@ -107,7 +110,7 @@
 		methods: {
 			toMyHomePage() {
 				uni.navigateTo({
-					url: "../userHomePage/userHomePage"
+					url: "/packageA/userHomePage/userHomePage"
 				})
 			},
 			chooseTabs(index) {
@@ -139,7 +142,7 @@
 					path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.goods.id + "&type=share&invite=" +
 						this.$store.state
 						.invitationNo,
-					imageUrl: this.IMAGE_URL + res.target.dataset.goods.mainPhotoURL
+					imageUrl: res.target.dataset.goods.mainPhotoURL
 				}
 			}
 			console.log(shareObj)
@@ -153,7 +156,7 @@
 		font-size: 24rpx;
 		.line{
 		display: flex;
-		    justify-content: space-between;
+		    justify-content: space-around;
 		    margin: 40rpx 80rpx 80rpx 80rpx;
 			.iconText{
 				display: flex;

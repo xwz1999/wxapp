@@ -6,8 +6,13 @@
 			<view class="">致力于为消费者提供更有品质的生活；</view>
 			<view class="">倡导独立不盲从的价值观；</view>
 			<view class="">请联系我们。</view>
+			<view style="font-size: 12px;">
+				<view class="">地址：浙江省宁波市鄞州区菁华路108号德邦大厦四楼</view>
+				<view class="">电话：400-889-4489</view>
+				<view class="">邮箱：Dora@cn-recook.com</view>
+			</view>
 		</view>
-		<view class="box bg-white flex justify-between flex-wrap">
+<!-- 		<view class="box bg-white flex justify-between flex-wrap">
 			<view class="item flex flex-direction justify-center" v-for="(item,index) in list" :key="index">
 				<view class="flex">
 					<view class="flex flex-direction justify-center align-center icon-con">
@@ -19,7 +24,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 

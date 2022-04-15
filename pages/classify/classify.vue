@@ -3,27 +3,33 @@
 		<view class="search-box bg-white">
 			<view class="search-con flex justify-between">
 				<text class="cuIcon-search"></text>
-				<input class="flex-sub" type="text" v-model="keyword" confirm-type="search" placeholder="请输入想要搜索的内容" @confirm="toSearch()" />
+				<input class="flex-sub" type="text" v-model="keyword" confirm-type="search" placeholder="请输入想要搜索的内容"
+					@confirm="toSearch()" />
 			</view>
 		</view>
 		<view class="u-menu-wrap">
 			<scroll-view scroll-y scroll-with-animation class="u-tab-view menu-scroll-view" :scroll-top="scrollTop">
-				<view v-for="(item,index) in cateList" :key="index" class="u-tab-item" :class="[current==index ? 'u-tab-item-active' : '']"
-				 :data-current="index" @tap.stop="swichMenu(index,item.id)">
+				<view v-for="(item,index) in cateList" :key="index" class="u-tab-item"
+					:class="[current==index ? 'u-tab-item-active' : '']" :data-current="index"
+					@tap.stop="swichMenu(index,item.id)">
 					<text class="u-line-1">{{item.name}}</text>
 				</view>
 			</scroll-view>
 			<scroll-view scroll-y class="right-box">
 				<view class="item-container">
 					<image v-if="topPic" :src="IMAGE_URL+topPic" mode="widthFix"></image>
-					<view class="null flex flex-direction justify-center align-center" v-if="subCateList.length==0" style="height: 600rpx;">
-						<image :src="IMAGE_URL + '/null05.png'"  style="width: 250rpx;" mode="widthFix"></image>
+					<view class="null flex flex-direction justify-center align-center" v-if="subCateList.length==0"
+						style="height: 600rpx;">
+						<image :src="IMAGE_URL + '/null05.png'" style="width: 250rpx;" mode="widthFix"></image>
 						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无内容</view>
 					</view>
 					<view class="flex flex-wrap" v-else style="padding: 15rpx;">
-						<view class="thumb-box" v-for="(item1, index1) in subCateList" :key="index1" @tap="toSearch(item1.id)">
+						<view class="thumb-box" v-for="(item1, index1) in subCateList" :key="index1"
+							@tap="toSearch(item1.id)">
 							<view class="item-menu-image">
-								<u-lazy-load threshold="-100" border-radius="60" :image="IMAGE_URL+item1.logoUrl" :index="index" height="120" :error-img="IMAGE_URL + '/null05.png'"  :loading-img="IMAGE_URL + '/null05.png'"  mg-mode="aspectFill"></u-lazy-load>
+								<u-lazy-load threshold="-100" border-radius="60" :image="IMAGE_URL+item1.logoUrl"
+									:index="index" height="120" :error-img="IMAGE_URL + '/null05.png'"
+									:loading-img="IMAGE_URL + '/null05.png'" mg-mode="aspectFill"></u-lazy-load>
 							</view>
 							<view class="item-menu-name">{{item1.name}}</view>
 						</view>
@@ -45,9 +51,10 @@
 				IMAGE_URL: this.IMAGE_URL,
 				cateList: [],
 				subCateList: [],
+				JDCateList: null,
 				parentId: null,
 				keyword: "",
-				topPic:""
+				topPic: ""
 			}
 		},
 		onLoad(options) {
@@ -55,9 +62,25 @@
 			if (options.index) {
 				this.current = options.index
 			}
-			this.getCateList()
+			if (options.channel && options.channel == 'jingdong') {
+				this.getJDCateList()
+			} else {
+				this.getCateList()
+			}
 		},
 		methods: {
+			// 获取京东一二级分类
+			getJDCateList() {
+				this.$u.post('/api/v2/app/jcook/category').then(res => {
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.JDCateList = res.data.data
+					this.cateList = res.data.data
+					this.subCateList = res.data.data[0].sub
+				})
+			},
 			// 一级分类列表
 			getCateList() {
 				this.$u.post('/api/v1/goods/categories/first').then(res => {
@@ -69,7 +92,7 @@
 					this.cateList = res.data.data
 					this.parentId = this.cateList[this.current].id
 					this.topPic = this.cateList[this.current].logoUrl
-					console.log(this.parentId,this.topPic)
+					console.log(this.parentId, this.topPic)
 					this.getSubCateList()
 				})
 			},
@@ -91,13 +114,17 @@
 			},
 			toSearch(id) {
 				// 传了id则是点击分类进入搜索页,没有传则是搜索关键字进入搜索页
+				// cannel为“jingdong” 京东优选
+				let url = null
 				if (id) {
+					url = "/pages/search/search?cate_id=" + id +(this.JDCateList?'&channel=jingdong':'')
 					uni.navigateTo({
-						url: "/pages/search/search?cate_id=" + id
+						url
 					})
 				} else {
+					url: "/pages/search/search?keyword=" + this.keyword +(this.JDCateList?'&channel=jingdong':'')
 					uni.navigateTo({
-						url: "/pages/search/search?keyword=" + this.keyword,
+						url,
 						success: () => {
 							this.keyword = ""
 						}
@@ -110,7 +137,11 @@
 				this.current = index;
 				this.topPic = this.cateList[index].logoUrl
 				this.parentId = id
-				this.getSubCateList()
+				if (this.JDCateList) {
+					this.subCateList = this.JDCateList[index].sub
+				} else {
+					this.getSubCateList()
+				}
 				// 如果为0，意味着尚未初始化
 				if (this.menuHeight == 0 || this.menuItemHeight == 0) {
 					await this.getElRect('menu-scroll-view', 'menuHeight');

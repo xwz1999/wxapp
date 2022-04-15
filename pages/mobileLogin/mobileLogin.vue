@@ -10,10 +10,11 @@
 				<view class="span">短信验证码</view>
 				<input class="flex-sub" v-model="sms" type="text" value="" placeholder="请输入短信验证码" />
 				<view class="text-red" v-if="showTime">剩余{{time}}s</view>
-				<view class="text-red" v-else @tap="getCode">获取验证码</view>	
+				<view class="text-red" v-else @tap="getCode">获取验证码</view>
 			</view>
 		</view>
-		<button v-if="wxUnionId" class="text-white bg-red shadow cu-btn lg block" style="margin: 30rpx;" @tap="wxRegist">立即绑定</button>
+		<button v-if="wxUnionId" class="text-white bg-red shadow cu-btn lg block" style="margin: 30rpx;"
+			@tap="wxRegist">立即绑定</button>
 		<button v-else class="text-white bg-red shadow cu-btn lg block" style="margin: 30rpx;" @tap="login">登录</button>
 		<view class="" style="padding: 0 30rpx;line-height: 35rpx;font-size: 26rpx;color: #888888;">
 			根据《中华人民共和国网络安全法》要求，使用信息发布、即时通讯等互联网服务需进行身份信息验证。为保障您的使用体验，建议您尽快完成手机号绑定验证，感谢您的支持和理解。
@@ -29,23 +30,24 @@
 				// mobile: "15988645436",
 				// sms:"0716",
 				mobile: "",
-				sms:"",
-				time:60,
-				showTime:false,
-				timer:null,
-				invitationNo:"NXR0L3",
-				wxUnionId:null
+				sms: "",
+				time: 60,
+				showTime: false,
+				timer: null,
+				invitationNo: "NXR0L3",
+				wxUnionId: null
 			};
 		},
 		onLoad(options) {
-			console.log(options)
+			console.log('mobileLogin页面参数',options)
 			let invite = this.$store.state.invite
 			console.log(this.$store.state.invite)
+			invite =uni.getStorageSync("invite")
 			//别人分享的邀请码
-			if(invite !== '' && invite !== null && invite !== undefined){
+			if (invite !== '' && invite !== null && invite !== undefined) {
 				this.invitationNo = this.$store.state.invite
-			}	
-			if(options.wxUnionId){
+			}
+			if (options.wxUnionId) {
 				this.wxUnionId = options.wxUnionId
 			}
 		},
@@ -53,59 +55,59 @@
 			getCode() {
 				// this.$u.toast("暂未启用");
 				// return
-				if(!this.mobile){
+				if (!this.mobile) {
 					this.$u.toast("请输入手机号");
 					return
 				}
 				this.$u.post('/api/v1/messages/login/sms/send', {
-					Mobile:this.mobile
+					Mobile: this.mobile
 				}).then(res => {
 					console.log(res);
-					if(res.data.code=="FAIL"){
+					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 					}
 					uni.showToast({
-						title:"发送成功"
+						title: "发送成功"
 					})
 					//发送验证码成功开启倒计时
 					this.countDown()
 				});
 			},
-			countDown(){
+			countDown() {
 				let countdownTime = this.time
 				this.showTime = true
 				this.time--
 				let that = this
-				this.timer = setInterval(function(){
-					if(that.time==0){
+				this.timer = setInterval(function() {
+					if (that.time == 0) {
 						that.showTime = false
 						that.time = countdownTime
 						clearInterval(that.timer)
 						return
 					}
 					that.time--
-				},1000)
+				}, 1000)
 			},
 			// 手机登录 已注册
-			login(){
-				if(!this.mobile){
+			login() {
+				if (!this.mobile) {
 					this.$u.toast("请输入手机号");
 					return
 				}
-				if(!this.sms){
+				if (!this.sms) {
 					this.$u.toast("请输入验证码");
 					return
 				}
 				this.$u.post('/api/v1/users/profile/mobile/login', {
-					Mobile:this.mobile,
-					SMS:this.sms
+					Mobile: this.mobile,
+					SMS: this.sms
 				}).then(res => {
 					console.log(res);
-					if(res.data.code=="FAIL"){
+					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
 					}
-					if(res.data.data.status==0){
+					if (res.data.data.status == 0) {
 						// 该用户没有账号
 						//注册账号
 						this.regist()
@@ -114,13 +116,16 @@
 					this.$store.commit('setinvitationNo', res.data.data.info.invitationNo);
 					let result = res.data.data
 					console.log(res.data.data.info.invitationNo)
-					uni.setStorageSync("auth",result.auth)
-					uni.setStorageSync("userInfo",result.info)
+					uni.setStorageSync("auth", result.auth)
+					uni.setStorageSync("userInfo", result.info)
 					uni.showToast({
-						title:"登录成功",
+						title: "登录成功",
 						success: () => {
 							let that = this
-							setTimeout(function(){
+							setTimeout(function() {
+								if(this.goodsDetailNavback()){
+									return
+								}
 								if (that.$store.state.url) {
 									let url = that.$store.state.url
 									console.log(url)
@@ -130,25 +135,25 @@
 									that.$store.commit('removeUrl')
 								} else {
 									uni.reLaunch({
-										url:"../index/index"
+										url: "../index/index"
 									})
 								}
-							},1000)
+							}, 1000)
 						}
 					})
 				});
 			},
 			// 手机登录 未注册
-			regist(){
+			regist() {
 				var myreg = /^[1][0-9]{10}$/;
 				if (!myreg.test(this.mobile)) {
 					return this.$u.toast("手机格式不正确");
 				}
-				if(!this.mobile){
+				if (!this.mobile) {
 					this.$u.toast("请输入手机号");
 					return
 				}
-				if(!this.sms){
+				if (!this.sms) {
 					this.$u.toast("请输入验证码");
 					return
 				}
@@ -159,69 +164,75 @@
 					invitationNo: this.invitationNo
 				}).then(res => {
 					console.log(res);
-					if(res.data.code=="FAIL"){
+					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
 					}
 					let result = res.data.data
 					this.$store.commit('setinvitationNo', res.data.data.info.invitationNo);
-					uni.setStorageSync("auth",result.auth)
-					uni.setStorageSync("userInfo",result.info)
+					uni.setStorageSync("auth", result.auth)
+					uni.setStorageSync("userInfo", result.info)
 					uni.showToast({
-						title:"登录成功",
+						title: "登录成功",
 						success: () => {
 							let that = this
-							setTimeout(function(){
+							setTimeout(function() {
+								console.log('2');
 								if (that.$store.state.url) {
 									let url = that.$store.state.url
-									console.log(url)
+									if(this.goodsDetailNavback()){
+										return
+									}
 									uni.navigateTo({
 										url: url
 									})
 									that.$store.commit('removeUrl')
 								} else {
 									uni.reLaunch({
-										url:"../index/index"
+										url: "../index/index"
 									})
 								}
-							},1000)
+							}, 1000)
 						}
 					})
 				});
 			},
 			// 微信注册 绑定手机号
-			wxRegist(){
+			wxRegist() {
 				var myreg = /^[1][0-9]{10}$/;
 				if (!myreg.test(this.mobile)) {
 					return this.$u.toast("手机格式不正确");
 				}
-				if(!this.mobile){
+				if (!this.mobile) {
 					this.$u.toast("请输入手机号");
 					return
 				}
-				if(!this.sms){
+				if (!this.sms) {
 					this.$u.toast("请输入验证码");
 					return
 				}
 				this.$u.post('/api/v1/users/profile/wx/register', {
-					mobile:this.mobile,
-					sms:this.sms,
-					wxUnionId:this.wxUnionId
+					mobile: this.mobile,
+					sms: this.sms,
+					wxUnionId: this.wxUnionId
 				}).then(res => {
 					console.log(res);
-					if(res.data.code=="FAIL"){
+					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
 					}
 					let result = res.data.data
-					if(result.status==1){
-						uni.setStorageSync("auth",result.auth)
-						uni.setStorageSync("userInfo",result.info)
+					if (result.status == 1) {
+						uni.setStorageSync("auth", result.auth)
+						uni.setStorageSync("userInfo", result.info)
 						uni.showToast({
-							title:"登录成功",
+							title: "登录成功",
 							success: () => {
 								let that = this
-								setTimeout(function(){
+								if(this.goodsDetailNavback()){
+									return
+								}
+								setTimeout(function() {
 									if (that.$store.state.url) {
 										let url = that.$store.state.url
 										console.log(url)
@@ -231,13 +242,13 @@
 										that.$store.commit('removeUrl')
 									} else {
 										uni.reLaunch({
-											url:"../index/index"
+											url: "../index/index"
 										})
 									}
-								},500)
+								}, 500)
 							}
 						})
-					}else{
+					} else {
 						// 去绑定验证码
 						this.bindInvitation()
 					}
@@ -245,23 +256,27 @@
 			},
 			// 微信注册 绑定邀请码
 			bindInvitation() {
+				console.log('this.invitationNo:',this.invitationNo);
 				this.$u.post('/api/v1/users/profile/wx/invitation-wxapp', {
 					wxUnionId: this.wxUnionId,
 					invitationNo: this.invitationNo
 				}).then(res => {
 					console.log(res);
-					if(res.data.code == "FAIL"){
+					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
 					}
 					let result = res.data.data
-					uni.setStorageSync("auth",result.auth)
-					uni.setStorageSync("userInfo",result.info)
+					uni.setStorageSync("auth", result.auth)
+					uni.setStorageSync("userInfo", result.info)
 					uni.showToast({
-						title:"登录成功",
+						title: "登录成功",
 						success: () => {
 							let that = this
-							setTimeout(function(){
+							if(this.goodsDetailNavback()){
+								return
+							}
+							setTimeout(function() {
 								if (that.$store.state.url) {
 									let url = that.$store.state.url
 									console.log(url)
@@ -271,14 +286,25 @@
 									that.$store.commit('removeUrl')
 								} else {
 									uni.reLaunch({
-										url:"../index/index"
+										url: "../index/index"
 									})
 								}
-							},1000)
+							}, 1000)
 						}
 					})
 				});
-			}
+			},
+			goodsDetailNavback() {
+				let pages = getCurrentPages();
+				let prevPage = pages[pages.length - 3]; //刷新上一个页面
+				if (prevPage && prevPage.route === "pages/goodsDetail/goodsDetail") {
+					prevPage.onLoad(prevPage.options)
+					uni.navigateBack({delta: 2})
+					return true
+				} else {
+					return false
+				}
+			},
 		}
 	}
 </script>

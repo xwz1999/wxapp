@@ -16,11 +16,15 @@
 			if(options.dataSrc !== undefined){
 				let data = JSON.parse(decodeURIComponent(options.dataSrc));
 				this.src = data.dataSrc
-			}else{
+			}
+			else if(options.src !== undefined){
+				let data = JSON.parse(decodeURIComponent(options.src));
+				this.src = data
+			}
+			else{
 				this.src = options.src
 				
 			}	
-			console.log(this.src)
 		}
 	}
 </script>

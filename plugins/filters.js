@@ -3,64 +3,69 @@
  *	Diamond2Level = 130    钻二店铺
  *	Diamond3Level = 160    钻三店铺
  *	GoldLevel    = 200    黄金店铺
- *	SilverLevel  = 300    白银店铺
- *	MasterLevel  = 400    店主 
- *	VipLevel     = 500    会员
+ *	SilverLevel  = 2    白银店铺
+ *	MasterLevel  = 1    店主 
+ *	VipLevel     = 0    会员
  * */
 export function roleFilter(roleLevel, format) {
 	let roleText, badge, mineBg, otherBg,levelIcon
 	switch (roleLevel) {
-		case 500:
+		// case 0:
+		// 	// roleText = "会员"
+		// 	// badge = '/wxapp/badge01.png'
+		// 	// mineBg = "/wxapp/mine/role01.png"
+		// 	// otherBg = "/wxapp/role01.jpg"
+		// 	// levelIcon = "/wxapp/level01.png"
+		// 	roleText = "会员"
+		// 	badge = '/wxapp/badge01.png'
+		// 	mineBg = "/wxapp/mine/role00.png"
+		// 	otherBg = "/wxapp/role00.jpg"
+		// 	levelIcon = "/wxapp/level00.png"
+		// 	break;
+		case 0:
 			roleText = "会员"
-			badge = '/badge00.png'
-			mineBg = "/mine/role00.png"
-			otherBg = "/role00.jpg"
-			levelIcon = "/level00.png"
-			break;
-		case 400:
-			roleText = "店主"
 			//  bgImage =   'bg02.png'
-			badge = '/badge01.png'
-			mineBg = "/mine/role01.png"
-			otherBg = "/role01.jpg"
-			levelIcon = "/level01.png"
+			badge = '/wxapp/badge01.png'
+			mineBg = "/wxapp/mine/role01.png"
+			otherBg = "/wxapp/role01.jpg"
+			levelIcon = "/wxapp/level01.png"
 			break;
-		case 300:
-			roleText = "白银店铺"
+		case 1:
+			roleText = "店主"
 			//  bgImage =   'bg03.png'
-			badge = '/badge02.png'
-			mineBg = "/mine/role02.png"
-			otherBg = "/role02.jpg"
-			levelIcon = "/level02.png"
+			badge = '/wxapp/badge02.png'
+			mineBg = "/wxapp/mine/role02.png"
+			otherBg = "/wxapp/role02.jpg"
+			levelIcon = "/wxapp/level02.png"
 			break;
-		case 200:
-			roleText = "黄金店铺"
-			badge = '/badge03.png'
-			mineBg = "/mine/role03.png"
-			otherBg = "/role03.jpg"
-			levelIcon = "/level03.png"
+		// case 200:
+		// 	roleText = "黄金店铺"
+		// 	badge = '/wxapp/badge03.png'
+		// 	mineBg = "/wxapp/mine/role03.png"
+		// 	otherBg = "/wxapp/role03.jpg"
+		// 	levelIcon = "/wxapp/level03.png"
+		// 	break;
+		case 2:
+			roleText = "店铺"
+			badge = '/wxapp/badge04.png'
+			mineBg = "/wxapp/mine/role04.png"
+			otherBg = "/wxapp/role04.jpg"
+			levelIcon = "/wxapp/level04.png"
 			break;
-		case 100:
-			roleText = "钻石店铺"
-			badge = '/badge04.png'
-			mineBg = "/mine/role04.png"
-			otherBg = "/role04.jpg"
-			levelIcon = "/level04.png"
-			break;
-		case 160:
-			roleText = "钻石店铺"
-			badge = '/badge04.png'
-			mineBg = "/mine/role04.png"
-			otherBg = "/role04.jpg"
-			levelIcon = "/level04.png"
-			break;
-		case 130:
-			roleText = "钻石店铺"
-			badge = '/badge04.png'
-			mineBg = "/mine/role04.png"
-			otherBg = "/role04.jpg"
-			levelIcon = "/level04.png"
-			break;
+		// case 160:
+		// 	roleText = "钻石店铺"
+		// 	badge = '/wxapp/badge04.png'
+		// 	mineBg = "/wxapp/mine/role04.png"
+		// 	otherBg = "/wxapp/role04.jpg"
+		// 	levelIcon = "/wxapp/level04.png"
+		// 	break;
+		// case 130:
+		// 	roleText = "钻石店铺"
+		// 	badge = '/wxapp/badge04.png'
+		// 	mineBg = "/wxapp/mine/role04.png"
+		// 	otherBg = "/wxapp/role04.jpg"
+		// 	levelIcon = "/wxapp/level04.png"
+		// 	break;
 		default:
 			break;
 	}

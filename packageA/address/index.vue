@@ -87,7 +87,23 @@
 				});
 			},
 			chooseAddress(item) {
-				if(this.fromPage!="confirmOrder"){
+				if(this.fromPage==="goodsDetail"){
+					// getCurrentPages()[getCurrentPages().length-2].setData({
+					//     selectedAddress:item
+					// });
+					let selectedAddress = []
+					this.siteList.forEach(item=>{
+						if(item.isDefault===1){
+							selectedAddress = item
+						}
+					})
+					getCurrentPages()[getCurrentPages().length-2].setData({
+					    selectedAddress
+					});
+					uni.navigateBack();
+					return
+				}
+				else if(this.fromPage!="confirmOrder"){
 					return
 				}
 				this.upDateOrder(item.id)

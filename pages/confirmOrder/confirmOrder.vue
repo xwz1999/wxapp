@@ -14,7 +14,7 @@
 			</view>
 		</view>
 		<view class="box flex align-center address-box" @tap="toAddressList">
-			<image :src="IMAGE_URL+'/add.png'" style="width: 50rpx;" mode="widthFix"></image>
+			<image :src="IMAGE_URL+'/wxapp/add.png'" style="width: 50rpx;" mode="widthFix"></image>
 			<view class="flex-sub address-con" v-if="preOrderMsg.addr">
 				<view class=""><text class="text-black" style="font-size: 32rpx;margin-right: 15rpx;font-weight: 900;">{{preOrderMsg.addr.receiverName}}</text>{{preOrderMsg.addr.mobile}}</view>
 				<view class="address-detail">{{preOrderMsg.addr.province+preOrderMsg.addr.city+preOrderMsg.addr.district+preOrderMsg.addr.address}}</view>
@@ -37,7 +37,7 @@
 		<view class="box goods-msg-box">
 			<view v-for="(shop,shopIndex) in preOrderMsg.brands" :key="shopIndex">
 				<view class="shop-msg flex align-center">
-					<image :src="IMAGE_URL+shop.brandLogoUrl" style="width: 36rpx;margin-right: 10rpx;" mode="widthFix"></image>
+					<image :src="shop.brandLogoUrl" style="width: 36rpx;margin-right: 10rpx;" mode="widthFix"></image>
 					<view class="">{{shop.brandName}}</view>
 				</view>
 				<order-goods :goodsList="shop.goods"></order-goods>
@@ -49,7 +49,7 @@
 			</view>
 		</view>
 
-		<view class="box coupon-box">
+<!-- 		<view class="box coupon-box">
 			<view class="item flex justify-between">
 				<view class="">优惠券</view>
 				<view class="flex num">-￥0.00<text class="cuIcon-right"></text></view>
@@ -64,18 +64,9 @@
 				<u-switch v-model="preOrderMsg.coinStatus.isUseCoin" :disabled="!canUseMoney" active-color="red"
 				 inactive-color="#F5F5F5" size="36" @change="changeUseCoin"></u-switch>
 			</view>
-			
-			<!-- <view class="item flex justify-between">
-				<view class="">余额</view>
-				<view class="flex-sub flex justify-between" style="padding: 0 20rpx;color: #888;font-size: 24rpx;">
-					<view>可用:￥5.00</view>
-					<view>本次可抵￥5.00</view>
-				</view>
-				<u-switch v-model="useBalance" :disabled="canUseBalance" active-color="red" inactive-color="#F5F5F5" size="36"></u-switch>
-			</view> -->
-		</view>
+		</view> -->
 
-		<view class="box order-msg">
+	<!-- 	<view class="box order-msg">
 			<view class="item flex justify-between">
 				<view class="">商品金额</view>
 				<view class="num">￥{{preOrderMsg.goodsTotalAmount | toFixed(2)}}</view>
@@ -92,15 +83,11 @@
 				<view class="">瑞币抵扣</view>
 				<view class="num">-￥{{preOrderMsg.coinTotalAmount | toFixed(2)}}</view>
 			</view>
-			<!-- <view class="item flex justify-between">
-				<view class="">余额抵扣</view>
-				<view class="num">-￥0.00</view>
-			</view> -->
 			<view class="item flex justify-between">
 				<view class="">实付款</view>
 				<view class="text-red">￥{{preOrderMsg.actualTotalAmount | toFixed(2)}}</view>
 			</view>
-		</view>
+		</view> -->
 		<view class="agree_box" v-if="preOrderMsg.isImport">
 			<u-checkbox-group>
 				<u-checkbox v-model="agree" shape="circle" active-color="red">同意并接受 </u-checkbox><text style="color: #007AFF;"
@@ -119,8 +106,6 @@
 			<block v-else>
 				<button class="cu-btn round text-white" @tap="submitOrder">提交订单</button>
 			</block>
-
-			<!-- &&preOrderMsg.isImport -->
 		</view>
 	</view>
 </template>

@@ -2,9 +2,9 @@
 	<view class="goods-container flex flex-wrap justify-between">
 		<view class="goods-item bg-white" v-for="(item,index) in goodsList" :key="index">
 			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+(situation==3?item.id:item.goodsId)" class="goods-pic bg-img">
-				<u-lazy-load threshold="-100" :image="IMAGE_URL+(situation==2?item.main_photo_url:item.mainPhotoUrl)" :index="index" height="328" :loading-img='IMAGE_URL+"/null05.png"' :error-img='IMAGE_URL+"/null05.png"' img-mode="aspectFill"></u-lazy-load>
+				<u-lazy-load threshold="-100" :image="(situation==2?item.main_photo_url:item.mainPhotoUrl)" :index="index" height="328" :loading-img='IMAGE_URL+"/wxapp/null05.png"' :error-img='IMAGE_URL+"/wxapp/null05.png"' img-mode="aspectFill"></u-lazy-load>
 				<view class="goods-mask flex justify-center" v-if="item.inventory==0">
-					<image :src="STATIC_URL+'sale_out.png'" mode="widthFix"></image>
+					<image :src="IMAGE_URL+'/wxapp/sale_out.png'" mode="widthFix"></image>
 				</view>
 			</navigator>
 			<view class="goods-name-box">
@@ -15,22 +15,22 @@
 				</view>
 			</view>
 			<view class="shop-msg flex align-center" style="margin: 16rpx 0;" @tap.stop="">
-				<view class="shop-logo">
+			<!-- 	<view class="shop-logo">
 					<u-lazy-load threshold="-100" :image="IMAGE_URL+(situation==2?item.brand_logo:item.brandImg)" :index="index"
 						height="30" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill">
 					</u-lazy-load>
-				</view>
+				</view> -->
 				<navigator :url="'/pages/search/search?brandId='+item.brandId" hover-class="none"
 					class="shop-name text-red text-hidden" style="font-size: 24rpx;">{{situation==2?item.brand_name:item.brandName}}
 				</navigator>
 			</view>
 			<view class="ticket-con flex align-center">
 				<view style="position: relative;margin-right: 10rpx;" v-if="item.coupon">
-					<image class="tic-pic" :src="IMAGE_URL+'/tic.png'" mode="heightFix"></image>
+					<image class="tic-pic" :src="IMAGE_URL+'/wxapp/tic.png'" mode="heightFix"></image>
 					<view class="tic-txt text-white">{{item.coupon}}元券</view>
 				</view>
 				<view style="position: relative;" v-if="(situation==2||situation==3)?item.commission:item.commissionDesc">
-					<image class="tic-pic" :src="IMAGE_URL+'/tic2.png'" mode="heightFix"></image>
+					<image class="tic-pic" :src="IMAGE_URL+'/wxapp/tic2.png'" mode="heightFix"></image>
 					<view class="tic-txt text-red">赚{{(situation==2||situation==3)?item.commission:item.commissionDesc}}</view>
 				</view>
 			</view>

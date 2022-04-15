@@ -20,6 +20,9 @@
 				</view>
 				<view class="icon-box flex">
 					<!-- <u-icon name="server-fill"></u-icon> -->
+					<navigator url="/packageA/myShop/teamAdd">
+					<u-icon name="server-fill"></u-icon>
+					</navigator>
 					<u-icon name="scan" @tap="scan"></u-icon>
 				</view>
 			</view>
@@ -68,7 +71,7 @@
 				</view>
 			</scroll-view>
 			<view class="flex flex-direction justify-center align-center" style="width: 100rpx;" @tap="toClassify()">
-				<image :src="IMAGE_URL+'/icon.png'" mode="widthFix"></image>
+				<image :src="IMAGE_URL+'/wxapp/icon.png'" mode="widthFix"></image>
 				<view class="" style="font-size: 22rpx;">分类</view>
 			</view>
 		</view>
@@ -76,7 +79,9 @@
 		<view class="classify-box bg-white flex justify-around">
 			<view class="cla-item text-center" v-for="(item,index) in options" :key="index"
 				@tap="toPage(index,item.page)">
-				<image :src="item.icon" mode="widthFix"></image>
+				<image v-if="index===1" src="/static/pifa/2.png" mode="widthFix"></image>
+				<image v-else-if="index===4" src="/static/pifa/5.jpg" mode="widthFix"></image>
+				<image v-else :src="IMAGE_URL+kingCoinList[index].url" mode="widthFix"></image>
 				<view class="cla-txt">{{item.text}}</view>
 			</view>
 		</view>
@@ -109,7 +114,7 @@
 		<!-- 首页推荐商品列表 -->
 		<view class="recommend-box" v-if="promotion.length!=0">
 			<view class="flex justify-center" style="padding: 20rpx 0;">
-				<image :src="IMAGE_URL+'/rec.png'" style="width: 232rpx;" mode="widthFix"></image>
+				<image :src="IMAGE_URL+'/wxapp/rec.png'" style="width: 232rpx;" mode="widthFix"></image>
 			</view>
 
 			<!-- 活动时间段导航  u-sticky为吸顶-->
@@ -135,22 +140,22 @@
 		<!-- 分享弹出框 -->
 		<u-popup v-model="isShow" mode="bottom" border-radius="15">
 			<view class="share-box flex justify-between">
-<!-- 				<view class="flex-sub flex justify-center">
+								<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" open-type="share">
-						<image class="share-icon" :src="IMAGE_URL + '/mine/wx.png'" mode="widthFix"></image>
+						<image class="share-icon" :src="IMAGE_URL + '/wxapp/mine/wx.png'" mode="widthFix"></image>
 						<view class="txt">微信好友</view>
 					</button>
-				</view> -->
+				</view>
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" @tap="copyLink">
-						<image class="share-icon" :src="IMAGE_URL + '/mine/wx.png'" mode="widthFix"></image>
+						<image class="share-icon" src="../../static/image/share_link.png" mode="widthFix"></image>
 						<view class="txt">复制链接</view>
 					</button>
 				</view>
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" @tap="postShare">
-						<image class="share-icon"  :src="IMAGE_URL + '/mine/post.png'" mode="widthFix"></image>
-						<view class="txt">二维码海报</view>
+						<image class="share-icon" :src="IMAGE_URL + '/wxapp/mine/post.png'" mode="widthFix"></image>
+						<view class="txt">联系客服</view>
 					</button>
 				</view>
 			</view>
@@ -161,7 +166,9 @@
 
 <script>
 	// let calendar = require('@/utils/calendar.js');
-	import {calendar} from '@/utils/calendar.js'
+	import {
+		calendar
+	} from '@/utils/calendar.js'
 	export default {
 		data() {
 			return {
@@ -173,6 +180,7 @@
 				keyword: "",
 				swipers: [],
 				options: [],
+				// 使用getKingCoinList()返回的icon
 				options1: [{
 						text: "瑞库制品",
 						page: "/pages/hotRanking/hotRanking?fromView=ruiku",
@@ -194,36 +202,53 @@
 						icon: this.IMAGE_URL + "/index04.png"
 					},
 					{
-						text: "进口专区",
-						page: "/packageA/abroad/abroad",
+						text: "全部分类",
+						page: "/pages/classify/classify",
 						icon: this.IMAGE_URL + "/index05.png"
 					},
 				],
-				options2: [{
-						text: "我的权益",
-						page: "/pages/myEquity/myEquity",
+				options2: [
+					// {
+					// 	text: "我的权益",
+					// 	page: "/pages/myEquity/myEquity",
+					// 	icon: this.IMAGE_URL + "/index01.png"
+					// },
+
+					// {
+					// 	text: "发现生活",
+					// 	page: "/pages/find/find",
+					// 	icon: this.IMAGE_URL + "/index03.png"
+					// }, {
+					// 	text: "一键邀请",
+					// 	icon: this.IMAGE_URL + "/index02.png"
+					// },
+					{
+						text: "京东优选",
+						page: "/pages/classify/classify?channel=jingdong",
 						icon: this.IMAGE_URL + "/index01.png"
 					},
 
 					{
-						text: "发现生活",
-						page: "/pages/find/find",
+						text: "高佣特推",
+						page: "/pages/ranking/ranking?fromView=gaoyong",
 						icon: this.IMAGE_URL + "/index03.png"
 					}, {
-						text: "一键邀请",
+						text: "特惠专区",
+						page: "/pages/ranking/ranking?fromView=tehui",
 						icon: this.IMAGE_URL + "/index02.png"
 					},
 					{
 						text: "热销榜单",
-						page: "/pages/hotRanking/hotRanking?fromView=rexiao",
+						page: "/pages/ranking/ranking?fromView=rexiao",
 						icon: this.IMAGE_URL + "/index04.png"
 					},
 					{
-						text: "进口专区",
-						page: "/packageA/abroad/abroad",
+						text: "全部分类",
+						page: "/pages/classify/classify",
 						icon: this.IMAGE_URL + "/index05.png"
 					},
 				],
+				kingCoinList: null,
 				posts: null,
 				IMAGE_URL: this.IMAGE_URL,
 				promotionId: null,
@@ -278,7 +303,7 @@
 			if (uni.getStorageSync("userInfo").roleLevel) {
 				this.roleLevel = uni.getStorageSync("userInfo").roleLevel
 			}
-			if (this.roleLevel == 500) {
+			if (this.roleLevel !== 500) {
 				this.options = this.options1
 			} else {
 				this.options = this.options2
@@ -287,6 +312,7 @@
 			this.getCateList()
 			this.getPost()
 			this.getActivity()
+			this.getKingCoinList()
 		},
 		methods: {
 			// 子组件分享按钮 获取分享内容 打开分享面板
@@ -297,22 +323,23 @@
 			hideModel() {
 				this.isShow = false
 			},
-		// 复制链接
-		copyLink() {
-			const that = this
-			let url = `${this.H5_BASE_URL}/#/user/appRegister/${this.$store.state.invitationNo}`
-			uni.setClipboardData({
-				data: url,
-				success: function() {
-					console.log('success');
-					that.hideModel()
-				}
-			});
-		},
+			// 复制链接
+			copyLink() {
+				const that = this
+				let url = `${this.H5_BASE_URL}/#/user/appRegister/${this.$store.state.invitationNo}`
+				uni.setClipboardData({
+					data: url,
+					success: function() {
+						console.log('success');
+						that.hideModel()
+					}
+				});
+			},
 			// 分享海报
 			postShare() {
 				uni.navigateTo({
-					url: '/packageA/postShare/postShare'
+					// url: '/packageA/postShare/postShare'
+						url: "/packageA/myShop/teamAdd"
 				})
 			},
 			// 获取用户当前城市
@@ -387,11 +414,11 @@
 						return
 					}
 					this.weatherMsg = JSON.parse(res.data.data)
-					this.$set(this.weatherMsg,'date',this.weatherMsg.date.replace(/-/g,'.'))
+					this.$set(this.weatherMsg, 'date', this.weatherMsg.date.replace(/-/g, '.'))
 					// 日期转农历格式
-					let cur_date = this.weatherMsg.date.split('.')				
+					let cur_date = this.weatherMsg.date.split('.')
 					let lunarDetail = calendar.solar2lunar(cur_date[0], cur_date[1], cur_date[2])
-					this.lunarDate = lunarDetail.gzYear + "年"+ lunarDetail.IMonthCn + lunarDetail.IDayCn
+					this.lunarDate = lunarDetail.gzYear + "年" + lunarDetail.IMonthCn + lunarDetail.IDayCn
 				});
 			},
 
@@ -415,6 +442,19 @@
 						item.url = this.IMAGE_URL + item.url
 					})
 					this.bgImage = this.swipers[0].url
+				});
+			},
+			getKingCoinList() {
+				this.$u.post('/api/v2/app/aku_school/king_coin_list').then(res => {
+					// console.log(res.data);
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.kingCoinList = res.data.data
+					if (this.roleLevel !== 500) {
+						this.kingCoinList = this.kingCoinList.slice(4, 9)
+					}
 				});
 			},
 			// 获取三个特卖入口图片
@@ -473,75 +513,84 @@
 						this.$u.toast(res.data.msg);
 						return
 					}
-					this.cateList = res.data.data
-					for (let i = 0; i < this.cateList.length; i++) {
-						switch (this.cateList[i].name) {
+					let cateList = res.data.data
+					for (let i = 0; i < cateList.length; i++) {
+						switch (cateList[i].name) {
 							case "分类":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon.png"
 								break;
 							case "医疗保健":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon01.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon01.png"
 								break;
 							case "休闲美食":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon02.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon02.png"
 								break;
 							case "美妆护肤":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon03.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon03.png"
 								break;
 							case "母婴用品":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon04.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon04.png"
 								break;
 							case "鞋靴箱包":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon05.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon05.png"
 								break;
 							case "图文教育":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon06.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon06.png"
 								break;
 							case "个护清洁":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon07.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon07.png"
 								break;
 							case "服饰内衣":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon08.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon08.png"
 								break;
 							case "日用百货":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon09.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon09.png"
 								break;
 							case "家用电器":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon10.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon10.png"
 								break;
 							case "有机食品":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon11.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon11.png"
 								break;
 							case "家具饰品":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon12.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon12.png"
 								break;
 							case "进口专区":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon13.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon13.png"
 								break;
 							case "会员专享":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon14.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon14.png"
 								break;
 							case "手机数码":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon15.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon15.png"
 								break;
 							case "柴米油盐":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon16.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon16.png"
 								break;
 							case "运动旅行":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon17.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon17.png"
 								break;
 							case "蔬果生鲜":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon18.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon18.png"
 								break;
 							case "酒饮冲调":
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon19.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon19.png"
 								break;
 							default:
-								this.cateList[i].icon = this.IMAGE_URL + "/index/icon19.png"
+								cateList[i].icon = this.IMAGE_URL + "/wxapp/index/icon19.png"
 								break;
 						}
 
 					}
+					['个护清洁','柴米油盐'].forEach(ii=>{						
+						cateList.forEach((item, i) => {
+							if (item.name === ii) {
+								cateList.splice(i, 1)
+								cateList.splice(0, 0, item)
+							}
+						})
+					})
+					this.cateList = cateList
 				});
 			},
 			// 获取首页抢购活动商品列表
@@ -616,7 +665,7 @@
 			// 跳转webview网页
 			toWebview(src) {
 				uni.navigateTo({
-					url: '/pages/webview/webview?src=' + src
+					url: '/pages/webview/webview?src=' + encodeURIComponent(JSON.stringify(src))
 				})
 			},
 			// 跳转城市索引页面
@@ -657,13 +706,22 @@
 							})
 							return;
 						case 1:
-							uni.switchTab({
+							uni.navigateTo({
 								url: url
 							})
 							return;
 						case 2:
-							this.isShow = true
-							break;
+							// this.isShow = true
+							// break;
+							uni.navigateTo({
+								url: url
+							})
+							return;
+						case 3:
+							uni.navigateTo({
+								url: url
+							})
+							return;
 						default:
 							break;
 					}
@@ -716,7 +774,7 @@
 			// 		}
 			// 	} else {
 			// 		shareObj = {
-			// 			title: uni.getStorageSync("userInfo").nickname + '正在邀请您加入瑞库客，0成本带您玩转副业',
+			// 			title: uni.getStorageSync("userInfo").nickname + '正在邀请您加入左家右厨，0成本带您玩转副业',
 			// 			path: '/pages/login/login?type=share&invite=' + this.$store.state.invitationNo,
 			// 			imageUrl: this.STATIC_URL + 'invite.jpg'
 			// 		}

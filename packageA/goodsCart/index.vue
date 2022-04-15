@@ -6,7 +6,7 @@
 		<view class="" v-else>
 			<template v-if="cartGoods.length==0">
 				<view class="flex flex-direction justify-center align-center" style="width: 100vw;height:80vh;">
-					<image :src="STATIC_URL+'null02.png'" style="width: 300rpx;" mode="widthFix"></image>
+					<image :src="IMAGE_URL+'/wxapp/null02.png'" style="width: 300rpx;" mode="widthFix"></image>
 					<view class="text-center" style="color: #AAAAAA;font-size: 26rpx;margin-top: 10rpx;">购物车空了,快去逛逛吧~</view>
 				</view>
 			</template>
@@ -20,7 +20,7 @@
 					<view class="cart-shop-item bg-white" v-for="(shop,shopIndex) in cartGoods" :key="shopIndex">
 						<view class="shop-name-box flex align-center">
 							<text :class="shop.shopChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkShop(shopIndex)"></text>
-							<image class="shop-logo" :src="IMAGE_URL+shop.brandLogo" mode="widthFix"></image>
+							<!-- <image class="shop-logo" :src="IMAGE_URL+shop.brandLogo" mode="widthFix"></image> -->
 							<view class="shop-name">{{shop.brandName}}</view>
 						</view>
 						<view class="cart-goods-box">
@@ -29,7 +29,7 @@
 									<text :class="goods.goodsChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkGoods(shopIndex,goodsIndex)"></text>
 								</view>
 								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId" class="cart-goods-pic">
-									<u-lazy-load threshold="-100" :image="IMAGE_URL+goods.mainPhotoUrl" :index="index" :loading-img="IMAGE_URL + '/null05.png'"  height="200" border-radius="10" :error-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+									<u-lazy-load threshold="-100" :image="goods.mainPhotoUrl" :index="index" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  height="200" border-radius="10" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 								</navigator>
 								<view class="cart-goods-msg flex-sub">
 									<view class="msg-top flex flex-direction justify-between clear align-start">
@@ -88,7 +88,6 @@
 				allChecked: false,
 				cartGoods: [],
 				IMAGE_URL: this.IMAGE_URL,
-				STATIC_URL:this.STATIC_URL,
 				isEdit: false,
 				totalPrice: 0,
 				totalNum: 0,
@@ -267,10 +266,14 @@
 					this.$u.toast("至少选择一件商品");
 					return
 				}
-				this.$u.post('/api/v1/order_preview/shopping_trolley/create', {
+				let data = {
 					userId: uni.getStorageSync("userInfo").id,
 					ids: this.selectGoodsIds
-				}).then(res => {
+				}
+				if(uni.getStorageSync("invite")){
+					data.invite =uni.getStorageSync("invite")
+				}
+				this.$u.post('/api/v1/order_preview/shopping_trolley/create',data ).then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);

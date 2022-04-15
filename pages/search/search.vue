@@ -46,6 +46,7 @@
 			return {
 				IMAGE_URL:this.IMAGE_URL,
 				keyword: "",
+				channel:null,
 				goodsList: [],
 				cate_id: null,
 				page: 0,
@@ -81,6 +82,9 @@
 			if (options.keyword) {
 				this.keyword = options.keyword
 			}
+			if (options.channel && options.channel == 'jingdong') {
+				this.channel = options.channel
+				}
 			this.getGoodsList()
 		},
 		methods: {
@@ -130,7 +134,7 @@
 				this.loadStatus = "loading"
 				let sendData = {
 					order: this.order,
-					page: this.page,
+					page: this.page
 				}
 				this.page++
 				if (this.brandId) {
@@ -142,6 +146,10 @@
 				if (this.cate_id) {
 					sendData.SecondCategoryID = this.cate_id
 				}
+				if(this.channel){
+					sendData.kind = 1
+				}
+				console.log(this.requestUrl, sendData)
 				this.$u.post(this.requestUrl, sendData).then(res => {
 					console.log(res.data);
 					if (res.data.code == "FAIL") {

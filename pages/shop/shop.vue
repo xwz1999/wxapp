@@ -495,7 +495,7 @@
 		},
 		onShareAppMessage(res) {
 			let shareObj = {
-				title: uni.getStorageSync('userInfo').nickname+'正在邀请您加入瑞库客，0成本带您玩转副业',
+				title: uni.getStorageSync('userInfo').nickname+'正在邀请您加入左家右厨，0成本带您玩转副业',
 				path: '/pages/login/login?type=share&invite=' + this.$store.state.invitationNo,
 				imageUrl: this.STATIC_URL + 'invite.jpg'
 			}

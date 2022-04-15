@@ -93,14 +93,14 @@
 						<view class="">运费</view>
 						<view class="">+￥{{orderDetail.expressTotalFee | toFixed(2)}}</view>
 					</view>
-					<view class="item flex justify-between">
+				<!-- 	<view class="item flex justify-between">
 						<view class="">优惠券</view>
 						<view class="">-￥{{(orderDetail.universeCouponTotalAmount+orderDetail.brandCouponTotalAmount) | toFixed(2)}}</view>
 					</view>
 					<view class="item flex justify-between">
 						<view class="">瑞币抵扣</view>
 						<view class="">-￥{{orderDetail.coinTotalAmount | toFixed(2)}}</view>
-					</view>
+					</view> -->
 				</view>
 				<view class="item flex justify-between" style="border-top: 1rpx solid #f1f1f1;font-size: 30rpx;line-height: 80rpx;">
 					<view class="text-black">实付款</view>

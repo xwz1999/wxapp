@@ -67,7 +67,9 @@ const install = (Vue, vm) => {
 			console.log("响应拦截")
 			uni.clearStorageSync()
 			vm.$u.toast(res.data);
-			setTimeout(() => {
+			let t =0
+			clearTimeout(t)
+			t = setTimeout(() => {
 				vm.$u.route('/pages/login/login')
 			}, 1500)
 			return false;

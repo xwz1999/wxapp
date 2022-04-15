@@ -51,8 +51,8 @@
 					success: function(res) {
 						if (res.confirm) {
 							uni.clearStorageSync()
-							uni.reLaunch({
-								url: "../login/login"
+							uni.navigateTo({
+								url: "/pages/login/login"
 							})
 							console.log('用户点击取消');
 						} else if (res.cancel) {

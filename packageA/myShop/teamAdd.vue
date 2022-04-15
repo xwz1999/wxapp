@@ -1,19 +1,14 @@
 <template>
 	<view class="">
-		<view class="swiper-dot flex justify-center align-center">
-			<view class="dot" :class="current===index?'color':''" v-for="index in imgUrlArr.length" :key='index'>
-			</view>
-		</view>
-		<!-- 轮播图 -->
-		<swiper class="swiper-box" :circular="true" interval="5000" duration="500" :current="current" @change="changeCurrent">
-			<!-- v-for="(item,index) in swipers" :key="index" @tap="toDeitail(item.goodsId,item.activityUrl)" -->
-			<swiper-item class="flex align-center" v-for="(item,index) in imgUrlArr" :key='index' >
-				<image :src="item" mode="widthFix"></image>
-			</swiper-item>
-			
-		</swiper>
+	<image class="wx_code" :src="IMAGE_URL+'/wxapp/jyy-service.jpeg'" ></image>
+	<view class="wx_code_tip">扫描二维码联系客服</view>
+	<view class="wx_number">
+		<text :decode="true" style="font-size: 14px;color: #333333;">微信号&nbsp;&nbsp;&nbsp;</text>
+		<text :decode="true" style="font-size: 16px;font-weight: 500;color: #333333;margin:10px;">jyy123456&nbsp;&nbsp;&nbsp;&nbsp;</text>
+		<text style="font-size: 14px;color: #2F82E5;">复制</text>
+	</view>
 		<view class="save-btn flex align-center">
-			<view class="btn" @click='save'>保存图片到相册</view>
+			<view class="btn" @click='save'>保存二维码到相册</view>
 		</view>
 	</view>
 </template>
@@ -22,32 +17,13 @@
 	export default {
 		data() {
 			return {
-				current: 0,
-				imgUrlArr:[],
-				imgUrl:'',
+				IMAGE_URL: this.IMAGE_URL,
 				invitationNo:this.$store.state.invitationNo
 			}
 		},
 		mounted() {
-			this.getData()
-			console.log(this.invitationNo)
 		},
 		methods: {
-			changeCurrent(e) {
-				this.current = e.detail.current
-			
-				console.log(e)
-			},
-			getData(){
-				this.$u.get(`/api/v1/shop/share_photo/${this.invitationNo}`).then(res => {
-					console.log(res)
-					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
-						return
-					}
-					this.imgUrlArr = res.data.data
-				})
-			},
 			//点击保存图片
 			save() {
 				let that = this
@@ -113,27 +89,18 @@
 
 
 <style scoped lang="scss">
-
-	.swiper-dot {
-		height: 80rpx;
-		line-height: 80rpx;
-		.dot {
-			width: 20rpx;
-			height: 20rpx;
-			border-radius: 50%;
-			background: #FFFFFF;
-			margin: 0 30rpx;
-			border: 2rpx solid #F43F3B;
-			&.color{
-				background: #F43F3B;
-			}
-		}
+	.wx_code{
+		width: 200px;
+		height: 200px;
+		margin: 60px auto 0;
+		border: red solid 1px;
 	}
-
-	.swiper-box {
-		margin: 0 10%;
-		height: calc(100vh - 200rpx);
-		overflow: hidden;
+	.wx_code_tip{
+		color:#D5101A;font-size: 12px;width: fit-content;margin: 10px auto;
+	}
+	.wx_number{
+		    margin: 30px auto;
+		  width: fit-content;
 	}
 	.save-btn {
 		margin-top: 40rpx;
@@ -141,12 +108,12 @@
 		height: 80rpx;
 	
 		box-shadow: 0 0 10rpx 1rpx #f1f1f1;
-		background: #FFFFFF;
+		// background: #FFFFFF;
 		.btn {
 			width: 100%;
-			height: 60rpx;
-			line-height: 60rpx;
-			border-radius: 30rpx;
+			    height: 80rpx;
+			    line-height: 80rpx;
+			    border-radius: 40rpx;
 			color: #FFFFFF;
 			text-align: center;
 			background: #F43F3B;

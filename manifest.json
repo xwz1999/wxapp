@@ -1,5 +1,5 @@
 {
-    "name" : "recook",
+    "name" : "recook-jyy",
     "appid" : "__UNI__6741C42",
     "description" : "",
     "versionName" : "1.0.0",
@@ -32,9 +32,9 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wxf95835be72b5373c",
+        "appid" : "wxefdf3cdd5032af83",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : true
         },
         "usingComponents" : true,
         "permission" : {

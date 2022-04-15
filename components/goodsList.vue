@@ -4,11 +4,13 @@
 		<view class="goods-item" v-for="(item,index) in goodsList" :key="index" @tap="situation==1?selectGoods(item):goPage(item.goodsId)">
 			<navigator hover-class="none" class="goods-item-con bg-white flex justify-between">
 				<view class="goods-pic clear" v-if="situation==2?item.main_photo_url:item.mainPhotoUrl">
-					<u-lazy-load threshold="-100" :image="IMAGE_URL+(situation==2?item.main_photo_url:item.mainPhotoUrl)" :index="index" height="260"
-						border-radius="10" :loading-img="IMAGE_URL + '/null05.png'"
-						:error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill"></u-lazy-load>
+					<u-lazy-load threshold="-100" 
+					:image="situation==2?((item.main_photo_url).substr(0,4)==='http'?item.main_photo_url:(IMAGE_URL+item.main_photo_url)):((item.mainPhotoUrl).substr(0,4)==='http'?item.mainPhotoUrl:(IMAGE_URL+item.mainPhotoUrl))" 
+					:index="index" height="260"
+						border-radius="10" :loading-img="IMAGE_URL + '/wxapp/null05.png'"
+						:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill"></u-lazy-load>
 					<view class="goods-mask flex justify-center" v-if="item.inventory==0">
-						<image :src="STATIC_URL+'sale_out.png'" mode="widthFix"></image>
+						<image :src="IMAGE_URL+'/wxapp/sale_out.png'" mode="widthFix"></image>
 					</view>
 				</view>
 				<view class="goods-msg flex-sub clear flex flex-direction justify-between">
@@ -17,8 +19,10 @@
 						<view class="" style="flex: 1;">
 							<view class="goods-name two-line">
 								<image v-if="item.isImport" :src="IMAGE_URL+item.country_icon"></image>
-								<image v-else-if=country_icon :src="IMAGE_URL+country_icon" ></image>
-								<text>{{situation==2?item.goods_name:item.goodsName}}</text>
+								<image v-else-if="country_icon" :src="IMAGE_URL+country_icon" ></image>
+								<u-tag v-else-if="item.gys_id===1800" text="京东自营" size="mini" bgColor="#D5101A" color="#fff"></u-tag>
+								<u-tag v-else-if="item.gys_id===2000" text="京东POP" size="mini" bgColor="#D5101A" color="#fff"></u-tag>
+								<text style="word-break: break-all;">{{situation==2?item.goods_name:item.goodsName}}</text>
 							</view>
 							<view class="goods-key-box text-hidden">{{item.description}}</view>
 						</view>
@@ -26,11 +30,11 @@
 					</view>
 					<view class="goods-msg-bottom" style="font-size: 24rpx;">
 						<view class="shop-msg flex align-center" style="margin: 16rpx 0;" @tap.stop="">
-							<view class="shop-logo">
+						<!-- 	<view class="shop-logo">
 								<u-lazy-load threshold="-100" :image="IMAGE_URL+(situation==2?item.brand_logo:item.brandImg)" :index="index"
 									height="30" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill">
 								</u-lazy-load>
-							</view>
+							</view> -->
 							<navigator :url="'/pages/search/search?brandId='+item.brandId" hover-class="none"
 								class="shop-name text-red text-hidden" style="font-size: 24rpx;">{{situation==2?item.brand_name:item.brandName}}
 							</navigator>
@@ -38,12 +42,12 @@
 						<view class="ticket-box flex justify-between align-center" style="margin-bottom: 5rpx;">
 							<view class="ticket-con flex align-center">
 								<view style="position: relative;margin-right: 10rpx;" v-if="item.coupon">
-									<image class="tic-pic" :src="IMAGE_URL+'/tic.png'" mode="heightFix"></image>
+									<image class="tic-pic" :src="IMAGE_URL+'/wxapp/tic.png'" mode="heightFix"></image>
 									<view class="tic-txt text-white">{{item.coupon}}元券</view>
 								</view>
 								<view style="position: relative;" v-if="situation==2?item.commission:item.commissionDesc&&!hideShareBtn">
-									<image class="tic-pic" :src="IMAGE_URL+'/tic2.png'" mode="heightFix"></image>
-									<view class="tic-txt text-red">赚{{situation==2?item.commission:item.commissionDesc}}</view>
+									<image class="tic-pic" :src="IMAGE_URL+'/wxapp/tic2.png'" mode="heightFix"></image>
+									<!-- <view class="tic-txt text-red">赚{{situation==2?item.commission:item.commissionDesc}}</view> -->
 								</view>
 							</view>
 							<view style="color: #666;">已售{{situation==2?item.salesVolume:item.totalSalesVolume}}件</view>

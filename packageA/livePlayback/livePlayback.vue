@@ -44,7 +44,7 @@
 				<view class="cuIcon-close" style="font-size: 48rpx;color: white;" @tap="back"></view>
 			</view>
 
-			<live-player v-if="isLive" class="video flex-sub" :src="videoDetail.playUrl"
+			<live-player v-if="isLive" class="video flex-sub" :src="videoDetail.playUrl" object-fit="fillCrop"
 				style="position: fixed;z-index: 10;" :style="screenWidth?('width:'+screenWidth+'px;height:'+screenHeight+'px;'):''" @statechange="statechange" @click="setFullScreen" mode="RTC"
 				autoplay>
 			</live-player>
@@ -105,7 +105,7 @@
 						<text class="name" style="min-width: 70px;">
 							系统消息:
 						</text>
-						欢迎来到直播间，瑞库克禁止未成年人进行直播，请大家共同遵守、监督。直播间内严谨出现违法违规、低俗色情、吸烟酗酒等内容，如有违规行为请及时举报。请大家注意财产安全，谨防网络诈骗。
+						欢迎来到直播间，左家右厨禁止未成年人进行直播，请大家共同遵守、监督。直播间内严禁出现违法违规、低俗色情、吸烟酗酒等内容，如有违规行为请及时举报。请大家注意财产安全，谨防网络诈骗。
 					</view>
 					<view class="chatContent" :id="'item' + index" v-for="(item, index) in contentList "
 						:class="item.type === 1 ? 'join' : '' " :key='index'>
@@ -122,7 +122,7 @@
 					@confirm="toSend" />
 				<image :src="IMAGE_URL + '/shop/more.png'" style="width: 60rpx;" mode="widthFix"
 					@click="isClear = true"></image>
-				<button open-type="share" style="background: none;">
+				<button class="noStyleButton" open-type="share">
 					<image :src="IMAGE_URL + '/share.png'" style="width: 60rpx;" mode="widthFix"></image>
 				</button>
 				<image :src="IMAGE_URL + '/love.png'" style="width: 60rpx;margin-right: 20px;" @click="thumbsUp"
@@ -206,7 +206,7 @@
 					<text>清屏</text>
 				</view>
 				<view class="flex flex-direction align-center" @click='report' style="margin-left: 20px;">
-					<view class="cuIcon-delete" style="font-size: 20px;margin-bottom: 5px;"></view>
+					<view class="cuIcon-warn" style="font-size: 20px;margin-bottom: 5px;"></view>
 					<text>举报</text>
 				</view>
 			</view>
@@ -271,7 +271,7 @@
 				tim: '',
 				IMAGE_URL: this.IMAGE_URL,
 				id: 0,
-				videoDetail: null,
+				videoDetail: [],
 				isShow: false, // 商品显示
 				isClear: false, // 更多功能 清屏
 				isReport:false,// 举报弹窗
@@ -316,6 +316,9 @@
 			    }
 			});
 			wx.hideShareMenu()
+			wx.setNavigationBarRightButton({
+				hide:true
+			})
 			console.log(options)
 			if (options.id) {
 				this.id = parseInt(options.id)
@@ -734,11 +737,17 @@
 				// }).catch(function(imError) {
 				//   console.warn('logout error:', imError)
 				// })
+				if(getCurrentPages().length>1){
 				uni.navigateBack()
+					return
+				}
+				uni.reLaunch({
+					url:'/pages/index/index'
+				})
 			},
 			toUserHomePage(id, isFollow) {
 				uni.navigateTo({
-					url: "/pages/userHomePage/userHomePage?userId=" + id + "&isFollow=" + isFollow
+					url: "/packageA/userHomePage/userHomePage?userId=" + id + "&isFollow=" + isFollow
 				})
 			},
 			toGoodsDetail(id) {
@@ -781,7 +790,7 @@
 					}).then(res => {
 						console.log(res);
 					});
-				}, 1000)
+				}, 100)
 			},
 			// 点赞动画
 			likeClick() {
@@ -906,6 +915,9 @@
 
 			// 判断头像
 			judgeCover(val) {
+				if(!val){
+					return
+				}
 				let arr = val.split('/')
 				if (arr[0] === 'http:' || arr[0] === 'https:') {
 					return val
@@ -919,7 +931,7 @@
 			// 分享
 			onShareAppMessage(res) {
 				return {
-					title: "好友" + this.videoDetail.nickname + "正在瑞库客直播,快来看看吧！",
+					title: "好友" + this.videoDetail.nickname + "正在左家右厨直播,快来看看吧！",
 					path: '/packageA/livePlayback/livePlayback?id=' + this.id + "&isLive=" + this.isLive,
 					imageUrl: this.IMAGE_URL + this.videoDetail.headImgUrl
 				}
@@ -929,6 +941,12 @@
 </script>
 
 <style lang="scss">
+	.noStyleButton{
+		background: none;		
+	}
+	.noStyleButton::after{
+	  border: none;
+	}
 	.red {
 		color: red;
 	}
