@@ -3,7 +3,7 @@
 		<!-- <view v-if="type !== 'share'" style="position: absolute; top: 25px; right: 16px;" @tap="toMobileLogin">手机号登录</view> -->
 		<view class="logo-box flex flex-direction align-center">
 			<image :src="IMAGE_URL+'/wxapp/jyy.png'" mode="widthFix"></image>
-			<view class="">跟着英子去开店</view>
+			<view class="">数字化批发零售服务平台</view>
 		</view>
 		<view class="btn-box">
 			<view class="text-center" style="font-size: 24rpx;color: #999;margin-top: 20rpx;">

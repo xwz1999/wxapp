@@ -1,5 +1,9 @@
 <template>
 	<view>
+		<view class="back" @tap="back">
+			<text class="cuIcon-home" v-if="type=='share'"></text>
+			<text class="cuIcon-back" v-else></text>
+		</view>
 		<view class="top" :style="'background-image:url('+IMAGE_URL+'/wxapp/vip/3.png);'">
 			<view class="box" :style="'background-image:url('+IMAGE_URL+'/wxapp/vip/2.png);'">
 				<image class="l" :src="IMAGE_URL+'/wxapp/vip/1.png'" mode="widthFix" />
@@ -41,7 +45,7 @@
 							{{i.sku_name.slice(-2)}}
 						</view>
 						<view class="price">
-							<span class="unit">¥</span>{{i.discount_price}}
+							<span class="unit">¥</span>{{i.discount_price}}<span class="unit">/{{['月','季','年'][I]}}</span>
 						</view>
 						<view class="discount" :style="i.coupon?'':'visibility: hidden;'">
 							原价¥{{i.discount_price+i.coupon}}
@@ -56,7 +60,7 @@
 			<view class="notify">
 				<image class="icon" :src="IMAGE_URL+'/wxapp/vip/12.png'" mode="widthFix" />
 				<view class="n1">安心保障｜</view>
-				<view>不自动续费 无任何附带扣费项目 无广告无插件</view>
+				<view class="n2">不自动续费 无任何附带扣费项目 无广告无插件</view>
 			</view>
 		</view>
 	</view>
@@ -67,6 +71,7 @@
 		data() {
 			return {
 				IMAGE_URL: this.IMAGE_URL,
+				type: null,
 				list: [{
 						title: '底价批发',
 						text: 'VIP店铺可享受平台数字化底价批发进货的权益。线上进货，各大品牌随你挑选，想进多少货你说了算。最低一件起批，避免囤货压资金；打破线下五公里生活圈的地域壁垒；不再受品牌授权期限制约；没有年采购 销售指标考核',
@@ -121,12 +126,27 @@
 				this.$store.commit('setinvite', options.invite);
 				uni.setStorageSync("invite", options.invite)
 			}
+			if (options.type) {
+				this.type = options.type
+			}
 			this.initData()
 		},
 		methods: {
 			async initData() {
 				this.vipList = (await this.$u.post("/api/v2/app/vip/goods")).data.data
-				this.vipIsUsed =  (await this.$u.post("/api/v2/app/vip/is_used")).data.data.is_used
+				this.vipIsUsed = (await this.$u.post("/api/v2/app/vip/is_used")).data.data.is_used
+				if (this.vipIsUsed) {
+					this.vipSel = 0
+				}
+			},
+			back() {
+				if (this.type == "share") {
+					uni.switchTab({
+						url: "/pages/index/index"
+					})
+				} else {
+					uni.navigateBack()
+				}
 			},
 			confirm() {
 				if (this.vipSel === -1) {
@@ -150,9 +170,9 @@
 				}
 				let SkuID = this.vipList[this.vipSel].sku_id
 				let SkuName = this.vipList[this.vipSel].sku_name
-				this.createOrder(SkuID,SkuName)
+				this.createOrder(SkuID, SkuName)
 			},
-			createOrder(SkuID,SkuName) {
+			createOrder(SkuID, SkuName) {
 				let sendData = {
 					UserID: uni.getStorageSync("userInfo").id,
 					SkuID,
@@ -163,35 +183,85 @@
 					if (uni.getStorageSync("invite")) {
 						sendData.invite = uni.getStorageSync("invite")
 					}
+
 					// 此时创建普通订单预览
-					console.log('/order_preview/create:',sendData);
+					console.log('/order_preview/create:', sendData);
 					this.$u.post('/api/v1/order_preview/create', sendData).then(res => {
 						if (res.data.code == "FAIL") {
 							this.$u.toast(res.data.msg);
 							return
 						}
-					this.$u.post('/api/v1/order/submit', {
-						userId: uni.getStorageSync("userInfo").id,
-						previewOrderId: res.data.data.id
-					}).then(res1 => {
-						console.log(res1.data);
-						if (res1.data.code == "FAIL") {
-							this.$u.toast(res1.data.msg, 2000);
-							return
-						}
-						let orderDetail = res1.data.data
-						let msg = res1.data.msg
-						// this.$store.commit('setOrderDetail',orderDetail);
-						//提交成功
-						uni.redirectTo({
-							url: "../orderPay/orderPay?orderId=" + orderDetail.id,
-							// url: "../orderDetail/orderDetail?orderId=" + orderDetail.id,
-							success: (res2) => {
-								this.$u.toast(msg);
+						this.$u.post('/api/v1/order/submit', {
+							userId: uni.getStorageSync("userInfo").id,
+							previewOrderId: res.data.data.id
+						}).then(res1 => {
+							console.log(res1.data);
+							if (res1.data.code == "FAIL") {
+								this.$u.toast(res1.data.msg, 2000);
+								return
 							}
-						})
-					});
+							this.$u.post('/api/v1/pay/wxminipay/order/create', {
+								userId: uni.getStorageSync("userInfo").id,
+								orderId: res1.data.data.id,
+								// wxType:"recook-weapp"
+							}).then(res2 => {
+								console.log(res2);
+								if (res2.data.code == "FAIL") {
+									this.$u.toast(res2.data.msg);
+									return
+								}
+								let result = res2.data.data
+								wx.requestPayment({
+									timeStamp: result.timestamp,
+									nonceStr: result.noncestr,
+									package: result.package,
+									signType: 'MD5',
+									paySign: result.sign,
+									success: (res3) => {
+										console.log(res3)
+										this.$u.toast('支付完成！', 2000);
+									},
+									fail: (err) => {
+										console.log(err)
+										this.$u.toast('支付失败！', 2000);
+										// this.$u.toast(err);
+									}
+								})
+
+							});
+
+
+						});
 					})
+					// 此时创建普通订单预览
+					// 			console.log('/order_preview/create:',sendData);
+					// 			this.$u.post('/api/v1/order_preview/create', sendData).then(res => {
+					// 				if (res.data.code == "FAIL") {
+					// 					this.$u.toast(res.data.msg);
+					// 					return
+					// 				}
+					// 			this.$u.post('/api/v1/order/submit', {
+					// 				userId: uni.getStorageSync("userInfo").id,
+					// 				previewOrderId: res.data.data.id
+					// 			}).then(res1 => {
+					// 				console.log(res1.data);
+					// 				if (res1.data.code == "FAIL") {
+					// 					this.$u.toast(res1.data.msg, 2000);
+					// 					return
+					// 				}
+					// 				let orderDetail = res1.data.data
+					// 				let msg = res1.data.msg
+					// 				// this.$store.commit('setOrderDetail',orderDetail);
+					// 				//提交成功
+					// 				uni.redirectTo({
+					// 					url: "../orderPay/orderPay?orderId=" + orderDetail.id,
+					// 					// url: "../orderDetail/orderDetail?orderId=" + orderDetail.id,
+					// 					success: (res2) => {
+					// 						this.$u.toast(msg);
+					// 					}
+					// 				})
+					// 			});
+					// })
 				} else {
 					this.$u.toast("游客无法使用该功能，请登录");
 					let pages = getCurrentPages();
@@ -214,6 +284,20 @@
 </script>
 
 <style lang="scss">
+	.back {
+		position: absolute;
+		top: 80rpx;
+		left: 30rpx;
+		width: 80rpx;
+		height: 80rpx;
+		line-height: 80rpx;
+		text-align: center;
+		color: #FFFFFF;
+		border-radius: 50%;
+		font-size: 40rpx;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: 1000;
+	}
 	.top {
 		height: 300px;
 		padding-top: 92px;
@@ -333,11 +417,11 @@
 
 					.price {
 						margin: 12px 6px 6px;
-						font-size: 16px;
+						font-size: 24px;
 						font-family: MiSans-Semibold, MiSans;
 						font-weight: 600;
 						color: #C29761;
-
+						white-space: nowrap;
 						.unit {
 							font-size: 12px;
 						}
@@ -348,6 +432,7 @@
 						font-size: 10px;
 						font-weight: 400;
 						color: #999999;
+						text-decoration:line-through;
 					}
 
 					.calculate {
@@ -410,6 +495,10 @@
 				font-size: 14px;
 				font-weight: 500;
 				color: #278022;
+				white-space: nowrap;
+			}
+			.n2{
+				white-space: nowrap;
 			}
 		}
 
