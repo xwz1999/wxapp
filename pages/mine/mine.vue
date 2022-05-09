@@ -327,7 +327,7 @@
 		</view>
 		<view class="" v-else>
 			<view class="logo-box">
-				<image :src="IMAGE_URL+'/wxapp/jyy.png'" mode="widthFix"></image>
+				<image :src="IMAGE_URL+'/wxapp/recookLogo.png'" mode="widthFix"></image>
 			</view>
 			<view class="login-btn">
 				<view class="" @click="toLogin">

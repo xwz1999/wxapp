@@ -2,7 +2,7 @@
 	<view>
 		<!-- <view v-if="type !== 'share'" style="position: absolute; top: 25px; right: 16px;" @tap="toMobileLogin">手机号登录</view> -->
 		<view class="logo-box flex flex-direction align-center">
-			<image :src="IMAGE_URL+'/wxapp/jyy.png'" mode="widthFix"></image>
+			<image :src="IMAGE_URL+'/wxapp/recookLogo.png'" mode="widthFix"></image>
 			<view class="">数字化批发零售服务平台</view>
 		</view>
 		<view class="btn-box">
@@ -70,10 +70,10 @@
 				let src = ''
 				switch (index) {
 					case 1:
-						src = 'https://jyycdn.reecook.cn/privacy.html'
+						src = 'https://h5.reecook.cn/privacy.html'
 						break
 					case 2:
-						src = 'https://jyycdn.reecook.cn/protocol.html'
+						src = 'https://h5.reecook.cn/protocol.html'
 						break
 				}
 				uni.navigateTo({

@@ -236,13 +236,44 @@
 					let msg = res.data.msg
 					// this.$store.commit('setOrderDetail',orderDetail);
 					//提交成功
-					uni.redirectTo({
-						url: "../orderPay/orderPay?orderId=" + orderDetail.id+"&canUseMoney="+this.canUseMoney,
-						// url: "../orderDetail/orderDetail?orderId=" + orderDetail.id,
-						success: (res) => {
-							this.$u.toast(msg);
+					// uni.redirectTo({
+					// 	url: "../orderPay/orderPay?orderId=" + orderDetail.id+"&canUseMoney="+this.canUseMoney,
+					// 	success: (res) => {
+					// 		this.$u.toast(msg);
+					// 	}
+					// })
+					let orderId =  res.data.data.id
+					this.$u.post('/api/v1/pay/wxminipay/order/create', {
+						userId: uni.getStorageSync("userInfo").id,
+						orderId
+						// wxType:"recook-weapp"
+					}).then(res2 => {
+						console.log(res2);
+						if (res2.data.code == "FAIL") {
+							this.$u.toast(res2.data.msg);
+							return
 						}
-					})
+						let result = res2.data.data
+						wx.requestPayment({
+							timeStamp: result.timestamp,
+							nonceStr: result.noncestr,
+							package: result.package,
+							signType: 'MD5',
+							paySign: result.sign,
+							success: (res3) => {
+								this.$u.toast('支付完成！', 2000);
+								console.log(res3)
+								uni.reLaunch({
+									url: "../paySuccess/paySuccess?orderId=" + orderId
+								})
+							},
+							fail: (err) => {
+								console.log(err)
+								this.$u.toast('支付失败！', 2000);
+								// this.$u.toast(err);
+							}
+						})
+					});
 				});
 			},
 			toAddressList() {

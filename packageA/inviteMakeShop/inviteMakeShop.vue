@@ -178,7 +178,7 @@
 				console.log(res.target)
 			}
 			return {
-				title: '阿库网络公司正在邀请您加入左家右厨，0成本带您玩转副业',
+				title: '阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业',
 				path: '/pages/mobileLogin/mobileLogin?invitationNo=' + this.invitationNo,
 				imageUrl: this.STATIC_URL + 'invite.jpg'
 			}

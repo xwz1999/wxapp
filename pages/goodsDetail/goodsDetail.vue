@@ -143,7 +143,7 @@
 									<view class="item flex justify-between align-center">
 										<view class="span">进口税</view>
 										<view class="text-hidden flex-sub txt flex align-center justify-start">
-											<view class="tab_ferme">包税</view> 预计￥{{goodsDetail.price.max.ferme}}由左家右厨承担
+											<view class="tab_ferme">包税</view> 预计￥{{goodsDetail.price.max.ferme}}由瑞库客承担
 										</view>
 									</view>
 								</view>
@@ -457,14 +457,14 @@
 						<text class="cuIcon-roundcheck text-red"></text>
 						<view class="">发货&售后</view>
 					</view>
-					<view class="txt">由平台认证供应商或者品牌商直接发货，也可直接在左家右厨门店提货；由认证供应商或者品牌商提供售后服务</view>
+					<view class="txt">由平台认证供应商或者品牌商直接发货，也可直接在瑞库客门店提货；由认证供应商或者品牌商提供售后服务</view>
 				</view>
 				<view class="tip-item">
 					<view class="flex item-top">
 						<text class="cuIcon-roundcheck text-red"></text>
 						<view class="">售后无忧</view>
 					</view>
-					<view class="txt">左家右厨购无忧，售后更无忧，您的售后，由左家右厨平台客服全力护航</view>
+					<view class="txt">瑞库客购无忧，售后更无忧，您的售后，由瑞库客平台客服全力护航</view>
 				</view>
 				<view class="tip-item">
 					<view class="flex item-top">
@@ -850,7 +850,11 @@
 					quantity:1
 				}
 				this.$u.post("/api/v2/app/jcook/stock",param).then(res => {
+					if(res.data.msg === '该商品不需要调用'){
+						this.jcookStockState = 1
+					}else{
 					this.jcookStockState = res.data.data.stock_state
+					}
 				})
 			},
 			hideModel() {
@@ -1297,7 +1301,7 @@
 			// 	console.log(this.$store.state.invitationNo)
 			// 	if (this.roleLevel == 500) {
 			// 		shareObj = {
-			// 			title: uni.getStorageSync('userInfo').nickname + "正在邀请您加入左家右厨，0成本带您玩转副业",
+			// 			title: uni.getStorageSync('userInfo').nickname + "正在邀请您加入瑞库客，0成本带您玩转副业",
 			// 			path: '/pages/login/login?type=share&invite=' + this.$store.state.invitationNo,
 			// 			imageUrl: this.IMAGE_URL + '/wxapp/invite.jpg'
 			// 		}
@@ -1305,7 +1309,7 @@
 			// } else {
 			// 	if (!this.isLogin) {
 			// 		shareObj = {
-			// 			title: "阿库网络公司正在邀请您加入左家右厨，0成本带您玩转副业",
+			// 			title: "阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业",
 			// 			path: '/pages/index/index?invite=' + this.$store.state.invitationNo,
 			// 			imageUrl: this.IMAGE_URL + '/wxapp/invite.jpg'
 			// 		}

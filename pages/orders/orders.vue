@@ -94,7 +94,7 @@
 			return {
 				show: true, // 提醒文案是否显示
 
-				description: '重要提醒：请谨防网络及客服诈骗！左家右厨不会以订单异常、系统维护等情况为由，要求你进行退款操作',
+				description: '重要提醒：请谨防网络及客服诈骗！瑞库客不会以订单异常、系统维护等情况为由，要求你进行退款操作',
 				currentIndex: 0,
 				navs: [],
 				nav1: ["全部", "待付款", "待发货", "待收货"],
@@ -170,9 +170,42 @@
 			},
 			toOrderPay(id) {
 				// 跳转支付页面携带参数（支付价格，创建时间）
-				uni.navigateTo({
-					url: "../orderPay/orderPay?orderId=" + id
-				})
+				// uni.navigateTo({
+				// 	url: "../orderPay/orderPay?orderId=" + id
+				// })
+				let orderId = id
+				this.$u.post('/api/v1/pay/wxminipay/order/create', {
+					userId: uni.getStorageSync("userInfo").id,
+					orderId
+					// wxType:"recook-weapp"
+				}).then(res2 => {
+					console.log(res2);
+					if (res2.data.code == "FAIL") {
+						this.$u.toast(res2.data.msg);
+						return
+					}
+					let result = res2.data.data
+					wx.requestPayment({
+						timeStamp: result.timestamp,
+						nonceStr: result.noncestr,
+						package: result.package,
+						signType: 'MD5',
+						paySign: result.sign,
+						success: (res3) => {
+							console.log(res3)
+							this.$u.toast('支付完成！', 2000);
+							uni.reLaunch({
+								url: "../paySuccess/paySuccess?orderId=" + orderId
+							})
+						},
+						fail: (err) => {
+							console.log(err)
+							this.$u.toast('支付失败！', 2000);
+							// this.$u.toast(err);
+						}
+					})
+				
+				});
 			},
 			// 关闭 提示
 			closedTips() {

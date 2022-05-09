@@ -105,7 +105,7 @@
 						<text class="name" style="min-width: 70px;">
 							系统消息:
 						</text>
-						欢迎来到直播间，左家右厨禁止未成年人进行直播，请大家共同遵守、监督。直播间内严禁出现违法违规、低俗色情、吸烟酗酒等内容，如有违规行为请及时举报。请大家注意财产安全，谨防网络诈骗。
+						欢迎来到直播间，瑞库客禁止未成年人进行直播，请大家共同遵守、监督。直播间内严禁出现违法违规、低俗色情、吸烟酗酒等内容，如有违规行为请及时举报。请大家注意财产安全，谨防网络诈骗。
 					</view>
 					<view class="chatContent" :id="'item' + index" v-for="(item, index) in contentList "
 						:class="item.type === 1 ? 'join' : '' " :key='index'>
@@ -931,7 +931,7 @@
 			// 分享
 			onShareAppMessage(res) {
 				return {
-					title: "好友" + this.videoDetail.nickname + "正在左家右厨直播,快来看看吧！",
+					title: "好友" + this.videoDetail.nickname + "正在瑞库客直播,快来看看吧！",
 					path: '/packageA/livePlayback/livePlayback?id=' + this.id + "&isLive=" + this.isLive,
 					imageUrl: this.IMAGE_URL + this.videoDetail.headImgUrl
 				}

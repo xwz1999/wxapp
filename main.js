@@ -21,15 +21,15 @@ Vue.component('goods-list', goodsList)
 Vue.component('order-goods', orderGoods)
 Vue.component('large-image-list', largeImageList)
 // 测试域名
-Vue.prototype.BASE_URL = "https://testapi.zjycshop.com"
-Vue.prototype.IMAGE_URL = "https://testcdn.zjycshop.com/static"
-Vue.prototype.H5_BASE_URL = "https://testh5.zjycshop.cn"
+Vue.prototype.BASE_URL = "https://testapi.reecook.cn"
+Vue.prototype.IMAGE_URL = "https://testcdn.reecook.cn/static"
+// Vue.prototype.H5_BASE_URL = "https://testh5.reecook.cn"
 // 正式域名
-Vue.prototype.BASE_URL = "https://jyyapi.reecook.cn"
-Vue.prototype.IMAGE_URL = "https://jyycdn.reecook.cn/static"
-Vue.prototype.H5_BASE_URL = "https://jyyh5.reecook.cn"
+Vue.prototype.BASE_URL = "https://mallapi.reecook.cn"
+Vue.prototype.IMAGE_URL = "https://mallcdn.reecook.cn/static"
+// Vue.prototype.H5_BASE_URL = "https://testh5.reecook.cn"
 //小程序静态资源存储地址（由于小程序代码包大小限制，比较大的静态资源图片放在了宝塔上对应域名下的recook-weapp文件夹里面）
-Vue.prototype.STATIC_URL = Vue.prototype.IMAGE_URL + "/recook-weapp/"
+// Vue.prototype.STATIC_URL = Vue.prototype.IMAGE_URL + "/recook-weapp/"
 
 //腾讯地图key
 Vue.prototype.MAP_KEY = "SPVBZ-2EXWJ-WTEFC-K7ANJ-VG7G6-V7FQ6"

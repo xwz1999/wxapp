@@ -45,7 +45,7 @@
 			<view>提现小贴士</view>
 			<view style="line-height: normal;font-size: 24rpx;color: #AAAAAA;">
 				<view class="tip-title text-black">什么是审核日？</view>
-				<view>每月10号和25号为左家右厨审核日，您的提现申请会在审核日进行审核</view>
+				<view>每月10号和25号为瑞库客审核日，您的提现申请会在审核日进行审核</view>
 				<view class="tip-title text-black">审核通过需要几天能够到账？</view>
 				<view>审核通过后3个工作日会到账，请留意银行或者支付宝通知(特殊情况视银行结算)</view>
 			</view>
