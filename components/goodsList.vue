@@ -2,7 +2,7 @@
 <template name="goodsList">
 	<view class="goods-box">
 		<view class="goods-item" v-for="(item,index) in goodsList" :key="index" @tap="situation==1?selectGoods(item):goPage(item.goodsId)">
-			<navigator hover-class="none" class="goods-item-con bg-white flex justify-between">
+			<navigator hover-class="none" class="goods-item-con bg-white flex justify-between" url=''>
 				<view class="goods-pic clear" v-if="situation==2?item.main_photo_url:item.mainPhotoUrl">
 					<u-lazy-load threshold="-100" 
 					:image="situation==2?((item.main_photo_url).substr(0,4)==='http'?item.main_photo_url:(IMAGE_URL+item.main_photo_url)):((item.mainPhotoUrl).substr(0,4)==='http'?item.mainPhotoUrl:(IMAGE_URL+item.mainPhotoUrl))" 
@@ -47,7 +47,7 @@
 								</view>
 								<view style="position: relative;" v-if="situation==2?item.commission:item.commissionDesc&&!hideShareBtn">
 									<image class="tic-pic" :src="IMAGE_URL+'/wxapp/tic2.png'" mode="heightFix"></image>
-									<!-- <view class="tic-txt text-red">赚{{situation==2?item.commission:item.commissionDesc}}</view> -->
+									<!-- <view class="tic-txt text-red">省{{situation==2?item.commission:item.commissionDesc}}</view> -->
 								</view>
 							</view>
 							<view style="color: #666;">已售{{situation==2?item.salesVolume:item.totalSalesVolume}}件</view>

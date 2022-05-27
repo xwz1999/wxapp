@@ -25,7 +25,7 @@
 						</view>
 						<view class="goods-container flex justify-between" v-if="showGoodsLink" @tap="toDetail(item1.goods.id)">
 							<view class="goods-pic">
-								<u-lazy-load threshold="-100" :image="item1.goods.mainPhotoURL" :index="index" borderRadius="10" height="120" :error-img="IMAGE_URL + '/wxapp/null05.png'" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+								<u-lazy-load threshold="-100" :image="IMAGE_URL+item1.goods.mainPhotoURL" :index="index" borderRadius="10" height="120" :error-img="IMAGE_URL + '/wxapp/null05.png'" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 							</view>
 							<view class="goods-name flex-sub flex flex-direction justify-center clear">
 								<view class="name text-hidden">{{item1.goods.name}}</view>

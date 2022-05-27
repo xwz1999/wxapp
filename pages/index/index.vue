@@ -505,6 +505,7 @@
 					this.getGoodsList()
 				});
 			},
+			// children
 			// 获取商品分类信息
 			getCateList() {
 				this.$u.post('/api/v1/goods/categories/first').then(res => {
@@ -684,8 +685,9 @@
 			//跳转商品分类页
 			toClassify(index, id) {
 				if (id) {
+					
 					uni.navigateTo({
-						url: "/pages/classify/classify?index=" + index
+						url: "/pages/classify/classify?index=" + index+'&id='+id
 					})
 				} else {
 					uni.navigateTo({

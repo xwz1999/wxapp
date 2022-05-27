@@ -21,7 +21,7 @@
 		
 		<!-- 列表为空时 -->
 		<view v-if="isNull" class="null flex flex-direction justify-center align-center" style="height: 60vh;">
-			<image :src="IMAGE_URL + '/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
+			<image :src="IMAGE_URL + '/wxapp/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
 			<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无商品</view>
 		</view>
 		

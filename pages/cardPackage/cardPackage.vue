@@ -10,7 +10,7 @@
 		 @refresherpulling="onPulling" @refresherrefresh="onRefresh" @refresherrestore="onRestore" @refresherabort="onAbort"
 		 :refresher-triggered="triggered">
 					<view class="null flex-sub flex flex-direction justify-center align-center" v-if="cards.length==0" style="height: 70vh;">
-						<image :src="IMAGE_URL + '/null05.png'" style="width: 300rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/wxapp/null05.png'" style="width: 300rpx;" mode="widthFix"></image>
 						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无卡券</view>
 					</view>
 					<view v-else class="">

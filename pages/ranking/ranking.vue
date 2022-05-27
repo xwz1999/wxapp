@@ -3,9 +3,9 @@
 		<u-navbar back-icon-size="48" back-icon-color="#ffffff" immersive :border-bottom="false"
 			:background="{background:'transparent'}"></u-navbar>
 		<view class="" style="position: relative;">
-			<image :src="STATIC_URL+bgImage" style="width: 100%;" mode="widthFix"></image>
+			<image :src="IMAGE_URL+bgImage" style="width: 100%;" mode="widthFix"></image>
 			<view class="hot-pic flex justify-center">
-				<image :src="STATIC_URL+titleImage" style="width: 280rpx;" mode="widthFix"></image>
+				<image :src="IMAGE_URL+titleImage" style="width: 280rpx;" mode="widthFix"></image>
 			</view>
 		</view>
 		<scroll-view scroll-y="true" class="scroll">
@@ -19,13 +19,13 @@
 			<view class="share-box flex justify-between">
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" open-type="share">
-						<image class="share-icon" :src="IMAGE_URL + '/mine/wx.png'" mode="widthFix"></image>
+						<image class="share-icon" :src="IMAGE_URL + '/wxapp/mine/wx.png'" mode="widthFix"></image>
 						<view class="txt">微信好友</view>
 					</button>
 				</view>
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" @tap="copyLink">
-						<image class="share-icon" :src="IMAGE_URL + '/mine/wx.png'" mode="widthFix"></image>
+						<image class="share-icon" :src="IMAGE_URL + '/wxapp/mine/wx.png'" mode="widthFix"></image>
 						<view class="txt">复制链接</view>
 					</button>
 				</view>
@@ -45,7 +45,7 @@
 	export default {
 		data() {
 			return {
-				STATIC_URL: this.STATIC_URL,
+				IMAGE_URL: this.IMAGE_URL,
 				goodsList: [],
 				type: null,
 				bgImage: "",

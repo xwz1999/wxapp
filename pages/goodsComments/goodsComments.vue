@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="null flex flex-direction justify-center align-center" v-if="isNull" style="height: 80vh;">
-			<image :src="IMAGE_URL + '/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
+			<image :src="IMAGE_URL + '/wxapp/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
 			<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无评论</view>
 		</view>
 		<view v-else class="">
@@ -9,7 +9,7 @@
 				<view class="comment-item bg-white flex justify-between" v-for="(item1,index1) in comments" :key="index1">
 					<view class="flex justify-between bg-white">
 						<view class="avatar">
-							<u-lazy-load threshold="-100" :image="IMAGE_URL+item1.headImgUrl" :index="index1" :error-img="IMAGE_URL + '/null05.png'" 
+							<u-lazy-load threshold="-100" :image="IMAGE_URL+item1.headImgUrl" :index="index1" :error-img="IMAGE_URL + '/wxapp/null05.png'" 
 							 border-radius="30" height="60"></u-lazy-load>
 						</view>
 						<view class="right-con flex-sub">
@@ -20,7 +20,7 @@
 							<view class="content">{{item1.content}}</view>
 							<view class="pic-con flex flex-wrap">
 								<view class="pic-item bg-img" v-for="(item2,index2) in item1.photos" :key="index2" @tap="previewImage(index2,item1.photos)">
-									<u-lazy-load threshold="-100" :image="IMAGE_URL+item2.url" :index="index2" :error-img="IMAGE_URL + '/null05.png'" 
+									<u-lazy-load threshold="-100" :image="IMAGE_URL+item2.url" :index="index2" :error-img="IMAGE_URL + '/wxapp/null05.png'" 
 									 height="190" border-radius="5" img-mode="aspectFill"></u-lazy-load>
 								</view>
 							</view>

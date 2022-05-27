@@ -10,7 +10,7 @@
 			<swiper-item v-for="(li,i) in list" :key='i'>
 				<scroll-view scroll-y="true" style="height: 100%;">
 					<view class="flex flex-direction justify-center align-center null" v-if="!remarkList.length" style="min-height: 60vh;">
-						<image :src="IMAGE_URL + '/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/wxapp/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
 						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无订单</view>
 					</view>
 					<view v-else>

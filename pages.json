@@ -20,19 +20,26 @@
 			}
 		},
 		{
-			"path": "pages/aku_school/aku_school",
+			"path":"pages/information/information",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "消息",
 				"enablePullDownRefresh": false
 			}
 		},
-		{
-			"path": "pages/aku_school/article",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
+		// {
+		// 	"path": "pages/aku_school/aku_school",
+		// 	"style": {
+		// 		"navigationBarTitleText": "",
+		// 		"enablePullDownRefresh": false
+		// 	}
+		// },
+		// {
+		// 	"path": "pages/aku_school/article",
+		// 	"style": {
+		// 		"navigationBarTitleText": "",
+		// 		"enablePullDownRefresh": false
+		// 	}
+		// },
 		{
 			"path": "pages/find/find",
 			"style": {
@@ -847,10 +854,10 @@
 				"text": "特推"
 			},
 			{
-				"pagePath": "pages/aku_school/aku_school",
+				"pagePath": "pages/information/information",
 				"iconPath": "static/tabbar/tabbar_aku_normal.png",
 				"selectedIconPath": "static/tabbar/tabbar_aku_selected.png",
-				"text": "云学院"
+				"text": "消息"
 			},
 			{
 				"pagePath": "pages/find/find",

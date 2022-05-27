@@ -156,7 +156,7 @@
 					<view class="item-con flex justify-between">
 						<view class="goods-pic">
 							<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index"
-								height="200" border-radius="10" :error-img="IMAGE_URL + '/null05.png'"
+								height="200" border-radius="10" :error-img="IMAGE_URL + '/wxapp/null05.png'"
 								@click="toGoodsDetail(item.id)"></u-lazy-load>
 							<view class="no">{{index+1}}</view>
 							<view v-if='item.id==goodsInfo.id' class="explain">讲解中</view>
@@ -177,7 +177,7 @@
 											<image :src="IMAGE_URL+'/tic.png'" mode="heightFix"></image>
 											<view class="coupon-price">{{item.coupon}}元券</view>
 										</view>
-										<view class="goods-commission">赚{{item.commission}}</view>
+										<view class="goods-commission">省{{item.commission}}</view>
 									</view>
 									<view class="goods-store">剩余<text class="text-red">{{item.inventory}}</text>件</view>
 								</view>

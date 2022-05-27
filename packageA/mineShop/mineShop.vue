@@ -66,7 +66,7 @@
 						<view class="member-avatar text-center flex flex-direction">
 							<view class="avatar">
 								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" height="80" border-radius="70"
-								 :loading-img="IMAGE_URL + '/null05.png'" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill"></u-lazy-load>
+								 :loading-img="IMAGE_URL + '/wxapp/null05.png'" :error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill"></u-lazy-load>
 							</view>
 							<view class="flex flex-sub justify-center align-center" style="">
 								<image :src="item.levelIcon" mode="widthFix" style="width: 22rpx;"></image>

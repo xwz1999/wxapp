@@ -3,7 +3,7 @@
 		 @refresherpulling="onPulling" @refresherrefresh="onRefresh" @refresherrestore="onRestore" @refresherabort="onAbort"
 		 :refresher-triggered="triggered">
 		<view class="null flex flex-direction justify-center align-center" v-if="isNull" style="height: 70vh;width: 100vw;">
-			<image :src="IMAGE_URL + '/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
+			<image :src="IMAGE_URL + '/wxapp/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
 			<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无动态</view>
 		</view>
 		<view class="" v-else>
@@ -12,12 +12,12 @@
 					<template v-slot:left="{ leftList }">
 						<navigator url="/packageA/videoDetail/videoDetail" class="demo-warter" v-for="(item, index) in leftList" :key="index" @tap="getVideoDetail(item)">
 							<!-- 微信小程序需要hx2.8.11版本才支持在template中引入其他组件，比如下方的u-lazy-load组件 -->
-							<u-lazy-load threshold="-100" :image="item.coverUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>			
+							<u-lazy-load threshold="-100" :image="item.coverUrl" :index="index" :error-img="IMAGE_URL + '/wxapp/null05.png'" ></u-lazy-load>			
 							<view class="demo-con">
 								<view class="demo-title two-line">{{ item.content }}</view>
 								<view class="flex justify-between demo-bottom">
 									<view class="demo-pic">
-										<u-lazy-load threshold="-100" border-radius="20" :image="item.headImgUrl" :index="index" height="40" :error-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+										<u-lazy-load threshold="-100" border-radius="20" :image="item.headImgUrl" :index="index" height="40" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 									</view>
 									<view class="demo-name flex-sub text-hidden">{{item.nickname}}</view>
 									<view class="flex demo-icon">
@@ -30,12 +30,12 @@
 					</template>
 					<template v-slot:right="{ rightList }">
 						<navigator url="/packageA/videoDetail/videoDetail" class="demo-warter" v-for="(item, index) in rightList" :key="index" @tap="getVideoDetail(item)">
-							<u-lazy-load threshold="-100" :image="item.coverUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'" ></u-lazy-load>		
+							<u-lazy-load threshold="-100" :image="item.coverUrl" :index="index" :error-img="IMAGE_URL + '/wxapp/null05.png'" ></u-lazy-load>		
 							<view class="demo-con">
 								<view class="demo-title two-line">{{ item.content }}</view>
 								<view class="flex justify-between demo-bottom">
 									<view class="demo-pic">
-										<u-lazy-load threshold="-100" border-radius="20" :image="item.headImgUrl" :index="index" height="40" :error-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+										<u-lazy-load threshold="-100" border-radius="20" :image="item.headImgUrl" :index="index" height="40" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 									</view>
 									<view class="demo-name flex-sub text-hidden">{{item.nickname}}</view>
 									<view class="flex demo-icon">

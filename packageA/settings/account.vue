@@ -2,7 +2,7 @@
 	<view>
 		<view class="box bg-white">
 			<navigator url="/pages/authentication/authentication" class="item flex justify-between">
-				<view class="">支付密码设置</view>
+				<view class="">提现密码设置</view>
 				<text class="cuIcon-right"></text>
 			</navigator>
 			<view class="item flex justify-between" @tap="deleteUser">
@@ -10,7 +10,7 @@
 				<text class="cuIcon-right"></text>
 			</view>
 		</view>
-		<view class="box bg-white">
+		<view class="box bg-white" v-if='isShow'>
 			<view class="item flex justify-between">
 				<view class="title">
 					手机号显示开关
@@ -18,8 +18,8 @@
 						关闭后，其他人将无法看到您的手机号
 					</view>
 				</view>
-				<u-switch v-model="onChange" @change="changePhoneSecret" active-color="red"
-					inactive-color="#F5F5F5"></u-switch>
+				<u-switch v-model="onChange" @change="changePhoneSecret" active-color="red" inactive-color="#F5F5F5">
+				</u-switch>
 			</view>
 		</view>
 	</view>
@@ -30,12 +30,17 @@
 		data() {
 			return {
 				info: [],
-				onChange:false
+				onChange: false,
+				isShow:false
 			}
 		},
 		onLoad() {
 			this.info = uni.getStorageSync("userInfo")
-			this.onChange = this.info.secret == 1 ? true : false 
+			this.onChange = this.info.secret == 1 ? true : false
+			let level=uni.getStorageSync("myLevl")
+			console.log(level)
+			
+			this.isShow=level!='0'?true:false
 		},
 		methods: {
 			deleteUser() {
@@ -71,13 +76,18 @@
 			},
 			changePhoneSecret(value) {
 				let secret = this.info.secret
-				this.$u.post('/api/v2/app/user/secret',{secret}).then(res => {
+				this.$u.post('/api/v2/app/user/secret', {
+					secret
+				}).then(res => {
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
 					}
-					if(secret == 1){this.info.secret = 0}
-					else if(secret == 0){this.info.secret = 1}
+					if (secret == 1) {
+						this.info.secret = 0
+					} else if (secret == 0) {
+						this.info.secret = 1
+					}
 					console.log(this.info)
 					uni.setStorageSync("userInfo", this.info)
 				})

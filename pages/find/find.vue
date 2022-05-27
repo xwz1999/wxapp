@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="flex flex-direction" style="height: 100vh;">
-	<!-- 		<view class="flex justify-between bg-white">
+			<!-- 		<view class="flex justify-between bg-white">
 				<view class="flex-sub">
 					<u-tabs :list="list" :is-scroll="false" height="90" :current="currentIndex" duration="0.2"
 						bar-width="100" :bold="false" active-color="red" @change="chooseTabs"></u-tabs>
@@ -27,7 +27,7 @@
 		<u-popup v-model="showPop" class="pop" @close="closePop" mode="bottom" border-radius="20">
 			<view class="line">
 				<template v-for="(item,index) in list">
-					<navigator class="iconText" v-if="item.name!='直播'" :url=item.url>
+					<navigator class="iconText" v-if="item.name!='直播'" :url="item.url">
 						<image :src="IMAGE_URL+item.image" mode=""></image>
 						<text>{{item.name}}</text>
 					</navigator>
@@ -62,7 +62,7 @@
 					{
 						name: '图文',
 						image: '/wxapp/uni-program/icon/add_image.png',
-						url:'./createImageArticle'
+						url: './createImageArticle'
 					}
 				],
 				showPop: false,
@@ -79,7 +79,7 @@
 				// uni.hideTabBar({})
 				// this.showPop = true
 				wx.navigateTo({
-				url:'./createImageArticle'
+					url: './createImageArticle'
 				})
 			}
 			this.onTabItemTapPop = true
@@ -152,29 +152,33 @@
 </script>
 
 <style lang="scss">
-	.pop{
+	.pop {
 		font-size: 24rpx;
-		.line{
-		display: flex;
-		    justify-content: space-around;
-		    margin: 40rpx 80rpx 80rpx 80rpx;
-			.iconText{
+
+		.line {
+			display: flex;
+			justify-content: space-around;
+			margin: 40rpx 80rpx 80rpx 80rpx;
+
+			.iconText {
 				display: flex;
-				    flex-direction: column;
-					image{
-						    width: 80rpx;
-						    height: 80rpx;
-					}
-					text{
-						text-align: center;
-						margin-top: 10rpx;
-					}
+				flex-direction: column;
+
+				image {
+					width: 80rpx;
+					height: 80rpx;
+				}
+
+				text {
+					text-align: center;
+					margin-top: 10rpx;
+				}
 			}
 		}
-		.cancel{
+
+		.cancel {
 			text-align: center;
 			margin-bottom: 20rpx;
 		}
 	}
-
 </style>

@@ -31,7 +31,7 @@
 				</view>
 				<view style="position: relative;" v-if="(situation==2||situation==3)?item.commission:item.commissionDesc">
 					<image class="tic-pic" :src="IMAGE_URL+'/wxapp/tic2.png'" mode="heightFix"></image>
-					<view class="tic-txt text-red">赚{{(situation==2||situation==3)?item.commission:item.commissionDesc}}</view>
+					<view class="tic-txt text-red">省{{(situation==2||situation==3)?item.commission:item.commissionDesc}}</view>
 				</view>
 			</view>
 			<view class="price-con flex justify-between">

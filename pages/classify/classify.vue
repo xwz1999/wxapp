@@ -20,7 +20,7 @@
 					<image v-if="topPic" :src="IMAGE_URL+topPic" mode="widthFix"></image>
 					<view class="null flex flex-direction justify-center align-center" v-if="subCateList.length==0"
 						style="height: 600rpx;">
-						<image :src="IMAGE_URL + '/null05.png'" style="width: 250rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/wxapp/null05.png'" style="width: 250rpx;" mode="widthFix"></image>
 						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无内容</view>
 					</view>
 					<view class="flex flex-wrap" v-else style="padding: 15rpx;">
@@ -29,7 +29,7 @@
 							<view class="item-menu-image">
 								<u-lazy-load threshold="-100" border-radius="60" :image="IMAGE_URL+item1.logoUrl"
 									:index="index" height="120" :error-img="IMAGE_URL + '/null05.png'"
-									:loading-img="IMAGE_URL + '/null05.png'" mg-mode="aspectFill"></u-lazy-load>
+									:loading-img="IMAGE_URL + '/wxapp/null05.png'" mg-mode="aspectFill"></u-lazy-load>
 							</view>
 							<view class="item-menu-name">{{item1.name}}</view>
 						</view>
@@ -54,19 +54,29 @@
 				JDCateList: null,
 				parentId: null,
 				keyword: "",
-				topPic: ""
+				topPic: "",
+				pageId:0
 			}
 		},
 		onLoad(options) {
 			console.log(options)
-			if (options.index) {
-				this.current = options.index
-			}
+			this.pageId=options.id
+			// if (options.index==0) {
+			// 	this.current = 3
+			// }else if(options.index==1){
+			// 	this.current=10
+			// }else if(options.index==2){
+			// 	this.current=index-2
+			// }else{
+			// 	this.current=options.index
+			// }
 			if (options.channel && options.channel == 'jingdong') {
 				this.getJDCateList()
 			} else {
 				this.getCateList()
 			}
+			
+			
 		},
 		methods: {
 			// 获取京东一二级分类
@@ -78,6 +88,11 @@
 					}
 					this.JDCateList = res.data.data
 					this.cateList = res.data.data
+					this.cateList.forEach((item,index)=>{
+						if(item.id==this.pageId){
+							this.current=index
+						}
+					})
 					this.subCateList = res.data.data[0].sub
 				})
 			},
@@ -90,6 +105,11 @@
 						return
 					}
 					this.cateList = res.data.data
+					this.cateList.forEach((item,index)=>{
+						if(item.id==this.pageId){
+							this.current=index
+						}
+					})
 					this.parentId = this.cateList[this.current].id
 					this.topPic = this.cateList[this.current].logoUrl
 					console.log(this.parentId, this.topPic)

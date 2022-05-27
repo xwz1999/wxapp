@@ -1,7 +1,7 @@
 <template>
 	<view style="height: 100vh;">
 		<view class="null flex flex-direction justify-center align-center" v-if="isNull" style="height: 80vh;">
-			<image :src="IMAGE_URL + '/null05.png'" style="width: 300rpx;" mode="widthFix"></image>
+			<image :src="IMAGE_URL + '/wxapp/null05.png'" style="width: 300rpx;" mode="widthFix"></image>
 			<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无邀请</view>
 		</view>
 		<view v-else class="flex flex-direction" style="height: 100%;">
@@ -15,7 +15,7 @@
 					<view class="member-avatar text-center">
 						<view class="avatar">
 							<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" height="80" border-radius="70"
-							 :loading-img="IMAGE_URL + '/null05.png'" :error-img="IMAGE_URL + '/null05.png'" img-mode="aspectFill"></u-lazy-load>
+							 :loading-img="IMAGE_URL + '/wxapp/null05.png'" :error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill"></u-lazy-load>
 						</view>
 					</view>
 					<view class="list" style="flex: 1;">

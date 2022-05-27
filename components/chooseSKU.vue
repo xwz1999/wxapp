@@ -5,13 +5,13 @@
 				<view class="spec-top flex">
 					<view class="goods-pic">
 						<u-lazy-load threshold="-100" :image="IMAGE_URL+checkedSkuMsg.picUrl" :index="index" height="200" border-radius="10"
-						 :loading-img="IMAGE_URL + '/null05.png'"  :error-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+						 :loading-img="IMAGE_URL + '/wxapp/null05.png'"  :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 					</view>
 					<view class="goods-msg flex-sub">
 						<view class="text-black">
 							<text>￥<text style="font-size: 36rpx;font-weight: 700;">{{checkedSkuMsg.discountPrice}}</text></text>
 							<text style="padding:0 5rpx;" v-if="roleLevel!=500">/</text>
-							<text class="text-red" style="font-size: 24rpx;" v-if="roleLevel!=500">赚{{checkedSkuMsg.commission}}</text>
+							<text class="text-red" style="font-size: 24rpx;" v-if="roleLevel!=500">省{{checkedSkuMsg.commission}}</text>
 						</view>
 						<view style="font-size: 24rpx;color: #AAAAAA;margin: 10rpx 0;">库存 {{checkedSkuMsg.inventory}}件</view>
 						<view style="font-size: 24rpx;">已选择:{{checkedSku}}</view>

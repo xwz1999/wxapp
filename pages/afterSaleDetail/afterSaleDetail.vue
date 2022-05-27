@@ -83,7 +83,7 @@
 					<text style="margin-left: 30rpx;font-size: 26rpx;color: #AAAAAA;">{{message.finishTime}}</text>
 				</view>
 				<view class="des">退款金额<text class="text-black">￥{{message.refundAmount}}</text>将原路退回至您的<text class="text-black">付款账户</text>，请及时关注到账情况。</view>
-				<view class="des des1" v-if="message.refundCoin">退回瑞币<text class="text-black">{{message.refundCoin}}</text>已返回至您的<text class="text-black">瑞币账户</text>，请及时核实。</view>
+				<!-- <view class="des des1" v-if="message.refundCoin">退回瑞币<text class="text-black">{{message.refundCoin}}</text>已返回至您的<text class="text-black">瑞币账户</text>，请及时核实。</view> -->
 				<view class="tip">若3天内未收到退款/瑞币，请联系客服咨询。</view>
 			</view>
 			<!-- 售后关闭 -->
@@ -103,10 +103,10 @@
 				<view class="">退款金额</view>
 				<view class="text-red">￥{{message.refundAmount}}</view>
 			</view>
-			<view class="flex justify-between" v-if="message.refundCoin">
+			<!-- <view class="flex justify-between" v-if="message.refundCoin">
 				<view class="">退回瑞币</view>
 				<view class="text-red">{{message.refundCoin}}</view>
-			</view>
+			</view> -->
 		</view>
 		
 		
@@ -134,7 +134,7 @@
 				</view>
 				<view class="flex">
 					<view class="span">售后编号</view>
-					<view class="right">{{message.refundNo}}</view>
+					<view class="right">{{message.asId}}</view>
 					<view class="copy" @click="copyNumber(message.refundNo)">复制</view>
 				</view>
 				<view class="flex">
@@ -189,9 +189,9 @@
 		},
 		methods: {
 			// 复制编号
-			copyNumber(str){
+			copyNumber(res){
 				uni.setClipboardData({
-				    data: str,
+				    data: res,
 				    success: function () {
 				        console.log('success');
 				    }

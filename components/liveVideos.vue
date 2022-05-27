@@ -10,7 +10,7 @@
 				</view> -->
 				<view class="live-item bg-white" v-for="(item,index) in liveVideos" :key="index">
 					<view class="live-main-pic">
-						<u-lazy-load threshold="-100" :image="judgeCover(item.cover)"  :loading-img="IMAGE_URL + '/null05.png'" :index="index" :error-img="IMAGE_URL + '/null05.png'" @click="toLiveDetail(item.id,item.isLive)"></u-lazy-load>
+						<u-lazy-load threshold="-100" :image="judgeCover(item.cover)"  :loading-img="IMAGE_URL + '/wxapp/null05.png'" :index="index" :error-img="IMAGE_URL + '/wxapp/null05.png'" @click="toLiveDetail(item.id,item.isLive)"></u-lazy-load>
 						<view class="icon text-white flex">
 							<image class="liveStatus" v-if="item.isLive === 1" :src="IMAGE_URL +'/play.gif'"></image>
 							<text class="cuIcon-playfill" v-else></text>
@@ -22,7 +22,7 @@
 							<view class="live-title two-line">{{item.title}}</view>
 							<view class="live-user-msg flex">
 								<view class="avatar">
-									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'"
+									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.headImgUrl" :index="index" :error-img="IMAGE_URL + '/wxapp/null05.png'"
 									 height="40" border-radius="20" mg-mode="aspectFill"></u-lazy-load>
 								</view>
 								<view class="user-name text-hidden flex-sub">{{item.nickname}}</view>
@@ -30,7 +30,7 @@
 						</view>
 						<view class="live-con-right">
 							<view class="goods-pic">
-								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" :error-img="IMAGE_URL + '/null05.png'"
+								<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" :error-img="IMAGE_URL + '/wxapp/null05.png'"
 								 height="100" mg-mode="aspectFill"></u-lazy-load>
 							</view>
 							<view class="text-center price">￥{{item.originalPrice}}</view>

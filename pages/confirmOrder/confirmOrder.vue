@@ -37,14 +37,14 @@
 		<view class="box goods-msg-box">
 			<view v-for="(shop,shopIndex) in preOrderMsg.brands" :key="shopIndex">
 				<view class="shop-msg flex align-center">
-					<image :src="shop.brandLogoUrl" style="width: 36rpx;margin-right: 10rpx;" mode="widthFix"></image>
+					<image :src="IMAGE_URL + shop.brandLogoUrl" style="width: 36rpx;margin-right: 10rpx;" mode="widthFix"></image>
 					<view class="">{{shop.brandName}}</view>
 				</view>
 				<order-goods :goodsList="shop.goods"></order-goods>
 				<view class="total-msg flex justify-end" style="line-height: 80rpx;">
 					<view style="margin-right: 20rpx;color: #AAAAAA;">共{{shop.brandGoodsTotalCount}}件</view>
 					<view style="color: #FA6400;margin-right: 20rpx;">合计{{shop.brandGoodsTotalAmount}}元 </view>
-					<view style="color: #AAAAAA;">赚：<text style="color: #FA6400;">{{shop.goods[0].totalCommission}} </text></view>
+					<!-- <view style="color: #AAAAAA;">省：<text style="color: #FA6400;">{{shop.goods[0].coinAmount}} </text></view> -->
 				</view>
 			</view>
 		</view>
@@ -66,7 +66,7 @@
 			</view>
 		</view> -->
 
-	<!-- 	<view class="box order-msg">
+		<view class="box order-msg">
 			<view class="item flex justify-between">
 				<view class="">商品金额</view>
 				<view class="num">￥{{preOrderMsg.goodsTotalAmount | toFixed(2)}}</view>
@@ -80,14 +80,15 @@
 				<view class="num">-￥{{(preOrderMsg.universeCouponTotalAmount+preOrderMsg.brandCouponTotalAmount) | toFixed(2)}}</view>
 			</view>
 			<view class="item flex justify-between">
-				<view class="">瑞币抵扣</view>
+				<view class="">省</view>
+				<!-- <view class="">瑞币抵扣</view> -->
 				<view class="num">-￥{{preOrderMsg.coinTotalAmount | toFixed(2)}}</view>
 			</view>
 			<view class="item flex justify-between">
 				<view class="">实付款</view>
 				<view class="text-red">￥{{preOrderMsg.actualTotalAmount | toFixed(2)}}</view>
 			</view>
-		</view> -->
+		</view>
 		<view class="agree_box" v-if="preOrderMsg.isImport">
 			<u-checkbox-group>
 				<u-checkbox v-model="agree" shape="circle" active-color="red">同意并接受 </u-checkbox><text style="color: #007AFF;"
@@ -271,6 +272,9 @@
 								console.log(err)
 								this.$u.toast('支付失败！', 2000);
 								// this.$u.toast(err);
+								// uni.reLaunch({
+								// 	url: "/pages/orders/orders?orderId=" + orderId
+								// })
 							}
 						})
 					});

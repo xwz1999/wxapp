@@ -1,14 +1,14 @@
 <template>
 	<view>
-		<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;"
-		 v-if="showLoading">
+		<view class="isLoading bg-white flex flex-direction justify-center align-center"
+			style="height: 100vh;width: 100vw;" v-if="showLoading">
 			<image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image>
 		</view>
 		<view class="" v-else>
 			<view class="waitpay text-white" v-if="orderDetail.status==0">
 				<view style="font-size: 36rpx;">等待付款</view>
 				<view class="" v-if="countdownTime>0">倒计时：<u-count-down :timestamp="countdownTime" :show-days="false"
-					 separator-color="#fff" separator="zh" bg-color="transparent" color="#fff"></u-count-down>
+						separator-color="#fff" separator="zh" bg-color="transparent" color="#fff"></u-count-down>
 				</view>
 				<view class="" v-else>支付到期时间：{{orderDetail.expireTime}}</view>
 			</view>
@@ -19,15 +19,20 @@
 			<view class="box flex align-center address-box">
 				<image :src="IMAGE_URL+'/add.png'" style="width: 50rpx;" mode="widthFix"></image>
 				<view class="flex-sub address-con">
-					<view class=""><text class="text-black" style="font-size: 32rpx;margin-right: 15rpx;font-weight: 900;">{{orderDetail.addr.receiverName}}</text>{{orderDetail.addr.mobile}}</view>
-					<view class="address-detail">{{orderDetail.addr.province+orderDetail.addr.city+orderDetail.addr.district+orderDetail.addr.address}}</view>
+					<view class=""><text class="text-black"
+							style="font-size: 32rpx;margin-right: 15rpx;font-weight: 900;">{{orderDetail.addr.receiverName}}</text>{{orderDetail.addr.mobile}}
+					</view>
+					<view class="address-detail">
+						{{orderDetail.addr.province+orderDetail.addr.city+orderDetail.addr.district+orderDetail.addr.address}}
+					</view>
 				</view>
 				<text class="cuIcon-right"></text>
 			</view>
 			<view class="box goods-msg-box" v-if="orderDetail">
 				<view v-for="(shop,shopIndex) in orderDetail.brands" :key="shopIndex">
 					<view class="shop-msg flex align-center">
-						<image :src="IMAGE_URL+shop.brandLogoUrl" style="width: 36rpx;margin-right: 10rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL+shop.brandLogoUrl" style="width: 36rpx;margin-right: 10rpx;"
+							mode="widthFix"></image>
 						<view class="">{{shop.brandName}}</view>
 					</view>
 					<!-- orderDetail.status -->
@@ -35,50 +40,70 @@
 					<view class="goods-box">
 						<view v-for="(item,index) in shop.goods" :key="index">
 							<view class="goods-item flex">
-								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" hover-stop-propagation @tap.stop="" class="goods-pic">
-									<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl" :index="index" height="200" border-radius="10"
-									 :loading-img="IMAGE_URL + '/null05.png'"  :error-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
-								</navigator>
-								<view class="goods-con flex-sub flex flex-direction justify-between">
-									<view class="">
-										<view class="goods-name two-line">{{item.goodsName}}</view>
-										<view class="goods-spec-con flex justify-between">
-											<view class="goods-spec text-hidden">{{item.skuName}}</view>
-											<view class="goods-num">×{{item.quantity}}</view>
-											<!-- <view class="goods-num" style="color:#aaa;">×{{item.quantity}}</view> -->
+								<view class="">
+									<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId"
+										hover-stop-propagation @tap.stop="" class="goods-pic" hover-class=“none”>
+										<view class="goods-pic-image">
+											<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl"
+												:index="index" height="200" border-radius="10"
+												:loading-img="IMAGE_URL + '/wxapp/null05.png'"
+												:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill">
+											</u-lazy-load>
 										</view>
-										<view class="flex align-center" style="margin:10rpx 0;">
-											<view class="align-center justify-start" v-if="item.isFerme">
-												<view class="tab_ferme">包税</view>
-											</view>
-											<view class="" style="font-size: 20rpx;color: #FA6400;" v-if="item.storehouse">
-												<text>不支持7天无理由退换货</text>
+										<view class="goods-pic-flex">
+											<view class="goods-con flex-sub flex flex-direction justify-between">
+												<view class="">
+													<view class="goods-name two-line">{{item.goodsName}}</view>
+													<view class="goods-spec-con flex justify-between">
+														<view class="goods-spec text-hidden">{{item.skuName}}</view>
+														<view class="goods-num">×{{item.quantity}}</view>
+														<!-- <view class="goods-num" style="color:#aaa;">×{{item.quantity}}</view> -->
+													</view>
+													<view class="flex align-center" style="margin:10rpx 0;">
+														<view class="align-center justify-start" v-if="item.isFerme">
+															<view class="tab_ferme">包税</view>
+														</view>
+														<view class="" style="font-size: 20rpx;color: #FA6400;"
+															v-if="item.storehouse">
+															<text>不支持7天无理由退换货</text>
+														</view>
+													</view>
+												</view>
+												<view class="flex justify-between"
+													style="font-size: 28rpx;color: #FA6400;">
+													<view class="flex">￥{{item.unitPrice | toFixed(2)}} </view>
+													<view class="">
+														<view v-if="item.rStatus !=='待发货' && item.rStatus !=='已发货'">
+															<button v-if="item.rStatus"
+																style="color: #FA6400;height: 40rpx;font-size: 28rpx;"
+																class="cu-btn lines-gray text-gray round"
+																hover-stop-propagation
+																@click="toAfterSaleDetail(item.goodsDetailId)">{{item.rStatus}}</button>
+														</view>
+														<view v-else="item.rStatus">{{item.rStatus}}</view>
+													</view>
+												</view>
 											</view>
 										</view>
-									</view>
-									<view class="flex justify-between" style="font-size: 28rpx;color: #FA6400;">
-										<view class="flex">￥{{item.unitPrice | toFixed(2)}} </view>
-										<view class="">
-											<view v-if="item.rStatus !=='待发货' && item.rStatus !=='已发货'">
-												<button v-if="item.rStatus" style="color: #FA6400;height: 40rpx;font-size: 28rpx;" class="cu-btn lines-gray text-gray round"
-												 hover-stop-propagation @click="toAfterSaleDetail(item.goodsDetailId)">{{item.rStatus}}</button>
-											</view>
-											<view v-else="item.rStatus">{{item.rStatus}}</view>
-										</view>
-									</view>
+									</navigator>
 								</view>
 							</view>
-							<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;" v-if="item.rStatus=='待发货' && orderDetail.status !== 2">
-								<button class="cu-btn lines-gray text-gray round" hover-stop-propagation @tap.stop="returnMoney(item.goodsDetailId)">申请退款</button>
+							<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;"
+								v-if="item.rStatus=='待发货' && orderDetail.status !== 2">
+								<button class="cu-btn lines-gray text-gray round" hover-stop-propagation
+									@tap.stop="returnMoney(item.goodsDetailId)">申请退款</button>
 							</view>
-							<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;" v-if="item.rStatus=='已发货' && orderDetail.status !== 2">
-								<button class="cu-btn lines-gray text-gray round" hover-stop-propagation @tap.stop="toChooseType(item)">申请售后</button>
+							<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;"
+								v-if="item.rStatus=='已发货' && orderDetail.status !== 2">
+								<button class="cu-btn lines-gray text-gray round" hover-stop-propagation
+									@tap.stop="toChooseType(item)">申请售后</button>
 							</view>
 						</view>
 					</view>
 
 				</view>
-				<view class="total-msg flex justify-end text-black" style="line-height: 80rpx;border-top:1rpx solid #EEEEEE;">
+				<view class="total-msg flex justify-end text-black"
+					style="line-height: 80rpx;border-top:1rpx solid #EEEEEE;">
 					<view style="margin-right: 20rpx;">共{{goodsTotal.totalNumber}}件商品</view>
 					<view>合计{{goodsTotal.totalPrice | toFixed(2)}}元</view>
 				</view>
@@ -93,16 +118,20 @@
 						<view class="">运费</view>
 						<view class="">+￥{{orderDetail.expressTotalFee | toFixed(2)}}</view>
 					</view>
-				<!-- 	<view class="item flex justify-between">
+					<view class="item flex justify-between">
 						<view class="">优惠券</view>
-						<view class="">-￥{{(orderDetail.universeCouponTotalAmount+orderDetail.brandCouponTotalAmount) | toFixed(2)}}</view>
+						<view class="">
+							-￥{{(orderDetail.universeCouponTotalAmount+orderDetail.brandCouponTotalAmount) | toFixed(2)}}
+						</view>
 					</view>
 					<view class="item flex justify-between">
-						<view class="">瑞币抵扣</view>
+						<view class="">省</view>
+						<!-- <view class="">瑞币抵扣</view> -->
 						<view class="">-￥{{orderDetail.coinTotalAmount | toFixed(2)}}</view>
-					</view> -->
+					</view>
 				</view>
-				<view class="item flex justify-between" style="border-top: 1rpx solid #f1f1f1;font-size: 30rpx;line-height: 80rpx;">
+				<view class="item flex justify-between"
+					style="border-top: 1rpx solid #f1f1f1;font-size: 30rpx;line-height: 80rpx;">
 					<view class="text-black">实付款</view>
 					<view class="text-red">￥{{orderDetail.actualTotalAmount | toFixed(2)}}</view>
 				</view>
@@ -114,7 +143,8 @@
 			<view class="box order-msg">
 				<view class="item flex">
 					<view class="span">订单编号</view>
-					<view class="num flex align-center">{{orderDetail.id}}<text class="copy" @tap="copy">复制</text></view>
+					<view class="num flex align-center">{{orderDetail.id}}<text class="copy" @tap="copy">复制</text>
+					</view>
 				</view>
 				<view class="item flex">
 					<view class="span">下单时间</view>
@@ -128,27 +158,30 @@
 					<view class="span">买家留言</view>
 					<view class="num">{{orderDetail.buyerMessage}}</view>
 				</view>
-				<view class="item flex">
+				<!-- <view class="item flex">
 					<view class="span">销售额 <text class="cuIcon-question" style="padding-left: 8rpx;" @click="queston"></text></view>
-					<view class="text-black">￥{{orderDetail.goodsTotalAmount | toFixed(2)}}</view>
-				</view>
+					<view class="text-black">￥{{orderDetail.salesVolume | toFixed(2)}}</view>
+				</view> -->
 				<button open-type='contact' class='customer-service'>
 					<view class="item flex justify-center">
 						<view class="text-black" style="font-size: 28rpx;">
-							<u-icon name="server-fill" size="28" class="text-black" style="padding-right: 20rpx;"></u-icon>联系客服
+							<u-icon name="server-fill" size="28" class="text-black" style="padding-right: 20rpx;">
+							</u-icon>联系客服
 						</view>
 					</view>
 				</button>
 			</view>
 			<view class="" style="height: 120rpx;"></view>
 			<view class="bottom-box flex align-center justify-end bg-white">
-				
+
 				<template v-if="orderDetail.status==0">
-					<button class="cu-btn round lines-gray" style="margin-right: 20rpx;" @tap="cancelOrder">取消订单</button>
+					<button class="cu-btn round lines-gray" style="margin-right: 20rpx;"
+						@tap="cancelOrder">取消订单</button>
 					<button class="cu-btn round lines-red" @tap="toOrderPay">继续支付</button>
 				</template>
 				<template v-if="orderDetail.status==1&&orderDetail.expressStatus!=0">
-					<button class="cu-btn round lines-gray" style="margin-right: 20rpx;" @tap="checkExpress">查看物流</button>
+					<button class="cu-btn round lines-gray" style="margin-right: 20rpx;"
+						@tap="checkExpress">查看物流</button>
 					<button class="cu-btn round lines-red" @tap="confirmGet">确认收货</button>
 				</template>
 				<template v-if="orderDetail.status==2||orderDetail.status==3||orderDetail.status==5">
@@ -195,9 +228,15 @@
 			}
 		},
 		methods: {
-			queston(){
-				
+			queston() {
+
 			},
+			//跳转详情
+			// OrdersDetails(id,index){
+			// 	uni.navigateTo({
+			// 		url:"/pages/goodsDetail/goodsDetail?goodsId=" + id
+			// 	})
+			// }
 			//未发货申请退款
 			returnMoney(id) {
 				uni.showModal({
@@ -216,7 +255,7 @@
 									this.$u.toast(res.data.msg);
 									return
 								}
-							this.getOrderDetail()
+								this.getOrderDetail()
 							});
 						} else if (res.cancel) {
 							console.log('用户点击取消');
@@ -243,6 +282,7 @@
 			showMore() {
 				this.isShow = !this.isShow
 			},
+
 			getOrderDetail() {
 				this.$u.post('/api/v1/order/detail', {
 					userId: uni.getStorageSync("userInfo").id,
@@ -303,7 +343,7 @@
 				// uni.navigateTo({
 				// 	url: "../orderPay/orderPay?orderId=" + this.orderId
 				// })
-				let orderId =  res.data.data.id
+				let orderId = this.orderId
 				this.$u.post('/api/v1/pay/wxminipay/order/create', {
 					userId: uni.getStorageSync("userInfo").id,
 					orderId
@@ -334,7 +374,7 @@
 							// this.$u.toast(err);
 						}
 					})
-				
+
 				});
 			},
 			//取消订单
@@ -466,7 +506,6 @@
 				this.orderId = parseInt(options.orderId)
 			}
 		},
-
 		onShow() {
 			this.getOrderDetail()
 		}
@@ -523,11 +562,23 @@
 			padding: 10rpx 0;
 
 			.goods-pic {
-				width: 200rpx;
-				height: 200rpx;
-				border-radius: 10rpx;
-				overflow: hidden;
-				margin-right: 20rpx;
+				// width: 200rpx;
+				display: flex;
+
+
+				.goods-pic-image {
+					width: 300rpx;
+					display: block;
+					height: 200rpx;
+					border-radius: 10rpx;
+					margin-right: 20rpx;
+				}
+
+				.goods-pic-flex {
+					margin-right: 20rpx;
+					height: 200rpx;
+					border-radius: 10rpx;
+				}
 			}
 
 			.goods-name {

@@ -3,7 +3,7 @@
 		<view class="userInfo">
 			<view class="avatar">
 				<u-lazy-load threshold="-100" :image="IMAGE_URL+userInfo.headImgUrl" :index="index" height="140"
-					border-radius="70" :loading-img="IMAGE_URL+'/null05.png'" :error-img="IMAGE_URL+'/null05.png'"
+					border-radius="70" :loading-img="IMAGE_URL+'/wxapp/null05.png'" :error-img="IMAGE_URL+'/wxapp/null05.png'"
 					img-mode="aspectFill"></u-lazy-load>
 			</view>
 			<view class="info">

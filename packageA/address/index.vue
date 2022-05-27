@@ -1,8 +1,9 @@
 <template>
 	<view>
-		<view class="null flex flex-direction justify-center align-center" v-if="isNull" style="width: 100vw;height: 80vh;">
+		<view class="null flex flex-direction justify-center align-center" v-if="isNull"
+			style="width: 100vw;height: 80vh;">
 			<image :src="STATIC_URL+'null04.png'" style="width: 300rpx;" mode="widthFix"></image>
-			<view  style="font-size: 24rpx;color: #AAAAAA;margin-top: 10rpx;">暂无地址</view>
+			<view style="font-size: 24rpx;color: #AAAAAA;margin-top: 10rpx;">暂无地址</view>
 		</view>
 		<view class="address-box" v-else>
 			<view class="item bg-white" v-for="(item,index) in siteList" :key="index" @tap="chooseAddress(item)">
@@ -14,7 +15,8 @@
 					<view>{{item.province+item.city+item.district+item.address}}</view>
 				</view>
 				<view class="flex justify-between bottom">
-					<view class="flex" :class="item.isDefault?'text-red':'text-gray'" @tap.stop="setDefault(index,item.id)">
+					<view class="flex" :class="item.isDefault?'text-red':'text-gray'"
+						@tap.stop="setDefault(index,item.id)">
 						<text :class="item.isDefault?'cuIcon-roundcheckfill':'cuIcon-roundcheck'"></text>
 						<text>默认地址</text>
 					</view>
@@ -40,34 +42,35 @@
 		data() {
 			return {
 				siteList: [],
-				fromPage:null,
-				isNull:false,
-				STATIC_URL:this.STATIC_URL
+				fromPage: null,
+				isNull: false,
+				STATIC_URL: this.STATIC_URL,
+				type: 0
 			};
 		},
 		computed: {
 			...mapState(['preOrderMsg']),
 			// 数组siteList排序
-			 sortstudents:function(){
-			  return this.sortByKey(this.siteList,'isDefault')
-		  }
+			sortstudents: function() {
+				return this.sortByKey(this.siteList, 'isDefault')
+			}
 
 		},
 		onLoad(options) {
 			console.log(options)
-			if(options&&options.fromPage){
+			if (options && options.fromPage) {
 				this.fromPage = options.fromPage
 			}
 			this.getAddresslist();
 		},
 		methods: {
-			  //数组对象排序
-			sortByKey(array,key){
-			    return array.sort(function(a,b){
-			        let x = a[key];
-			        let y = b[key];
-			        return((x>y)?-1:((x<y)?1:0));
-			    })
+			//数组对象排序
+			sortByKey(array, key) {
+				return array.sort(function(a, b) {
+					let x = a[key];
+					let y = b[key];
+					return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+				})
 			},
 			//更新预览订单的地址信息
 			upDateOrder(id) {
@@ -82,28 +85,28 @@
 						return
 					}
 					let preOrderMsg = res.data.data
-					this.$store.commit('updatePreOrderMsg',preOrderMsg)
+					this.$store.commit('updatePreOrderMsg', preOrderMsg)
 					uni.navigateBack()
 				});
 			},
 			chooseAddress(item) {
-				if(this.fromPage==="goodsDetail"){
+				if (this.fromPage === "goodsDetail") {
 					// getCurrentPages()[getCurrentPages().length-2].setData({
 					//     selectedAddress:item
 					// });
 					let selectedAddress = []
-					this.siteList.forEach(item=>{
-						if(item.isDefault===1){
-							selectedAddress = item
-						}
-					})
-					getCurrentPages()[getCurrentPages().length-2].setData({
-					    selectedAddress
-					});
+					// this.siteList.forEach(item => {
+					// 	if (item.isDefault === 1) {
+					// 		selectedAddress = item
+					// 	}
+					// })
+					// getCurrentPages()[getCurrentPages().length - 2].setData({
+					// 	selectedAddress:item
+					// });
+					getCurrentPages()[getCurrentPages().length - 2].$vm.selectedAddress=item
 					uni.navigateBack();
 					return
-				}
-				else if(this.fromPage!="confirmOrder"){
+				} else if (this.fromPage != "confirmOrder") {
 					return
 				}
 				this.upDateOrder(item.id)
@@ -139,7 +142,7 @@
 					}
 				});
 			},
-			delAddress(index,id) {
+			delAddress(index, id) {
 				uni.showModal({
 					title: '提示',
 					content: '确认要删除该地址吗？',
@@ -155,8 +158,8 @@
 									this.$u.toast(res.data.msg);
 									return
 								}
-								this.siteList.splice(index,1)
-								if(this.siteList.length==0){
+								this.siteList.splice(index, 1)
+								if (this.siteList.length == 0) {
 									this.isNull = true
 								}
 								uni.showToast({
@@ -181,9 +184,9 @@
 					}
 					this.siteList = res.data.data
 					console.log(this.siteList)
-					if(this.siteList.length==0){
+					if (this.siteList.length == 0) {
 						this.isNull = true
-					}else{
+					} else {
 						this.isNull = false
 					}
 				});

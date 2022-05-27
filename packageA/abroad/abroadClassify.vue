@@ -17,14 +17,14 @@
 				<view class="item-container">
 					<image v-if="countryCategoryList[current]" :src="IMAGE_URL+countryCategoryList[current].first.logoUrl" mode="widthFix"></image>
 					<view class="null flex flex-direction justify-center align-center" v-if="countryCategoryList[current].child.length==0" style="height: 600rpx;">
-						<image :src="IMAGE_URL + '/null05.png'"  style="width: 250rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/wxapp/null05.png'"  style="width: 250rpx;" mode="widthFix"></image>
 						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无内容</view>
 					</view>
 					<view class="flex flex-wrap" v-else style="padding: 15rpx;">
 						<navigator class="thumb-box" v-for="(item1, index1) in countryCategoryList[current].child" :key="index1"
 						 :url="'./abroadGoods?country_id='+country_id+'&category_id='+item1.id+'&category_name='+item1.name+'&country_icon='+country_icon">
 							<view class="item-menu-image">
-								<u-lazy-load threshold="-100" border-radius="60" :image="IMAGE_URL+item1.logoUrl" :index="index" height="120" :error-img="IMAGE_URL + '/null05.png'"  :loading-img="IMAGE_URL + '/null05.png'"  mg-mode="aspectFill"></u-lazy-load>
+								<u-lazy-load threshold="-100" border-radius="60" :image="IMAGE_URL+item1.logoUrl" :index="index" height="120" :error-img="IMAGE_URL + '/wxapp/null05.png'"  :loading-img="IMAGE_URL + '/wxapp/null05.png'"  mg-mode="aspectFill"></u-lazy-load>
 							</view>
 							<view class="item-menu-name">{{item1.name}}</view>
 						</navigator>

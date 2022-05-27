@@ -57,7 +57,7 @@
 						<view class="team-peoples">
 							<view class="people flex" v-for="(item,index) in list" :key="index">
 								<view class="people-pic">
-									<u-lazy-load threshold="-100" :image="item.headImgUrl" :index="index" height="80" border-radius="40" :error-img="IMAGE_URL + '/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+									<u-lazy-load threshold="-100" :image="item.headImgUrl" :index="index" height="80" border-radius="40" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 								</view>
 								<view class="flex-sub flex flex-direction justify-around">
 									<view class="flex justify-between">
@@ -77,7 +77,7 @@
 						</view>
 					</view>
 					<view class="null flex justify-center flex-direction align-center" style="padding: 30rpx 0;" v-else>
-						<image :src="IMAGE_URL + '/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
+						<image :src="IMAGE_URL + '/wxapp/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
 						<view style="font-size: 24rpx;color: #DDDDDD;">暂无业绩，请耐心等待</view>
 					</view>
 				</view>

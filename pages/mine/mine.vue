@@ -3,7 +3,8 @@
 		<view v-if="isLogin" class="flex flex-direction" style="height: 100vh;width:100vw;">
 			<u-navbar :is-back="false" title="   " :border-bottom='false' :background="background"></u-navbar>
 			<view class="top-nav">
-				<image :src="`${IMAGE_URL}/wxapp/mine/mine-bg.png`" mode="widthFix" style="width: 750rpx;"></image>
+				<image :src="IMAGE_URL+'/wxapp/mine/mine-bg.png'" mode="widthFix" style="width: 750rpx;"></image>
+				<!-- <image :src="`${IMAGE_URL}/wxapp/mine/mine-bg.png`" mode="widthFix" style="width: 750rpx;"></image> -->
 				<view class="top-nav-box">
 					<view class="nav-box" :style="'background-image: url('+bgImage+');'">
 						<view class="flex align-center">
@@ -686,6 +687,7 @@
 					uni.setStorageSync("userId", res.data.data.identifier)
 					console.log(uni.getStorageSync("userId"))
 					this.roleLevel = this.info.level
+					uni.setStorageSync("myLevel", res.data.data.level)
 					this.bgImage = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'mineBg')
 					this.role = this.$options.filters['roleFilter'](this.roleLevel, 'txt')
 					this.iconPic = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'badge')
