@@ -4,7 +4,7 @@
 		<view v-for="(item,index) in goodsList" :key="index">
 			<view class="goods-item flex">
 				<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId" hover-stop-propagation @tap.stop="" class="goods-pic">
-					<u-lazy-load threshold="-100" :image="IMAGE_URL +item.mainPhotoUrl" :index="index" height="200" border-radius="10" :loading-img="IMAGE_URL + '/wxapp/null05.png'" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+					<u-lazy-load threshold="-100" :image="judgeCover(item.mainPhotoUrl)" :index="index" height="200" border-radius="10" :loading-img="IMAGE_URL + '/wxapp/null05.png'" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 				</navigator>
 				<view class="goods-con flex-sub flex flex-direction justify-between">
 					<view class="">
@@ -62,6 +62,17 @@
 				console.log(this.goodsList)
 		},
 		methods:{
+			//判断图片
+			judgeCover(val) {
+				if(!val){
+					return
+				}
+				let arr = val.split('/')
+				if (arr[0] === 'http:' || arr[0] === 'https:') {
+					return val
+				}
+				return this.IMAGE_URL + val
+			},
 			//未发货申请退款
 			returnMoney(id){
 				uni.showModal({

@@ -6,7 +6,8 @@
 				<image :src="IMAGE_URL+'/wxapp/mine/mine-bg.png'" mode="widthFix" style="width: 750rpx;"></image>
 				<!-- <image :src="`${IMAGE_URL}/wxapp/mine/mine-bg.png`" mode="widthFix" style="width: 750rpx;"></image> -->
 				<view class="top-nav-box">
-					<view class="nav-box" :style="'background-image: url('+bgImage+');'">
+					<view  class="nav-box" :style="'background-image: url('+bgImage+');'">
+						
 						<view class="flex align-center">
 							<view class="flex-sub">
 								<view class="flex">
@@ -38,7 +39,7 @@
 								</view>
 							</view> -->
 						</view>
-						<view class="flex align-center">
+						<view class="flex align-center" >
 							<view class="flex-sub">
 								<view class="" style="font-size: 40rpx;font-weight: 500;">
 									<text>{{userInfo.nickname}}</text>
@@ -55,8 +56,8 @@
 							<view class="flex-sub">
 								<text>注册时间{{usercreatedAt}}</text>
 							</view>
-							<view class="" style="width: 112rpx; text-align: center;">
-								<text>({{role}})</text>
+							<view class="flex-sub" style="width: 112rpx; text-align: center;">
+								<text style="margin-left: 45px;">({{role}})</text>
 							</view>
 						</view>
 					</view>

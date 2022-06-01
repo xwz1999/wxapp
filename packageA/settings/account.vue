@@ -5,12 +5,16 @@
 				<view class="">提现密码设置</view>
 				<text class="cuIcon-right"></text>
 			</navigator>
+			<navigator url="/pages/authentication/authentication" class="item flex justify-between">
+				<view class="">注销账号</view>
+				<text class="cuIcon-right"></text>
+			</navigator>
 			<view class="item flex justify-between" @tap="deleteUser">
 				<view class="">注销账号</view>
 				<text class="cuIcon-right"></text>
 			</view>
 		</view>
-		<view class="box bg-white" v-if='isShow'>
+<!-- 		<view class="box bg-white" v-if='isShow'>
 			<view class="item flex justify-between">
 				<view class="title">
 					手机号显示开关
@@ -21,7 +25,7 @@
 				<u-switch v-model="onChange" @change="changePhoneSecret" active-color="red" inactive-color="#F5F5F5">
 				</u-switch>
 			</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -40,7 +44,7 @@
 			let level=uni.getStorageSync("myLevl")
 			console.log(level)
 			
-			this.isShow=level!='0'?true:false
+			this.isShow=level!='2'?true:false
 		},
 		methods: {
 			deleteUser() {

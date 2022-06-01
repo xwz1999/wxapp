@@ -44,7 +44,7 @@
 									<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId"
 										hover-stop-propagation @tap.stop="" class="goods-pic" hover-class=“none”>
 										<view class="goods-pic-image">
-											<u-lazy-load threshold="-100" :image="IMAGE_URL+item.mainPhotoUrl"
+											<u-lazy-load threshold="-100" :image="judgeCover(item.mainPhotoUrl)"
 												:index="index" height="200" border-radius="10"
 												:loading-img="IMAGE_URL + '/wxapp/null05.png'"
 												:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill">
@@ -72,7 +72,7 @@
 												<view class="flex justify-between"
 													style="font-size: 28rpx;color: #FA6400;">
 													<view class="flex">￥{{item.unitPrice | toFixed(2)}} </view>
-													<view class="">
+													<!-- <view class="">
 														<view v-if="item.rStatus !=='待发货' && item.rStatus !=='已发货'">
 															<button v-if="item.rStatus"
 																style="color: #FA6400;height: 40rpx;font-size: 28rpx;"
@@ -81,11 +81,26 @@
 																@click="toAfterSaleDetail(item.goodsDetailId)">{{item.rStatus}}</button>
 														</view>
 														<view v-else="item.rStatus">{{item.rStatus}}</view>
-													</view>
+													</view> -->
 												</view>
 											</view>
 										</view>
 									</navigator>
+								</view>
+							</view>
+							<view class="goods-bottom flex justify-end">
+							<view class="goods-bottom flex justify-end"
+								style="font-size: 28rpx;color: #FA6400;">
+								<view class="flex"></view>
+								<view class="">
+									<view v-if="item.rStatus !=='待发货' && item.rStatus !=='已发货'">
+										<button v-if="item.rStatus"
+											style="color: #FA6400;height: 40rpx;font-size: 28rpx;"
+											class="cu-btn lines-gray text-gray round"
+											hover-stop-propagation
+											@click="toAfterSaleDetail(item.goodsDetailId)">{{item.rStatus}}</button>
+									</view>
+									<view v-else="item.rStatus">{{item.rStatus}}</view>
 								</view>
 							</view>
 							<view class="goods-bottom flex justify-end" style="margin: 10rpx 0;"
@@ -98,6 +113,7 @@
 								<button class="cu-btn lines-gray text-gray round" hover-stop-propagation
 									@tap.stop="toChooseType(item)">申请售后</button>
 							</view>
+						</view>
 						</view>
 					</view>
 
@@ -230,6 +246,17 @@
 		methods: {
 			queston() {
 
+			},
+			//判断图片
+			judgeCover(val) {
+				if(!val){
+					return
+				}
+				let arr = val.split('/')
+				if (arr[0] === 'http:' || arr[0] === 'https:') {
+					return val
+				}
+				return this.IMAGE_URL + val
 			},
 			//跳转详情
 			// OrdersDetails(id,index){

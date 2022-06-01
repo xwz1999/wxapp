@@ -37,7 +37,7 @@
 		<view class="box goods-msg-box">
 			<view v-for="(shop,shopIndex) in preOrderMsg.brands" :key="shopIndex">
 				<view class="shop-msg flex align-center">
-					<image :src="IMAGE_URL + shop.brandLogoUrl" style="width: 36rpx;margin-right: 10rpx;" mode="widthFix"></image>
+					<image :src="judgeCover(shop.brandLogoUrl)" style="width: 36rpx;margin-right: 10rpx;" mode="widthFix"></image>
 					<view class="">{{shop.brandName}}</view>
 				</view>
 				<order-goods :goodsList="shop.goods"></order-goods>
@@ -166,6 +166,17 @@
 
 		},
 		methods: {
+			//判断图片
+			judgeCover(val) {
+				if(!val){
+					return
+				}
+				let arr = val.split('/')
+				if (arr[0] === 'http:' || arr[0] === 'https:') {
+					return val
+				}
+				return this.IMAGE_URL + val
+			},
 			toPage() {
 				uni.navigateTo({
 					url: '/packageA/agreement/goods'

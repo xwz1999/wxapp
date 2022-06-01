@@ -29,7 +29,7 @@
 									<text :class="goods.goodsChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkGoods(shopIndex,goodsIndex)"></text>
 								</view>
 								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId" class="cart-goods-pic">
-									<u-lazy-load threshold="-100" :image="IMAGE_URL +goods.mainPhotoUrl" :index="index" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  height="200" border-radius="10" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+									<u-lazy-load threshold="-100" :image="judgeCover(goods.mainPhotoUrl)" :index="index" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  height="200" border-radius="10" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 								</navigator>
 								<view class="cart-goods-msg flex-sub">
 									<view class="msg-top flex flex-direction justify-between clear align-start">
@@ -99,7 +99,7 @@
 				selectGoodsIds: [],
 				totalCommission: 0,
 				showLoading:true,
-				like_goodsList:[]
+				like_goodsList:[],
 			};
 		},
 		components:{
@@ -112,6 +112,17 @@
 			this.getGoodsList()
 		},
 		methods: {
+			//判断图片
+			judgeCover(val) {
+				if(!val){
+					return
+				}
+				let arr = val.split('/')
+				if (arr[0] === 'http:' || arr[0] === 'https:') {
+					return val
+				}
+				return this.IMAGE_URL + val
+			},
 			getGoodsList() {
 				let user_id = uni.getStorageSync("userInfo").id
 			this.$u.post('/api/v2/app/shopping_cart/view_like_maybe', {user_id}).then(res => {

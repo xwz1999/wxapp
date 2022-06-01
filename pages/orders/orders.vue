@@ -5,7 +5,7 @@
 				<view class="flex tab-con justify-center">
 					<view class="tab flex justify-center">
 						<view :class="currentIndex==0?'text-white':''" @tap="chooseNav(0)">自购订单</view>
-						<view :class="currentIndex==1?'text-white':''" @tap="chooseNav(1)">导购订单</view>
+						<!-- <view :class="currentIndex==1?'text-white':''" @tap="chooseNav(1)">导购订单</view> -->
 						<view class="current bg-red" :class="currentIndex==0?'':'moveright'"></view>
 					</view>
 					<!-- <view class="btn" @tap="toInvoice">开发票</view> -->
@@ -23,7 +23,7 @@
 			<swiper-item v-for="(item1,index1) in navs" :key="index1">
 				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getOrders(orderTypeIndex)">
 					<view class="flex flex-direction justify-center align-center null" v-if="item1.isNull" style="height: 60vh;">
-						<image :src="IMAGE_URL + '/wxapp/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
+						<!-- <image :src="IMAGE_URL + '/wxapp/null05.png'"  style="width: 300rpx;" mode="widthFix"></image> -->
 						<view style="font-size: 28rpx;color: #AAAAAA;margin-top: 10rpx;">暂无订单</view>
 					</view>
 					<view class="" v-else>
@@ -54,8 +54,8 @@
 											<button v-if="item2.status==1&&item2.expressStatus!=0" class="cu-btn lines-gray text-gray round" @tap.stop="checkExpress(item2.id)">查看物流</button>
 											<button v-if="item2.status==4" class="cu-btn lines-gray text-gray round" @tap.stop="checkExpress(index2,item2.id)">查看物流</button>
 										</view>
-										<view v-if="currentIndex === 0">共{{item2.totalGoodsCount}}件商品 总计<text class="text-red">￥{{item2.goodsTotalAmount | toFixed(2)}}</text></view>
-										<view v-else>共{{item2.goods.length}}件商品 总计<text class="text-red">￥{{item2.goodsTotalAmount | toFixed(2)}}</text></view>
+										<view v-if="currentIndex === 0">共{{item2.totalGoodsCount}}件商品 总计<text class="text-red">￥{{item2.actualTotalAmount | toFixed(2)}}</text></view>
+										<view v-else>共{{item2.goods.length}}件商品 总计<text class="text-red">￥{{item2.actualTotalAmount | toFixed(2)}}</text></view>
 									</view>
 
 									<view class="order-btn flex justify-end align-center" hover-stop-propagation v-if="currentIndex === 0">

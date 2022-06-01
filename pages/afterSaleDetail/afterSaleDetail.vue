@@ -41,7 +41,7 @@
 					<text class="text-black" style="font-weight: 900;font-size: 32rpx;">{{message.subtitle}}</text>
 			
 				</view>
-				<view class="des">若平台长时间未处理，请联系客服。</view>
+				<view class="des">若平台在48小时内未处理，请联系客服。</view>
 			</view>
 			<!-- 申请未通过 -->
 			<view class=" bg-white" v-if="message.status==7&&message.returnStatus==2">
@@ -113,7 +113,12 @@
 		<view class="goods-container bg-white">
 			<view class="goods-top">
 				<view class="goods-box flex">
-					<view class="bg-img goods-pic" :style="'background-image: url('+IMAGE_URL+message.mainPhotoUrl+');'"></view>
+					<!-- <view class="bg-img goods-pic" :style="'background-image: url('+IMAGE_URL+message.mainPhotoUrl+');'"> -->
+						<view class="bg-img goods-pic" >
+						<u-lazy-load threshold="-100" :image="judgeCover(message.mainPhotoUrl)" :index="index"
+							height="200" border-radius="10" :loading-img="IMAGE_URL + '/wxapp/null05.png'"
+							:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill"></u-lazy-load>
+					</view>
 					<view class="flex-sub flex flex-direction justify-between clear">
 						<view class="">
 							<view class="goods-name text-hidden text-black">{{message.goodsName}}</view>
@@ -135,12 +140,12 @@
 				<view class="flex">
 					<view class="span">售后编号</view>
 					<view class="right">{{message.asId}}</view>
-					<view class="copy" @click="copyNumber(message.refundNo)">复制</view>
+					<view class="copy" @click="copy(message.asId)">复制</view>
 				</view>
 				<view class="flex">
 					<view class="span">订单编号</view>
 					<view class="right">{{message.orderId}}</view>
-					<view class="copy" @click="copyNumber(message.refundNo)">复制</view>
+					<view class="copy" @click="copyNumber(message.orderId)">复制</view>
 				</view>
 				<!-- <view class="flex">
 					<view class="span">商品状态</view>
@@ -188,10 +193,29 @@
 			this.getDetail()
 		},
 		methods: {
+			//判断图片
+			judgeCover(val) {
+				if (!val) {
+					return
+				}
+				let arr = val.split('/')
+				if (arr[0] === 'http:' || arr[0] === 'https:') {
+					return val
+				}
+				return this.IMAGE_URL + val
+			},
 			// 复制编号
 			copyNumber(res){
 				uni.setClipboardData({
-				    data: res,
+					data: this.message.orderId.toString(),
+				    success: function () {
+				        console.log('success');
+				    }
+				});
+			},
+			copy(res){
+				uni.setClipboardData({
+					data: this.message.asId.toString(),
 				    success: function () {
 				        console.log('success');
 				    }

@@ -7,7 +7,7 @@
 		<view class="goods" v-else>
 			<navigator :url="'/pages/goodsDetail/goodsDetail?id='+item.goods.id" class="goods-item bg-white flex justify-between" v-for="(item,index) in goods" :key="index">
 				<view class="goods-pic">
-					<u-lazy-load threshold="-100" :image="IMAGE_URL + item.goods.mainPhotoUrl" :index="index" height="200" border-radius="10" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+					<u-lazy-load threshold="-100" :image="judgeCover(item.goods.mainPhotoUrl)" :index="index" height="200" border-radius="10" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 				</view>
 				<view class="goods-con flex-sub flex flex-direction justify-between clear">
 					<view class="">
@@ -37,6 +37,17 @@
 			this.getCollections()
 		},
 		methods:{
+			//判断图片
+			judgeCover(val) {
+				if(!val){
+					return
+				}
+				let arr = val.split('/')
+				if (arr[0] === 'http:' || arr[0] === 'https:') {
+					return val
+				}
+				return this.IMAGE_URL + val
+			},
 			getCollections(){
 				this.$u.post('/api/v1/goods/favorite/list',{
 					userID:uni.getStorageSync("userInfo").id

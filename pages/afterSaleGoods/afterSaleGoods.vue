@@ -28,7 +28,7 @@
 										<view class="goods-bottom">
 											<view class="flex justify-between">
 												<view  class="">
-													退款金额<text v-if="currentIndex" class="text-red" style="margin-left: 10rpx;">￥{{item2.refundAmount}}</text><text v-else class="text-red" style="margin-left: 10rpx;">￥{{item2.refundCoin}}</text>
+													退款金额<text v-if="currentIndex" class="text-red" style="margin-left: 10rpx;">￥{{item2.refundAmount}}</text><text v-else class="text-red" style="margin-left: 10rpx;">￥{{item2.refundAmount}}</text>
 												</view>
 												<view class="">退款数量<text class="text-black" style="margin-left: 10rpx;">{{item2.quantity}}</text></view>
 											</view>

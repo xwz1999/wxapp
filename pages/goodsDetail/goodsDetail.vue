@@ -323,12 +323,13 @@
 											<view class="rec-con flex">
 												<view class="rec-item" v-for="(item,index) in goodsDetail.recommends"
 													:key="index">
-													<image :src="item.mainPhotoUrl" mode=""></image>
+													<!-- <image :src="item.mainPhotoUrl" mode=""></image> -->
 													<navigator class="item-image"
 														:url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId"
 														open-type="redirect">
-														<u-lazy-load threshold="-100" :image="item.mainPhotoUrl"
-															:index="index" :error-img="IMAGE_URL + '/wxapp/null05.png'"
+														<u-lazy-load threshold="-100"
+															:image="judgeCover(item.mainPhotoUrl)" :index="index"
+															:error-img="IMAGE_URL + '/wxapp/null05.png'"
 															border-radius="10" height="200"></u-lazy-load>
 													</navigator>
 													<view class="item-name two-line">{{item.goodsName}}</view>
@@ -516,8 +517,8 @@
 			<view class="spec-box">
 				<view class="spec-top flex">
 					<view class="goods-pic">
-						<u-lazy-load threshold="-100" :image="IMAGE_URL + checkedSkuMsg.picUrl" :index="index" height="200"
-							border-radius="10" :loading-img="IMAGE_URL + '/wxapp/null05.png'"
+						<u-lazy-load threshold="-100" :image="judgeCover(checkedSkuMsg.picUrl)" :index="index"
+							height="200" border-radius="10" :loading-img="IMAGE_URL + '/wxapp/null05.png'"
 							:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill"></u-lazy-load>
 					</view>
 					<view class="goods-msg flex-sub">
@@ -679,17 +680,17 @@
 			// 上一页面栈
 			var prevPage = pages[pages.length - 2];
 			//{{selectedAddress.province}}-{{selectedAddress.city}}-{{selectedAddress.district}}
-			if(prevPage){
-				const params=prevPage.options
-				
+			if (prevPage) {
+				const params = prevPage.options
+
 				// this.selectedAddress.province=params.province
 				// this.selectedAddress.city=params.city
 				// this.selectedAddress.district=params.district
-				console.log(prevPage.options,);
-				
+				console.log(prevPage.options, );
+
 			}
 			// 上一页面跳转携带的参数
-			
+
 			if (uni.getStorageSync("auth").token) {
 				this.isLogin = true
 			} else {
@@ -734,6 +735,17 @@
 			console.log(uni.getStorageSync("userInfo").id)
 		},
 		methods: {
+			//判断图片
+			judgeCover(val) {
+				if (!val) {
+					return
+				}
+				let arr = val.split('/')
+				if (arr[0] === 'http:' || arr[0] === 'https:') {
+					return val
+				}
+				return this.IMAGE_URL + val
+			},
 			chooseDefaultAddress(e) {
 				console.log(e)
 				this.defalutAddressMakeForm.address = e.detail.value
@@ -786,565 +798,581 @@
 					// 	return
 					// 	} 
 					uni.navigateTo({
-						url:'/packageA/address/index?fromPage=goodsDetail'
+						url: '/packageA/address/index?fromPage=goodsDetail'
 					})
-						//this.defaultAddressMake = true
-					} else {
-						this.$u.toast("游客无法使用该功能，请登录");
-						let pages = getCurrentPages();
-						let currPage = null;
-						if (pages.length) {
-							currPage = pages[pages.length - 1];
-						}
-						console.log(currPage)
-						let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
-						this.$store.commit('setUrl', url)
-						console.log(url)
-						setTimeout(() => {
-							uni.navigateTo({
-								url: "../login/login"
-							})
-						}, 1000)
-						return false;
+					//this.defaultAddressMake = true
+				} else {
+					this.$u.toast("游客无法使用该功能，请登录");
+					let pages = getCurrentPages();
+					let currPage = null;
+					if (pages.length) {
+						currPage = pages[pages.length - 1];
 					}
-				},
-				// getRegions() {
-				// 	if (!uni.getStorageSync("region")) {
-				// 		this.$u.post("/api/v1/region/all").then(res => {
-				// 			uni.setStorageSync("region", res.data.data)
-				// 			this.initRegionPicker()
-				// 		})
-				// 	} else {
-				// 		this.region = uni.getStorageSync("region")
-				// 		this.initRegionPicker()
-				// 	}
-				// },
-				// initRegionPicker() {
-				// 	let region = this.region
-				// 	let regionPickerIndex = this.regionPickerIndex
-				// 	let regionPicker = []
-				// 	let cityList = region[regionPickerIndex[0]].cities
-				// 	let districtList = cityList[regionPickerIndex[1]].districts
-				// 	let province = []
-				// 	region.forEach(i => {
-				// 		province.push(i.name)
-				// 	})
-				// 	regionPicker.push(province)
-				// 	let city = []
-				// 	cityList.forEach(i => {
-				// 		city.push(i.name)
-				// 	})
-				// 	regionPicker.push(city)
-				// 	let districts = []
-				// 	districtList.forEach(i => {
-				// 		districts.push(i.name)
-				// 	})
-				// 	regionPicker.push(districts)
-				// 	this.regionPicker = regionPicker
-				// },
-				// columnchange(e) {
-				// 	let column = e.detail.column;
-				// 	let currentIndex = e.detail.value;
-				// 	if (column === 0) {
-				// 		this.regionPickerIndex = [currentIndex, 0, 0]
-				// 	} else if (column === 1) {
-				// 		this.regionPickerIndex[1] = currentIndex
-				// 		this.regionPickerIndex[2] = 0
-				// 	} else if (column === 2) {
-				// 		this.regionPickerIndex[2] = currentIndex
-				// 	}
-
-				// 	console.log(this.regionPickerIndex);
-				// 	this.initRegionPicker()
-				// },
-				// selectedRegionChange(e) {
-				// 	let province = this.region[this.regionPickerIndex[0]]
-				// 	let city = province.cities[this.regionPickerIndex[1]]
-				// 	let districts = city.districts[this.regionPickerIndex[2]]
-				// 	this.selectedRegion = province.name + city.name + districts.name
-				// },
-				jcookStockCheck() {
-						if (this.sku_id != '' && !this.selectedAddress) {
-							// this.$u.toast('未选择地址');
-							return
-						}
-						let address = this.selectedAddress
-						let param = {
-							sku_id: this.sku_id,
-							address: address.province + address.city + address.district,
-							quantity: 1
-						}
-						this.$u.post("/api/v2/app/jcook/stock", param).then(res => {
-							if (res.data.msg === '该商品不需要调用') {
-								this.jcookStockState = 1
-							} else {
-								this.jcookStockState = res.data.data.stock_state
-							}
-						})
-					},
-					hideModel() {
-						this.isShow = false
-					},
-					// 复制链接
-					copyLink() {
-						const that = this
-						let url = `${this.H5_BASE_URL}/#/user/appRegister/${this.$store.state.invitationNo}`
-						uni.setClipboardData({
-							data: url,
-							success: function() {
-								console.log('success');
-								that.hideModel()
-							}
-						});
-					},
-					// 分享海报
-					postShare() {
+					console.log(currPage)
+					let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
+					this.$store.commit('setUrl', url)
+					console.log(url)
+					setTimeout(() => {
 						uni.navigateTo({
-							url: '/packageA/postShare/postShare'
+							url: "../login/login"
 						})
-					},
-					parameterModel(bool) {
-						this.parameterShow = bool
-					},
-					getUrlKey(url, name) { //获取url 参数
-						return decodeURIComponent(
-							(new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(url) || [, ""])[1].replace(
-								/\+/g,
-								'%20')) || null;
-					},
-					toGoodsComments() {
-						uni.navigateTo({
-							url: "../goodsComments/goodsComments?id=" + this.id
-						})
-					},
-					back() {
-						if (this.type == "share") {
-							uni.switchTab({
-								url: "/pages/index/index"
-							})
-						} else {
-							uni.navigateBack()
-						}
-					},
-					changeNum() {
-						if(this.buyNum>this.skuStoreCount){
-							this.$u.toast(res.data.msg);
-						}
-						return
-					},
-					//点击收藏
-					setFavorite() {
-						this.goodsDetail.isFavorite = !this.goodsDetail.isFavorite
-						console.log(this.goodsDetail.isFavorite)
-						let reqUrl = ""
-						if (this.goodsDetail.isFavorite) {
-							reqUrl = "/api/v1/goods/favorites/add"
-						} else {
-							reqUrl = "/api/v1/goods/favorites/cancel"
-						}
-						this.$u.post(reqUrl, {
-							userID: uni.getStorageSync("userInfo").id,
-							goodsID: this.id
-						}).then(res => {
-							console.log(res.data);
-							if (res.data.code == "FAIL") {
-								this.$u.toast(res.data.msg);
-								return
-							}
-						})
-					},
-					swiperChange(e) {
-						// console.log(e)
-						this.current = e.detail.current
-					},
-					tipModel(flag) {
-						// this.showTip = false
-					},
-					toBuy() {
-						this.specModel(true)
-					},
-					specModel(flag) {
-						this.showSpecs = flag
-					},
-					// 获取商品详情信息
-					getGoodsDetail() {
-
-						this.$u.post('/api/v1/goods/detail/summary_new', {
-							userID: uni.getStorageSync("userInfo").id,
-							GoodsID: this.id
-						}).then(res => {
-							console.log(res.data);
-							this.showLoading = false
-							if (res.data.code == "FAIL") {
-								this.$u.toast(res.data.msg);
-								return
-							}
-							this.goodsDetail = res.data.data
-							// 商样图片  根据type判断放在什么位置
-							if (res.data.data.notice.type === 1) {
-								this.brandFirstImg = res.data.data.notice.img
-								this.brandLastImg = ''
-							} else if (res.data.data.notice.type === 2) {
-								this.brandFirstImg = ''
-								this.brandLastImg = res.data.data.notice.img
-							} else {
-								this.brandFirstImg = res.data.data.notice.img
-								this.brandLastImg = res.data.data.notice.img
-							}
-							// 规格只有一个 默认选中
-							if (this.goodsDetail.attributes.length === 1 && this.goodsDetail.attributes[0].children
-								.length === 1) {
-								this.selectName[0] = this.goodsDetail.attributes[0].children[0].name
-								this.selectArr[0] = this.goodsDetail.attributes[0].children[0].id
-								this.subIndex[0] = 0
-							}
-							if (this.goodsDetail.attributes.length > 1) {
-								let arr = []
-								if (this.goodsDetail.attributes[0].children[0].id < this.goodsDetail.attributes[1]
-									.children[0].id) {
-									this.goodsDetail.attributes.forEach((item) => {
-										arr.unshift(item)
-									})
-									this.$set(this.goodsDetail, 'attributes', arr)
-								}
-							}
-
-							this.swiperImgList = res.data.data.mainPhotos
-
-							//获取商品详情图片列表
-							this.getPictures()
-							//初始化商品sku信息
-							if (!uni.getStorageSync("userInfo").id) {
-								this.initData()
-							} else {
-								this.$u.post('/api/v1/users/address/list', {
-									UserID: uni.getStorageSync("userInfo").id
-								}).then(res => {
-									if (res.data.code == "FAIL") {
-										this.$u.toast(res.data.msg);
-										return
-									}
-									res.data.data.forEach(item => {
-										if (item.isDefault === 1) {
-											this.selectedAddress = item
-										}
-									})
-									this.initData()
-								});
-
-							}
-						})
-					},
-
-					//初始化商品规格sku信息
-					initData() {
-						this.checkedSkuMsg = this.goodsDetail.sku[0]
-						this.skuPrice = this.goodsDetail.sku[0].discountPrice || ''
-						this.skuPhoto = this.IMAGE_URL + this.goodsDetail.sku[0].picUrl
-						this.skuStoreCount = this.goodsDetail.sku[0].inventory
-						this.checkedSku = "请选择规格"
-
-						if (this.goodsDetail.sku.length === 1) {
-							this.checkedSku = this.goodsDetail.sku[0].name
-							this.sku_id = this.goodsDetail.sku[0].id
-							console.log(this.sku_id)
-						}
-						for (let i in this.goodsDetail.sku) {
-							this.shopItemInfo[this.goodsDetail.sku[i].combineId.split(",").reverse().join(",")] = this
-								.goodsDetail
-								.sku[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
-						}
-						// console.log(this.shopItemInfo)
-						this.checkItem();
-					},
-
-					//获取商品详情图片
-					getPictures() {
-						this.$u.post('/api/v1/goods/detail/photo', {
-							GoodsID: this.id
-						}).then(res => {
-							console.log(res.data);
-							if (res.data.code == "FAIL") {
-								this.$u.toast(res.data.msg);
-								return
-							}
-							this.pictures = res.data.data.list
-						});
-
-					},
-
-
-					//添加购物车 判断是否登录
-					addcart() {
-						if (uni.getStorageSync("auth").token) {
-							console.log(this.sku_id)
-							if (!this.sku_id) {
-								this.$u.toast("请选择商品规格")
-								return
-							}
-							this.$u.post('/api/v1/goods/shopping_trolley/add', {
-								UserID: uni.getStorageSync("userInfo").id,
-								GoodsID: this.id,
-								SkuID: this.sku_id,
-								Quantity: this.buyNum
-							}).then(res => {
-								console.log(res.data);
-								if (res.data.code == "FAIL") {
-									this.$u.toast(res.data.msg);
-									return
-								}
-								uni.showToast({
-									title: "已加入购物车"
-								})
-								this.specModel(false)
-							})
-						} else {
-							this.$u.toast("游客无法使用该功能，请登录");
-							let pages = getCurrentPages();
-							let currPage = null;
-							if (pages.length) {
-								currPage = pages[pages.length - 1];
-							}
-							console.log(currPage)
-							let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
-							this.$store.commit('setUrl', url)
-							console.log(url)
-							setTimeout(() => {
-								uni.navigateTo({
-									url: "../login/login"
-								})
-							}, 1000)
-							return false;
-						}
-
-					},
-					//创建预购单 判断是否登录
-					createOrder() {
-						console.log(this.sku_id)
-						console.log(this.checkedSku)
-						if (!this.sku_id) {
-							this.$u.toast("请选择商品规格")
-							return
-						} 
-						// else if (this.jcookStockState != 1) {
-						// 	this.$u.toast("当前无货")
-						// 	return
-						// }
-						let sendData = {
-							UserID: uni.getStorageSync("userInfo").id,
-							SkuID: this.sku_id,
-							SkuName: this.selectName.join('+'),
-							Quantity: this.buyNum,
-							// addressId:this.selectedAddress.id
-						}
-						if (uni.getStorageSync("auth").token) {
-							if (this.parentId) {
-								sendData.ParentID = this.parentId
-							}
-							// if(this.invite){
-							// 	sendData.invite = this.invite
-							// }
-							if (uni.getStorageSync("invite")) {
-								sendData.invite = uni.getStorageSync("invite")
-							}
-							// 此时创建普通订单预览
-							console.log(sendData);
-							this.$u.post('/api/v1/order_preview/create', sendData).then(res => {
-								if (res.data.code == "FAIL") {
-									this.$u.toast(res.data.msg);
-									return
-								}
-								let preViewMsg = res.data.data
-								preViewMsg.isImport = this.goodsDetail.isImport
-								this.$store.commit('updatePreOrderMsg', preViewMsg);
-								console.log(res.data.data)
-								// return
-								uni.navigateTo({
-									url: "/pages/confirmOrder/confirmOrder"
-								})
-								this.specModel(false)
-							});
-						} else {
-							this.$u.toast("游客无法使用该功能，请登录");
-							let pages = getCurrentPages();
-							let currPage = null;
-							if (pages.length) {
-								currPage = pages[pages.length - 1];
-							}
-							console.log(currPage)
-							let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
-							this.$store.commit('setUrl', url)
-							console.log(url)
-							setTimeout(() => {
-								uni.navigateTo({
-									url: "../login/login"
-								})
-							}, 1000)
-							return false;
-						}
-
-					},
-
-					//选择规格
-					chooseAttr(i1, i2, id, name) {
-						if (this.selectArr[i1] != id) {
-							this.selectName[i1] = name
-							this.selectArr[i1] = id
-							this.subIndex[i1] = i2
-						} else {
-							this.selectName[i1] = ""
-							this.selectArr[i1] = ""
-							this.subIndex[i1] = -1 //去掉选中的颜色
-						}
-
-						// console.log(this.selectArr,this.subIndex,this.selectName)
-						this.checkedSku = this.selectName.join(",")
-						this.checkItem();
-					},
-					checkItem() {
-						let option = this.goodsDetail.attributes
-						let result = [] //定义数组储存被选中的值
-						for (let i in option) {
-							result[i] = this.selectArr[i] ? this.selectArr[i] : '';
-						}
-						console.log(option)
-						for (let i in option) {
-							let last = result[i]; //把选中的值存放到字符串last去
-							for (let k in option[i].children) {
-								result[i] = option[i].children[k].id; //赋值，存在直接覆盖，不存在往里面添加id
-								option[i].children[k].isShow = this.isMay(result); //在数据里面添加字段isShow来判断是否可以选择
-							}
-							result[i] = last; //还原，目的是记录点下去那个值，避免下一次执行循环时被覆盖
-						}
-						// console.log(result)
-
-						if (this.shopItemInfo[result]) {
-							this.checkedSkuMsg = this.shopItemInfo[result]
-							this.sku_id = this.shopItemInfo[result].id
-							this.jcookStockCheck()
-						} else {
-							this.sku_id = 0
-						}
-						this.$forceUpdate(); //重绘
-					},
-					isMay(result) {
-						console.log('shopItemInfo', this.shopItemInfo)
-						console.log('result', result)
-						for (var i in result) {
-							if (result[i] == '') {
-								return true; //如果数组里有为空的值，那直接返回true
-							}
-						}
-						console.log(this.shopItemInfo[result])
-						if (!this.shopItemInfo[result]) {
-							return false
-						}
-						return this.shopItemInfo[result].inventory == 0 ? false : true; //匹配选中的数据的库存，若不为空返回true反之返回false
-					},
-					chooseAddress(e) {
-						console.log(e)
-						this.addressList = e.detail.value
-						this.address = this.addressList.join("-")
-						console.log(this.addressList)
-					},
-					//下载发圈素材图片
-					downloadPic(pics) {
-						console.log(pics)
-						for (let i = 0; i < pics.length; i++) {
-							this.downloadSave(pics[i].url)
-						}
-					},
-					downloadSave(url) {
-						console.log(url)
-						uni.downloadFile({
-							url: url, //网络路径不支持
-							success: (res) => {
-								if (res.statusCode === 200) {
-									console.log(res.tempFilePath)
-									console.log('下载成功');
-									let localPicUrl = res.tempFilePath
-									uni.saveImageToPhotosAlbum({
-										filePath: localPicUrl,
-										success: function() {
-											console.log('save success');
-										},
-										fail: (err) => {
-											this.$u.toast(err);
-										}
-									});
-								}
-							},
-							fail: (err) => {
-								this.$u.toast(err);
-							}
-						});
-					},
-					//复制文字
-					copyWords(words) {
-						uni.setClipboardData({
-							data: words,
-							success: (res) => {
-								console.log("success")
-							}
-						})
-					},
-
-					handClick(val) {
-						console.log(val)
-						wx.previewImage({
-							current: this.swiperList[val], // 当前显示图片的http链接
-							urls: this.swiperList // 需要预览的图片http链接列表
-						})
-					},
-
-					goLogin() {
-						if (!uni.getStorageSync("auth").token) {
-							this.$u.toast("游客无法使用该功能，请登录");
-							let pages = getCurrentPages();
-							let currPage = null;
-							if (pages.length) {
-								currPage = pages[pages.length - 1];
-							}
-							console.log(currPage)
-							let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
-							this.$store.commit('setUrl', url)
-							setTimeout(() => {
-								uni.navigateTo({
-									url: "../login/login"
-								})
-							}, 1000)
-						}
-					}
-			},
-			onShareAppMessage(res) {
-				let shareObj = {
-					title: "我在买" + this.goodsDetail.goodsName + ",快来看看吧！",
-					path: '/pages/goodsDetail/goodsDetail?id=' + this.id + "&type=share&invite=" + this.$store.state
-						.invitationNo,
-					imageUrl: this.goodsDetail.mainPhotos[0].url
+					}, 1000)
+					return false;
 				}
-				// if (res.from === 'button') { // 来自页面内分享按钮
-				// 	console.log(this.$store.state.invitationNo)
-				// 	if (this.roleLevel == 500) {
-				// 		shareObj = {
-				// 			title: uni.getStorageSync('userInfo').nickname + "正在邀请您加入瑞库客，0成本带您玩转副业",
-				// 			path: '/pages/login/login?type=share&invite=' + this.$store.state.invitationNo,
-				// 			imageUrl: this.IMAGE_URL + '/wxapp/invite.jpg'
-				// 		}
-				// 	}
-				// } else {
-				// 	if (!this.isLogin) {
-				// 		shareObj = {
-				// 			title: "阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业",
-				// 			path: '/pages/index/index?invite=' + this.$store.state.invitationNo,
-				// 			imageUrl: this.IMAGE_URL + '/wxapp/invite.jpg'
-				// 		}
-				// 	}
-				// }
-				console.log(shareObj)
-				return shareObj
+			},
+			// getRegions() {
+			// 	if (!uni.getStorageSync("region")) {
+			// 		this.$u.post("/api/v1/region/all").then(res => {
+			// 			uni.setStorageSync("region", res.data.data)
+			// 			this.initRegionPicker()
+			// 		})
+			// 	} else {
+			// 		this.region = uni.getStorageSync("region")
+			// 		this.initRegionPicker()
+			// 	}
+			// },
+			// initRegionPicker() {
+			// 	let region = this.region
+			// 	let regionPickerIndex = this.regionPickerIndex
+			// 	let regionPicker = []
+			// 	let cityList = region[regionPickerIndex[0]].cities
+			// 	let districtList = cityList[regionPickerIndex[1]].districts
+			// 	let province = []
+			// 	region.forEach(i => {
+			// 		province.push(i.name)
+			// 	})
+			// 	regionPicker.push(province)
+			// 	let city = []
+			// 	cityList.forEach(i => {
+			// 		city.push(i.name)
+			// 	})
+			// 	regionPicker.push(city)
+			// 	let districts = []
+			// 	districtList.forEach(i => {
+			// 		districts.push(i.name)
+			// 	})
+			// 	regionPicker.push(districts)
+			// 	this.regionPicker = regionPicker
+			// },
+			// columnchange(e) {
+			// 	let column = e.detail.column;
+			// 	let currentIndex = e.detail.value;
+			// 	if (column === 0) {
+			// 		this.regionPickerIndex = [currentIndex, 0, 0]
+			// 	} else if (column === 1) {
+			// 		this.regionPickerIndex[1] = currentIndex
+			// 		this.regionPickerIndex[2] = 0
+			// 	} else if (column === 2) {
+			// 		this.regionPickerIndex[2] = currentIndex
+			// 	}
+
+			// 	console.log(this.regionPickerIndex);
+			// 	this.initRegionPicker()
+			// },
+			// selectedRegionChange(e) {
+			// 	let province = this.region[this.regionPickerIndex[0]]
+			// 	let city = province.cities[this.regionPickerIndex[1]]
+			// 	let districts = city.districts[this.regionPickerIndex[2]]
+			// 	this.selectedRegion = province.name + city.name + districts.name
+			// },
+			jcookStockCheck() {
+				if (this.sku_id != '' && !this.selectedAddress) {
+					// this.$u.toast('未选择地址');
+					return
+				}
+				let address = this.selectedAddress
+				let param = {
+					sku_id: this.sku_id,
+					address: address.province + address.city + address.district,
+					quantity: 1
+				}
+				this.$u.post("/api/v2/app/jcook/stock", param).then(res => {
+					if (res.data.msg === '该商品不需要调用') {
+						this.jcookStockState = 1
+					} else {
+						this.jcookStockState = res.data.data.stock_state
+					}
+				})
+			},
+			hideModel() {
+				this.isShow = false
+			},
+			// 复制链接
+			copyLink() {
+				const that = this
+				let url = `${this.H5_BASE_URL}/#/user/appRegister/${this.$store.state.invitationNo}`
+				uni.setClipboardData({
+					data: url,
+					success: function() {
+						console.log('success');
+						that.hideModel()
+					}
+				});
+			},
+			// 分享海报
+			postShare() {
+				uni.navigateTo({
+					url: '/packageA/postShare/postShare'
+				})
+			},
+			parameterModel(bool) {
+				this.parameterShow = bool
+			},
+			getUrlKey(url, name) { //获取url 参数
+				return decodeURIComponent(
+					(new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(url) || [, ""])[1].replace(
+						/\+/g,
+						'%20')) || null;
+			},
+			toGoodsComments() {
+				uni.navigateTo({
+					url: "../goodsComments/goodsComments?id=" + this.id
+				})
+			},
+			back() {
+				if (this.type == "share") {
+					uni.switchTab({
+						url: "/pages/index/index"
+					})
+				} else {
+					uni.navigateBack()
+				}
+			},
+			changeNum() {
+				if (this.buyNum > this.skuStoreCount) {
+					this.$u.toast(res.data.msg);
+				}
+				return
+			},
+			//点击收藏
+			setFavorite() {
+				this.goodsDetail.isFavorite = !this.goodsDetail.isFavorite
+				console.log(this.goodsDetail.isFavorite)
+				let reqUrl = ""
+				if (this.goodsDetail.isFavorite) {
+					reqUrl = "/api/v1/goods/favorites/add"
+				} else {
+					reqUrl = "/api/v1/goods/favorites/cancel"
+				}
+				this.$u.post(reqUrl, {
+					userID: uni.getStorageSync("userInfo").id,
+					goodsID: this.id
+				}).then(res => {
+					console.log(res.data);
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+				})
+			},
+			swiperChange(e) {
+				// console.log(e)
+				this.current = e.detail.current
+			},
+			tipModel(flag) {
+				// this.showTip = false
+			},
+			toBuy() {
+				this.specModel(true)
+				if (!uni.getStorageSync("auth").token) {
+					this.$u.toast("游客无法使用该功能，请登录");
+					let pages = getCurrentPages();
+					let currPage = null;
+					if (pages.length) {
+						currPage = pages[pages.length - 1];
+					}
+					console.log(currPage)
+					let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
+					this.$store.commit('setUrl', url)
+					setTimeout(() => {
+						uni.navigateTo({
+							url: "../login/login"
+						})
+					}, 1000)
+				}
+
+			},
+			specModel(flag) {
+				this.showSpecs = flag
+			},
+			// 获取商品详情信息
+			getGoodsDetail() {
+
+				this.$u.post('/api/v1/goods/detail/summary_new', {
+					userID: uni.getStorageSync("userInfo").id,
+					GoodsID: this.id
+				}).then(res => {
+					console.log(res.data);
+					this.showLoading = false
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.goodsDetail = res.data.data
+					// 商样图片  根据type判断放在什么位置
+					if (res.data.data.notice.type === 1) {
+						this.brandFirstImg = res.data.data.notice.img
+						this.brandLastImg = ''
+					} else if (res.data.data.notice.type === 2) {
+						this.brandFirstImg = ''
+						this.brandLastImg = res.data.data.notice.img
+					} else {
+						this.brandFirstImg = res.data.data.notice.img
+						this.brandLastImg = res.data.data.notice.img
+					}
+					// 规格只有一个 默认选中
+					if (this.goodsDetail.attributes.length === 1 && this.goodsDetail.attributes[0].children
+						.length === 1) {
+						this.selectName[0] = this.goodsDetail.attributes[0].children[0].name
+						this.selectArr[0] = this.goodsDetail.attributes[0].children[0].id
+						this.subIndex[0] = 0
+					}
+					if (this.goodsDetail.attributes.length > 1) {
+						let arr = []
+						if (this.goodsDetail.attributes[0].children[0].id < this.goodsDetail.attributes[1]
+							.children[0].id) {
+							this.goodsDetail.attributes.forEach((item) => {
+								arr.unshift(item)
+							})
+							this.$set(this.goodsDetail, 'attributes', arr)
+						}
+					}
+
+					this.swiperImgList = res.data.data.mainPhotos
+
+					//获取商品详情图片列表
+					this.getPictures()
+					//初始化商品sku信息
+					if (!uni.getStorageSync("userInfo").id) {
+						this.initData()
+					} else {
+						this.$u.post('/api/v1/users/address/list', {
+							UserID: uni.getStorageSync("userInfo").id
+						}).then(res => {
+							if (res.data.code == "FAIL") {
+								this.$u.toast(res.data.msg);
+								return
+							}
+							res.data.data.forEach(item => {
+								if (item.isDefault === 1) {
+									this.selectedAddress = item
+								}
+							})
+							this.initData()
+						});
+
+					}
+				})
+			},
+
+			//初始化商品规格sku信息
+			initData() {
+				this.checkedSkuMsg = this.goodsDetail.sku[0]
+				this.skuPrice = this.goodsDetail.sku[0].discountPrice || ''
+				this.skuPhoto = this.IMAGE_URL + this.goodsDetail.sku[0].picUrl
+				this.skuStoreCount = this.goodsDetail.sku[0].inventory
+				this.checkedSku = "请选择规格"
+
+				if (this.goodsDetail.sku.length === 1) {
+					this.checkedSku = this.goodsDetail.sku[0].name
+					this.sku_id = this.goodsDetail.sku[0].id
+					console.log(this.sku_id)
+				}
+				for (let i in this.goodsDetail.sku) {
+					this.shopItemInfo[this.goodsDetail.sku[i].combineId.split(",").reverse().join(",")] = this
+						.goodsDetail
+						.sku[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
+				}
+				// console.log(this.shopItemInfo)
+				this.checkItem();
+			},
+
+			//获取商品详情图片
+			getPictures() {
+				this.$u.post('/api/v1/goods/detail/photo', {
+					GoodsID: this.id
+				}).then(res => {
+					console.log(res.data);
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.pictures = res.data.data.list
+				});
+
+			},
+
+
+			//添加购物车 判断是否登录
+			addcart() {
+				if (uni.getStorageSync("auth").token) {
+					console.log(this.sku_id)
+					if (!this.sku_id) {
+						this.$u.toast("请选择商品规格")
+						return
+					}
+					this.$u.post('/api/v1/goods/shopping_trolley/add', {
+						UserID: uni.getStorageSync("userInfo").id,
+						GoodsID: this.id,
+						SkuID: this.sku_id,
+						Quantity: this.buyNum
+					}).then(res => {
+						console.log(res.data);
+						if (res.data.code == "FAIL") {
+							this.$u.toast(res.data.msg);
+							return
+						}
+						uni.showToast({
+							title: "已加入购物车"
+						})
+						this.specModel(false)
+					})
+				} else {
+					this.$u.toast("游客无法使用该功能，请登录");
+					let pages = getCurrentPages();
+					let currPage = null;
+					if (pages.length) {
+						currPage = pages[pages.length - 1];
+					}
+					console.log(currPage)
+					let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
+					this.$store.commit('setUrl', url)
+					console.log(url)
+					setTimeout(() => {
+						uni.navigateTo({
+							url: "../login/login"
+						})
+					}, 1000)
+					return false;
+				}
+
+			},
+			//创建预购单 判断是否登录
+			createOrder() {
+				console.log(this.sku_id)
+				console.log(this.checkedSku)
+				if (!this.sku_id) {
+					this.$u.toast("请选择商品规格")
+					return
+				} else if (this.jcookStockState != 1) {
+					this.$u.toast("当前无货")
+					return
+				}
+				let sendData = {
+					UserID: uni.getStorageSync("userInfo").id,
+					SkuID: this.sku_id,
+					SkuName: this.selectName.join('+'),
+					Quantity: this.buyNum,
+					// addressId:this.selectedAddress.id
+				}
+				if (uni.getStorageSync("auth").token) {
+					if (this.parentId) {
+						sendData.ParentID = this.parentId
+					}
+					// if(this.invite){
+					// 	sendData.invite = this.invite
+					// }
+					if (uni.getStorageSync("invite")) {
+						sendData.invite = uni.getStorageSync("invite")
+					}
+					// 此时创建普通订单预览
+					console.log(sendData);
+					this.$u.post('/api/v1/order_preview/create', sendData).then(res => {
+						if (res.data.code == "FAIL") {
+							this.$u.toast(res.data.msg);
+							return
+						}
+						let preViewMsg = res.data.data
+						preViewMsg.isImport = this.goodsDetail.isImport
+						this.$store.commit('updatePreOrderMsg', preViewMsg);
+						console.log(res.data.data)
+						// return
+						uni.navigateTo({
+							url: "/pages/confirmOrder/confirmOrder"
+						})
+						this.specModel(false)
+					});
+				} else {
+					this.$u.toast("游客无法使用该功能，请登录");
+					let pages = getCurrentPages();
+					let currPage = null;
+					if (pages.length) {
+						currPage = pages[pages.length - 1];
+					}
+					console.log(currPage)
+					let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
+					this.$store.commit('setUrl', url)
+					console.log(url)
+					setTimeout(() => {
+						uni.navigateTo({
+							url: "../login/login"
+						})
+					}, 1000)
+					return false;
+				}
+
+			},
+
+			//选择规格
+			chooseAttr(i1, i2, id, name) {
+				if (this.selectArr[i1] != id) {
+					this.selectName[i1] = name
+					this.selectArr[i1] = id
+					this.subIndex[i1] = i2
+				} else {
+					this.selectName[i1] = ""
+					this.selectArr[i1] = ""
+					this.subIndex[i1] = -1 //去掉选中的颜色
+				}
+
+				// console.log(this.selectArr,this.subIndex,this.selectName)
+				this.checkedSku = this.selectName.join(",")
+				this.checkItem();
+			},
+			checkItem() {
+				let option = this.goodsDetail.attributes
+				let result = [] //定义数组储存被选中的值
+				for (let i in option) {
+					result[i] = this.selectArr[i] ? this.selectArr[i] : '';
+				}
+				console.log(option)
+				for (let i in option) {
+					let last = result[i]; //把选中的值存放到字符串last去
+					for (let k in option[i].children) {
+						result[i] = option[i].children[k].id; //赋值，存在直接覆盖，不存在往里面添加id
+						option[i].children[k].isShow = this.isMay(result); //在数据里面添加字段isShow来判断是否可以选择
+					}
+					result[i] = last; //还原，目的是记录点下去那个值，避免下一次执行循环时被覆盖
+				}
+				// console.log(result)
+
+				if (this.shopItemInfo[result]) {
+					this.checkedSkuMsg = this.shopItemInfo[result]
+					this.sku_id = this.shopItemInfo[result].id
+					this.jcookStockCheck()
+				} else {
+					this.sku_id = 0
+				}
+				this.$forceUpdate(); //重绘
+			},
+			isMay(result) {
+				console.log('shopItemInfo', this.shopItemInfo)
+				console.log('result', result)
+				for (var i in result) {
+					if (result[i] == '') {
+						return true; //如果数组里有为空的值，那直接返回true
+					}
+				}
+				console.log(this.shopItemInfo[result])
+				if (!this.shopItemInfo[result]) {
+					return false
+				}
+				return this.shopItemInfo[result].inventory == 0 ? false : true; //匹配选中的数据的库存，若不为空返回true反之返回false
+			},
+			chooseAddress(e) {
+				console.log(e)
+				this.addressList = e.detail.value
+				this.address = this.addressList.join("-")
+				console.log(this.addressList)
+			},
+			//下载发圈素材图片
+			downloadPic(pics) {
+				console.log(pics)
+				for (let i = 0; i < pics.length; i++) {
+					this.downloadSave(pics[i].url)
+				}
+			},
+			downloadSave(url) {
+				console.log(url)
+				uni.downloadFile({
+					url: url, //网络路径不支持
+					success: (res) => {
+						if (res.statusCode === 200) {
+							console.log(res.tempFilePath)
+							console.log('下载成功');
+							let localPicUrl = res.tempFilePath
+							uni.saveImageToPhotosAlbum({
+								filePath: localPicUrl,
+								success: function() {
+									console.log('save success');
+								},
+								fail: (err) => {
+									this.$u.toast(err);
+								}
+							});
+						}
+					},
+					fail: (err) => {
+						this.$u.toast(err);
+					}
+				});
+			},
+			//复制文字
+			copyWords(words) {
+				uni.setClipboardData({
+					data: words,
+					success: (res) => {
+						console.log("success")
+					}
+				})
+			},
+
+			handClick(val) {
+				console.log(val)
+				wx.previewImage({
+					current: this.swiperList[val], // 当前显示图片的http链接
+					urls: this.swiperList // 需要预览的图片http链接列表
+				})
+			},
+
+			goLogin() {
+				if (!uni.getStorageSync("auth").token) {
+					this.$u.toast("游客无法使用该功能，请登录");
+					let pages = getCurrentPages();
+					let currPage = null;
+					if (pages.length) {
+						currPage = pages[pages.length - 1];
+					}
+					console.log(currPage)
+					let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
+					this.$store.commit('setUrl', url)
+					setTimeout(() => {
+						uni.navigateTo({
+							url: "../login/login"
+						})
+					}, 1000)
+				}
 			}
+		},
+		onShareAppMessage(res) {
+			let shareObj = {
+				title: "我在买" + this.goodsDetail.goodsName + ",快来看看吧！",
+				path: '/pages/goodsDetail/goodsDetail?id=' + this.id + "&type=share&invite=" + this.$store.state
+					.invitationNo,
+				imageUrl: this.goodsDetail.mainPhotos[0].url
+			}
+			// if (res.from === 'button') { // 来自页面内分享按钮
+			// 	console.log(this.$store.state.invitationNo)
+			// 	if (this.roleLevel == 500) {
+			// 		shareObj = {
+			// 			title: uni.getStorageSync('userInfo').nickname + "正在邀请您加入瑞库客，0成本带您玩转副业",
+			// 			path: '/pages/login/login?type=share&invite=' + this.$store.state.invitationNo,
+			// 			imageUrl: this.IMAGE_URL + '/wxapp/invite.jpg'
+			// 		}
+			// 	}
+			// } else {
+			// 	if (!this.isLogin) {
+			// 		shareObj = {
+			// 			title: "阿库网络公司正在邀请您加入瑞库客，0成本带您玩转副业",
+			// 			path: '/pages/index/index?invite=' + this.$store.state.invitationNo,
+			// 			imageUrl: this.IMAGE_URL + '/wxapp/invite.jpg'
+			// 		}
+			// 	}
+			// }
+			console.log(shareObj)
+			return shareObj
 		}
+	}
 </script>
 
 <style lang="scss">

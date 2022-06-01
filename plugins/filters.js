@@ -8,7 +8,7 @@
  *	VipLevel     = 0    会员
  * */
 export function roleFilter(roleLevel, format) {
-	let roleText, badge, mineBg, otherBg,levelIcon
+	let roleText, badge, mineBg, otherBg, levelIcon
 	switch (roleLevel) {
 		// case 0:
 		// 	// roleText = "会员"
@@ -38,13 +38,13 @@ export function roleFilter(roleLevel, format) {
 			otherBg = "/wxapp/role02.jpg"
 			levelIcon = "/wxapp/level02.png"
 			break;
-		// case 200:
-		// 	roleText = "黄金店铺"
-		// 	badge = '/wxapp/badge03.png'
-		// 	mineBg = "/wxapp/mine/role03.png"
-		// 	otherBg = "/wxapp/role03.jpg"
-		// 	levelIcon = "/wxapp/level03.png"
-		// 	break;
+			// case 200:
+			// 	roleText = "黄金店铺"
+			// 	badge = '/wxapp/badge03.png'
+			// 	mineBg = "/wxapp/mine/role03.png"
+			// 	otherBg = "/wxapp/role03.jpg"
+			// 	levelIcon = "/wxapp/level03.png"
+			// 	break;
 		case 2:
 			roleText = "店铺"
 			badge = '/wxapp/badge04.png'
@@ -52,20 +52,27 @@ export function roleFilter(roleLevel, format) {
 			otherBg = "/wxapp/role04.jpg"
 			levelIcon = "/wxapp/level04.png"
 			break;
-		// case 160:
-		// 	roleText = "钻石店铺"
-		// 	badge = '/wxapp/badge04.png'
-		// 	mineBg = "/wxapp/mine/role04.png"
-		// 	otherBg = "/wxapp/role04.jpg"
-		// 	levelIcon = "/wxapp/level04.png"
-		// 	break;
-		// case 130:
-		// 	roleText = "钻石店铺"
-		// 	badge = '/wxapp/badge04.png'
-		// 	mineBg = "/wxapp/mine/role04.png"
-		// 	otherBg = "/wxapp/role04.jpg"
-		// 	levelIcon = "/wxapp/level04.png"
-		// 	break;
+		case 10:
+			roleText = ""
+			badge = ''
+			mineBg = "/wxapp/mine/role04.png"
+			otherBg = "/wxapp/role04.jpg"
+			levelIcon = "/wxapp/level04.png"
+			break;
+			// case 160:
+			// 	roleText = "钻石店铺"
+			// 	badge = '/wxapp/badge04.png'
+			// 	mineBg = "/wxapp/mine/role04.png"
+			// 	otherBg = "/wxapp/role04.jpg"
+			// 	levelIcon = "/wxapp/level04.png"
+			// 	break;
+			// case 130:
+			// 	roleText = "钻石店铺"
+			// 	badge = '/wxapp/badge04.png'
+			// 	mineBg = "/wxapp/mine/role04.png"
+			// 	otherBg = "/wxapp/role04.jpg"
+			// 	levelIcon = "/wxapp/level04.png"
+			// 	break;
 		default:
 			break;
 	}
