@@ -5,14 +5,10 @@
 				<view class="">提现密码设置</view>
 				<text class="cuIcon-right"></text>
 			</navigator>
-			<navigator url="/pages/authentication/authentication" class="item flex justify-between">
+			<navigator url="/packageA/settings/accountdetail" class="item flex justify-between">
 				<view class="">注销账号</view>
 				<text class="cuIcon-right"></text>
 			</navigator>
-			<view class="item flex justify-between" @tap="deleteUser">
-				<view class="">注销账号</view>
-				<text class="cuIcon-right"></text>
-			</view>
 		</view>
 <!-- 		<view class="box bg-white" v-if='isShow'>
 			<view class="item flex justify-between">
@@ -47,37 +43,6 @@
 			this.isShow=level!='2'?true:false
 		},
 		methods: {
-			deleteUser() {
-				uni.showModal({
-					title: '提示',
-					content: '确认注销账号吗？',
-					success: (res) => {
-						if (res.confirm) {
-							console.log('用户点击确定');
-							this.$u.post('/api/v1/users/profile/userDestroy', {
-								user_id: uni.getStorageSync("userInfo").id
-							}).then(res => {
-								console.log(res);
-								if (res.data.code == "FAIL") {
-									this.$u.toast(res.data.msg);
-									return
-								}
-								uni.clearStorageSync()
-								uni.showToast({
-									title: "账号已注销"
-								})
-								setTimeout(function() {
-									uni.reLaunch({
-										url: "../login/login"
-									})
-								}, 2000)
-							});
-						} else if (res.cancel) {
-							console.log('用户点击取消');
-						}
-					}
-				});
-			},
 			changePhoneSecret(value) {
 				let secret = this.info.secret
 				this.$u.post('/api/v2/app/user/secret', {

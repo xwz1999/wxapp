@@ -29,7 +29,7 @@
 									<text :class="goods.goodsChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkGoods(shopIndex,goodsIndex)"></text>
 								</view>
 								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId" class="cart-goods-pic">
-									<u-lazy-load threshold="-100" :image="goods.mainPhotoUrl" :index="index" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  height="200" border-radius="10" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+									<u-lazy-load threshold="-100" :image="judgeCover(goods.mainPhotoUrl)" :index="index" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  height="200" border-radius="10" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 								</navigator>
 								<view class="cart-goods-msg flex-sub">
 									<view class="msg-top flex flex-direction justify-between clear align-start">
@@ -45,9 +45,8 @@
 											<text style="text-decoration: line-through;font-size: 20rpx;margin-left: 5rpx;color: #898989;">¥{{goods.originalPrice}}</text>
 										</view>
 										<!-- 用change事件初次加载会请求多次 -->
-										<u-number-box v-model="goods.quantity" :min="1" :max="50" :input-width="72" :size="24"
+										<u-number-box :value="goods.quantity" :min="1" :max="50" :input-width="72" :size="24"
 										 @change="changeNum(goods.shoppingTrolleyId,goods.quantity)"></u-number-box>
-			
 									</view>
 								</view>
 							</view>
@@ -100,6 +99,17 @@
 			this.getCartGoods()
 		},
 		methods: {
+			//判断图片
+			judgeCover(val) {
+				if (!val) {
+					return
+				}
+				let arr = val.split('/')
+				if (arr[0] === 'http:' || arr[0] === 'https:') {
+					return val
+				}
+				return this.IMAGE_URL + val
+			},
 			editCart() {
 				this.isEdit = !this.isEdit
 			},

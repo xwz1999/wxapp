@@ -1,13 +1,15 @@
 <template>
 	<view>
-		<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;" v-if="showLoading">
+		<view class="isLoading bg-white flex flex-direction justify-center align-center"
+			style="height: 100vh;width: 100vw;" v-if="showLoading">
 			<!-- <image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image> -->
 		</view>
 		<view class="" v-else>
 			<template v-if="cartGoods.length==0">
 				<view class="flex flex-direction justify-center align-center" style="width: 100vw;height:80vh;">
 					<image :src="IMAGE_URL+'/wxapp/null02.png'" style="width: 300rpx;" mode="widthFix"></image>
-					<view class="text-center" style="color: #AAAAAA;font-size: 26rpx;margin-top: 10rpx;">购物车空了,快去逛逛吧~</view>
+					<view class="text-center" style="color: #AAAAAA;font-size: 26rpx;margin-top: 10rpx;">购物车空了,快去逛逛吧~
+					</view>
 				</view>
 			</template>
 			<template v-else>
@@ -19,17 +21,25 @@
 				<view class="cart-shop-box">
 					<view class="cart-shop-item bg-white" v-for="(shop,shopIndex) in cartGoods" :key="shopIndex">
 						<view class="shop-name-box flex align-center">
-							<text :class="shop.shopChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkShop(shopIndex)"></text>
+							<text :class="shop.shopChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'"
+								@tap="checkShop(shopIndex)"></text>
 							<!-- <image class="shop-logo" :src="IMAGE_URL+shop.brandLogo" mode="widthFix"></image> -->
 							<view class="shop-name">{{shop.brandName}}</view>
 						</view>
 						<view class="cart-goods-box">
-							<view class="cart-goods-item flex justify-between align-start" v-for="(goods,goodsIndex) in shop.children" :key="goodsIndex">
+							<view class="cart-goods-item flex justify-between align-start"
+								v-for="(goods,goodsIndex) in shop.children" :key="goodsIndex">
 								<view class="flex align-center" style="height: 200rpx;">
-									<text :class="goods.goodsChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkGoods(shopIndex,goodsIndex)"></text>
+									<text
+										:class="goods.goodsChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'"
+										@tap="checkGoods(shopIndex,goodsIndex)"></text>
 								</view>
-								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId" class="cart-goods-pic">
-									<u-lazy-load threshold="-100" :image="judgeCover(goods.mainPhotoUrl)" :index="index" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  height="200" border-radius="10" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId"
+									class="cart-goods-pic">
+									<u-lazy-load threshold="-100" :image="judgeCover(goods.mainPhotoUrl)" :index="index"
+										:loading-img="IMAGE_URL + '/wxapp/null05.png'" height="200" border-radius="10"
+										:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill">
+									</u-lazy-load>
 								</navigator>
 								<view class="cart-goods-msg flex-sub">
 									<view class="msg-top flex flex-direction justify-between clear align-start">
@@ -39,15 +49,18 @@
 										</view>
 										<view class="text-red tip">省{{goods.commission}}</view>
 									</view>
-									<view class="msg-bottom flex justify-between" style="line-height: 50rpx;padding-top: 15rpx;">
+									<view class="msg-bottom flex justify-between"
+										style="line-height: 50rpx;padding-top: 15rpx;">
 										<view class="flex">
 											<text class="text-red" style="font-size: 30rpx;">¥{{goods.price}}</text>
-											<text style="text-decoration: line-through;font-size: 20rpx;margin-left: 5rpx;color: #898989;">¥{{goods.originalPrice}}</text>
+											<text
+												style="text-decoration: line-through;font-size: 20rpx;margin-left: 5rpx;color: #898989;">¥{{goods.originalPrice}}</text>
 										</view>
 										<!-- 用change事件初次加载会请求多次 -->
-										<u-number-box v-model="goods.quantity" :min="1" :max="50" :input-width="72" :size="24"
-										 @change="changeNum(goods.shoppingTrolleyId,goods.quantity)"></u-number-box>
-			
+										<u-number-box :value="goods.quantity" :min="1" :max="50" :input-width="72"
+											:size="24" @change="changeNum(goods.shoppingTrolleyId,goods.quantity)">
+										</u-number-box>
+
 									</view>
 								</view>
 							</view>
@@ -61,7 +74,7 @@
 						<view style="font-size: 28rpx;margin-left: 10rpx;">全选</view>
 					</view>
 					<view class="flex align-center">
-			
+
 						<view class="" style="margin-right: 30rpx;">
 							<template v-if="isEdit">
 								<view class="">已选择{{totalNum}}件商品</view>
@@ -72,11 +85,12 @@
 							</template>
 						</view>
 						<button v-if="isEdit" class="cu-btn text-white round bg-red" @tap="delGoods">删除</button>
-						<button v-else class="cu-btn text-white round bg-red" @tap="creatCartOrder">结算({{totalNum}})</button>
+						<button v-else class="cu-btn text-white round bg-red"
+							@tap="creatCartOrder">结算({{totalNum}})</button>
 					</view>
 				</view>
 			</template>
-		<!-- 	<view class="split_text">
+			<!-- 	<view class="split_text">
 				猜你喜欢
 			</view>
 					<large-image-list situation=3 :goodsList="like_goodsList"></large-image-list>	 -->
@@ -85,36 +99,36 @@
 </template>
 
 <script>
-		import largeImageList from '@/components/largeImageList.vue'
+	import largeImageList from '@/components/largeImageList.vue'
 	export default {
 		data() {
 			return {
 				allChecked: false,
 				cartGoods: [],
 				IMAGE_URL: this.IMAGE_URL,
-				STATIC_URL:this.STATIC_URL,
+				STATIC_URL: this.STATIC_URL,
 				isEdit: false,
 				totalPrice: 0,
 				totalNum: 0,
 				selectGoodsIds: [],
 				totalCommission: 0,
-				showLoading:true,
-				like_goodsList:[],
+				showLoading: true,
+				like_goodsList: [],
 			};
 		},
-		components:{
+		components: {
 			largeImageList
 		},
 		onShow() {
 			this.getCartGoods()
 		},
-		onLoad(){
+		onLoad() {
 			this.getGoodsList()
 		},
 		methods: {
 			//判断图片
 			judgeCover(val) {
-				if(!val){
+				if (!val) {
 					return
 				}
 				let arr = val.split('/')
@@ -124,15 +138,16 @@
 				return this.IMAGE_URL + val
 			},
 			getGoodsList() {
-				let user_id = uni.getStorageSync("userInfo").id
-			this.$u.post('/api/v2/app/shopping_cart/view_like_maybe', {user_id}).then(res => {
-				if (res.data.code == "FAIL") {
-					this.$u.toast(res.data.msg);
-					return
-				}
-				this.like_goodsList = res.data.data
+				this.$u.post('/api/v2/app/shopping_cart/view_like_maybe', {
+					user_id: uni.getStorageSync("userInfo").id
+				}).then(res => {
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.like_goodsList = res.data.data
 				})
-				},
+			},
 			editCart() {
 				this.isEdit = !this.isEdit
 			},
@@ -154,7 +169,6 @@
 				this.$u.post('/api/v1/goods/shopping_trolley/list', {
 					UserID: uni.getStorageSync("userInfo").id
 				}).then(res => {
-					console.log(res.data);
 					this.showLoading = false
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
@@ -163,11 +177,11 @@
 					this.cartGoods = res.data.data
 					if (this.cartGoods.length != 0) {
 						this.allChecked = false
-
 						for (let i = 0; i < this.cartGoods.length; i++) {
 							this.cartGoods[i].shopChecked = false
 							for (let j = 0; j < this.cartGoods[i].children.length; j++) {
-								this.cartGoods[i].children[j].goodsChecked = false
+								this.cartGoods[i].children[j].goodsChecked = false;
+							
 							}
 						}
 					}
@@ -200,7 +214,8 @@
 			},
 			//勾选商品
 			checkGoods(s_index, g_index) {
-				this.cartGoods[s_index].children[g_index].goodsChecked = !this.cartGoods[s_index].children[g_index].goodsChecked
+				this.cartGoods[s_index].children[g_index].goodsChecked = !this.cartGoods[s_index].children[g_index]
+					.goodsChecked
 				let checkedCount = 0
 				for (let i = 0; i < this.cartGoods[s_index].children.length; i++) {
 					if (!this.cartGoods[s_index].children[i].goodsChecked) {
@@ -251,7 +266,8 @@
 							selectGoodsIds.push(this.cartGoods[i].children[j].shoppingTrolleyId)
 							totalNum += this.cartGoods[i].children[j].quantity
 							totalPrice += (this.cartGoods[i].children[j].price) * (this.cartGoods[i].children[j].quantity)
-							totalCommission += (this.cartGoods[i].children[j].commission) * (this.cartGoods[i].children[j].quantity)
+							totalCommission += (this.cartGoods[i].children[j].commission) * (this.cartGoods[i].children[j]
+								.quantity)
 						}
 					}
 				}
@@ -303,8 +319,8 @@
 					userId: uni.getStorageSync("userInfo").id,
 					ids: this.selectGoodsIds
 				}
-				if(uni.getStorageSync("invite")){
-					data.invite =uni.getStorageSync("invite")
+				if (uni.getStorageSync("invite")) {
+					data.invite = uni.getStorageSync("invite")
 				}
 				this.$u.post('/api/v1/order_preview/shopping_trolley/create', data).then(res => {
 					console.log(res.data);
@@ -313,7 +329,7 @@
 						return
 					}
 					let preViewMsg = res.data.data
-					this.$store.commit('updatePreOrderMsg',preViewMsg);
+					this.$store.commit('updatePreOrderMsg', preViewMsg);
 					uni.navigateTo({
 						url: "../confirmOrder/confirmOrder"
 					})
@@ -328,9 +344,11 @@
 	page {
 		background-color: #f3f3f3;
 	}
-.split_text{
-	text-align: center;
-}
+
+	.split_text {
+		text-align: center;
+	}
+
 	.cart-top {
 		position: fixed;
 		width: 100%;
@@ -359,7 +377,8 @@
 				border-radius: 10rpx;
 				margin: 0 10rpx;
 			}
-			.shop-name{
+
+			.shop-name {
 				margin-left: 10rpx;
 				font-size: 32rpx;
 			}

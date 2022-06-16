@@ -2,8 +2,7 @@
 	"easycom": {
 		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
 	},
-	"pages": [
-		{
+	"pages": [{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarBackgroundColor": "#5B80A0",
@@ -20,7 +19,7 @@
 			}
 		},
 		{
-			"path":"pages/information/information",
+			"path": "pages/information/information",
 			"style": {
 				"navigationBarTitleText": "消息",
 				"enablePullDownRefresh": false
@@ -831,6 +830,22 @@
 					"navigationBarTitleText": "物流详情",
 					"enablePullDownRefresh": false
 				}
+			},
+			{
+				"path": "settings/accountdetail",
+				"style": {
+					"navigationBarTitleText": "注销账户",
+					"enablePullDownRefresh": false
+				}
+
+			},
+			{
+				"path": "settings/SendSMS",
+				"style": {
+					"navigationBarTitleText": "注销账户",
+					"enablePullDownRefresh": false
+				}
+			
 			}
 		]
 	}],

@@ -233,10 +233,10 @@
 </script>
 
 <style>
-	page {
+	/* page {
 		height: 100%;
 		overflow: hidden;
-	}
+	} */
 
 	.page {
 		height: 100%;

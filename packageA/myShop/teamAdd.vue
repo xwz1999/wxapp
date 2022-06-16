@@ -4,7 +4,6 @@
 		<view class="wx_code_tip">扫描二维码联系客服</view>
 		<view class="wx_number">
 			<view :decode="true" style="font-size: 14px;color: #333333;">微信号&nbsp;&nbsp;&nbsp;</view>
-
 			<!-- <text :decode="true" style="font-size: 16px;font-weight: 500;color: #333333;margin:10px;">jyy123456&nbsp;&nbsp;&nbsp;&nbsp;</text>
 		    <text style="font-size: 14px;color: #2F82E5;">复制</text> -->
 			<view style="font-size: 16px;font-weight: 500;color: #333333;margin-right:10px;">jyy123456
@@ -13,7 +12,6 @@
 		</view>
 		<view class="save-btn flex align-center">
 			<view class="btn" @click='save'>保存二维码到相册</view>
-			<!-- <view class="btn" @click='savePhoto'>相册</view> -->
 		</view>
 	</view>
 </template>
@@ -42,128 +40,17 @@
 					}
 				});
 			},
-			// previewImage(index, images) {
-			// 	let picUrls = images.map(item => {
-			// 		return this.IMAGE_URL + item.url
-			// 	})
-			// 	console.log(picUrls)
-			// 	// return
-			// 	uni.previewImage({
-			// 		urls: picUrls,
-			// 		current: index,
-			// 		success: (res) => {
-			// 			console.log("success")
-			// 		}
-			// 	});
-			// },
-			// downloadPic(images) {
-			// 	let urls = images.map(item => {
-			// 		return this.IMAGE_URL + item.url
-			// 	})
-			// 	// 获取保存到相册权限
-			// 	wxSaveAuth().then(res => {
-			// 		// 保存多张图片到相册
-			// 		downloadImgs(urls)
-			// 	})
-			// },
-
-			// save() {
-			// 	// let urls = images.map(item => {
-			// 	// 	return this.IMAGE_URL + item.url
-			// 	// })
-			// 	// 获取保存到相册权限
-			// 	let arry=[this.imageUrl]
-			// 	wxSaveAuth().then(res => {
-			// 		// 保存多张图片到相册
-			// 		downloadImgs(arry)
-			// 	})
-			// },
-			//点击保存图片
-			// save() {
-			// 	let that = this
-			// 	//若二维码未加载完毕，加个动画提高用户体验
-			// 	wx.showToast({
-			// 		icon: 'loading',
-			// 		title: '正在保存图片',
-			// 		duration: 1000
-			// 	})
-			// 	//判断用户是否授权"保存到相册"
-			// 	wx.getSetting({
-			// 		success(res) {
-			// 			//没有权限，发起授权
-			// 			if (!res.authSetting['scope.writePhotosAlbum']) {
-			// 				wx.authorize({
-			// 					scope: 'scope.writePhotosAlbum',
-			// 					success() { //用户允许授权，保存图片到相册
-			// 						that.savePhoto();
-			// 					},
-			// 					fail() { //用户点击拒绝授权，跳转到设置页，引导用户授权
-			// 						wx.openSetting({
-			// 							success() {
-			// 								wx.authorize({
-			// 									scope: 'scope.writePhotosAlbum',
-			// 									success() {
-			// 										that.savePhoto();
-			// 									}
-			// 								})
-			// 							}
-			// 						})
-			// 					}
-			// 				})
-			// 			} else { //用户已授权，保存到相册
-			// 				that.savePhoto()
-			// 			}
-			// 		}
-			// 	})
-			// },
-			save() {
-				uni.downloadFile({
-					url: this.imageUrl, // 这里是我已经请求好的图片数据
-					success: (res) => {
-						console.log(res, 'res')
-						var tempFilePath = res.tempFilePath;
-						uni.saveImageToPhotosAlbum({ // 然后调用这个方法
-							filePath: tempFilePath,
-							success: (res) => {
-								uni.showToast({
-									title: '图片已保存'
-								})
-							}
-						})
-					},
-					fail: () => {
-						uni.showToast({
-							title: '图片保存失败'
-						})
-					}
-				});
+			save1() {
+				// let urls = images.map(item => {
+				// 	return this.IMAGE_URL + item.url
+				// })
+				// 获取保存到相册权限
+				let arry = [this.imageUrl]
+				wxSaveAuth().then(res => {
+					// 保存多张图片到相册
+					downloadImgs(arry)
+				})
 			},
-			//保存图片到相册，提示保存成功
-			// savePhoto() {
-			// 	console.log(this.imageUrl)
-			// 	// let imageUrl = this.imageUrl
-			// 	wx.downloadFile({
-			// 		url: this.imageUrl,
-			// 		success: function(res) {
-			// 			var filePath = res.filePath;
-			// 			wx.saveImageToPhotosAlbum({
-			// 				filePath: filePath,
-			// 				success(res) {
-			// 					wx.showToast({
-			// 						title: '保存成功',
-			// 						icon: "success",
-			// 						// duration: 1000
-			// 					})
-			// 				},
-			// 				fail: () => {
-			// 					wx.showToast({
-			// 						title: '图片保存失败'
-			// 					})
-			// 				}
-			// 			})
-			// 		}
-			// 	})
-			// }
 		},
 
 	}

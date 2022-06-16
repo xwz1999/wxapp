@@ -21,7 +21,7 @@
 									<u-lazy-load threshold="-100" border-radius="5" :image="IMAGE_URL+item2.url" :index="index2" :error-img="IMAGE_URL + '/wxapp/null05.png'" height="190" img-mode="aspectFill"></u-lazy-load>
 								</view>
 							</view>
-							<view class="txt-con">{{item1.text}}</view>
+							<view class="txt-con"><text style=" display: inline;word-wrap: break-word;">{{item1.text}}</text></view>
 						</view>
 						<view class="goods-container flex justify-between" v-if="showGoodsLink" @tap="toDetail(item1.goods.id)">
 							<view class="goods-pic">

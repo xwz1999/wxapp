@@ -21,7 +21,7 @@
 				<view class="icon-box flex">
 					<!-- <u-icon name="server-fill"></u-icon> -->
 					<navigator url="/packageA/myShop/teamAdd">
-					<u-icon name="server-fill"></u-icon>
+						<u-icon name="server-fill"></u-icon>
 					</navigator>
 					<u-icon name="scan" @tap="scan"></u-icon>
 				</view>
@@ -140,7 +140,7 @@
 		<!-- 分享弹出框 -->
 		<u-popup v-model="isShow" mode="bottom" border-radius="15">
 			<view class="share-box flex justify-between">
-								<view class="flex-sub flex justify-center">
+				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" open-type="share">
 						<image class="share-icon" :src="IMAGE_URL + '/wxapp/mine/wx.png'" mode="widthFix"></image>
 						<view class="txt">微信好友</view>
@@ -339,7 +339,7 @@
 			postShare() {
 				uni.navigateTo({
 					// url: '/packageA/postShare/postShare'
-						url: "/packageA/myShop/teamAdd"
+					url: "/packageA/myShop/teamAdd"
 				})
 			},
 			// 获取用户当前城市
@@ -583,7 +583,7 @@
 						}
 
 					}
-					['个护清洁','柴米油盐'].forEach(ii=>{						
+					['个护清洁', '柴米油盐'].forEach(ii => {
 						cateList.forEach((item, i) => {
 							if (item.name === ii) {
 								cateList.splice(i, 1)
@@ -684,10 +684,9 @@
 			},
 			//跳转商品分类页
 			toClassify(index, id) {
-				if (id) {
-					
+				if (id) {		
 					uni.navigateTo({
-						url: "/pages/classify/classify?index=" + index+'&id='+id
+						url: "/pages/classify/classify?index=" + index + '&id=' + id
 					})
 				} else {
 					uni.navigateTo({
