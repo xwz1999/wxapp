@@ -705,9 +705,16 @@
 			}
 			if (options.q !== undefined) {
 				let url = decodeURIComponent(options.q)
+				console.log(url);
 				options.id = url.split("/")[6];
+				console.log(url.split("/")[6]);
+				console.log(url.split("/")[7]);
+				console.log(url.split("/")[8]);
 				if (url.split("/")[7] != undefined) {
 					this.$store.commit('setinvite', url.split("/")[7]);
+				}
+				if(url.split("/")[8]!= undefined){
+					this.type = url.split("/")[8];
 				}
 			}
 			if (uni.getStorageSync("userInfo").roleLevel) {
