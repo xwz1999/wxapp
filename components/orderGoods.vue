@@ -26,7 +26,7 @@
 					<view class="flex justify-between" style="font-size: 28rpx;color: #FA6400;">
 						<view class="flex">￥{{item.unitPrice | toFixed(2)}} </view>
 						<view>×{{item.quantity}}</view>
-						<view v-if="item.rStatus">{{item.rStatus}}</view>
+						<!-- <view v-if="item.rStatus">{{item.rStatus}}</view> -->
 					</view>
 				</view>
 			</view>

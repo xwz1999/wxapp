@@ -321,7 +321,7 @@
 										</view>
 										<scroll-view scroll-x="true">
 											<view class="rec-con flex">
-												<view class="rec-item" v-for="(item,index) in goodsDetail.recommends"
+												<view class="rec-item" v-for="(item,index) in goodsDetail.recommend"
 													:key="index">
 													<!-- <image :src="item.mainPhotoUrl" mode=""></image> -->
 													<navigator class="item-image"
@@ -376,6 +376,7 @@
 										<navigator url="../../packageA/goodsCart/index"
 											style="width: 100rpx;text-align: center;">
 											<text class="cuIcon-cart" style="font-size: 48rpx;"></text>
+											<text class="cuIcon-badge">{{salesVolumeInc}}</text>
 											<view style="font-size: 20rpx;">购物车</view>
 										</navigator>
 										<template v-if="goodsDetail.isFavorite">
@@ -669,7 +670,8 @@
 					mobile: "",
 					address: "",
 					detail: "",
-				}
+				},
+				badgeCount:0
 			}
 		},
 		components: {
@@ -705,16 +707,9 @@
 			}
 			if (options.q !== undefined) {
 				let url = decodeURIComponent(options.q)
-				console.log(url);
 				options.id = url.split("/")[6];
-				console.log(url.split("/")[6]);
-				console.log(url.split("/")[7]);
-				console.log(url.split("/")[8]);
 				if (url.split("/")[7] != undefined) {
 					this.$store.commit('setinvite', url.split("/")[7]);
-				}
-				if(url.split("/")[8]!= undefined){
-					this.type = url.split("/")[8];
 				}
 			}
 			if (uni.getStorageSync("userInfo").roleLevel) {
@@ -1109,8 +1104,8 @@
 				});
 
 			},
-
-
+			
+			setBadge(cartArray){},
 			//添加购物车 判断是否登录
 			addcart() {
 				if (uni.getStorageSync("auth").token) {
@@ -1384,6 +1379,22 @@
 </script>
 
 <style lang="scss">
+	.cuIcon-badge{
+		position: absolute;
+		top: 0;
+		left: 80rpx;
+		border-radius: 20rpx;
+		color: #f56c6c;
+		display: inline-block;
+		font-size: 22rpx;
+		height: 30rpx;
+		line-height: 30rpx;
+		padding: 0 10rpx;
+		text-align: center;
+		white-space: nowrap;
+		border: 2rpx solid #f56c6c;
+		
+		}
 	.parameter-box {
 		.parameter-list {
 			display: flex;

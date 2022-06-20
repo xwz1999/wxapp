@@ -37,7 +37,7 @@
 											<view class="cart-goods-name">{{goods.goodsName}}</view>
 											<text class="cart-goods-spec">{{goods.skuName}}</text>
 										</view>
-										<view class="text-red tip">省{{goods.commission}}</view>
+										<!-- <view class="text-red tip">省{{goods.commission}}</view> -->
 									</view>
 									<view class="msg-bottom flex justify-between" style="line-height: 50rpx;padding-top: 15rpx;">
 										<view class="flex">
@@ -45,7 +45,7 @@
 											<text style="text-decoration: line-through;font-size: 20rpx;margin-left: 5rpx;color: #898989;">¥{{goods.originalPrice}}</text>
 										</view>
 										<!-- 用change事件初次加载会请求多次 -->
-										<u-number-box :value="goods.quantity" :min="1" :max="50" :input-width="72" :size="24"
+										<u-number-box v-model="goods.quantity" :min="1" :max="50" :input-width="72" :size="24"
 										 @change="changeNum(goods.shoppingTrolleyId,goods.quantity)"></u-number-box>
 									</view>
 								</view>
@@ -68,7 +68,7 @@
 							</template>
 							<template v-else>
 								<view style="font-size: 28rpx;">合计：￥{{totalPrice}}</view>
-								<view class="text-red" style="font-size: 18rpx;">省{{totalCommission}}</view>
+								<!-- <view class="text-red" style="font-size: 18rpx;">省{{totalCommission}}</view> -->
 							</template>
 						</view>
 						<button v-if="isEdit" class="cu-btn text-white round bg-red" @tap="delGoods">删除</button>
