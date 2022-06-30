@@ -321,7 +321,7 @@
 										</view>
 										<scroll-view scroll-x="true">
 											<view class="rec-con flex">
-												<view class="rec-item" v-for="(item,index) in goodsDetail.recommend"
+												<view class="rec-item" v-for="(item,index) in goodsDetail.recommends"
 													:key="index">
 													<!-- <image :src="item.mainPhotoUrl" mode=""></image> -->
 													<navigator class="item-image"
@@ -376,7 +376,8 @@
 										<navigator url="../../packageA/goodsCart/index"
 											style="width: 100rpx;text-align: center;">
 											<text class="cuIcon-cart" style="font-size: 48rpx;"></text>
-											<text class="cuIcon-badge">{{salesVolumeInc}}</text>
+											<text class="cuIcon-badge"
+												v-if="shoppingTrolleyCount>0">{{shoppingTrolleyCount}}</text>
 											<view style="font-size: 20rpx;">购物车</view>
 										</navigator>
 										<template v-if="goodsDetail.isFavorite">
@@ -671,13 +672,16 @@
 					address: "",
 					detail: "",
 				},
-				badgeCount:0
+				shoppingTrolleyCount: 0,
 			}
 		},
 		components: {
 			dynamics
 		},
 		onLoad(options) {
+			// var num = uni.getStorageSync('num');
+			// console.log('数量',num)
+
 			console.log('goodsDetail页面参数：', options);
 			var pages = getCurrentPages();
 			// 上一页面栈
@@ -735,7 +739,7 @@
 		},
 		mounted() {
 			// this.getRegions()
-			console.log(uni.getStorageSync("userInfo").id)
+			// console.log(uni.getStorageSync("userInfo").id)
 		},
 		methods: {
 			//判断图片
@@ -1012,6 +1016,7 @@
 						return
 					}
 					this.goodsDetail = res.data.data
+					this.shoppingTrolleyCount = res.data.data.shoppingTrolleyCount
 					// 商样图片  根据type判断放在什么位置
 					if (res.data.data.notice.type === 1) {
 						this.brandFirstImg = res.data.data.notice.img
@@ -1104,8 +1109,6 @@
 				});
 
 			},
-			
-			setBadge(cartArray){},
 			//添加购物车 判断是否登录
 			addcart() {
 				if (uni.getStorageSync("auth").token) {
@@ -1128,6 +1131,7 @@
 						uni.showToast({
 							title: "已加入购物车"
 						})
+						this.shoppingTrolleyCount += this.buyNum
 						this.specModel(false)
 					})
 				} else {
@@ -1152,15 +1156,39 @@
 			},
 			//创建预购单 判断是否登录
 			createOrder() {
-				console.log(this.sku_id)
-				console.log(this.checkedSku)
-				if (!this.sku_id) {
-					this.$u.toast("请选择商品规格")
-					return
-				} else if (this.jcookStockState != 1) {
-					this.$u.toast("当前无货")
+				console.log('qq',this.sku_id)
+				console.log('aa',this.checkedSku)
+				// console.log('qq',this.sku_id)
+				// console.log('aa',this.checkedSku)
+				console.log('aaddd',this.addressList.length)
+				
+				// if (this.addressList.length === 0 ) {
+				if (this.sku_id != '' && !this.selectedAddress) {
+					// this.$u.toast('未选择地址');
+					uni.navigateTo({
+						url: '/packageA/address/index?fromPage=goodsDetail'
+					})
 					return
 				}
+				// else{
+					if (!this.sku_id) {
+						this.$u.toast("请选择商品规格")
+						return
+					} 
+					// else if(this.sku_id != '' && !this.selectedAddress){
+					// 	uni.navigateTo({
+					// 			url: '/packageA/address/index?fromPage=goodsDetail'
+					// 		})
+					// 		return
+						
+					// }
+					else if (this.jcookStockState != 1) {
+						this.$u.toast("当前无货")
+						return
+					}
+					
+				// }
+				
 				let sendData = {
 					UserID: uni.getStorageSync("userInfo").id,
 					SkuID: this.sku_id,
@@ -1379,22 +1407,24 @@
 </script>
 
 <style lang="scss">
-	.cuIcon-badge{
+	.cuIcon-badge {
 		position: absolute;
-		top: 0;
-		left: 80rpx;
-		border-radius: 20rpx;
-		color: #f56c6c;
-		display: inline-block;
-		font-size: 22rpx;
-		height: 30rpx;
-		line-height: 30rpx;
-		padding: 0 10rpx;
-		text-align: center;
-		white-space: nowrap;
-		border: 2rpx solid #f56c6c;
-		
-		}
+		    top: 0;
+		    left: 80rpx;
+		    border-radius: 50rpx;
+		    color: #ffffff;
+		    background-color: #f71b1b;
+		    display: inline-block;
+		    font-size: 24rpx;
+		    height: 30rpx;
+		    line-height: 30rpx;
+		    padding: 0 10rpx;
+		    text-align: center;
+		    white-space: nowrap;
+		    border: 2rpx solid #f56c6c;
+
+	}
+
 	.parameter-box {
 		.parameter-list {
 			display: flex;

@@ -255,7 +255,7 @@
 					// 	}
 					// })
 					let orderId =  res.data.data.id
-					this.$u.post('/api/v1/pay/wxpay/order/create', {
+					this.$u.post('/api/v1/pay/wxminipay/order/create', {
 						userId: uni.getStorageSync("userInfo").id,
 						orderId
 						// wxType:"recook-weapp"
