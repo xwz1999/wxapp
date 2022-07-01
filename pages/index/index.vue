@@ -597,7 +597,7 @@
 			// 获取首页抢购活动商品列表
 			getGoodsList() {
 				this.$u.post('/api/v1/goods/list/promotion/goods', {
-					TimeItemID: this.promotionId
+					TimeItemID: this.promotionId,user_id:uni.getStorageSync("userInfo").id
 				}).then(res => {
 					uni.stopPullDownRefresh()
 					if (res.data.code == "FAIL") {
@@ -608,6 +608,7 @@
 					for (let i = 0; i < this.goodsList.length; i++) {
 						this.goodsList[i].mainPhotoUrl = this.goodsList[i].picture.url
 					}
+					console.log(this.goodsList)
 				});
 			},
 			// 截取活动时间的时分

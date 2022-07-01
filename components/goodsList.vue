@@ -45,19 +45,19 @@
 									<image class="tic-pic" :src="IMAGE_URL+'/wxapp/tic.png'" mode="heightFix"></image>
 									<view class="tic-txt text-white">{{item.coupon}}元券</view>
 								</view>
-								<view style="position: relative;" v-if="situation==2?item.commission:item.commissionDesc&&!hideShareBtn">
+								<view style="position: relative;" v-if="situation==2?item.commission:item.commissionDesc&&hideShareBtn">
 									<image class="tic-pic" :src="IMAGE_URL+'/wxapp/tic2.png'" mode="heightFix"></image>
-									<!-- <view class="tic-txt text-red">省{{situation==2?item.commission:item.commissionDesc}}</view> -->
+									<view class="tic-txt text-red">{{item.commissionDesc}}</view>
 								</view>
 							</view>
 							<view style="color: #666;">已售{{situation==2?item.salesVolume:item.totalSalesVolume}}件</view>
 						</view>
 						<view class="buy-btn-box flex justify-between" v-if="situation==0||situation==2">
 							<view class="flex align-end" style="font-size: 24rpx;">
-								<text class="text-orange">券后</text>
+								<text class="text-red">折后</text>
 								<text class="text-red">￥</text>
 								<text class="text-red"
-									style="font-size: 36rpx;line-height: 36rpx;font-weight: 700;">{{item.price}}</text>
+									style="font-size: 36rpx;line-height: 36rpx;font-weight: 700;">{{(item.price - item.commission).toFixed(2)}}</text>
 								<text class="text-gray"
 									style="text-decoration: line-through;margin-left: 10rpx;">￥{{item.primePrice}}</text>
 							</view>

@@ -547,7 +547,7 @@
 				"path": "myShop/teamAdd",
 				"style": {
 					// "navigationBarTitleText": "邀请",
-					"navigationBarTitleText": "客服二维码",
+					"navigationBarTitleText": "联系客服",
 					"enablePullDownRefresh": false
 				}
 			},

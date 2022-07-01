@@ -26,7 +26,7 @@
 			<view class="item flex justify-between">
 				<view class="">配送方式</view>
 				<view class="flex" style="font-size: 26rpx;color: #AAAAAA;">
-					快递配送<text class="cuIcon-right"></text>
+					快递配送
 				</view>
 			</view>
 			<view class="item flex justify-between align-center">
@@ -41,11 +41,11 @@
 					<view class="">{{shop.brandName}}</view>
 				</view>
 				<order-goods :goodsList="shop.goods"></order-goods>
-				<view class="total-msg flex justify-end" style="line-height: 80rpx;">
+	<!-- 			<view class="total-msg flex justify-end" style="line-height: 80rpx;">
 					<view style="margin-right: 20rpx;color: #AAAAAA;">共{{shop.brandGoodsTotalCount}}件</view>
-					<view style="color: #FA6400;margin-right: 20rpx;">合计{{shop.brandGoodsTotalAmount}}元 </view>
+					<view style="color: #FA6400;margin-right: 20rpx;">合计{{shop.brandGoodsTotalAmount}}元 </view> -->
 					<!-- <view style="color: #AAAAAA;">省：<text style="color: #FA6400;">{{shop.goods[0].coinAmount}} </text></view> -->
-				</view>
+				<!-- </view> -->
 			</view>
 		</view>
 
@@ -68,26 +68,27 @@
 
 		<view class="box order-msg">
 			<view class="item flex justify-between">
-				<view class="">商品金额</view>
-				<view class="num">￥{{preOrderMsg.goodsTotalAmount | toFixed(2)}}</view>
+				<view class="">商品总价</view>
+			
+				<view class="num">	<text style="font-size: 22rpx;color: #999999;padding-right: 10rpx;padding-bottom: 5rpx;">共{{preOrderMsg.totalGoodsCount}}件</text>￥{{preOrderMsg.actualTotalAmount -preOrderMsg.expressTotalFee  | toFixed(2)}}</view>
 			</view>
 			<view class="item flex justify-between">
-				<view class="">运费</view>
+				<view class="">合计运费</view>
 				<view class="num">+￥{{preOrderMsg.expressTotalFee | toFixed(2)}}</view>
 			</view>
-			<view class="item flex justify-between">
+		<!-- 	<view class="item flex justify-between">
 				<view class="">优惠券</view>
 				<view class="num">-￥{{(preOrderMsg.universeCouponTotalAmount+preOrderMsg.brandCouponTotalAmount) | toFixed(2)}}</view>
 			</view>
 			<view class="item flex justify-between">
 				<view class="">省</view>
 				<!-- <view class="">瑞币抵扣</view> -->
-				<view class="num">-￥{{preOrderMsg.coinTotalAmount | toFixed(2)}}</view>
+			<!-- 	<view class="num">-￥{{preOrderMsg.coinTotalAmount | toFixed(2)}}</view>
 			</view>
 			<view class="item flex justify-between">
 				<view class="">实付款</view>
 				<view class="text-red">￥{{preOrderMsg.actualTotalAmount | toFixed(2)}}</view>
-			</view>
+			</view> -->
 		</view>
 		<view class="agree_box" v-if="preOrderMsg.isImport">
 			<u-checkbox-group>
@@ -128,7 +129,7 @@
 		},
 		computed: {
 			preOrderMsg() {
-
+				console.log(this.$store.state.preOrderMsg)
 				return this.$store.state.preOrderMsg
 			}
 		},

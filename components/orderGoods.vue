@@ -24,7 +24,7 @@
 							</view>
 					</view>
 					<view class="flex justify-between" style="font-size: 28rpx;color: #FA6400;">
-						<view class="flex">￥{{item.unitPrice | toFixed(2)}} </view>
+						<view class="flex">￥{{item.unitPrice - item.coinAmount | toFixed(2)}}<text>(折后价)</text> </view>
 						<view>×{{item.quantity}}</view>
 						<view v-if="item.rStatus">{{item.rStatus}}</view>
 					</view>

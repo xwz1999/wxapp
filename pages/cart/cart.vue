@@ -47,12 +47,12 @@
 											<view class="cart-goods-name">{{goods.goodsName}}</view>
 											<text class="cart-goods-spec">{{goods.skuName}}</text>
 										</view>
-										<view class="text-red tip">省{{goods.commission}}</view>
+										<!-- <view class="text-red tip">省{{goods.commission}}</view> -->
 									</view>
 									<view class="msg-bottom flex justify-between"
 										style="line-height: 50rpx;padding-top: 15rpx;">
 										<view class="flex">
-											<text class="text-red" style="font-size: 30rpx;">¥{{goods.price}}</text>
+											<text class="text-red" style="font-size: 30rpx;">¥{{goods.price - goods.commission}}</text>
 											<text
 												style="text-decoration: line-through;font-size: 20rpx;margin-left: 5rpx;color: #898989;">¥{{goods.originalPrice}}</text>
 										</view>
@@ -80,8 +80,12 @@
 								<view class="">已选择{{totalNum}}件商品</view>
 							</template>
 							<template v-else>
-								<view style="font-size: 28rpx;">合计：￥{{totalPrice}}</view>
-								<view class="text-red" style="font-size: 18rpx;">省{{totalCommission}}</view>
+								<view style="font-size: 28rpx;">
+									合计:
+									<text style="font-size: 20rpx ;color:#e54d42 ;">￥</text>
+								<text style="font-size: 35rpx ;color:#e54d42 ;">{{totalPrice}}</text>
+								</view>
+								<!-- <view class="text-red" style="font-size: 18rpx;">省{{totalCommission}}</view> -->
 							</template>
 						</view>
 						<button v-if="isEdit" class="cu-btn text-white round bg-red" @tap="delGoods">删除</button>
@@ -395,7 +399,7 @@
 			}
 
 			.msg-top {
-				height: 200rpx;
+				height: 120rpx;
 			}
 
 			.cart-goods-name {

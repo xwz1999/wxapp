@@ -54,7 +54,7 @@ const install = (Vue, vm) => {
 		// 当前版本 281 32
 		config.header["X-Recook-version"] = "32"
 		
-		// console.log("请求参数为========",config.data)
+		console.log("请求参数为========",config)
 		config.data = Encrypt(config.data)
 	}
 	// 响应拦截
