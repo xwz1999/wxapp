@@ -26,35 +26,45 @@
 									</swiper> -->
 									<!-- 		<view class="dots-box"><text style="font-size: 32rpx;">{{current+1}}</text>/{{goodsDetail.mainPhotos.length}}</view> -->
 								</view>
-								<!-- 		<view class="banner-con bg-img"
-									:style="'background-image: url('+IMAGE_URL+'/wxapp/goods-bg.png);'">
+								<view class="banner-con bg-img"
+									:style="'background-image: url(/static/image/goods_price_view_bg.png);'">
 									<view class="pic-con">
 										<view class="flex quan-top">
-											<view class="quan">{{goodsDetail.sku[0].coupon}}元优惠券</view>
+											<!-- <view class="quan">{{goodsDetail.sku[0].coupon}}元优惠券</view>
 											<view class="price">
 												￥{{goodsDetail.price.min.originalPrice}}
 												<template
 													v-if="goodsDetail.price.min.originalPrice!=goodsDetail.price.max.originalPrice">
 													~￥{{goodsDetail.price.max.originalPrice}}
 												</template>
-											</view>
-										</view>
-
-										<view class="price-box text-white" style="font-size: 28rpx;">
-											<text style="color: #FFD380;font-size: 28rpx;">券后价</text>
-											<text>￥</text>
-											<text style="font-size: 48rpx;">
-												{{goodsDetail.price.min.discountPrice}}
-												<template
+											</view> -->
+											<text style="color: #ffffff;font-size: 28rpx;padding-top: 5rpx;">折后价</text>
+											<text style="color: #ffffff;font-size: 28rpx;padding-top: 5rpx;">￥</text>
+											<text style="font-size: 48rpx;color: #ffffff">
+												{{(goodsDetail.price.min.discountPrice - goodsDetail.price.min.commission).toFixed(2)}}
+												<!-- 	<template
 													v-if="goodsDetail.price.min.discountPrice!=goodsDetail.price.max.discountPrice">
 													~{{goodsDetail.price.max.discountPrice}}
-												</template>
+												</template> -->
 											</text>
+
+											<view style="padding-left: 20rpx;padding-right: 20rpx;margin-left: 20rpx;"
+												:style="'background-image: url(/static/image/goods_price_bg.png);background-size: 100% 100%;'">
+												<text
+													style="color: #ED3D19;font-size: 28rpx;padding-top: 2rpx;">分享赚¥{{goodsDetail.price.min.commission}}</text>
+											</view>
+
+										</view>
+
+										<view class="price-box" style="font-size: 28rpx;padding-left: 20rpx;"
+											:style="'background-image: url(/static/image/goods_price_detail_bg.png);background-size: 100% 100%;'">
+											<text
+												style="color: #ffffff;font-size: 24rpx;">折后价={{goodsDetail.price.min.originalPrice}}(官方指导价)-¥{{goodsDetail.sku[0].coupon}}(优惠券)-¥{{goodsDetail.price.min.commission}}(折扣额)</text>
 										</view>
 									</view>
-								</view> -->
+								</view>
 
-								<view v-if="goodsDetail" class="feeContainer">
+								<!-- 		<view v-if="goodsDetail" class="feeContainer">
 									<view class="fc1">
 										<view class="discountPrice">
 											<text class="dp1">券后价</text>
@@ -67,9 +77,8 @@
 												</template>
 											</text>
 										</view>
-										<view class="saledTotal">
-											已售{{goodsDetail.salesVolume}}件
-										</view>
+										
+										
 									</view>
 									<view class="fc2">
 										<view class="fct">
@@ -83,22 +92,39 @@
 											</template>
 										</view>
 									</view>
-								</view>
+								</view> -->
 								<view class="goods-msg-box bg-white" style="margin-bottom: 25rpx;padding: 20rpx 0;">
 									<view class="flex goods-name-box justify-between align-start">
-										<view class="goods-name flex-sub">
-											<image v-if="goodsDetail.isImport"
+										<view class="goods-name">
+											<image style="height: 50rpx;" v-if="goodsDetail.isImport"
 												:src="IMAGE_URL+goodsDetail.country_icon"></image>
 											<u-tag v-else-if="goodsDetail.vendorId===1800" text="京东自营" size="mini"
 												bgColor="#D5101A" color="#fff"></u-tag>
 											<u-tag v-else-if="goodsDetail.vendorId===2000" text="京东POP" size="mini"
 												bgColor="#D5101A" color="#fff"></u-tag>
-											<text>{{goodsDetail.goodsName}}</text>
+											<text class="title">{{goodsDetail.goodsName}}</text>
+
+										</view>
+										<view style="white-space: nowrap;margin-right: 20rpx;">
+											已售{{goodsDetail.salesVolume}}件
 										</view>
 										<button v-if="roleLevel!=500" class="text-center share-btn" type="default"
 											open-type="share">
 											<text class="cuIcon-share" style="margin-right: 5rpx;"></text>分享
 										</button>
+									</view>
+
+									<view style="font-size: 28rpx;padding-left: 20rpx;padding-top: 20rpx;padding-bottom: 20rpx;
+										display: flex;margin-left: 20rpx;margin-right: 20rpx;margin-top: 30rpx;position: relative;"
+										:style="'background-image: url(/static/image/goods_coupon_bg.png);background-size: 100% 100%;'">
+										<view style="width: 30rpx;"></view>
+										<text
+											style="color: #ffffff;font-size: 34rpx;">¥{{goodsDetail.sku[0].coupon}}</text>
+										<view style="width: 30rpx;"></view>
+										<text style="color: #ffffff;font-size: 30rpx;">商家补贴优惠券</text>
+										<!-- <view style="width: 230rpx;"></view> -->
+										<text
+											style="color: #ffffff;font-size: 30rpx;position: absolute;right: 50rpx;">下单直降</text>
 									</view>
 									<view class="tip"
 										style="padding: 0 20rpx;color: #CCCCCC;line-height: 50rpx;font-size: 28rpx;">
@@ -326,7 +352,7 @@
 													<!-- <image :src="item.mainPhotoUrl" mode=""></image> -->
 													<navigator class="item-image"
 														:url="'/pages/goodsDetail/goodsDetail?id='+item.goodsId"
-														open-type="redirect">
+														open-type="navigate">
 														<u-lazy-load threshold="-100"
 															:image="judgeCover(item.mainPhotoUrl)" :index="index"
 															:error-img="IMAGE_URL + '/wxapp/null05.png'"
@@ -526,10 +552,10 @@
 					<view class="goods-msg flex-sub">
 						<view class="text-black">
 							<text>￥<text
-									style="font-size: 36rpx;font-weight: 700;">{{checkedSkuMsg.discountPrice}}</text></text>
-							<text style="padding:0 5rpx;" v-if="roleLevel!=500">/</text>
+									style="font-size: 36rpx;font-weight: 700;">{{checkedSkuMsg.discountPrice - checkedSkuMsg.commission}}</text></text>
+							<!-- <text style="padding:0 5rpx;" v-if="roleLevel!=500">/</text>
 							<text class="text-red" style="font-size: 24rpx;"
-								v-if="roleLevel!=500">省{{checkedSkuMsg.commission}}</text>
+								v-if="roleLevel!=500">省{{checkedSkuMsg.commission}}</text> -->
 						</view>
 						<view style="font-size: 24rpx;color: #AAAAAA;margin: 10rpx 0;">库存 {{checkedSkuMsg.inventory}}件
 						</view>
@@ -711,9 +737,16 @@
 			}
 			if (options.q !== undefined) {
 				let url = decodeURIComponent(options.q)
+				console.log(url);
 				options.id = url.split("/")[6];
+				console.log(url.split("/")[6]);
+				console.log(url.split("/")[7]);
+				console.log(url.split("/")[8]);
 				if (url.split("/")[7] != undefined) {
 					this.$store.commit('setinvite', url.split("/")[7]);
+				}
+				if (url.split("/")[8] != undefined) {
+					this.type = url.split("/")[8];
 				}
 			}
 			if (uni.getStorageSync("userInfo").roleLevel) {
@@ -739,7 +772,7 @@
 		},
 		mounted() {
 			// this.getRegions()
-			// console.log(uni.getStorageSync("userInfo").id)
+			console.log(uni.getStorageSync("userInfo").id)
 		},
 		methods: {
 			//判断图片
@@ -980,7 +1013,10 @@
 				// this.showTip = false
 			},
 			toBuy() {
+				this.$u.toast(this.goodsDetail.sku[0].coupon + '元优惠券已领取')
 				this.specModel(true)
+
+
 				if (!uni.getStorageSync("auth").token) {
 					this.$u.toast("游客无法使用该功能，请登录");
 					let pages = getCurrentPages();
@@ -1109,6 +1145,8 @@
 				});
 
 			},
+
+
 			//添加购物车 判断是否登录
 			addcart() {
 				if (uni.getStorageSync("auth").token) {
@@ -1156,39 +1194,25 @@
 			},
 			//创建预购单 判断是否登录
 			createOrder() {
-				console.log('qq',this.sku_id)
-				console.log('aa',this.checkedSku)
-				// console.log('qq',this.sku_id)
-				// console.log('aa',this.checkedSku)
-				console.log('aaddd',this.addressList.length)
-				
-				// if (this.addressList.length === 0 ) {
-				if (this.sku_id != '' && !this.selectedAddress) {
-					// this.$u.toast('未选择地址');
-					uni.navigateTo({
-						url: '/packageA/address/index?fromPage=goodsDetail'
-					})
+				if (!this.sku_id) {
+					this.$u.toast("请选择商品规格")
 					return
-				}
-				// else{
-					if (!this.sku_id) {
-						this.$u.toast("请选择商品规格")
-						return
-					} 
-					// else if(this.sku_id != '' && !this.selectedAddress){
-					// 	uni.navigateTo({
-					// 			url: '/packageA/address/index?fromPage=goodsDetail'
-					// 		})
-					// 		return
-						
-					// }
-					else if (this.jcookStockState != 1) {
-						this.$u.toast("当前无货")
+				} else if (this.jcookStockState != 1) {
+					this.$u.toast("当前无货")
+					if (this.sku_id != '' && !this.selectedAddress) {
+						uni.navigateTo({
+							url: '/packageA/address/index?fromPage=goodsDetail'
+						})
 						return
 					}
-					
-				// }
-				
+				}
+				if (!this.sku_id) {
+					this.$u.toast("请选择商品规格")
+					return
+				} else if (this.jcookStockState != 1) {
+					this.$u.toast("当前无货")
+					return
+				}
 				let sendData = {
 					UserID: uni.getStorageSync("userInfo").id,
 					SkuID: this.sku_id,
@@ -1200,9 +1224,6 @@
 					if (this.parentId) {
 						sendData.ParentID = this.parentId
 					}
-					// if(this.invite){
-					// 	sendData.invite = this.invite
-					// }
 					if (uni.getStorageSync("invite")) {
 						sendData.invite = uni.getStorageSync("invite")
 					}
@@ -1409,21 +1430,22 @@
 <style lang="scss">
 	.cuIcon-badge {
 		position: absolute;
-		    top: 0;
-		    left: 80rpx;
-		    border-radius: 50rpx;
-		    color: #ffffff;
-		    background-color: #f71b1b;
-		    display: inline-block;
-		    font-size: 24rpx;
-		    height: 30rpx;
-		    line-height: 30rpx;
-		    padding: 0 10rpx;
-		    text-align: center;
-		    white-space: nowrap;
-		    border: 2rpx solid #f56c6c;
+		top: 0;
+		left: 80rpx;
+		border-radius: 50rpx;
+		color: #ffffff;
+		background-color: #f71b1b;
+		display: inline-block;
+		font-size: 24rpx;
+		height: 30rpx;
+		line-height: 30rpx;
+		padding: 0 10rpx;
+		text-align: center;
+		white-space: nowrap;
+		border: 2rpx solid #f56c6c;
 
 	}
+
 
 	.parameter-box {
 		.parameter-list {
@@ -1522,18 +1544,24 @@
 
 	.banner-con {
 		position: relative;
-		margin-top: -80rpx;
-		height: 212rpx;
+
+		margin-top: -40rpx;
+		margin-left: 20rpx;
+		margin-right: 20rpx;
+		border-top-left-radius: 20rpx;
+		border-top-right-radius: 20rpx;
+		height: 160rpx;
 		background-color: transparent;
 
 		.pic-con {
 			position: absolute;
-			bottom: 20rpx;
-			left: 20rpx;
+			top: 30rpx;
+			left: 30rpx;
 
 			.quan-top {
 				line-height: 46rpx;
 				margin-bottom: 20rpx;
+				justify-items: end;
 
 				.quan {
 					border-radius: 25rpx;
@@ -1552,6 +1580,13 @@
 				color: rgba(255, 255, 255, 0.5);
 			}
 		}
+	}
+
+	.title {
+		display: contents;
+		overflow: hidden;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3
 	}
 
 
@@ -1944,7 +1979,7 @@
 			}
 
 			.saledTotal {
-				color: #666666;
+				color: #700000;
 			}
 		}
 
