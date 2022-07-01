@@ -29,7 +29,7 @@
 									<text :class="goods.goodsChecked?'cuIcon-roundcheckfill text-red':'cuIcon-round text-gray'" @tap="checkGoods(shopIndex,goodsIndex)"></text>
 								</view>
 								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId" class="cart-goods-pic">
-									<u-lazy-load threshold="-100" :image="judgeCover(goods.mainPhotoUrl)" :index="index" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  height="200" border-radius="10" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+									<u-lazy-load threshold="-100" :image="goods.img"  :index="index" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  height="200" border-radius="10" :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
 								</navigator>
 								<view class="cart-goods-msg flex-sub">
 									<view class="msg-top flex flex-direction justify-between clear align-start">
@@ -37,7 +37,7 @@
 											<view class="cart-goods-name">{{goods.goodsName}}</view>
 											<text class="cart-goods-spec">{{goods.skuName}}</text>
 										</view>
-										<view class="text-red tip">省{{goods.commission}}</view>
+										<!-- <view class="text-red tip">省{{goods.commission}}</view> -->
 									</view>
 									<view class="msg-bottom flex justify-between" style="line-height: 50rpx;padding-top: 15rpx;">
 										<view class="flex">
@@ -45,7 +45,7 @@
 											<text style="text-decoration: line-through;font-size: 20rpx;margin-left: 5rpx;color: #898989;">¥{{goods.originalPrice}}</text>
 										</view>
 										<!-- 用change事件初次加载会请求多次 -->
-										<u-number-box :value="goods.quantity" :min="1" :max="50" :input-width="72" :size="24"
+										<u-number-box v-model="goods.quantity" :min="1" :max="50" :input-width="72" :size="24"
 										 @change="changeNum(goods.shoppingTrolleyId,goods.quantity)"></u-number-box>
 									</view>
 								</view>
@@ -68,7 +68,7 @@
 							</template>
 							<template v-else>
 								<view style="font-size: 28rpx;">合计：￥{{totalPrice}}</view>
-								<view class="text-red" style="font-size: 18rpx;">省{{totalCommission}}</view>
+								<!-- <view class="text-red" style="font-size: 18rpx;">省{{totalCommission}}</view> -->
 							</template>
 						</view>
 						<button v-if="isEdit" class="cu-btn text-white round bg-red" @tap="delGoods">删除</button>
@@ -97,6 +97,9 @@
 		},
 		onShow() {
 			this.getCartGoods()
+			console.log('商品数量',this.cartGoods.length);
+			var num = this.cartGoods.length
+			uni.setStorageSync('num',num)
 		},
 		methods: {
 			//判断图片
@@ -144,7 +147,8 @@
 						for (let i = 0; i < this.cartGoods.length; i++) {
 							this.cartGoods[i].shopChecked = false
 							for (let j = 0; j < this.cartGoods[i].children.length; j++) {
-								this.cartGoods[i].children[j].goodsChecked = false
+								this.cartGoods[i].children[j].goodsChecked = false;
+								this.cartGoods[i].children[j].img = this.judgeCover(this.cartGoods[i].children[j].mainPhotoUrl);
 							}
 						}
 					}

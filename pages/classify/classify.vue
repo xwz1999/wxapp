@@ -55,12 +55,12 @@
 				parentId: null,
 				keyword: "",
 				topPic: "",
-				pageId:0
+				pageId: 0
 			}
 		},
 		onLoad(options) {
 			console.log(options)
-			this.pageId=options.id
+			this.pageId = options.id
 			// if (options.index==0) {
 			// 	this.current = 3
 			// }else if(options.index==1){
@@ -75,8 +75,8 @@
 			} else {
 				this.getCateList()
 			}
-			
-			
+
+
 		},
 		methods: {
 			// 获取京东一二级分类
@@ -88,9 +88,9 @@
 					}
 					this.JDCateList = res.data.data
 					this.cateList = res.data.data
-					this.cateList.forEach((item,index)=>{
-						if(item.id==this.pageId){
-							this.current=index
+					this.cateList.forEach((item, index) => {
+						if (item.id == this.pageId) {
+							this.current = index
 						}
 					})
 					this.subCateList = res.data.data[0].sub
@@ -105,9 +105,9 @@
 						return
 					}
 					this.cateList = res.data.data
-					this.cateList.forEach((item,index)=>{
-						if(item.id==this.pageId){
-							this.current=index
+					this.cateList.forEach((item, index) => {
+						if (item.id == this.pageId) {
+							this.current = index
 						}
 					})
 					this.parentId = this.cateList[this.current].id
@@ -135,21 +135,34 @@
 			toSearch(id) {
 				// 传了id则是点击分类进入搜索页,没有传则是搜索关键字进入搜索页
 				// cannel为“jingdong” 京东优选
-				let url = null
 				if (id) {
-					url = "/pages/search/search?cate_id=" + id +(this.JDCateList?'&channel=jingdong':'')
 					uni.navigateTo({
-						url
+						url: "/pages/search/search?cate_id=" + id
 					})
 				} else {
-					url: "/pages/search/search?keyword=" + this.keyword +(this.JDCateList?'&channel=jingdong':'')
 					uni.navigateTo({
-						url,
+						url: "/pages/search/search?keyword=" + this.keyword,
 						success: () => {
 							this.keyword = ""
 						}
 					})
 				}
+				// let url = url
+				// if (id) {
+				// 	url = "/pages/search/search?cate_id=" + id +(this.JDCateList?'&channel=jingdong':'')
+				// 	uni.navigateTo({
+				// 		url
+				// 	})
+				// } else {
+				// 	url: "/pages/search/search?keyword=" + this.keyword +(this.JDCateList?'&channel=jingdong':'')
+				// 	uni.navigateTo({
+				// 		url,
+				// 		success: () => {
+				// 			this.keyword = ""
+				// 		}
+				// 	})
+				// 	console.log("跳转搜索")
+				// }
 			},
 			// 点击左边的栏目切换
 			async swichMenu(index, id) {

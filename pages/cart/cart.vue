@@ -36,10 +36,15 @@
 								</view>
 								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId"
 									class="cart-goods-pic">
-									<u-lazy-load threshold="-100" :image="judgeCover(goods.mainPhotoUrl)" :index="index"
+							<!-- 		<u-lazy-load threshold="-100" :image="((goods.mainPhotoUrl.split('/'))[0] === 'http:'||(goods.mainPhotoUrl.split('/'))[0] === 'https:')?goods.mainPhotoUrl:(IMAGE_URL+goods.mainPhotoUrl)" 
+									:index="index"
 										:loading-img="IMAGE_URL + '/wxapp/null05.png'" height="200" border-radius="10"
 										:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill">
-									</u-lazy-load>
+									</u-lazy-load> -->
+									<u-lazy-load threshold="-100" :image="goods.img"	:index="index"
+												:loading-img="IMAGE_URL + '/wxapp/null05.png'" height="200" border-radius="10"
+												:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill">
+											</u-lazy-load>
 								</navigator>
 								<view class="cart-goods-msg flex-sub">
 									<view class="msg-top flex flex-direction justify-between clear align-start">
@@ -52,12 +57,12 @@
 									<view class="msg-bottom flex justify-between"
 										style="line-height: 50rpx;padding-top: 15rpx;">
 										<view class="flex">
-											<text class="text-red" style="font-size: 30rpx;">¥{{goods.price - goods.commission}}</text>
+											<text class="text-red" style="font-size: 30rpx;">¥{{goods.price}}</text>
 											<text
 												style="text-decoration: line-through;font-size: 20rpx;margin-left: 5rpx;color: #898989;">¥{{goods.originalPrice}}</text>
 										</view>
 										<!-- 用change事件初次加载会请求多次 -->
-										<u-number-box :value="goods.quantity" :min="1" :max="50" :input-width="72"
+										<u-number-box v-model="goods.quantity" :min="1" :max="50" :input-width="72"
 											:size="24" @change="changeNum(goods.shoppingTrolleyId,goods.quantity)">
 										</u-number-box>
 
@@ -80,11 +85,7 @@
 								<view class="">已选择{{totalNum}}件商品</view>
 							</template>
 							<template v-else>
-								<view style="font-size: 28rpx;">
-									合计:
-									<text style="font-size: 20rpx ;color:#e54d42 ;">￥</text>
-								<text style="font-size: 35rpx ;color:#e54d42 ;">{{totalPrice}}</text>
-								</view>
+								<view style="font-size: 28rpx;">合计：￥{{totalPrice}}</view>
 								<!-- <view class="text-red" style="font-size: 18rpx;">省{{totalCommission}}</view> -->
 							</template>
 						</view>
@@ -130,7 +131,7 @@
 			this.getGoodsList()
 		},
 		methods: {
-			//判断图片
+			// 判断图片
 			judgeCover(val) {
 				if (!val) {
 					return
@@ -185,13 +186,13 @@
 							this.cartGoods[i].shopChecked = false
 							for (let j = 0; j < this.cartGoods[i].children.length; j++) {
 								this.cartGoods[i].children[j].goodsChecked = false;
-							
+							this.cartGoods[i].children[j].img = this.judgeCover(this.cartGoods[i].children[j].mainPhotoUrl);
 							}
 						}
 					}
 					this.getSelectedGoods()
 					this.$forceUpdate()
-					console.log(this.cartGoods)
+					console.log('列表',this.cartGoods.length)
 				});
 			},
 			// 勾选店铺
@@ -281,6 +282,7 @@
 				this.totalCommission = totalCommission.toFixed(2)
 				// console.log(selectGoodsIds)
 			},
+			
 			delGoods() {
 				if (this.selectGoodsIds.length == 0) {
 					this.$u.toast("至少选择一件商品");
@@ -399,7 +401,7 @@
 			}
 
 			.msg-top {
-				height: 120rpx;
+				height: 200rpx;
 			}
 
 			.cart-goods-name {

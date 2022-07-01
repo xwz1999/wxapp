@@ -61,7 +61,12 @@
 			if (options && options.fromPage) {
 				this.fromPage = options.fromPage
 			}
+			
 			this.getAddresslist();
+			// if (this.siteList == 0) {
+			// 	this.$u.toast("请先添加地址")
+			// 	return
+			// } 
 		},
 		methods: {
 			//数组对象排序
@@ -174,6 +179,10 @@
 				});
 			},
 			getAddresslist() {
+				// if (this.siteList.length == 0) {
+				// 	this.$u.toast("请先添加地址")
+				// 	return
+				// } 
 				this.$u.post('/api/v1/users/address/list', {
 					UserID: uni.getStorageSync("userInfo").id
 				}).then(res => {
@@ -183,7 +192,7 @@
 						return
 					}
 					this.siteList = res.data.data
-					console.log(this.siteList)
+					console.log('ll',this.siteList)
 					if (this.siteList.length == 0) {
 						this.isNull = true
 					} else {

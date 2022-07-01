@@ -129,10 +129,11 @@
 			let pages = getCurrentPages() // 获取加载的页面
 			let currentPage = pages[pages.length - 1] // 获取当前页面的对象
 			let url = currentPage.route // 当前页面url
+			let IMAGE_URL = this.IMAGE_URL
 			let shareObj = {
 				title: "",
 				path: url + "?invite=" + this.$store.state.invitationNo,
-				imageUrl: ''
+				imageUrl: ""
 			}
 			console.log(res)
 			// let goodsMsg = res.target.dataset.goods
@@ -142,7 +143,7 @@
 					path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.goods.id + "&type=share&invite=" +
 						this.$store.state
 						.invitationNo,
-					imageUrl: res.target.dataset.goods.mainPhotoURL
+					imageUrl: IMAGE_URL+ res.target.dataset.goods.mainPhotoURL
 				}
 			}
 			console.log(shareObj)
