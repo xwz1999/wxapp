@@ -2,13 +2,13 @@
 	<view class="">
 		<view class="box">
 			<!-- IMAGE_URL -->
-			<image :src="`${IMAGE_URL}/recook-weapp/shop/invite.jpg`" mode="widthFix" style="width: 750rpx;"></image>
+			<image :src="`${IMAGE_URL}/wxapp/shop/invite.jpg`" mode="widthFix" style="width: 750rpx;"></image>
 			<view class="tips" @tap='tipsShow'>
 
 			</view>
 			<u-popup v-model="show" mode="center" :closeable='true'>
 				<view>
-					<image :src="`${IMAGE_URL}/recook-weapp/shop/invite_tips.jpg`" mode="widthFix" style="width: 600rpx;"></image>
+					<image :src="`${IMAGE_URL}/wxapp/shop/invite_tips.jpg`" mode="widthFix" style="width: 600rpx;"></image>
 				</view>
 			</u-popup>
 			<button class="invite_btn" open-type="share">

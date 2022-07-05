@@ -134,7 +134,8 @@
 				this.loadStatus = "loading"
 				let sendData = {
 					order: this.order,
-					page: this.page
+					page: this.page,
+					user_id: uni.getStorageSync("userInfo").id
 				}
 				this.page++
 				if (this.brandId) {
@@ -181,24 +182,39 @@
 			}
 		},
 		onShareAppMessage(res) {
-			let pages = getCurrentPages() // 获取加载的页面
-			let currentPage = pages[pages.length - 1] // 获取当前页面的对象
-			let url = currentPage.route // 当前页面url
+			let item = res.target.dataset.item;
+			console.log(item)
+			var url = '';
+			let arr = item.mainPhotoUrl.split('/')
+			if (arr[0] === 'http:' || arr[0] === 'https:') {
+				url =  item.mainPhotoUrl;
+			}else{
+				url = this.IMAGE_URL + item.mainPhotoUrl
+			}	
 			let shareObj = {
-				title: "",
-				path: url + "?invite=" + this.$store.state.invitationNo,
-				imageUrl: ''
+				title: "我在买" + item.goodsName + ",快来看看吧！",
+				path: '/pages/goodsDetail/goodsDetail?id=' + item.id + "&type=share&invite=" + this.$store.state
+					.invitationNo,
+				imageUrl: url
 			}
-			if (res.from === 'button') { // 来自页面内分享按钮
-				console.log(res)
-				if (res.target.dataset.title) {
-					shareObj = {
-						title: "我在买" + res.target.dataset.title + ",快来看看吧！",
-						path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.id + "&type=share&invite=" + this.$store.state.invitationNo,
-						imageUrl: this.IMAGE_URL + res.target.dataset.url
-					}
-				}
-			}
+			// let pages = getCurrentPages() // 获取加载的页面
+			// let currentPage = pages[pages.length - 1] // 获取当前页面的对象
+			// let url = currentPage.route // 当前页面url
+			// let shareObj = {
+			// 	title: "",
+			// 	path: url + "?invite=" + this.$store.state.invitationNo,
+			// 	imageUrl: ''
+			// }
+			// if (res.from === 'button') { // 来自页面内分享按钮
+			// 	console.log(res)
+			// 	if (res.target.dataset.title) {
+			// 		shareObj = {
+			// 			title: "我在买" + res.target.dataset.title + ",快来看看吧！",
+			// 			path: '/pages/goodsDetail/goodsDetail?id=' + res.target.dataset.id + "&type=share&invite=" + this.$store.state.invitationNo,
+			// 			imageUrl: this.IMAGE_URL + res.target.dataset.url
+			// 		}
+			// 	}
+			// }
 			console.log(shareObj)
 			return shareObj
 		},

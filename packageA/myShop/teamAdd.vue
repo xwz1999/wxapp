@@ -29,9 +29,7 @@
 					<view style="width: 30rpx;"></view>
 
 					<text style="font-weight: bold; color: #111111;font-size: 32rpx">{{customeInfo.mobile}}</text>
-
-
-					<image style="width: 50rpx;height: 50rpx;margin-left: 20rpx;" src="/static/image/wholesale_call.png"
+					<image style="width: 50rpx;height: 50rpx;margin-left: 20rpx;" :src="IMAGE_URL+'/wxapp/uni-program/wholesale_call.png'"
 						@tap="call()">
 					</image>
 				</view>
@@ -54,7 +52,7 @@
 					<text style="font-weight: bold; color: #111111;font-size: 32rpx">{{customeInfo.wechat}}</text>
 		
 		
-					<image style="width: 50rpx;height: 50rpx;margin-left: 20rpx;" src="/static/image/wholesale_copy.png"
+					<image style="width: 50rpx;height: 50rpx;margin-left: 20rpx;" :src="IMAGE_URL+'/wxapp/uni-program/wholesale_copy.png'"
 						@tap="copy(customeInfo.wechat)">
 					</image>
 				</view>
@@ -65,7 +63,7 @@
 						@tap="copy(customeInfo.wechat)">
 					</image>
 					<view style="display: flex;flex-direction: column;justify-content: flex-end;">
-					<image style="width: 50rpx;height: 50rpx;margin-left: 20rpx;" src="/static/image/wholesale_dowload.png"
+					<image style="width: 50rpx;height: 50rpx;margin-left: 20rpx;" :src="IMAGE_URL+'/wxapp/uni-program/wholesale_dowload.png'"
 						@tap="save1()">
 					</image>
 					</view>
@@ -89,7 +87,7 @@
 					<text style="font-weight: bold; color: #111111;ffont-size: 32rpx,">瑞库客APP</text>
 		
 		
-					<image style="width: 50rpx;height: 50rpx;margin-left: 20rpx;" src="/static/image/wholesale_copyt.png"
+					<image style="width: 50rpx;height: 50rpx;margin-left: 20rpx;" :src="IMAGE_URL+'/wxapp/uni-program/wholesale_copy.png'"
 						@tap="copy('瑞库客APP')">
 					</image>
 				</view>

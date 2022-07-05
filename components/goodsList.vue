@@ -45,9 +45,9 @@
 									<image class="tic-pic" :src="IMAGE_URL+'/wxapp/tic.png'" mode="heightFix"></image>
 									<view class="tic-txt text-white">{{item.coupon}}元券</view>
 								</view>
-								<view style="position: relative;" v-if="situation==2?item.commission:item.commissionDesc&&hideShareBtn">
+								<view style="position: relative;">
 									<image class="tic-pic" :src="IMAGE_URL+'/wxapp/tic2.png'" mode="heightFix"></image>
-									<view class="tic-txt text-red">{{item.commissionDesc}}</view>
+									<view class="tic-txt text-red">{{situation==0?('赚'+item.commission):item.commissionDesc}}</view>
 								</view>
 							</view>
 							<view style="color: #666;">已售{{situation==2?item.salesVolume:item.totalSalesVolume}}件</view>
@@ -63,7 +63,7 @@
 							</view>
 							<view class="goods-btns flex align-end">
 								<!-- IMAGE_URL+item.mainPhotoUrl -->
-								<button v-if="!hideShareBtn" class="share-btn text-center"
+								<button v-if="!hideShareBtn" class="share-btn text-center" open-type="share" :data-item = item
 									@tap.stop="situation==2?shareBtn(item.goods_name, item.goodsId, item.main_photo_url):shareBtn(item.goodsName, item.goodsId, item.mainPhotoUrl)">
 									<view class="iconfont iconfenxiang"></view>
 								</button>

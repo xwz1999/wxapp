@@ -29,7 +29,7 @@ Vue.prototype.BASE_URL = "https://mallapi.reecook.cn"
 Vue.prototype.IMAGE_URL = "https://mallcdn.reecook.cn/static"
 // Vue.prototype.H5_BASE_URL = "https://testh5.reecook.cn"
 //小程序静态资源存储地址（由于小程序代码包大小限制，比较大的静态资源图片放在了宝塔上对应域名下的recook-weapp文件夹里面）
-// Vue.prototype.STATIC_URL = Vue.prototype.IMAGE_URL + "/recook-weapp/"
+Vue.prototype.STATIC_URL = Vue.prototype.IMAGE_URL + "/wxapp/"
 
 //腾讯地图key
 Vue.prototype.MAP_KEY = "SPVBZ-2EXWJ-WTEFC-K7ANJ-VG7G6-V7FQ6"

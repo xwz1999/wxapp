@@ -27,7 +27,7 @@
 									<!-- 		<view class="dots-box"><text style="font-size: 32rpx;">{{current+1}}</text>/{{goodsDetail.mainPhotos.length}}</view> -->
 								</view>
 								<view class="banner-con bg-img"
-									:style="'background-image: url(/static/image/goods_price_view_bg.png);'">
+									:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/goods_price_view_bg.png)'">
 									<view class="pic-con">
 										<view class="flex quan-top">
 											<!-- <view class="quan">{{goodsDetail.sku[0].coupon}}元优惠券</view>
@@ -49,7 +49,7 @@
 											</text>
 
 											<view style="padding-left: 20rpx;padding-right: 20rpx;margin-left: 20rpx;"
-												:style="'background-image: url(/static/image/goods_price_bg.png);background-size: 100% 100%;'">
+												:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/goods_price_bg.png);background-size: 100% 100%;'">
 												<text
 													style="color: #ED3D19;font-size: 28rpx;padding-top: 2rpx;">分享赚¥{{goodsDetail.price.min.commission}}</text>
 											</view>
@@ -57,7 +57,7 @@
 										</view>
 
 										<view class="price-box" style="font-size: 28rpx;padding-left: 20rpx;"
-											:style="'background-image: url(/static/image/goods_price_detail_bg.png);background-size: 100% 100%;'">
+											:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/goods_price_detail_bg.png);background-size: 100% 100%;'">
 											<text
 												style="color: #ffffff;font-size: 24rpx;">折后价={{goodsDetail.price.min.originalPrice}}(官方指导价)-¥{{goodsDetail.sku[0].coupon}}(优惠券)-¥{{goodsDetail.price.min.commission}}(折扣额)</text>
 										</view>
@@ -116,7 +116,7 @@
 
 									<view style="font-size: 28rpx;padding-left: 20rpx;padding-top: 20rpx;padding-bottom: 20rpx;
 										display: flex;margin-left: 20rpx;margin-right: 20rpx;margin-top: 30rpx;position: relative;"
-										:style="'background-image: url(/static/image/goods_coupon_bg.png);background-size: 100% 100%;'">
+										:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/goods_coupon_bg.png);background-size: 100% 100%;'">
 										<view style="width: 30rpx;"></view>
 										<text
 											style="color: #ffffff;font-size: 34rpx;">¥{{goodsDetail.sku[0].coupon}}</text>
@@ -218,23 +218,21 @@
 												</view>
 												<view class="goods_icon" v-else-if="goodsDetail.storehouse === 3">
 													<image v-if="addressList.length > 1"
-														:src="`${IMAGE_URL}/recook-weapp/goodsIcon/bonded_active.png`"
+														:src="`${IMAGE_URL}/wxapp/goodsIcon/bonded_active.png`"
 														mode="widthFix"></image>
-													<image v-else
-														:src="`${IMAGE_URL}/recook-weapp/goodsIcon/bonded.png`"
+													<image v-else :src="`${IMAGE_URL}/wxapp/goodsIcon/bonded.png`"
 														mode="widthFix"></image>
 
 												</view>
 
 												<view class="goods_icon">
 													<block v-if="addressList.length > 1">
-														<image
-															:src="`${IMAGE_URL}/recook-weapp/goodsIcon/location_active.png`"
+														<image :src="`${IMAGE_URL}/wxapp/goodsIcon/location_active.png`"
 															mode="widthFix"></image>
 
 													</block>
 													<block v-else>
-														<image :src="`${IMAGE_URL}/recook-weapp/goodsIcon/location.png`"
+														<image :src="`${IMAGE_URL}/wxapp/goodsIcon/location.png`"
 															mode="widthFix"></image>
 													</block>
 												</view>
@@ -552,7 +550,7 @@
 					<view class="goods-msg flex-sub">
 						<view class="text-black">
 							<text>￥<text
-									style="font-size: 36rpx;font-weight: 700;">{{checkedSkuMsg.discountPrice - checkedSkuMsg.commission}}</text></text>
+									style="font-size: 36rpx;font-weight: 700;">{{(checkedSkuMsg.discountPrice - checkedSkuMsg.commission).toFixed(2)}}</text></text>
 							<!-- <text style="padding:0 5rpx;" v-if="roleLevel!=500">/</text>
 							<text class="text-red" style="font-size: 24rpx;"
 								v-if="roleLevel!=500">省{{checkedSkuMsg.commission}}</text> -->
@@ -601,7 +599,8 @@
 				</view>
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" @tap="copyLink">
-						<image class="share-icon" src="../../static/image/share_link.png" mode="widthFix"></image>
+						<image class="share-icon" :src="IMAGE_URL+'/wxapp/uni-program/share_link.png'" mode="widthFix">
+						</image>
 						<view class="txt">复制链接</view>
 					</button>
 				</view>
@@ -1200,19 +1199,23 @@
 				} else if (this.jcookStockState != 1) {
 					this.$u.toast("当前无货")
 					if (this.sku_id != '' && !this.selectedAddress) {
-						uni.navigateTo({
-							url: '/packageA/address/index?fromPage=goodsDetail'
-						})
+						this.$u.toast("请先选择地址")
+						setTimeout(() => {
+							uni.navigateTo({
+								url: '/packageA/address/index?fromPage=goodsDetail'
+							})
+						}, 500)
+
 						return
 					}
 				}
-				if (!this.sku_id) {
-					this.$u.toast("请选择商品规格")
-					return
-				} else if (this.jcookStockState != 1) {
-					this.$u.toast("当前无货")
-					return
-				}
+				// if (!this.sku_id) {
+				// 	this.$u.toast("请选择商品规格")
+				// 	return
+				// } else if (this.jcookStockState != 1) {
+				// 	this.$u.toast("当前无货")
+				// 	return
+				// }
 				let sendData = {
 					UserID: uni.getStorageSync("userInfo").id,
 					SkuID: this.sku_id,
@@ -1224,6 +1227,7 @@
 					if (this.parentId) {
 						sendData.ParentID = this.parentId
 					}
+
 					if (uni.getStorageSync("invite")) {
 						sendData.invite = uni.getStorageSync("invite")
 					}
@@ -1237,7 +1241,8 @@
 						let preViewMsg = res.data.data
 						preViewMsg.isImport = this.goodsDetail.isImport
 						this.$store.commit('updatePreOrderMsg', preViewMsg);
-						console.log(res.data.data)
+
+						console.log("updatePreOrderMsg", res.data.data)
 						// return
 						uni.navigateTo({
 							url: "/pages/confirmOrder/confirmOrder"
@@ -1291,12 +1296,22 @@
 				for (let i in option) {
 					let last = result[i]; //把选中的值存放到字符串last去
 					for (let k in option[i].children) {
-						result[i] = option[i].children[k].id; //赋值，存在直接覆盖，不存在往里面添加id
-						option[i].children[k].isShow = this.isMay(result); //在数据里面添加字段isShow来判断是否可以选择
+						result[i] = option[i].children[k].id; 
+						//赋值，存在直接覆盖，不存在往里面添加id
+						option[i].children[k].isShow = this.isMay(result);
+						//在数据里面添加字段isShow来判断是否可以选择
+						
+						for(var j in this.goodsDetail.sku){///没有库存的商品提前过滤
+							for(var l in result){
+								if(result[l]!=''&&this.goodsDetail.sku[j].combineId.indexOf(result[l])>=0&&this.goodsDetail.sku[j].inventory<=0){
+									option[i].children[k].isShow = false;
+								}
+							}
+						}
 					}
 					result[i] = last; //还原，目的是记录点下去那个值，避免下一次执行循环时被覆盖
 				}
-				// console.log(result)
+				//console.log(result)
 
 				if (this.shopItemInfo[result]) {
 					this.checkedSkuMsg = this.shopItemInfo[result]
@@ -1308,18 +1323,20 @@
 				this.$forceUpdate(); //重绘
 			},
 			isMay(result) {
-				console.log('shopItemInfo', this.shopItemInfo)
-				console.log('result', result)
+				// console.log('shopItemInfo', this.shopItemInfo)
+				// console.log('result', result)
+			
+				 //匹配选中的数据的库存，若不为空返回true反之返回false
 				for (var i in result) {
 					if (result[i] == '') {
 						return true; //如果数组里有为空的值，那直接返回true
 					}
 				}
-				console.log(this.shopItemInfo[result])
+				//console.log(this.shopItemInfo[result])
 				if (!this.shopItemInfo[result]) {
 					return false
 				}
-				return this.shopItemInfo[result].inventory == 0 ? false : true; //匹配选中的数据的库存，若不为空返回true反之返回false
+				return this.shopItemInfo[result].inventory == 0 ? false : true;
 			},
 			chooseAddress(e) {
 				console.log(e)

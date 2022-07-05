@@ -3,7 +3,7 @@
 		<view class="isLoading bg-white flex flex-direction justify-center align-center"
 			style="height: 100vh;width: 100vw;margin: 20rpx 0;background-color:rgb(240, 240, 240)" >
 			<view class="flex flex-direction justify-center align-center" style="width: 100vw;height:80vh;">
-				<image src="/static/image/xx.jpg" mode="widthFix" style="width:500upx"></image>
+				<image :src="IMAGE_URL+'/wxapp/uni-program/xx.jpg'" mode="widthFix" style="width:500upx"></image>
 				<view class="text-center" style="color: #AAAAAA;font-size: 32rpx;margin-top: 10rpx;"></view>
 			</view><!-- <image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image> -->
 		</view>

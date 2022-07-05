@@ -36,15 +36,15 @@
 								</view>
 								<navigator :url="'/pages/goodsDetail/goodsDetail?id='+goods.goodsId"
 									class="cart-goods-pic">
-							<!-- 		<u-lazy-load threshold="-100" :image="((goods.mainPhotoUrl.split('/'))[0] === 'http:'||(goods.mainPhotoUrl.split('/'))[0] === 'https:')?goods.mainPhotoUrl:(IMAGE_URL+goods.mainPhotoUrl)" 
+									<!-- 		<u-lazy-load threshold="-100" :image="((goods.mainPhotoUrl.split('/'))[0] === 'http:'||(goods.mainPhotoUrl.split('/'))[0] === 'https:')?goods.mainPhotoUrl:(IMAGE_URL+goods.mainPhotoUrl)" 
 									:index="index"
 										:loading-img="IMAGE_URL + '/wxapp/null05.png'" height="200" border-radius="10"
 										:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill">
 									</u-lazy-load> -->
-									<u-lazy-load threshold="-100" :image="goods.img"	:index="index"
-												:loading-img="IMAGE_URL + '/wxapp/null05.png'" height="200" border-radius="10"
-												:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill">
-											</u-lazy-load>
+									<u-lazy-load threshold="-100" :image="goods.img" :index="index"
+										:loading-img="IMAGE_URL + '/wxapp/null05.png'" height="200" border-radius="10"
+										:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill">
+									</u-lazy-load>
 								</navigator>
 								<view class="cart-goods-msg flex-sub">
 									<view class="msg-top flex flex-direction justify-between clear align-start">
@@ -57,9 +57,10 @@
 									<view class="msg-bottom flex justify-between"
 										style="line-height: 50rpx;padding-top: 15rpx;">
 										<view class="flex">
-											<text class="text-red" style="font-size: 30rpx;">¥{{goods.price}}</text>
-											<text
-												style="text-decoration: line-through;font-size: 20rpx;margin-left: 5rpx;color: #898989;">¥{{goods.originalPrice}}</text>
+											<text class="text-red"
+												style="font-size: 30rpx;">¥{{(goods.price - goods.commission).toFixed(2)}}</text>
+											<!-- 										<text
+												style="text-decoration: line-through;font-size: 20rpx;margin-left: 5rpx;color: #898989;">¥{{goods.originalPrice}}</text> -->
 										</view>
 										<!-- 用change事件初次加载会请求多次 -->
 										<u-number-box v-model="goods.quantity" :min="1" :max="50" :input-width="72"
@@ -71,6 +72,7 @@
 							</view>
 						</view>
 					</view>
+					<view class="" style="height: 100rpx;"></view>
 				</view>
 
 				<view class="cart-bottom bg-white flex justify-between align-center">
@@ -186,13 +188,14 @@
 							this.cartGoods[i].shopChecked = false
 							for (let j = 0; j < this.cartGoods[i].children.length; j++) {
 								this.cartGoods[i].children[j].goodsChecked = false;
-							this.cartGoods[i].children[j].img = this.judgeCover(this.cartGoods[i].children[j].mainPhotoUrl);
+								this.cartGoods[i].children[j].img = this.judgeCover(this.cartGoods[i].children[j]
+									.mainPhotoUrl);
 							}
 						}
 					}
 					this.getSelectedGoods()
 					this.$forceUpdate()
-					console.log('列表',this.cartGoods.length)
+					console.log('列表', this.cartGoods.length)
 				});
 			},
 			// 勾选店铺
@@ -270,7 +273,8 @@
 						if (this.cartGoods[i].children[j].goodsChecked) {
 							selectGoodsIds.push(this.cartGoods[i].children[j].shoppingTrolleyId)
 							totalNum += this.cartGoods[i].children[j].quantity
-							totalPrice += (this.cartGoods[i].children[j].price) * (this.cartGoods[i].children[j].quantity)
+							totalPrice += (this.cartGoods[i].children[j].price - this.cartGoods[i].children[j]
+								.commission) * (this.cartGoods[i].children[j].quantity)
 							totalCommission += (this.cartGoods[i].children[j].commission) * (this.cartGoods[i].children[j]
 								.quantity)
 						}
@@ -282,7 +286,7 @@
 				this.totalCommission = totalCommission.toFixed(2)
 				// console.log(selectGoodsIds)
 			},
-			
+
 			delGoods() {
 				if (this.selectGoodsIds.length == 0) {
 					this.$u.toast("至少选择一件商品");
@@ -401,7 +405,7 @@
 			}
 
 			.msg-top {
-				height: 200rpx;
+				height: 120rpx;
 			}
 
 			.cart-goods-name {

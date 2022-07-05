@@ -15,10 +15,11 @@
 				class="u-delete-icon"
 				@tap.stop="deleteItem(index)"
 				:style="{
-					background: delBgColor
+					background: delBgColor,
+					opacity:0.7
 				}"
 			>
-				<u-icon class="u-icon" :name="delIcon" size="20" :color="delColor"></u-icon>
+				<u-icon class="u-icon" :name="delIcon" style="padding-left:40rpx" size="30rpx" :color="delColor"></u-icon>
 			</view>
 			<u-line-progress
 				v-if="showProgress && item.progress > 0 && !item.error"
@@ -43,7 +44,7 @@
 					height: $u.addUnit(height)
 				}"
 			>
-				<u-icon name="plus" class="u-add-btn" size="40"></u-icon>
+				<u-icon name="plus"  class="u-add-btn" style="padding-left:40rpx"  size="40" ></u-icon>
 				<view class="u-add-tips">{{ uploadText }}</view>
 			</view>
 		</view>
@@ -215,7 +216,7 @@ export default {
 		// 右上角关闭按钮的背景颜色
 		delBgColor: {
 			type: String,
-			default: '#fa3534'
+			default: '#000000'
 		},
 		// 右上角关闭按钮的叉号图标的颜色
 		delColor: {
@@ -613,7 +614,7 @@ export default {
 	right: 10rpx;
 	z-index: 10;
 	background-color: $u-type-error;
-	border-radius: 100rpx;
+	border-radius: 5rpx;
 	width: 44rpx;
 	height: 44rpx;
 	@include vue-flex;

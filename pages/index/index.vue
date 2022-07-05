@@ -148,7 +148,7 @@
 				</view>
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" @tap="copyLink">
-						<image class="share-icon" src="../../static/image/share_link.png" mode="widthFix"></image>
+						<image class="share-icon" :src="IMAGE_URL+'/wxapp/uni-program/share_link.png'" mode="widthFix"></image>
 						<view class="txt">复制链接</view>
 					</button>
 				</view>

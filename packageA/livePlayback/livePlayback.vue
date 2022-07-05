@@ -123,12 +123,12 @@
 				<image :src="IMAGE_URL + '/shop/more.png'" style="width: 60rpx;" mode="widthFix"
 					@click="isClear = true"></image>
 				<button class="noStyleButton" open-type="share">
-					<image :src="IMAGE_URL + '/share.png'" style="width: 60rpx;" mode="widthFix"></image>
+					<image :src="IMAGE_URL + '/wxapp/uni-program/share.png'" style="width: 60rpx;" mode="widthFix"></image>
 				</button>
-				<image :src="IMAGE_URL + '/love.png'" style="width: 60rpx;margin-right: 20px;" @click="thumbsUp"
+				<image :src="IMAGE_URL + '/wxapp/uni-program/love.png'" style="width: 60rpx;margin-right: 20px;" @click="thumbsUp"
 					mode="widthFix"></image>
 				<view class="" style="position: relative;" @tap="isShow = true">
-					<image :src="IMAGE_URL + '/shop/pack.png'" style="width: 90rpx;" mode="widthFix"></image>
+					<image :src="IMAGE_URL + '/wxapp/shop/pack.png'" style="width: 90rpx;" mode="widthFix"></image>
 					<view class="text-center goods-num">{{videoDetail.goodsLists.length}}</view>
 				</view>
 			</view>

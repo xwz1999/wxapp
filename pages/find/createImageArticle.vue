@@ -39,15 +39,14 @@
 				</scroll-view>
 			</u-collapse-item>
 		</u-collapse>
-		<view class="addPastGoods" @click="show=true">
+<!-- 		<view class="addPastGoods" @click="show=true">
 			<view class="left">
 				<image :src="IMAGE_URL + '/wxapp/uni-program/icon/upload_cart.png'" mode=""></image>
 				<text>{{goodsInfo?goodsInfo.goodsName:'添加关联产品'}}</text>
 			</view>
 			<image :src="IMAGE_URL + '/wxapp/uni-program/icon/next.png'" mode=""></image>
-		</view>
-		<button v-if="_type == 1" class="bg-red cu-btn text-white lg block" style="margin: 25rpx;" @click="create"
-			:disabled="!text||!goodsInfo||!uploadPicLists">发布</button>
+		</view> -->
+		<button v-if="_type == 1" class="bg-red cu-btn text-white lg block" style="margin: 25rpx;" @click="create">发布</button> <!-- ||!uploadPicLists -->
 		<button v-if="_type == 2" class="bg-red cu-btn text-white lg block" style="margin: 25rpx;" @click="createVideo"
 			:disabled="!text||!goodsInfo||!videoFile">发布</button>
 		<u-popup class="pop" v-model="show" mode="bottom" @close="closePop" safe-area-inset-bottom="true"
@@ -337,33 +336,40 @@
 				this.show = false
 			},
 			create() {
+				
 				let userId = uni.getStorageSync("userInfo").id
-				let goodsId = this.goodsInfo.id
+				//let goodsId = this.goodsInfo.id
 				let text = this.text
 				let images = []
-				this.uploadPicLists.forEach((item) => {
-					let picInfo = {
-						path: item.response.data.data.url
+				if(images!=[]&&text!=''){
+					this.uploadPicLists.forEach((item) => {
+						let picInfo = {
+							path: item.response.data.data.url
+						}
+						images.push(picInfo)
+					})
+					let data = {
+						userId,
+						//goodsId,
+						text,
+						images
 					}
-					images.push(picInfo)
-				})
-				let data = {
-					userId,
-					goodsId,
-					text,
-					images
+					console.log(data)
+					this.$u.post('/api/v1/moment_copy/create', data).then(res => {
+						console.log(res)
+						if (res.data.code == "FAIL") {
+							this.$u.toast(res.data.msg);
+							return
+						}
+						this.$u.toast(res.data.msg)
+						setTimeout(() => {
+							uni.navigateBack({})
+						}, 1000)
+					})
+				}else{
+					this.$u.toast('请先添加您的想法');
 				}
-				console.log(data)
-				this.$u.post('/api/v1/moment_copy/create', data).then(res => {
-					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
-						return
-					}
-					this.$u.toast(res.data.msg)
-					setTimeout(() => {
-						uni.navigateBack({})
-					}, 1000)
-				})
+			
 			},
 			createVideo(){
 				this.startUpload()

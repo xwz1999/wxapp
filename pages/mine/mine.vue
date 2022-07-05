@@ -68,9 +68,9 @@
 				@refresherrestore="onRestore" @refresherabort="onAbort" :refresher-triggered="triggered">
 				<!-- banlance-background.png -->
 				<view class="info-container">
-				<view v-if="roleLevel==1||roleLevel==2" class="balance-box2" style="background-image: url('/static/images/banlanceBackground.png')">
+				<view v-if="roleLevel==1||roleLevel==2" class="balance-box2" :style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/banlanceBackground.png)'" >
 					<view class="shop2">
-						<image src="../../static/image/v.png" mode=""></image>
+						<image :src="IMAGE_URL+'/wxapp/uni-program/v.png'" mode=""></image>
 						<view style="font-size: 10px;margin-top: 3px;">
 							店铺
 						</view>
@@ -414,22 +414,22 @@
 					}
 				],
 				otherOptions: [{
-						icon: "/static/image/address.png",
+						icon: this.IMAGE_URL +"/wxapp/uni-program/address.png",
 						text: "地址",
 						page: "/packageA/address/index"
 					},
 					{
-						icon: "/static/image/myCollect.png",
+						icon:  this.IMAGE_URL +"/wxapp/uni-program/myCollect.png",
 						text: "收藏",
 						page:'/packageA/myCollect/myCollect'
 					},
 					{
-						icon: "/static/image/cooperation.png",
+						icon:  this.IMAGE_URL +"/wxapp/uni-program/cooperation.png",
 						text: "商务合作",
 						page: "/packageA/cooperation/cooperation"
 					},
 					{
-						icon: "/static/image/setting.png",
+						icon:  this.IMAGE_URL +"/wxapp/uni-program/setting.png",
 						text: "设置",
 						page: "/packageA/settings/settings"
 					}
@@ -1086,7 +1086,7 @@
 
 	}
 	.balance-box2{
-		    background-size: 345px 62px;
+		    background-size: 100% 62px;
 		    background-repeat: no-repeat;
 		    margin: 12px 15px 0;
 		    margin-bottom: 0;
