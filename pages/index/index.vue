@@ -184,27 +184,27 @@
 				options1: [{
 						text: "瑞库制品",
 						page: "/pages/hotRanking/hotRanking?fromView=ruiku",
-						icon: this.IMAGE_URL + "/index06.png"
+						icon: this.IMAGE_URL + "/wxapp/index06.png"
 					},
 					{
 						text: "家居生活",
 						page: "/pages/hotRanking/hotRanking?fromView=jiaju",
-						icon: this.IMAGE_URL + "/index07.png"
+						icon: this.IMAGE_URL + "/wxapp/index07.png"
 					},
 					{
 						text: "数码家电",
 						page: "/pages/hotRanking/hotRanking?fromView=shuma",
-						icon: this.IMAGE_URL + "/index08.png"
+						icon: this.IMAGE_URL + "/wxapp/index08.png"
 					},
 					{
 						text: "热销榜单",
 						page: "/pages/hotRanking/hotRanking?fromView=rexiao",
-						icon: this.IMAGE_URL + "/index04.png"
+						icon: this.IMAGE_URL + "/wxapp/index04.png"
 					},
 					{
 						text: "全部分类",
 						page: "/pages/classify/classify",
-						icon: this.IMAGE_URL + "/index05.png"
+						icon: this.IMAGE_URL + "/wxapp/index05.png"
 					},
 				],
 				options2: [
@@ -225,27 +225,27 @@
 					{
 						text: "京东优选",
 						page: "/pages/classify/classify?channel=jingdong",
-						icon: this.IMAGE_URL + "/index01.png"
+						icon: this.IMAGE_URL + "/wxapp/index01.png"
 					},
 
 					{
 						text: "高佣特推",
 						page: "/pages/ranking/ranking?fromView=gaoyong",
-						icon: this.IMAGE_URL + "/index03.png"
+						icon: this.IMAGE_URL + "/wxapp/index03.png"
 					}, {
 						text: "特惠专区",
 						page: "/pages/ranking/ranking?fromView=tehui",
-						icon: this.IMAGE_URL + "/index02.png"
+						icon: this.IMAGE_URL + "/wxapp/index02.png"
 					},
 					{
 						text: "热销榜单",
 						page: "/pages/ranking/ranking?fromView=rexiao",
-						icon: this.IMAGE_URL + "/index04.png"
+						icon: this.IMAGE_URL + "/wxapp/index04.png"
 					},
 					{
 						text: "全部分类",
 						page: "/pages/classify/classify",
-						icon: this.IMAGE_URL + "/index05.png"
+						icon: this.IMAGE_URL + "/wxapp/index05.png"
 					},
 				],
 				kingCoinList: null,

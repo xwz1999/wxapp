@@ -61,30 +61,30 @@
 			}
 			let requestUrl
 			requestUrl = "/api/v1/goods/hot_sell/list"
-			this.bgImage = "t-bg01.png"
-			this.titleImage = "t-01.png"
+			this.bgImage = "/wxapp/t-bg01.png"
+			this.titleImage = "/wxapp/t-01.png"
 			if (options.fromView) {
 				this.type = options.fromView
 				switch (options.fromView) {
 					case "rexiao":
 						requestUrl = "/api/v1/goods/hot_sell/list"
-						this.bgImage = "t-bg01.png"
-						this.titleImage = "t-01.png"
+						this.bgImage = "/wxapp/t-bg01.png"
+						this.titleImage = "/wxapp/t-01.png"
 						break;
 					case "ruiku":
 						requestUrl = "/api/v1/goods/recook_make/list"
-						this.bgImage = "t-bg02.png"
-						this.titleImage = "t-02.png"
+						this.bgImage = "/wxapp/t-bg02.png"
+						this.titleImage = "/wxapp/t-02.png"
 						break;
 					case "shuma":
 						requestUrl = "/api/v1/goods/digital/list"
-						this.bgImage = "t-bg03.png"
-						this.titleImage = "t-03.png"
+						this.bgImage = "/wxapp/t-bg03.png"
+						this.titleImage = "/wxapp/t-03.png"
 						break;
 					case "jiaju":
 						requestUrl = "/api/v1/goods/home_live/list"
-						this.bgImage = "t-bg04.png"
-						this.titleImage = "t-04.png"
+						this.bgImage = "/wxapp/t-bg04.png"
+						this.titleImage = "/wxapp/t-04.png"
 						break;
 					default:
 						break;
