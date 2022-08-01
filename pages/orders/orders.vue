@@ -4,9 +4,9 @@
 			<view class="slot-wrap justify-center">
 				<view class="flex tab-con justify-center">
 					<view class="tab flex justify-center">
-						<view :class="currentIndex==0?'text-white':''" @tap="chooseNav(0)">自购订单</view>
+						<!-- <view :class="currentIndex==0?'text-white':''" @tap="chooseNav(0)">自购订单</view> -->
 						<!-- <view :class="currentIndex==1?'text-white':''" @tap="chooseNav(1)">导购订单</view> -->
-						<view class="current bg-red" :class="currentIndex==0?'':'moveright'"></view>
+						<!-- <view class="current bg-red" :class="currentIndex==0?'':'moveright'"></view> -->
 					</view>
 					<!-- <view class="btn" @tap="toInvoice">开发票</view> -->
 				</view>

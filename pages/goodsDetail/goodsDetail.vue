@@ -41,7 +41,7 @@
 											<text style="color: #ffffff;font-size: 28rpx;padding-top: 5rpx;">折后价</text>
 											<text style="color: #ffffff;font-size: 28rpx;padding-top: 5rpx;">￥</text>
 											<text style="font-size: 48rpx;color: #ffffff">
-												{{(goodsDetail.price.min.discountPrice - goodsDetail.price.min.commission).toFixed(2)}}
+												{{(miniSku.discountPrice - miniSku.commission).toFixed(2)}}
 												<!-- 	<template
 													v-if="goodsDetail.price.min.discountPrice!=goodsDetail.price.max.discountPrice">
 													~{{goodsDetail.price.max.discountPrice}}
@@ -51,7 +51,7 @@
 											<view style="padding-left: 20rpx;padding-right: 20rpx;margin-left: 20rpx;"
 												:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/goods_price_bg.png);background-size: 100% 100%;'">
 												<text
-													style="color: #ED3D19;font-size: 28rpx;padding-top: 2rpx;">分享赚¥{{goodsDetail.price.min.commission}}</text>
+													style="color: #ED3D19;font-size: 28rpx;padding-top: 2rpx;">分享赚¥{{miniSku.commission}}</text>
 											</view>
 
 										</view>
@@ -59,7 +59,7 @@
 										<view class="price-box" style="font-size: 28rpx;padding-left: 20rpx;"
 											:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/goods_price_detail_bg.png);background-size: 100% 100%;'">
 											<text
-												style="color: #ffffff;font-size: 24rpx;">折后价={{goodsDetail.price.min.originalPrice}}(官方指导价)-¥{{goodsDetail.sku[0].coupon}}(优惠券)-¥{{goodsDetail.price.min.commission}}(折扣额)</text>
+												style="color: #ffffff;font-size: 24rpx;">折后价={{miniSku.originalPrice}}(官方指导价)-¥{{miniSku.coupon}}(优惠券)-¥{{miniSku.commission}}(折扣额)</text>
 										</view>
 									</view>
 								</view>
@@ -698,6 +698,7 @@
 					detail: "",
 				},
 				shoppingTrolleyCount: 0,
+				miniSku:{}
 			}
 		},
 		components: {
@@ -1051,6 +1052,7 @@
 						return
 					}
 					this.goodsDetail = res.data.data
+				
 					this.shoppingTrolleyCount = res.data.data.shoppingTrolleyCount
 					// 商样图片  根据type判断放在什么位置
 					if (res.data.data.notice.type === 1) {
@@ -1115,6 +1117,7 @@
 				this.skuPhoto = this.IMAGE_URL + this.goodsDetail.sku[0].picUrl
 				this.skuStoreCount = this.goodsDetail.sku[0].inventory
 				this.checkedSku = "请选择规格"
+				this.miniSku = this.goodsDetail.sku[0]
 
 				if (this.goodsDetail.sku.length === 1) {
 					this.checkedSku = this.goodsDetail.sku[0].name
@@ -1122,10 +1125,15 @@
 					console.log(this.sku_id)
 				}
 				for (let i in this.goodsDetail.sku) {
+					
 					this.shopItemInfo[this.goodsDetail.sku[i].combineId.split(",").reverse().join(",")] = this
 						.goodsDetail
 						.sku[i]; //修改数据结构格式，改成键值对的方式，以方便和选中之后的值进行匹配
+					if((this.goodsDetail.sku[i].discountPrice-this.goodsDetail.sku[i].commission)<(this.miniSku.discountPrice-this.miniSku.commission)){
+						this.miniSku = this.goodsDetail.sku[i]
+					}
 				}
+				console.log(this.miniSku)
 				// console.log(this.shopItemInfo)
 				this.checkItem();
 			},

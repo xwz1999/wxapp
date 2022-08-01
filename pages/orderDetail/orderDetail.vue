@@ -71,7 +71,7 @@
 												</view>
 												<view class="flex justify-between"
 													style="font-size: 28rpx;color: #FA6400;">
-													<view class="flex">￥{{item.unitPrice | toFixed(2)}} </view>
+													<view class="flex">￥{{item.unitPrice - item.coinAmount | toFixed(2)}}<text>(折后价)</text> </view>
 													<!-- <view class="">
 														<view v-if="item.rStatus !=='待发货' && item.rStatus !=='已发货'">
 															<button v-if="item.rStatus"
@@ -140,11 +140,11 @@
 							-￥{{(orderDetail.universeCouponTotalAmount+orderDetail.brandCouponTotalAmount) | toFixed(2)}}
 						</view>
 					</view>
-					<view class="item flex justify-between">
+			<!-- 		<view class="item flex justify-between">
 						<view class="">省</view>
-						<!-- <view class="">瑞币抵扣</view> -->
+						<view class="">瑞币抵扣</view>
 						<view class="">-￥{{orderDetail.coinTotalAmount | toFixed(2)}}</view>
-					</view>
+					</view> -->
 				</view>
 				<view class="item flex justify-between"
 					style="border-top: 1rpx solid #f1f1f1;font-size: 30rpx;line-height: 80rpx;">

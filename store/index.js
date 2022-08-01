@@ -14,6 +14,7 @@ const store = new Vuex.Store({
 		url: null, // 跳转到登录页面时原地址
 		roleLevel: 500, //用户等级默认设置会员
 		isLogin: false,
+		userBrief:{}//
 	},
 	mutations: {
 		setIsLogin(state,val) {
@@ -26,6 +27,9 @@ const store = new Vuex.Store({
 		},
 		setRoleLevel(state, val) {
 			state.roleLevel = val
+		},
+		setUserBrief(state, val) {
+			state.userBrief = val
 		},
 		changeCity(state, name) {
 			state.selectCity = name

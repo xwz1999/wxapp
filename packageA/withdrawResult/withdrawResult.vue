@@ -2,30 +2,44 @@
 	<view>
 		<view class="status-icon flex justify-around bg-white">
 			<view class="flex flex-direction align-center">
-				<image :src="IMAGE_URL + '/mine/t1.png'" style="width: 54rpx;" mode="widthFix"></image>
-				<view class="text">提交申请</view>
-				<view>{{detail.created_at}}</view>
+				<image :src="IMAGE_URL + '/wxapp/mine/t3.png'" style="width: 54rpx;" mode="widthFix"></image>
+				<view v-if="status==1"  class="text">提交申请</view>
+				<view v-else  class="text">提交成功</view>
+				<view v-if="status==1" >{{detail.created_at}}</view>
+				<view v-else >{{detail.auditTime}}</view>
 			</view>
-			<view class="flex flex-direction align-center">
-				<image :src="IMAGE_URL + '/mine/t1.png'" style="width: 54rpx;" mode="widthFix"></image>
+			
+			<view style="background-color:#c8c8c8;width: 250rpx;height: 2rpx;margin-top: 50rpx;"></view>
+			<view v-if="status==1" class="flex flex-direction align-center">
+				<image :src="IMAGE_URL + '/wxapp/mine/t1.png'" style="width: 54rpx;" mode="widthFix"></image>
+				<view class="text">提交成功</view>
+				<view v-if="detail.doneTime">{{detail.auditTime}}</view>
+			</view>
+			<view v-else class="flex flex-direction align-center">
+				<image :src="IMAGE_URL + '/wxapp/mine/t1.png'" style="width: 54rpx;" mode="widthFix"></image>
 				<view class="text">提现成功</view>
 				<view v-if="detail.doneTime">{{detail.doneTime}}</view>
 			</view>
 		</view>
 		<view class="bg-white" style="padding:40rpx 30rpx;line-height: 50rpx;">
-			<view class="sub-title" v-if="detail.WaitStatus==0">提现申请已提交，请等待审核</view>
+			<view class="sub-title" v-if="detail.WaitStatus==0">提现申请已提交</view>
 			<view class="sub-title" v-if="detail.WaitStatus==1">提现成功</view>
-			<view style="color: #aaa;font-size: 24rpx;padding: 0 20rpx;">审核日是04月10日</view>
+			<view style="color: #aaa;font-size: 24rpx;padding: 0 20rpx;" v-if="detail.WaitStatus==1"> 预计三个工作日到账  </view>
+			<view style="color: #aaa;font-size: 24rpx;padding: 0 20rpx;" v-if="detail.WaitStatus==0"> 请耐心等待审核  </view>
 		</view>
 		<view class="box bg-white">
-			<view class="title">提现信息</view>
+			<view class="title">提现小贴士</view>
 			<view class="flex">
 				<view class="span">本次申请提现金额</view>
 				<view>￥{{detail.amount}}</view>
 			</view>
 			<view class="flex">
-				<view class="span">手续费</view>
-				<view>￥0.00</view>
+				<view class="span">平台代扣代付税费</view>
+				<view>￥{{fee}}</view>
+			</view>
+			<view class="flex">
+				<view class="span">实际到账金额</view>
+				<view>￥{{detail.actual_amount}}</view>
 			</view>
 			<view class="flex">
 				<view class="span">申请提现人</view>
@@ -59,7 +73,10 @@
 		data() {
 			return {
 				id:0,
-				detail:null
+				detail:null,
+				IMAGE_URL:this.IMAGE_URL,
+				status:1,
+				fee:0
 			};
 		},
 		onLoad(options) {
@@ -79,6 +96,8 @@
 						return
 					}
 					this.detail = res.data.data
+					this.status = this.detail.status
+					this.fee = this.detail.tax_fee
 				});
 			}
 		}

@@ -1,13 +1,131 @@
 <template>
 	<view class="">
 		<view v-if="isLogin" class="flex flex-direction" style="height: 100vh;width:100vw;">
-			<u-navbar :is-back="false" title="   " :border-bottom='false' :background="background"></u-navbar>
+			<u-navbar v-if="roleLevel!=10&&!(roleLevel==2&&isOffline)" :is-back="false" title="   "
+				:border-bottom='false' :background="background"></u-navbar>
 			<view class="top-nav">
-				<image :src="IMAGE_URL+'/wxapp/mine/mine-bg.png'" mode="widthFix" style="width: 750rpx;"></image>
+				<image v-if="roleLevel==2&&isOffline" :src="bgImage" mode="heightFix"
+					style="width: 750rpx;height: 560rpx;"></image>
+				<image v-else-if="roleLevel==10" :src="bgImage" mode="widthFix"
+					style="width: 750rpx;height: 320rpx;margin-bottom: 110rpx;"></image>
+				<image v-else :src="IMAGE_URL+'/wxapp/mine/mine-bg.png'" mode="widthFix" style="width: 750rpx;"></image>
 				<!-- <image :src="`${IMAGE_URL}/wxapp/mine/mine-bg.png`" mode="widthFix" style="width: 750rpx;"></image> -->
 				<view class="top-nav-box">
-					<view  class="nav-box" :style="'background-image: url('+bgImage+');'">
-						
+
+					<view v-if="roleLevel==2&&isOffline" class="nav-box" style="margin-top: 270rpx;">
+
+						<view style="padding-left: 40rpx;display: flex;flex-direction: row;">
+							<navigator url="/packageA/myInfo/myInfo" hover-class="none">
+								<view style="width: 90rpx;height: 90rpx;">
+									<u-lazy-load threshold="-100" :image="IMAGE_URL+userInfo.headImgUrl" :index="index"
+										height="90" border-radius="45" :loading-img="IMAGE_URL + '/wxapp/null05.png'"
+										:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill">
+									</u-lazy-load>
+								</view>
+							</navigator>
+							<view style="margin-left: 10rpx;">
+								<view class="" style="font-size: 40rpx;font-weight: 500;">
+									<text style="color: white;font-size: 32rpx;">{{userInfo.nickname}}</text>
+								</view>
+
+								<view class="end-box">
+									<text style="font-size: 20rpx;font-weight: 500;color: #512309;"
+										v-if="info.end">VIP店有效期至{{getTime(info.end)}}</text>
+								</view>
+							</view>
+
+						</view>
+
+
+						<view style="padding-left: 40rpx;display:flex;flex-direction: row;margin-top: 20rpx;">
+
+							<view style="margin-left: 20rpx;margin-right: 100rpx;">
+								<view>
+									<text style="color: white;font-size: 20rpx;opacity: 0.6;">注册时间</text>
+								</view>
+								<view style="height: 10rpx;"></view>
+								<view>
+									<text style="font-size: 20rpx;font-weight: 500;color: white;"
+										v-if="info.start">{{usercreatedAt}}</text>
+								</view>
+							</view>
+							<view class=""
+								style="width: 2rpx;height: 58rpx; margin: 0 34rpx; background:linear-gradient(#B41C32,#C95767,#B41C32);">
+							</view>
+							<view style="margin-left: 50rpx;">
+								<view>
+									<text style="color: white;font-size: 20rpx;opacity: 0.6;">我的编号</text>
+								</view>
+								<view style="height: 10rpx;"></view>
+								<view class="">
+									<text
+										style="font-size: 20rpx;font-weight: 500;color: white;">NO.{{info.identifier}}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+
+
+					<view v-else-if="roleLevel==10" class="nav-box" style="margin-top: 100rpx;">
+
+						<view style="padding:50rpx 40rpx;display: flex; flex-direction: row;background-color: #3A3943;
+						justify-content: space-between;border-top-left-radius: 16rpx;border-top-right-radius: 16rpx;">
+
+							<view style="margin-left: 10rpx;">
+								<view class="" style="font-size: 40rpx;font-weight: 500;">
+									<text style="color: white;font-size: 32rpx;">{{userInfo.nickname}}</text>
+								</view>
+								<view style="height: 10rpx;"></view>
+								<view
+									style="	border-radius:4rpx ;padding: 3rpx 12rpx;background:linear-gradient(#FFECC7,#FFD38D);">
+									<text
+										style="font-size: 20rpx;font-weight: 500;color: #512309;">{{isEnterprise?'合伙人(公司)':'合伙人(个人)'}}</text>
+								</view>
+							</view>
+
+							<navigator url="/packageA/myInfo/myInfo" hover-class="none">
+								<view style="width: 90rpx;height: 90rpx;">
+									<u-lazy-load threshold="-100" :image="IMAGE_URL+userInfo.headImgUrl" :index="index"
+										height="90" border-radius="45" :loading-img="IMAGE_URL + '/wxapp/null05.png'"
+										:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill">
+									</u-lazy-load>
+								</view>
+							</navigator>
+
+						</view>
+
+
+						<view style="display:flex;flex-direction: row;background-color: #56555D;
+						border-bottom-left-radius: 16rpx;border-bottom-right-radius: 16rpx;padding: 24rpx 40rpx ;">
+
+							<view style="margin-left: 15rpx;margin-right: 100rpx;">
+								<view>
+									<text style="color: white;font-size: 20rpx;opacity: 0.6;">注册时间</text>
+								</view>
+								<view style="height: 10rpx;"></view>
+								<view>
+									<text style="font-size: 20rpx;font-weight: 500;color: white;"
+										v-if="info.start">{{usercreatedAt}}</text>
+								</view>
+							</view>
+							<view class=""
+								style="width: 2rpx;height: 58rpx; margin: 0 34rpx; background:linear-gradient(#56555D,#72717C,#56555D);">
+							</view>
+							<view style="margin-left: 50rpx;">
+								<view>
+									<text style="color: white;font-size: 20rpx;opacity: 0.6;">我的编号</text>
+								</view>
+								<view style="height: 10rpx;"></view>
+								<view class="">
+									<text
+										style="font-size: 20rpx;font-weight: 500;color: white;">NO.{{info.identifier}}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+
+
+					<view v-else class="nav-box" :style="'background-image: url('+bgImage+');'">
 						<view class="flex align-center">
 							<view class="flex-sub">
 								<view class="flex">
@@ -21,25 +139,9 @@
 										</view>
 									</navigator>
 								</view>
-
 							</view>
-				<!-- 			<view class="" style="width: 112rpx;">
-								<view class="flex justify-around align-center" style="width: 100%;color: #FFFFFF;">
-									<navigator url="/packageA/myCollect/myCollect" hover-class="none"
-										style="margin-right: 30rpx;">
-										<u-icon name="heart" size="48"></u-icon>
-										<view>收藏</view>
-									</navigator>
-									<view>
-										<button open-type='contact' class='customer-service'>
-											<u-icon name="server-fill" size="48"></u-icon>
-										</button>
-										<view>客服</view>
-									</view>
-								</view>
-							</view> -->
 						</view>
-						<view class="flex align-center" >
+						<view class="flex align-center">
 							<view class="flex-sub">
 								<view class="" style="font-size: 40rpx;font-weight: 500;">
 									<text>{{userInfo.nickname}}</text>
@@ -57,44 +159,46 @@
 								<text>注册时间{{usercreatedAt}}</text>
 							</view>
 							<view class="flex-sub" style="width: 112rpx; text-align: center;">
-								<text style="margin-left: 45px;">({{role}})</text>
+								<text style="margin-left: 45px;" v-if="roleLevel!=0">({{role}})</text>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
+
+
 			<scroll-view class="flex-sub" scroll-y="true" style="height: 0;" :refresher-threshold="100"
 				:refresher-enabled='refresherEnabled' @refresherpulling="onPulling" @refresherrefresh="onRefresh"
 				@refresherrestore="onRestore" @refresherabort="onAbort" :refresher-triggered="triggered">
 				<!-- banlance-background.png -->
 				<view class="info-container">
-				<view v-if="roleLevel==1||roleLevel==2" class="balance-box2" :style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/banlanceBackground.png)'" >
-					<view class="shop2">
-						<image :src="IMAGE_URL+'/wxapp/uni-program/v.png'" mode=""></image>
-						<view style="font-size: 10px;margin-top: 3px;">
-							店铺
+					<view v-if="roleLevel==1||roleLevel==2||roleLevel==10" @tap="withdraw2" class="balance-box2"
+						:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/banlanceBackground.png)'">
+						<view class="balance2">
+							<view class="balance21">
+								<text style="font-size: 14px;">可提现金额：</text><text v-if="info.balance!=0"
+									style="font-size: 12px;">¥</text><text>{{info.balance}}</text>
+							</view>
+							<view class="warn2">
+								每月10日、25日审核提现申请
+							</view>
 						</view>
+						<image :src="IMAGE_URL + '/wxapp/mine/ic_user_withdrawal.png'" style="width: 64rpx;"
+							mode="widthFix">
+						</image>
+						<!-- <button class="withdraw2" size="mini" @tap="withdraw2">立即提现</button> -->
 					</view>
-					<view class="balance2">
-						<view class="balance21">
-							<text style="font-size: 14px;">余额：</text><text v-if="info.balance!=0" style="font-size: 12px;">¥</text><text>{{info.balance}}</text>
-						</view>
-						<view class="warn2">
-							每月10日、25日审核提现申请
-						</view>
-					</view>
-					<button class="withdraw2" size="mini" @tap="withdraw2">立即提现</button>
-				</view>
-					<view v-if="roleLevel==1||roleLevel==2" class="box bg-white" style="border-radius: 0 0 10px 10px;margin: 0 15px 10px;">
+					<view v-if="roleLevel==1||roleLevel==2||roleLevel==10" class="box bg-white"
+						style="border-radius: 0 0 10px 10px;margin: 0 15px 10px;">
 						<!-- <navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;"> -->
-						<navigator  :hover-class="false"
-							class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;">
+						<navigator :hover-class="false" class="subtitle flex justify-between"
+							style="border: 0;padding: 10rpx 20rpx;">
 							<view>累计总收益
-						<!-- 	<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text><text
+								<!-- 	<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text><text
 									class="text-gray cuIcon-question"
 									style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
 									@tap.stop="tipModel(true,'totalEarning')"></text> -->
-									</view>
+							</view>
 							<view class="flex more">
 								<text
 									style="font-size: 34rpx;color: #333333;line-height:80rpx;">{{profit.Total|toFixed(2)}}</text>
@@ -103,7 +207,7 @@
 						</navigator>
 					</view>
 					<view>
-						<view v-if="roleLevel==1||roleLevel==2" class="box bg-white">
+						<!-- 		<view v-if="roleLevel==1||roleLevel==2" class="box bg-white">
 							<view class="subtitle flex justify-between">
 								<view class="flex align-center">
 									<image :src="IMAGE_URL + '/wxapp/mine/t01.png'" style="width: 64rpx;" mode="widthFix">
@@ -111,13 +215,13 @@
 									<view>自购收益 <text class="text-gray cuIcon-question"
 											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
 											@tap.stop="tipModel(true,'purchase')"></text></view>
-								</view>
+								</view> -->
 
-								<!-- <navigator url="/packageA/myIncome/purchase"  :hover-class="false" class="flex more"> -->
-								<!-- 	<navigator url="/packageA/myIncome/purchase" v-if="1" :hover-class="false" class="flex more">
+						<!-- <navigator url="/packageA/myIncome/purchase"  :hover-class="false" class="flex more"> -->
+						<!-- 	<navigator url="/packageA/myIncome/purchase" v-if="1" :hover-class="false" class="flex more">
 									图表分析<text class="cuIcon-right"></text>
 								</navigator> -->
-							</view>
+						<!-- 			</view>
 							<view class="money-box flex justify-between align-center">
 								<view :data-incomeType="1" @click="inComeDetail">
 									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
@@ -144,21 +248,26 @@
 									</view>
 								</view>
 							</view>
-						</view>
+						</view> -->
 						<view v-if="roleLevel==1||roleLevel==2" class="box bg-white">
 							<view class="subtitle flex justify-between">
 								<view class="flex align-center">
-									<image :src="IMAGE_URL + '/wxapp/mine/t02.png'" style="width: 64rpx;" mode="widthFix">
+									<image :src="IMAGE_URL + '/wxapp/mine/t02.png'" style="width: 64rpx;"
+										mode="widthFix">
 									</image>
-									<view>分享收益 <text class="text-gray cuIcon-question"
+									<view>分享补贴 <text class="text-gray "
+											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
+									</view>
+									<!-- 	<view>分享补贴 <text class="text-gray cuIcon-question"
 											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
-											@tap.stop="tipModel(true,'guide')"></text></view>
+											@tap.stop="tipModel(true,'guide')"></text></view> -->
+
 								</view>
 								<!-- <view class="flex more" v-if="1">查看明细<text class="cuIcon-right"></text></view> -->
 							</view>
 							<view class="money-box flex justify-between align-center">
 								<view :data-incomeType="3" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
+									<view class="txt" style="margin-bottom: 20rpx;">累计未到账收益</view>
 									<view class="num">
 										{{profit.EAmount2||0}}
 									</view>
@@ -172,7 +281,7 @@
 								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
 								</view>
 								<view :data-incomeType="9" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">已到账收益(瑞币)</view>
+									<view class="txt" style="margin-bottom: 20rpx;">累计已到账收益</view>
 									<view class="num">{{profit.Amount2||0}}</view>
 								</view>
 								<view :data-incomeType="9" @click="inComeDetail">
@@ -184,83 +293,134 @@
 						<view v-if="roleLevel==1||roleLevel==2" class="box bg-white">
 							<view class="subtitle flex justify-between">
 								<view class="flex align-center">
-									<image :src="IMAGE_URL + '/wxapp/mine/t03.png'" style="width: 64rpx;" mode="widthFix">
+									<image :src="IMAGE_URL + '/wxapp/mine/t03.png'" style="width: 64rpx;"
+										mode="widthFix">
 									</image>
-									<view>品牌补贴 <text class="text-gray cuIcon-question"
-											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
-											@tap.stop="tipModel(true,'team')"></text></view>
+									<view>开店补贴 <text class="text-gray "
+											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
+									</view>
 								</view>
-						<!-- 		<navigator url="/packageA/myIncome/shopSubsidy" :hover-class="false" class="flex more">
+								<!-- 		<navigator url="/packageA/myIncome/shopSubsidy" :hover-class="false" class="flex more">
 									图表分析<text class="cuIcon-right"></text>
 								</navigator> -->
 							</view>
 							<view class="money-box flex justify-between align-center">
-								<view :data-incomeType="5" >
-									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
-									<view class="num">
-										{{profit.EAmount3||0}}
-									</view>
-								</view>
-								<view :data-incomeType="5" >
-									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">{{profit.ECount3||0}}
-									</view>
-								</view>
-								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
-								</view>
-								<view :data-incomeType="11" >
-									<view class="txt" style="margin-bottom: 20rpx;">已到账收益(瑞币)</view>
-									<view class="num">{{profit.Amount3||0}}</view>
-								</view>
-								<view :data-incomeType="11" >
-									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">{{profit.Count3||0}}</view>
-								</view>
-							</view>
-						</view>
-						<view v-if="roleLevel==2" class="box bg-white">
-							<view class="subtitle flex justify-between">
-								<view class="flex align-center">
-									<image :src="IMAGE_URL + '/wxapp/mine/t01.png'" style="width: 64rpx;" mode="widthFix">
-									</image>
-									<view>开店收益 <text class="text-gray cuIcon-question"
-											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
-											@tap.stop="tipModel(true,'purchase')"></text></view>
-								</view>
-						
-								<!-- <navigator url="/packageA/myIncome/purchase"  :hover-class="false" class="flex more"> -->
-								<!-- 	<navigator url="/packageA/myIncome/purchase" v-if="1" :hover-class="false" class="flex more">
-									图表分析<text class="cuIcon-right"></text>
-								</navigator> -->
-							</view>
-							<view class="money-box flex justify-between align-center">
-								<view :data-incomeType="1" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">未到账收益(瑞币)</view>
+								<view :data-incomeType="5">
+									<view class="txt" style="margin-bottom: 20rpx;">累计未到账收益</view>
 									<view class="num">
 										{{profit.EAmount4||0}}
 									</view>
 								</view>
+								<view :data-incomeType="5">
+									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+									<view class="num">{{profit.ECount4||0}}
+									</view>
+								</view>
+								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
+								</view>
+								<view :data-incomeType="11">
+									<view class="txt" style="margin-bottom: 20rpx;">累计已到账收益</view>
+									<view class="num">{{profit.Amount4||0}}</view>
+								</view>
+								<view :data-incomeType="11">
+									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+									<view class="num">{{profit.Count4||0}}</view>
+								</view>
+							</view>
+						</view>
+						<view v-if="roleLevel==10" class="box bg-white">
+							<view class="subtitle flex justify-between">
+								<view class="flex align-center">
+									<image :src="IMAGE_URL + '/wxapp/mine/t01.png'" style="width: 64rpx;"
+										mode="widthFix">
+									</image>
+									<view>店铺收益 <text class="text-gray "
+											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
+									</view>
+								</view>
+
+								<!-- <navigator url="/packageA/myIncome/purchase"  :hover-class="false" class="flex more"> -->
+									<navigator url="/packageA/partnerIncome/partnerIncome?name=店铺收益" v-if="1" :hover-class="false" class="flex more">
+									图表分析<text class="cuIcon-right"></text>
+								</navigator>
+							</view>
+							<view class="money-box flex justify-between align-center">
+								<view :data-incomeType="1" @click="inComeDetail">
+									<view class="txt" style="margin-bottom: 20rpx;">未到账收益</view>
+									<view class="num">
+										{{profit.EAmount5||0}}
+									</view>
+								</view>
 								<view :data-incomeType="1" @click="inComeDetail">
 									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
 									<view class="num">
-										{{profit.ECount4||0}}
+										{{profit.ECount5||0}}
 									</view>
 								</view>
 								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
 								</view>
 								<view :data-incomeType="7" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">已到账收益(瑞币)</view>
-									<view class="num">{{profit.Amount4||0}}
+									<view class="txt" style="margin-bottom: 20rpx;">已到账收益</view>
+									<view class="num">{{profit.Amount5||0}}
 									</view>
 								</view>
 								<view :data-incomeType="7" @click="inComeDetail">
 									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">{{profit.Count4||0}}
+									<view class="num">{{profit.Count5||0}}
+									</view>
+								</view>
+							</view>
+						</view>
+
+
+						<view v-if="roleLevel==10" class="box bg-white">
+							<view class="subtitle flex justify-between">
+								<view class="flex align-center">
+									<image :src="IMAGE_URL + '/wxapp/mine/t02.png'" style="width: 64rpx;"
+										mode="widthFix">
+									</image>
+									<view>分享收益 <text class="text-gray "
+											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
+									</view>
+									<!-- @tap.stop="tipModel(true,'purchase')"></text></view> -->
+								</view>
+
+								<!-- <navigator url="/packageA/myIncome/purchase"  :hover-class="false" class="flex more"> -->
+								
+								<navigator url="/packageA/partnerIncome/partnerIncome?name=分享收益" v-if="1" :hover-class="false"
+									class="flex more">
+									图表分析<text class="cuIcon-right"></text>
+								</navigator>
+							</view>
+							<view class="money-box flex justify-between align-center">
+								<view :data-incomeType="1" @click="inComeDetail">
+									<view class="txt" style="margin-bottom: 20rpx;">未到账收益</view>
+									<view class="num">
+										{{profit.EAmount6||0}}
+									</view>
+								</view>
+								<view :data-incomeType="1" @click="inComeDetail">
+									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+									<view class="num">
+										{{profit.ECount6||0}}
+									</view>
+								</view>
+								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
+								</view>
+								<view :data-incomeType="7" @click="inComeDetail">
+									<view class="txt" style="margin-bottom: 20rpx;">已到账收益</view>
+									<view class="num">{{profit.Amount6||0}}
+									</view>
+								</view>
+								<view :data-incomeType="7" @click="inComeDetail">
+									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+									<view class="num">{{profit.Count6||0}}
 									</view>
 								</view>
 							</view>
 						</view>
 					</view>
+
 					<!-- 我的收益3.0版本 -->
 					<!-- 	<view class="box bg-white" @click="toMyIncome">
 						<view class="subtitle flex align-center justify-between"><text>我的收益</text> <text class="cuIcon-right"></text></view>
@@ -297,8 +457,7 @@
 					</view>
 					 -->
 					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
-						<navigator url="/pages/orders/orders" hover-class="none"
-							class="subtitle flex justify-between">
+						<navigator url="/pages/orders/orders" hover-class="none" class="subtitle flex justify-between">
 							<view>订单中心
 								<!-- <text style="font-weight: normal;font-size: 26rpx;">(自购)</text> -->
 							</view>
@@ -315,7 +474,8 @@
 						</view>
 					</view>
 					<view class="box flex justify-around bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
-						<view v-for="(item,index) in otherOptions" class="other-item flex-sub flex flex-direction justify-between align-center"
+						<view v-for="(item,index) in otherOptions"
+							class="other-item flex-sub flex flex-direction justify-between align-center"
 							@tap="toPage(item.page)">
 							<image :src="item.icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;"
 								mode="heightFix"></image>
@@ -392,6 +552,7 @@
 				bgImage: this.IMAGE_URL + '/wxapp/bg01.png', //背景
 				iconPic: "", //徽章
 				role: "", //徽章
+				endTime: "",
 				orderStatus: [{
 						icon: this.IMAGE_URL + "/wxapp/mine/p1.png",
 						text: "待付款"
@@ -414,27 +575,29 @@
 					}
 				],
 				otherOptions: [{
-						icon: this.IMAGE_URL +"/wxapp/uni-program/address.png",
+						icon: this.IMAGE_URL + "/wxapp/uni-program/address.png",
 						text: "地址",
 						page: "/packageA/address/index"
 					},
 					{
-						icon:  this.IMAGE_URL +"/wxapp/uni-program/myCollect.png",
+						icon: this.IMAGE_URL + "/wxapp/uni-program/myCollect.png",
 						text: "收藏",
-						page:'/packageA/myCollect/myCollect'
+						page: '/packageA/myCollect/myCollect'
 					},
 					{
-						icon:  this.IMAGE_URL +"/wxapp/uni-program/cooperation.png",
+						icon: this.IMAGE_URL + "/wxapp/uni-program/cooperation.png",
 						text: "商务合作",
 						page: "/packageA/cooperation/cooperation"
 					},
 					{
-						icon:  this.IMAGE_URL +"/wxapp/uni-program/setting.png",
+						icon: this.IMAGE_URL + "/wxapp/uni-program/setting.png",
 						text: "设置",
 						page: "/packageA/settings/settings"
 					}
 				],
-				roleLevel: 500, //会员等级
+				roleLevel: 0, //会员等级
+				isOffline: false,
+				isEnterprise: false,
 				// welfareTotal: 0, //卡包数量
 				info: {},
 				userInfo: {
@@ -473,6 +636,7 @@
 			}
 		},
 		methods: {
+
 			//下拉过程的函数
 			onPulling(e) {},
 			//松手后执行下拉事件的函数
@@ -610,14 +774,17 @@
 				return Math.round(wx.getSystemInfoSync().windowWidth * length / 750);
 			},
 			inComeDetail(e) {
-// 				let incometype = e.currentTarget.dataset.incometype
-// uni.navigateTo({
-// 					url: "/packageA/myIncome/index?incometype=" + incometype
-// 				})
+				// 				let incometype = e.currentTarget.dataset.incometype
+				// uni.navigateTo({
+				// 					url: "/packageA/myIncome/index?incometype=" + incometype
+				// 				})
 			},
-			withdraw2(){
+			withdraw2() {
+				// uni.navigateTo({
+				// 	url: "/packageA/withdraw/withdraw"
+				// })
 				uni.navigateTo({
-					url: "/packageA/withdraw/withdraw"
+					url: "/packageA/withdrawHome/withdrawHome?isEnterprise" + this.isEnterprise
 				})
 			},
 			toMineShopPage(url) {
@@ -688,8 +855,15 @@
 					uni.setStorageSync("userId", res.data.data.identifier)
 					console.log(uni.getStorageSync("userId"))
 					this.roleLevel = this.info.level
+					this.isOffline = this.info.isOffline
+					this.isEnterprise = this.info.isEnterprise
+
+					this.$store.commit('setUserBrief', this.info)
+
+					console.log('this.info.balance', this.info.balance)
 					uni.setStorageSync("myLevel", res.data.data.level)
-					this.bgImage = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'mineBg')
+					this.bgImage = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'mineBg',
+						this.isEnterprise)
 					this.role = this.$options.filters['roleFilter'](this.roleLevel, 'txt')
 					this.iconPic = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'badge')
 					this.$store.commit('setRoleLevel', this.roleLevel);
@@ -770,6 +944,11 @@
 				uni.navigateTo({
 					url: "/pages/orders/orders?type=" + type
 				})
+			},
+			getTime(time) {
+				let string = time
+				console.log(string.substring(0, 10))
+				return string.substring(0, 10)
 			}
 		},
 		watch: {
@@ -887,6 +1066,14 @@
 					height: 140rpx;
 					border-radius: 50%;
 					overflow: hidden;
+				}
+
+				.end-box {
+					//width: 280rpx;
+					//height: 30rpx;
+					background-color: #FEC17C;
+					border-radius: 4rpx;
+					padding: 3rpx 12rpx;
 				}
 
 			}
@@ -1085,37 +1272,42 @@
 		color: #333;
 
 	}
-	.balance-box2{
-		    background-size: 100% 62px;
-		    background-repeat: no-repeat;
-		    margin: 12px 15px 0;
-		    margin-bottom: 0;
-		    height: 62px;
-		    display: flex;
-		    /* flex-direction: column; */
-		    justify-content: space-between;
-		    align-items: center;
-		    color: #FFDEAA;
-		    padding: 12px;
-			.shop2{
-				    height: fit-content;
-				    text-align: center;
-					image{
-						    width: 16px;
-						    height: 16px;
-						    margin: auto;
-					}
+
+	.balance-box2 {
+		background-size: 100% 62px;
+		background-repeat: no-repeat;
+		margin: 12px 15px 0;
+		margin-bottom: 0;
+		height: 62px;
+		display: flex;
+		/* flex-direction: column; */
+		justify-content: space-between;
+		align-items: center;
+		color: #FFDEAA;
+		padding: 12px;
+
+		.shop2 {
+			height: fit-content;
+			text-align: center;
+
+			image {
+				width: 16px;
+				height: 16px;
+				margin: auto;
 			}
-			.balance2{
-				.warn2{
-					    font-size: 10px;
-					    margin-top: 5px;
-				}
+		}
+
+		.balance2 {
+			.warn2 {
+				font-size: 10px;
+				margin-top: 5px;
 			}
-			.withdraw2{
-				    background-image: linear-gradient(#FEDCAB, #FEBC73);
-				    border-radius: 16px;
-					margin: 0;
-			}
+		}
+
+		.withdraw2 {
+			background-image: linear-gradient(#FEDCAB, #FEBC73);
+			border-radius: 16px;
+			margin: 0;
+		}
 	}
 </style>

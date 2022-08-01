@@ -9,9 +9,21 @@
 		<view class="bg-white text-black" style="padding: 30rpx;">
 			<view class="flex justify-between" style="margin-bottom: 20rpx;line-height: 40rpx;">
 				<view class="" style="font-size: 32rpx;">提现金额(元)</view>
-				<view class="" @tap="toWithdrawRecord">提现记录<text class="cuIcon-right"></text></view>
+				<view v-if="profit" style="font-size: 32rpx;">¥{{profit.balance}}</view>
+				<view v-else style="font-size: 32rpx;">¥0.00</view>
 			</view>
-			<view class="input-box flex justify-between">
+			<view class="flex justify-between" style="margin-bottom: 20rpx;line-height: 40rpx;">
+				<view class="" style="font-size: 32rpx;">需缴税费金额(元)
+				<text class="cuIcon-question" @tap="toRule()"></text></view>
+				<view  v-if="profit" class="" style="font-size: 32rpx;">¥{{profit.tax_amount}}</view>
+				<view v-else style="font-size: 32rpx;">¥0.00</view>
+			</view>
+			<view class="flex justify-between" style="margin-bottom: 20rpx;line-height: 40rpx;">
+				<view class="" style="font-size: 32rpx;">实际提现金额(元)</view>
+				<view  v-if="profit" class="" style="font-size: 32rpx;">¥{{profit.actual_amount}}</view>
+				<view v-else style="font-size: 32rpx;">¥0.00</view>
+			</view>
+		<!-- 	<view class="input-box flex justify-between">
 				<text style="font-size: 48rpx;">￥</text>
 				<input class="flex-sub" v-model="money" type="digit" value="" :placeholder="'本次最多可提现'+balance+'元'" @blur='balanceBlur'
 				 placeholder-class="place" />
@@ -19,7 +31,7 @@
 			</view>
 			<view class="" style="padding-left: 48rpx;" v-if="errorShow && msgError">
 				<text class="text-red" style="font-size: 24rpx;">{{msgError}}</text>
-			</view>
+			</view> -->
 		</view>
 		<u-radio-group v-model="checkPlain" active-color="red" @change="radioGroupChange">
 			<view class="where flex">
@@ -29,7 +41,11 @@
 			</view>
 		</u-radio-group>
 		<view class="center-con">
-			<view class="flex align-center" style="height: 80rpx;">姓名：{{name}}</view>
+			<view class="flex align-center" style="height: 80rpx;">姓名：{{name}}
+				<view  style="	border-radius:4rpx ;padding: 1rpx 3rpx;background-color: #FFECE3;margin-left: 20rpx;">
+					<text style="font-size: 20rpx;font-weight: 500;color: #d5101a;">只能提现到本人{{checkPlain}}账号</text>
+				</view>
+			</view>
 			<input class="center-input" v-model="content" value="" type="number" :placeholder="'请输入'+checkPlain+'账号(提现仅供本人账户)'" />
 			<!-- <view class="bank-num" style="margin-bottom: 40rpx;">2047 3729 2822 0453</view> -->
 			<view class="center-tip">
@@ -102,12 +118,12 @@
 							<view class="text-red">(您的会员名称：{{name}})</view>
 						</view>
 					</view>
-					<view class="tip-item flex align-start">
+			<!-- 		<view class="tip-item flex align-start">
 						<image :src="IMAGE_URL + '/mine/t-tip.png'" mode="widthFix"></image>
 						<view class="flex-sub clear">
 							<view class="">单笔金额需<text class="text-red">大于10元</text>以上才可提现</view>
 						</view>
-					</view>
+					</view> -->
 				</view>
 				<view style="padding: 30rpx;">
 					<button class="text-white bg-red" style="border-radius: 50rpx;" @tap="tipModel(false)">我知道了</button>
@@ -121,7 +137,7 @@
 	export default {
 		data() {
 			return {
-				errorShow: true,
+				errorShow: false,
 				msgError: null,
 				balanceAmount: 0,
 				STATIC_URL: this.STATIC_URL,
@@ -129,13 +145,14 @@
 				showPwdModel: false,
 				password: '',
 				showTipModel: false,
-				money: "",
+				money: 0,
 				balance: 0,
 				content: "",
 				isSetPwd: false,
 				sendData: {},
 				showModel: false,
 				name: "",
+				profit:null,
 				isAgree: false,
 				list: [{
 						name: '支付宝'
@@ -147,6 +164,9 @@
 				checkPlain: ""
 			}
 		},
+		onLoad() {
+			this.getWithdraw()
+		},
 		onShow() {
 			this.canWithdrawn = uni.getStorageSync("userInfo").realInfoStatus
 			this.name = uni.getStorageSync("userInfo").realName
@@ -155,31 +175,44 @@
 			this.checkPwd()
 		},
 		methods: {
-			balanceBlur() {
-				this.money = parseFloat(this.money)
-				this.money = this.money.toFixed(2)
-				let re = /^[0-9]+.?[0-9]*/;
-				if (!re.test(this.money)) {
-					this.errorShow = true
-					this.msgError = '请输入可提现金额'
-					return
-				}
-				if (this.money < 10) {
-					this.errorShow = true
-					this.msgError = '低于10元不能提现'
-					return
-				} else if (this.money > this.balance) {
-					this.errorShow = true
-					this.msgError = '提现金额不能大于能提现总金额'
-					return
-				} else {
-					this.errorShow = false
-					this.msgError = ''
-					return
-				}
-
-
+			
+			getWithdraw() {
+				this.$u.post('/api/v2/app/company/apply/all_amount').then(res => {
+					
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.profit = res.data.data
+					console.log(this.profit);
+				});
 			},
+			// balanceBlur() {
+			// 	// this.money = parseFloat(this.money)
+			// 	this.money = this.profit.actual_amount
+			// 	this.money = this.money.toFixed(2)
+			// 	let re = /^[0-9]+.?[0-9]*/
+			// 	// if (!re.test(this.money)) {
+			// 	// 	this.errorShow = true
+			// 	// 	this.msgError = '请输入可提现金额'
+			// 	// 	return
+			// 	// }
+			// 	if (this.money <=0) {
+			// 		this.errorShow = true
+			// 		this.msgError = '您没有余额可以提现'
+			// 		return
+			// 	} else if (this.money > this.balance) {
+			// 		this.errorShow = true
+			// 		this.msgError = '提现金额不能大于能提现总金额'
+			// 		return
+			// 	} else {
+			// 		this.errorShow = false
+			// 		this.msgError = ''
+			// 		return
+			// 	}
+
+
+			// },
 			// 选中任一radio时，由radio-group触发
 			radioGroupChange(e) {
 				console.log(e);
@@ -198,14 +231,14 @@
 				})
 			},
 			//点击全部
-			allBalance() {
-				if (this.balance == 0) {
-					this.$u.toast("当前账户没有可提现余额");
-					return
-				}
-				this.money = this.balance
-				this.balanceBlur()
-			},
+			// allBalance() {
+			// 	if (this.balance == 0) {
+			// 		this.$u.toast("当前账户没有可提现余额");
+			// 		return
+			// 	}
+			// 	this.money = this.balance
+			// 	this.balanceBlur()
+			// },
 			toRealname() {
 				uni.navigateTo({
 					url: "/packageA/realname/realname"
@@ -214,6 +247,11 @@
 			toWithdrawRecord() {
 				uni.navigateTo({
 					url: "/packageA/withdrawRecord/withdrawRecord"
+				})
+			},
+			toRule() {
+				uni.navigateTo({
+					url: "/packageA/withdraw/withdrawRule"
 				})
 			},
 			onChange(val) {
@@ -237,6 +275,7 @@
 				uni.showLoading({
 					title: '申请中'
 				})
+				console.log(this.sendData);
 				this.$u.post('/api/v1/wallet/balance/balance_withdraw', this.sendData).then(res => {
 					console.log(res.data);
 					//密码输入完成，密码置空
@@ -247,7 +286,7 @@
 						return
 					}
 					// this.showPwdModel = false;
-					this.money = ""
+					this.money = 0
 					uni.navigateTo({
 						url: "/packageA/withdrawProgress/withdrawProgress"
 					})
@@ -262,17 +301,22 @@
 			},
 			withdraw() {
 				// console.log(this.money)
-				if (!this.money) {
-					this.$u.toast("请输入提现金额");
+				// if (!this.money) {
+				// 	this.$u.toast("请输入提现金额");
+				// 	return
+				// }
+				if (this.profit.actual_amount <= 0) {
+					this.$u.toast("当前账户没有可提现余额");
 					return
 				}
+				this.money = this.profit.actual_amount
 				if (!this.checkPlain) {
 					this.$u.toast("请选择一种提现方式");
 					return
 				}
 				this.sendData = {
 					userID: uni.getStorageSync("userInfo").id,
-					amount: parseFloat(this.money)
+					amount: this.money
 				}
 				// 下面选择提现银行卡时
 				if (this.checkPlain == "银行卡") {
@@ -309,8 +353,9 @@
 			},
 			//用户点击设置密码
 			setPwd() {
+				console.log('去设置密码')
 				uni.navigateTo({
-					url: "../authentication/authentication"
+					url: "/pages/authentication/authentication"
 				})
 			},
 			hidePayModel() {

@@ -7,24 +7,11 @@
  *	MasterLevel  = 1    店主 
  *	VipLevel     = 0    会员
  * */
-export function roleFilter(roleLevel, format) {
+export function roleFilter(roleLevel, format,isOffline) {
 	let roleText, badge, mineBg, otherBg, levelIcon
 	switch (roleLevel) {
-		// case 0:
-		// 	// roleText = "会员"
-		// 	// badge = '/wxapp/badge01.png'
-		// 	// mineBg = "/wxapp/mine/role01.png"
-		// 	// otherBg = "/wxapp/role01.jpg"
-		// 	// levelIcon = "/wxapp/level01.png"
-		// 	roleText = "会员"
-		// 	badge = '/wxapp/badge01.png'
-		// 	mineBg = "/wxapp/mine/role00.png"
-		// 	otherBg = "/wxapp/role00.jpg"
-		// 	levelIcon = "/wxapp/level00.png"
-		// 	break;
 		case 0:
 			roleText = "会员"
-			//  bgImage =   'bg02.png'
 			badge = '/wxapp/badge01.png'
 			mineBg = "/wxapp/mine/role01.png"
 			otherBg = "/wxapp/role01.jpg"
@@ -32,47 +19,31 @@ export function roleFilter(roleLevel, format) {
 			break;
 		case 1:
 			roleText = "店主"
-			//  bgImage =   'bg03.png'
 			badge = '/wxapp/badge02.png'
 			mineBg = "/wxapp/mine/role02.png"
 			otherBg = "/wxapp/role02.jpg"
 			levelIcon = "/wxapp/level02.png"
 			break;
-			// case 200:
-			// 	roleText = "黄金店铺"
-			// 	badge = '/wxapp/badge03.png'
-			// 	mineBg = "/wxapp/mine/role03.png"
-			// 	otherBg = "/wxapp/role03.jpg"
-			// 	levelIcon = "/wxapp/level03.png"
-			// 	break;
 		case 2:
-			roleText = "店铺"
+			if(isOffline){
+				roleText = "VIP店铺"
+				mineBg = "/wxapp/mine/role_vipdp.png"
+			}else{
+				roleText = "店铺"
+				mineBg = "/wxapp/mine/role04.png"
+			}
 			badge = '/wxapp/badge04.png'
-			mineBg = "/wxapp/mine/role04.png"
+			
 			otherBg = "/wxapp/role04.jpg"
 			levelIcon = "/wxapp/level04.png"
 			break;
 		case 10:
-			roleText = ""
+			roleText = "合伙人"
 			badge = ''
-			mineBg = "/wxapp/mine/role04.png"
+			mineBg = "/wxapp/mine/role_hhr.png"
 			otherBg = "/wxapp/role04.jpg"
 			levelIcon = "/wxapp/level04.png"
 			break;
-			// case 160:
-			// 	roleText = "钻石店铺"
-			// 	badge = '/wxapp/badge04.png'
-			// 	mineBg = "/wxapp/mine/role04.png"
-			// 	otherBg = "/wxapp/role04.jpg"
-			// 	levelIcon = "/wxapp/level04.png"
-			// 	break;
-			// case 130:
-			// 	roleText = "钻石店铺"
-			// 	badge = '/wxapp/badge04.png'
-			// 	mineBg = "/wxapp/mine/role04.png"
-			// 	otherBg = "/wxapp/role04.jpg"
-			// 	levelIcon = "/wxapp/level04.png"
-			// 	break;
 		default:
 			break;
 	}
