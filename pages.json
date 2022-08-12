@@ -315,7 +315,15 @@
                 "enablePullDownRefresh" : false,
                 "navigationStyle" : "custom"
             }
-        }
+        },
+		{
+		    "path": "components/bytedesk_kefu/chat-kf",
+		    "style": {
+		        "navigationBarTitleText": ""
+		        // "navigationBarBackgroundColor":"#fff",
+		        // "navigationBarTextStyle":"#000"
+		    }
+		}
     ],
     // 分包配置项(由于小程序代码包大小限制，需要分包)
     /**

@@ -2,7 +2,7 @@
 	<view>
 		<view class="isLoading bg-white flex flex-direction justify-center align-center"
 			style="height: 100vh;width: 100vw;" v-if="showLoading">
-			<image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image>
+			<image :src="IMAGE_URL+'/wxapp/loading-white.gif'" mode="widthFix" style="width:500upx"></image>
 		</view>
 		<view class="" v-else>
 			<view class="waitpay text-white" v-if="orderDetail.status==0">
@@ -17,7 +17,7 @@
 				<view style="font-size: 28rpx;">{{subTitle}}</view>
 			</view>
 			<view class="box flex align-center address-box">
-				<image :src="IMAGE_URL+'/add.png'" style="width: 50rpx;" mode="widthFix"></image>
+				<image :src="IMAGE_URL+'/wxapp/add.png'" style="width: 50rpx;" mode="widthFix"></image>
 				<view class="flex-sub address-con">
 					<view class=""><text class="text-black"
 							style="font-size: 32rpx;margin-right: 15rpx;font-weight: 900;">{{orderDetail.addr.receiverName}}</text>{{orderDetail.addr.mobile}}
@@ -178,7 +178,8 @@
 					<view class="span">销售额 <text class="cuIcon-question" style="padding-left: 8rpx;" @click="queston"></text></view>
 					<view class="text-black">￥{{orderDetail.salesVolume | toFixed(2)}}</view>
 				</view> -->
-				<button open-type='contact' class='customer-service'>
+				<!-- <button open-type='contact' class='customer-service'> -->
+				<button @tap.stop="startChat()" class='customer-service' >
 					<view class="item flex justify-center">
 						<view class="text-black" style="font-size: 28rpx;">
 							<u-icon name="server-fill" size="28" class="text-black" style="padding-right: 20rpx;">
@@ -223,7 +224,8 @@
 				isShow: false,
 				countdownTime: 0,
 				title: "",
-				subTitle: ""
+				subTitle: "",
+				workGroupWid:"2021042017495732a907d876a3d41d580bb50d7b6a1ccf1",
 			};
 		},
 		computed: {
@@ -244,6 +246,12 @@
 			}
 		},
 		methods: {
+			startChat () {
+			  // console.log('start chat')
+			  uni.navigateTo({
+			  	url: '../../components/bytedesk_kefu/chat-kf?wid=' + this.workGroupWid + '&type=workGroup&aid=&title=联系客服'
+			  });
+			},
 			queston() {
 
 			},

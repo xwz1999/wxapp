@@ -20,9 +20,10 @@
 				</view>
 				<view class="icon-box flex">
 					<!-- <u-icon name="server-fill"></u-icon> -->
-					<navigator url="/packageA/myShop/teamAdd">
-						<u-icon name="server-fill"></u-icon>
-					</navigator>
+					<!-- <navigator url="/packageA/myShop/teamAdd">
+						<u-icon name="server-fill" ></u-icon>
+					</navigator> -->
+					<u-icon name="server-fill" @tap="startChat" ></u-icon>
 					<u-icon name="scan" @tap="scan"></u-icon>
 				</view>
 			</view>
@@ -166,6 +167,7 @@
 
 <script>
 	// let calendar = require('@/utils/calendar.js');
+	import * as bytedesk from '@/components/bytedesk_kefu/js/api/bytedesk.js'
 	import {
 		calendar
 	} from '@/utils/calendar.js'
@@ -180,6 +182,7 @@
 				keyword: "",
 				swipers: [],
 				options: [],
+				workGroupWid:"2021042017495732a907d876a3d41d580bb50d7b6a1ccf1",
 				// 使用getKingCoinList()返回的icon
 				options1: [{
 						text: "瑞库制品",
@@ -313,8 +316,15 @@
 			this.getPost()
 			this.getActivity()
 			this.getKingCoinList()
+			this.initKeFu()
 		},
 		methods: {
+			initKeFu() {
+				// 初始化客服
+				let subDomain = '202104201749561'
+				let appKey = '94dd8ec3-31d9-4327-9a97-8d1de4349e87'
+				bytedesk.init(subDomain, appKey);
+			},
 			// 子组件分享按钮 获取分享内容 打开分享面板
 			shareBtn(data) {
 				this.isShow = true
@@ -446,7 +456,7 @@
 			},
 			getKingCoinList() {
 				this.$u.post('/api/v2/app/aku_school/king_coin_list').then(res => {
-					// console.log(res.data);
+		
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
@@ -617,7 +627,12 @@
 				let M = timestr.split(" ")[1].split(":")[1]
 				return H + ":" + M
 			},
-
+			startChat () {
+			  // console.log('start chat')
+			  uni.navigateTo({
+			  	url: '../../components/bytedesk_kefu/chat-kf?wid=' + this.workGroupWid + '&type=workGroup&aid=&title=联系客服'
+			  });
+			},
 
 			// 扫码
 			scan() {

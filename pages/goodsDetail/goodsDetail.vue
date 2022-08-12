@@ -9,6 +9,11 @@
 						<text class="cuIcon-home" v-if="type=='share'"></text>
 						<text class="cuIcon-back" v-else></text>
 					</view>
+					
+					<view class="kefu" @tap="startChat">
+						<u-icon name="server-fill"style=""  ></u-icon>
+						<text style="color: #fff;font-size: 20rpx;">客服</text>
+					</view>
 					<!-- 	<view class="isLoading bg-white flex flex-direction justify-center align-center" style="height: 100vh;width: 100vw;"v-if="showLoading">
 						<image src="/static/loading-white.gif" mode="widthFix" style="width:500upx"></image>
 					</view> -->
@@ -340,7 +345,7 @@
 									</navigator>
 
 									<!-- 店铺商品推荐 -->
-									<view class="recommend">
+									<view  class="recommend" v-if="goodsDetail!=null" >
 										<view class="text-black" style="line-height: 80rpx;font-size: 28rpx;">为你推荐
 										</view>
 										<scroll-view scroll-x="true">
@@ -654,6 +659,7 @@
 	export default {
 		data() {
 			return {
+				workGroupWid:"2021042017495732a907d876a3d41d580bb50d7b6a1ccf1",
 				isLogin: false,
 				parameterShow: false,
 				swiperImgList: [],
@@ -775,6 +781,28 @@
 			console.log(uni.getStorageSync("userInfo").id)
 		},
 		methods: {
+		
+			startChat () {
+				console.log(this.miniSku)
+				console.log(this.miniSku.code)
+				console.log(this.miniSku.goodsId )
+				console.log(this.miniSku.name)
+				console.log((this.miniSku.discountPrice))
+				console.log(this.miniSku.picUrl)
+				// 增加商品信息参数
+				uni.navigateTo({
+					url: '../../components/bytedesk_kefu/chat-kf?wid=' + this.workGroupWid 
+						+ '&type=workGroup&aid=&title=联系客服' 
+						+ '&goods=1' 
+						+ '&goods_categoryCode='+this.miniSku.code
+						+ '&goods_id='+this.miniSku.goodsId 
+						+ '&goods_imageUrl='+this.miniSku.picUrl
+						+ '&goods_price='+(this.miniSku.discountPrice)
+						+ '&goods_title='+this.miniSku.name
+						+ '&history=0' 
+						+ '&lang=cn'
+				});
+			},
 			//判断图片
 			judgeCover(val) {
 				if (!val) {
@@ -1541,6 +1569,26 @@
 		width: 80rpx;
 		height: 80rpx;
 		line-height: 80rpx;
+		text-align: center;
+		color: #FFFFFF;
+		border-radius: 50%;
+		font-size: 40rpx;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: 1000;
+	}
+	
+	
+	.kefu {
+		display: flex;
+		flex-direction: column; 
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		bottom: 150rpx;
+		right: 30rpx;
+		width: 100rpx;
+		height: 100rpx;
+		line-height: 40rpx;
 		text-align: center;
 		color: #FFFFFF;
 		border-radius: 50%;
