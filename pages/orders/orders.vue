@@ -308,7 +308,7 @@
 					default:
 						break;
 				}
-				console.log(this.sendData)
+				console.log(this.reqUrl,this.sendData)
 				if (this.currentIndex == 0) {
 					this.$u.post(this.reqUrl, this.sendData).then(res => {
 						console.log(res.data);

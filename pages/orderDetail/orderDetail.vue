@@ -248,9 +248,27 @@
 		methods: {
 			startChat () {
 			  // console.log('start chat')
-			  uni.navigateTo({
-			  	url: '../../components/bytedesk_kefu/chat-kf?wid=' + this.workGroupWid + '&type=workGroup&aid=&title=联系客服'
-			  });
+			  if (!uni.getStorageSync("auth").token) {
+			  	this.$u.toast("游客无法使用该功能，请登录");
+			  	let pages = getCurrentPages();
+			  	let currPage = null;
+			  	if (pages.length) {
+			  		currPage = pages[pages.length - 1];
+			  	}
+			  	console.log(currPage)
+			  	let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
+			  	this.$store.commit('setUrl', url)
+			  	setTimeout(() => {
+			  		uni.navigateTo({
+			  			url: "../login/login"
+			  		})
+			  	}, 1000)
+			  }else{
+				 uni.navigateTo({
+				 	url: '../../components/bytedesk_kefu/chat-kf?wid=' + this.workGroupWid + '&type=workGroup&aid=&title=联系客服'
+				 }); 
+			  }
+			 
 			},
 			queston() {
 

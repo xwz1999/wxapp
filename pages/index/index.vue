@@ -115,7 +115,7 @@
 		<!-- 首页推荐商品列表 -->
 		<view class="recommend-box" v-if="promotion.length!=0">
 			<view class="flex justify-center" style="padding: 20rpx 0;">
-				<image :src="IMAGE_URL+'/wxapp/rec.png'" style="width: 232rpx;" mode="widthFix"></image>
+				<image :src="IMAGE_URL+'/wxapp/rec1.png'" style="width: 232rpx;" mode="widthFix"></image>
 			</view>
 
 			<!-- 活动时间段导航  u-sticky为吸顶-->
@@ -289,7 +289,7 @@
 		},
 		onLoad() {
 			// uni.getStorageSync("userInfo").id
-
+			console.log('onload')
 			let pages = getCurrentPages() // 获取加载的页面
 			let currentPage = pages[pages.length - 1] // 获取当前页面的对象
 			let url = currentPage.route // 当前页面url
@@ -323,7 +323,14 @@
 				// 初始化客服
 				let subDomain = '202104201749561'
 				let appKey = '94dd8ec3-31d9-4327-9a97-8d1de4349e87'
-				bytedesk.init(subDomain, appKey);
+				//bytedesk.init(subDomain, appKey);
+				if(uni.getStorageSync("userInfo").nickname!=null){
+					console.log(uni.getStorageSync("userInfo").nickname);
+					
+					bytedesk.initWithUsernameAndNickname(uni.getStorageSync("userInfo").nickname,
+					uni.getStorageSync("userInfo").nickname,subDomain, appKey);
+				}
+				
 			},
 			// 子组件分享按钮 获取分享内容 打开分享面板
 			shareBtn(data) {
@@ -629,9 +636,28 @@
 			},
 			startChat () {
 			  // console.log('start chat')
-			  uni.navigateTo({
-			  	url: '../../components/bytedesk_kefu/chat-kf?wid=' + this.workGroupWid + '&type=workGroup&aid=&title=联系客服'
-			  });
+			  
+			  if (!uni.getStorageSync("auth").token) {
+			  	this.$u.toast("游客无法使用该功能，请登录");
+			  	let pages = getCurrentPages();
+			  	let currPage = null;
+			  	if (pages.length) {
+			  		currPage = pages[pages.length - 1];
+			  	}
+			  	console.log(currPage)
+			  	let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
+			  	this.$store.commit('setUrl', url)
+			  	setTimeout(() => {
+			  		uni.navigateTo({
+			  			url: "../login/login"
+			  		})
+			  	}, 1000)
+			  }else{
+				 uni.navigateTo({
+				 	url: '../../components/bytedesk_kefu/chat-kf?wid=' + this.workGroupWid + '&type=workGroup&aid=&title=联系客服'
+				 }); 
+			  }
+			
 			},
 
 			// 扫码

@@ -912,7 +912,7 @@
                 "pagePath" : "pages/index/index",
                 "iconPath" : "static/tabbar/sale.png",
                 "selectedIconPath" : "static/tabbar/sale_.png",
-                "text" : "特推"
+                "text" : "优选"
             },
             {
                 "pagePath" : "pages/information/information",

@@ -6,7 +6,7 @@
 			<view class="slot-wrap">
 				<view class="search-wrap">
 					<!-- 如果使用u-search组件，必须要给v-model绑定一个变量 -->
-					<u-search v-model="keyword" :show-action="true" height="56" @custom="searchGoods"></u-search>
+					<u-search v-model="keyword" :show-action="true" height="56" @custom="searchGoods" @search="searchGoods"></u-search>
 				</view>
 			</view>
 		</u-navbar>

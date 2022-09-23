@@ -6,26 +6,27 @@
 
 
 
-		<view  class="content" @touchstart="hideDrawer">
-			<view v-if="showGood" style="position: absolute;z-index: 10;width: 80%;margin: 0 10%;
-			margin-top: 20rpx;
-			border-radius: 5rpx;height: auto;background-color: #e5f9ff;opacity: 0.8;
+		<view class="content" @touchstart="hideDrawer">
+			<view v-if="showGood&&finshiLoad" style="position: absolute;z-index: 10;width: 100%;
+		
+			border-radius: 5rpx;height: auto;background-color: #e5f9ff;
 			flex-direction: row;display: flex;padding:20rpx 30rpx ">
-				
-				<image  style="width: 100rpx; height: 100rpx;" :src="goodUrl"></image>
-				
+
+				<image style="width: 100rpx; height: 100rpx;" :src="goodUrl"></image>
+
 				<view style="flex-direction: column;margin-left: 20rpx;">
-					<view style="max-lines: 2;text-overflow:ellipsis;">{{goodName}}</view>
+					<view style="max-lines: 2;text-overflow:ellipsis;padding-right:20rpx">{{goodName}}</view>
 					<view style="margin-top: 20rpx;color:red;display: flex;flex-direction: row;">¥{{goodPrice}}
-					
+
 						<view @tap="submitGoods()" style=" border-radius: 5rpx;margin-left: 40rpx ;margin-bottom: 5rpx; padding: 0 10rpx;
 						background-color:#efefef;border:1upx solid  #999999;">
 							<text style="color: #999999;">发送链接</text>
 						</view>
 					</view>
 				</view>
-				
-				<view class="cuIcon-close" style="font-size: 48rpx;color: red;position: absolute;right: 10px;top: 5;" @tap="goodColse()"></view>
+
+				<view class="cuIcon-close" style="font-size: 48rpx;color: red;position: absolute;right: 10px;right: 10px;top: 5;"
+					@tap="goodColse()"></view>
 
 			</view>
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation"
@@ -135,7 +136,9 @@
 								</div>
 								<!-- 视频消息 -->
 								<div v-if="is_type_video(message)" class="bubble">
-									<view><a :href="message.videoOrShortUrl" target="_blank">查看视频</a></view>
+									<video :src="message.videoOrShortUrl" object-fit='fill'>
+									</video>
+									<!-- <view><a :href="message.videoOrShortUrl" target="_blank">查看视频</a></view> -->
 								</div>
 								<!-- 机器人消息 -->
 								<view v-if="is_type_robot(message)" class="bubble">
@@ -183,7 +186,9 @@
 								</div>
 								<!-- 视频消息 -->
 								<div v-if="is_type_video(message)" class="bubble">
-									<view><a :href="message.videoOrShortUrl" target="_blank">查看视频</a></view>
+									<video :src="message.videoOrShortUrl" object-fit='fill'>
+									</video>
+									<!-- <view><a :href="message.videoOrShortUrl" target="_blank">{{message.videoOrShortUrl}}</a></view> -->
 								</div>
 								<view v-if="is_type_robot(message)" class="bubble">
 									<!-- <rich-text :nodes="message.content"></rich-text> -->
@@ -230,14 +235,14 @@
 											</text>
 										</view>
 										<!-- TODO: 首先选择是否有帮助，如果用户选择没有帮助，则出现‘人工客服’按钮-->
-										<hr class="hr-solid">
+										<!-- 				<hr class="hr-solid">
 										<view class="flex-row-start padding-top-sm">
 											<text style="color: #007AFF; font-size: 5px;"
 												@click="rateAnswerHelpful(message.answer.aid, message.mid)">有帮助</text>
 											<text class="padding-left"
 												style="color: #007AFF; margin-left: 10px; font-size: 5px;"
 												@click="rateAnswerHelpless(message.answer.aid, message.mid)">没帮助</text>
-										</view>
+										</view> -->
 									</view>
 								</view>
 							</view>
@@ -259,11 +264,22 @@
 			<!-- 更多功能 相册-拍照 -->
 			<view class="more-layer" :class="{hidden:hideMore}">
 				<view class="list">
-					<view class="box" @tap="chooseImage">
+					<view class="box" style="display: flex;flex-direction: column;" @tap="chooseImage">
 						<view class="icon tupian2"></view>
+						<text>相册</text>
 					</view>
-					<view class="box" @tap="camera">
+					<view class="box" style="display: flex;flex-direction: column;" @tap="camera">
 						<view class="icon paizhao"></view>
+						<text>拍照</text>
+					</view>
+					<view class="box" style="display: flex;flex-direction: column;" @tap="chooseVideo">
+						<uni-icons type="videocam-filled" size="40"></uni-icons>
+						<text>录像</text>
+					</view>
+
+					<view class="box" style="display: flex;flex-direction: column;" @tap="open()">
+						<uni-icons type="calendar-filled" size="40"></uni-icons>
+						<text>订单</text>
 					</view>
 				</view>
 			</view>
@@ -319,7 +335,87 @@
 			</view>
 			<view class="tis" :class="willStop?'change':''">{{recordTis}}</view>
 		</view>
+
+
+		<uni-popup ref="popup" type="bottom" @close="close" @open="open" @change="change">
+			<view style="background-color: white;width: 100%;height: 450px;border-radius: 20upx 20upx 0 0;">
+				<scroll-view class="flex-sub" scroll-y="true" style="height: 100%;" @scrolltolower="getOrderList">
+					<view class="flex justify-between align-center"
+						style="border-radius: 20upx 20upx 0 0;padding: 0 20rpx 0 20rpx;background-color:#f5f5f5 ;width: 100%;height: 150rpx;">
+
+						<view class="text-center buy" style="">请选择想要查询的订单</view>
+
+						<view class="cuIcon-close" style="font-size: 48rpx;color: black;" @tap="close()"></view>
+
+
+					</view>
+					<view v-if="orderList.length!=0" class="orders-box" style="padding: 10rpx 0;">
+						<view v-for="(item2,index2) in orderList" :key="index2" style="padding: 10rpx 15rpx;"
+							@click="sendOrderMessageSync(item2)">
+							<view class="order-item bg-white clear" style="border-bottom: 1rpx solid #EEEEEE;">
+
+								<view class="order-item-top flex justify-between align-center">
+
+									<view class="text-center buy" style="font-size: 30rpx;color: #666666;">
+										订单号:{{item2.id}}</view>
+
+									<view class="flex" style="font-size: 30rpx;color: #666666;">{{item2.createdAt}}
+									</view>
+
+
+								</view>
+
+								<view class="goods-box" style="padding-top: 5rpx;">
+
+									<view class="goods-item flex">
+										<view class="goods-pic">
+											<u-lazy-load threshold="-100"
+												:image="judgeCover(item2.goodsList[0].mainPhotoUrl)" :index="index"
+												height="200" border-radius="10"
+												:loading-img="IMAGE_URL + '/wxapp/null05.png'"
+												:error-img="IMAGE_URL + '/wxapp/null05.png'" img-mode="aspectFill">
+											</u-lazy-load>
+										</view>
+
+
+										<view class="goods-con flex-sub flex flex-direction justify-between"
+											style="padding-top:10rpx">
+
+											<view style="color: #000;font-size: 32rpx;">{{item2.title}}</view>
+
+											<view>共{{item2.goodsList[0].quantity}}件商品</view>
+											<view class="flex justify-between">
+												<view class="flex">
+													<text style="font-size: 30rpx;color: #666666;">实付￥</text>
+													<text
+														style="font-size: 34rpx;color: #666666;">{{item2.actualTotalAmount | toFixed(2)}}</text>
+												</view>
+
+												<view class="text-red" v-if="item2.status==0">未付款</view>
+												<view class="text-red" v-if="item2.status==1">支付成功</view>
+												<view class="text-red" v-if="item2.status==2">订单已取消</view>
+												<view class="text-red" v-if="item2.status==3">订单已过期</view>
+												<view class="text-red" v-if="item2.status==4">交易已完成</view>
+												<view class="text-red" v-if="item2.status==5">交易已关闭</view>
+											</view>
+										</view>
+									</view>
+
+								</view>
+
+
+							</view>
+						</view>
+					</view>
+					<u-loadmore :status="loadStatus" margin-bottom="40" />
+				</scroll-view>
+			</view>
+		</uni-popup>
 	</view>
+
+
+
+
 </template>
 
 <script>
@@ -334,10 +430,10 @@
 		data() {
 			return {
 				//消息列表
-				showGood:false,
-				goodName:'',
-				goodUrl:'',
-				goodPrice:'',
+				showGood: false,
+				goodName: '',
+				goodUrl: '',
+				goodPrice: '',
 				isHistoryLoading: false,
 				scrollAnimation: false,
 				scrollTop: 0,
@@ -639,7 +735,16 @@
 					'[献吻]': '203.gif',
 					'[左太极]': '204.gif',
 					'[右太极]': '205.gif'
-				}
+				},
+				orderList: [],
+				stopLoad: false,
+				loadStatus: "loadmore", //触底加载状态,
+				requestUrl: "",
+				pageOrder: 0,
+				isNull: false,
+				sendData: {},
+				IMAGE_URL: this.IMAGE_URL,
+				finshiLoad:false,
 			};
 		},
 		onLoad(option) {
@@ -659,20 +764,20 @@
 			})
 			// #endif
 			this.option = option
-			if(option.goods== "1"){
+			if (option.goods == "1") {
 				this.showGood = true;
-				if(option.goods_title!=null){
+				if (option.goods_title != null) {
 					this.goodName = option.goods_title
 				}
-				if(option.goods_price!=null){
+				if (option.goods_price != null) {
 					this.goodPrice = option.goods_price
 				}
-				if(option.goods_imageUrl!=null){
+				if (option.goods_imageUrl != null) {
 					this.goodUrl = option.goods_imageUrl
 				}
 			}
 
-			
+
 			console.log(option)
 			if (option.history === '0') {
 				this.loadHistory = '0'
@@ -771,11 +876,81 @@
 			},
 		},
 		methods: {
-			//
-			goodColse(){
+			judgeCover(val) {
+				if (!val) {
+					return
+				}
+				let arr = val.split('/')
+				if (arr[0] === 'http:' || arr[0] === 'https:') {
+					return val
+				}
+				return this.IMAGE_URL + val
+			},
+			getOrderList() {
+				if (this.stopLoad) {
+					return
+				}
+				this.loadStatus = "loading"
+				this.sendData = {
+					userId: uni.getStorageSync("userInfo").id,
+					page: this.pageOrder,
+					orderType: null,
+
+				}
+				this.requestUrl = "/api/v1/order/list/all"
+				this.pageOrder++
+
+				console.log(this.requestUrl, this.sendData)
+				this.$u.post(this.requestUrl, this.sendData).then(res => {
+					console.log(res.data);
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					let list = res.data.data
+					if (list.length == 0) {
+						this.stopLoad = true
+						this.loadStatus = "nomore"
+						if (this.pageOrder == 1) {
+							console.log("没有此类订单")
+							this.isNull = true
+						}
+						return
+					}
+
+					//为了防止第一页商品数量不够时scrollview不能触底导致底部一直显示正在加载
+					if (list.length < 5) {
+						this.loadStatus = "nomore"
+					}
+					this.orderList.push(...list)
+					console.log(this.orderList)
+				});
+
+			},
+			change(e) {
+				console.log(e)
+				if (e.show == false) {
+
+					this.pageOrder = 0
+					this.stopLoad = false
+					console.log(this.pageOrder)
+				}
+			},
+
+			open() {
+				this.$refs.popup.open()
+				this.getOrderList()
+				console.log("open")
+			},
+			close() {
+				this.$refs.popup.close()
+				console.log("close")
+			},
+
+			goodColse() {
 				this.showGood = false;
 			},
-			submitGoods(){
+			submitGoods() {
 				this.goodColse();
 				this.sendCommodityMessageSync();
 			},
@@ -1035,6 +1210,7 @@
 							response)
 						//
 						app.dealWithThread(response);
+						app.finshiLoad = true;
 					}, function(error) {
 						console.log('request thread error', error)
 					})
@@ -1044,6 +1220,7 @@
 						// console.log('request thread v2 success', app.option.wid, response)
 						//
 						app.dealWithThread(response);
+						app.finshiLoad = true;
 					}, function(error) {
 						console.log('request thread v2 error', error)
 					})
@@ -1560,6 +1737,62 @@
 				};
 				this.doSendMessage(json);
 			},
+			// 发送订单消息
+			sendOrderMessageSync(order) {
+
+				let orderJson = {
+							"id": "订单号："+order.id,
+							"title": order.title,
+							"content": "订单时间："+ order.createdAt ,
+							"price": order.actualTotalAmount.toFixed(2),
+							"url": "",
+							"imageUrl": this.judgeCover(order.goodsList[0].mainPhotoUrl),
+							"categoryCode": "",
+							"type": "commodity",
+						}
+				
+				if (this.my_uid() === '') {
+					return
+				}
+				// let jsonContent = this.commodityInfo();
+				// 发送商品信息
+				var json = {
+					"mid": this.guid(),
+					"timestamp": this.currentTimestamp(),
+					"client": constants.client,
+					"version": "1",
+					"type": 'commodity',
+					"status": constants.MESSAGE_STATUS_SENDING,
+					"user": {
+						"uid": this.my_uid(),
+						"username": this.username,
+						"nickname": this.my_nickname(),
+						"avatar": this.my_avatar(),
+						"extra": {
+							"agent": false
+						}
+					},
+					"text": {
+						"content": JSON.stringify(orderJson)
+					},
+					"thread": {
+						"tid": this.thread.tid,
+						"type": this.thread.type,
+						"content": "[商品]",
+						"nickname": this.thread_nickname(),
+						"avatar": this.thread_avatar(),
+						"topic": this.threadTopic,
+						"client": constants.client,
+						"timestamp": this.currentTimestamp(),
+						"unreadCount": 0
+					}
+				};
+				this.doSendMessage(json);
+				this.showMore()
+				this.close()
+			},
+
+
 			// 发送商品消息
 			sendCommodityMessageSync() {
 				let goods = this.option.goods
@@ -2030,7 +2263,7 @@
 								app.messages[i].status === 'received') {
 								return
 							}
-							// 重要：更新本地消息发送状态。如果消息发送‘失败’，请重点跟踪此语句是否被执行
+							// 重要：更新本地消息发送状态。如果消息发送‘失败’，请重点跟踪此语句���否被执行
 							Vue.set(app.messages[i], 'status', 'stored') // 更新数组中当前消息发送状态为发送成功，也即：'stored'
 							return
 						}
@@ -2358,7 +2591,64 @@
 						});
 					}
 				});
+				this.hideDrawer();
 			},
+
+
+			chooseVideo() {
+				uni.showLoading({
+					mask: true,
+					title: '上传中...'
+				})
+				// // uploadFile 存储需要上传的文件
+				let uploadFile = ''
+
+				let app = this;
+				uni.chooseVideo({
+					maxDuration: 60,
+					sourceType: ['camera', 'album'],
+					success: function(res) {
+
+						uploadFile = res.tempFilePath;
+						console.log(uploadFile);
+						//2.上传所选视频到服务器
+						uni.uploadFile({
+							// 需要上传的地址
+							url: constants.UPLOAD_VIDEO_URL,
+							// filePath  需要上传的文件
+							filePath: uploadFile,
+							name: 'file',
+
+							formData: {
+								'file_name': app.guid(),
+								'username': app.username,
+								'client': constants.client
+							},
+							success: (response) => {
+								console.log(response.data);
+								// 发送图片
+								var VideoUrl = JSON.parse(response.data).data;
+								app.sendVideoMessageSync(VideoUrl)
+								uni.hideLoading()
+							},
+							fail: function(res) {
+								uni.hideLoading()
+								console.log(res);
+							}
+						});
+					},
+					fail: function() {
+						uni.hideLoading()
+					}
+
+				})
+
+				this.hideDrawer();
+
+			},
+
+
+
 			// 预览大图
 			previewImageMessage(message) {
 				uni.previewImage({
@@ -2845,6 +3135,7 @@
 					};
 					this.pushToMessageArray(message2);
 					this.scrollToBottom()
+					this.hideDrawer();
 				}
 			},
 			// 加载快捷按钮
@@ -2908,4 +3199,59 @@
 
 <style lang="scss">
 	@import "css/style.scss";
+
+	.order-item {
+		padding: 25rpx;
+		border-radius: 10rpx;
+
+		.order-item-top {
+			line-height: 40rpx;
+			padding: 10rpx 0;
+
+			.buy {
+				font-size: 28rpx;
+				color: #666666;
+			}
+		}
+
+		.order-btn {
+			margin: 30rpx 0 10rpx;
+
+			button {
+				padding: 0 15rpx;
+				height: 60rpx;
+				font-size: 28rpx;
+			}
+		}
+	}
+
+	.goods-box {
+
+		padding: 10rpx 5px 10rpx 5rpx;
+		background-color: #f5f5f5;
+		border-radius: 20rpx;
+
+		.goods-item {
+
+			padding: 10rpx 5px 10rpx 5rpx;
+
+			.goods-pic {
+				width: 200rpx;
+				height: 200rpx;
+				border-radius: 10rpx;
+				overflow: hidden;
+				margin-right: 20rpx;
+			}
+
+		}
+
+		.goods-bottom {
+			.cu-btn {
+				height: 50rpx;
+				line-height: 50rpx;
+				padding: 0 15rpx;
+				font-size: 26rpx;
+			}
+		}
+	}
 </style>

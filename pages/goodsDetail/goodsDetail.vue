@@ -789,19 +789,39 @@
 				console.log(this.miniSku.name)
 				console.log((this.miniSku.discountPrice))
 				console.log(this.miniSku.picUrl)
-				// 增加商品信息参数
-				uni.navigateTo({
-					url: '../../components/bytedesk_kefu/chat-kf?wid=' + this.workGroupWid 
-						+ '&type=workGroup&aid=&title=联系客服' 
-						+ '&goods=1' 
-						+ '&goods_categoryCode='+this.miniSku.code
-						+ '&goods_id='+this.miniSku.goodsId 
-						+ '&goods_imageUrl='+this.miniSku.picUrl
-						+ '&goods_price='+(this.miniSku.discountPrice)
-						+ '&goods_title='+this.miniSku.name
-						+ '&history=0' 
-						+ '&lang=cn'
-				});
+				if (!uni.getStorageSync("auth").token) {
+					this.$u.toast("游客无法使用该功能，请登录");
+					let pages = getCurrentPages();
+					let currPage = null;
+					if (pages.length) {
+						currPage = pages[pages.length - 1];
+					}
+					console.log(currPage)
+					let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
+					this.$store.commit('setUrl', url)
+					setTimeout(() => {
+						uni.navigateTo({
+							url: "../login/login"
+						})
+					}, 1000)
+				}else{
+					// 增加商品信息参数
+					uni.navigateTo({
+						url: '../../components/bytedesk_kefu/chat-kf?wid=' + this.workGroupWid 
+							+ '&type=workGroup&aid=&title=联系客服' 
+							+ '&goods=1' 
+							+ '&goods_categoryCode='+this.miniSku.code
+							+ '&goods_content='+uni.getStorageSync("userInfo").id 
+							+ '&goods_id='+this.miniSku.goodsId 
+							+ '&goods_imageUrl='+this.miniSku.picUrl
+							+ '&goods_price='+(this.miniSku.discountPrice)
+							+ '&goods_title='+ this.goodsDetail.goodsName
+							+ '&history=0' 
+							+ '&lang=cn'
+					});
+				}
+				
+	
 			},
 			//判断图片
 			judgeCover(val) {

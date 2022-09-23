@@ -23,6 +23,7 @@
 </template>
 
 <script>
+	import * as bytedesk from '@/components/bytedesk_kefu/js/api/bytedesk.js'
 	export default {
 		data() {
 			return {
@@ -118,6 +119,12 @@
 					console.log(res.data.data.info.invitationNo)
 					uni.setStorageSync("auth", result.auth)
 					uni.setStorageSync("userInfo", result.info)
+					
+					let subDomain = '202104201749561'
+					let appKey = '94dd8ec3-31d9-4327-9a97-8d1de4349e87'	
+					bytedesk.initWithUsernameAndNickname(uni.getStorageSync("userInfo").nickname,
+					uni.getStorageSync("userInfo").nickname,subDomain, appKey);
+					
 					uni.showToast({
 						title: "登录成功",
 						success: () => {

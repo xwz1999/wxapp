@@ -45,9 +45,9 @@
 									<image class="tic-pic" :src="IMAGE_URL+'/wxapp/tic.png'" mode="heightFix"></image>
 									<view class="tic-txt text-white">{{item.coupon}}元券</view>
 								</view>
-								<view style="position: relative;">
+								<view style="position: relative;" v-if="item.commission!=0">
 									<image class="tic-pic" :src="IMAGE_URL+'/wxapp/tic2.png'" mode="heightFix"></image>
-									<view class="tic-txt text-red">{{situation==0?('赚'+item.commission):item.commissionDesc}}</view>
+									<view class="tic-txt text-red" >{{situation==0?('赚'+item.commission):item.commissionDesc}}</view>
 								</view>
 							</view>
 							<view style="color: #666;">已售{{situation==2?item.salesVolume:item.totalSalesVolume}}件</view>

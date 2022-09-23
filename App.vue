@@ -82,7 +82,7 @@
 
 	image {
 		display: block;
-		height: auto;
+		//height: auto;
 		// background-color: #ffffff;
 	}
 </style>
