@@ -17,15 +17,31 @@
 					<text class="cuIcon-search"></text>
 					<input type="text" class="flex-sub" v-model="keyword" confirm-type="search" placeholder="请输入关键字"
 						placeholder-class="placeholder" @confirm="toSearch" />
+					<u-icon name="scan" @tap="scan" style="font-size: 50rpx;"></u-icon>
 				</view>
-				<view class="icon-box flex">
-					<!-- <u-icon name="server-fill"></u-icon> -->
-					<!-- <navigator url="/packageA/myShop/teamAdd">
-						<u-icon name="server-fill" ></u-icon>
-					</navigator> -->
-					<u-icon name="server-fill" @tap="startChat" ></u-icon>
-					<u-icon name="scan" @tap="scan"></u-icon>
+				<view style="width: 10rpx;"></view>
+				<view style="display: flex;width: 160rpx;background-color: transparent;" @tap="changeBtn">
+					<view style=" border-radius: 50rpx;width:160rpx;height: 55rpx;border: solid 3rpx white;
+						display: flex;background-color: transparent;position: absolute;z-index: 2;align-items: center;">
+
+
+						<text v-if="isPifa" style="color: white;padding-left: 10rpx ;">零售</text>
+
+						<text v-else style="color: white;padding-left: 88rpx ;">批发</text>
+					</view>
+					<view :animation="animationData"
+						style="background:white;height:55rpx;width:80rpx; border-radius: 50rpx;justify-content: center;align-items: center;">
+
+						<view v-if="isPifa" style="position: relative;bottom:0.5rpx;left: 10rpx;">
+							<text :style="'color:'+textColor+';'">批发</text>
+						</view>
+						<view v-else style="position: relative;bottom:0.5rpx;left: 10rpx;">
+							<text :style="'color:'+textColor+';'">零售</text>
+						</view>
+					</view>
 				</view>
+
+
 			</view>
 			<!-- </u-sticky> -->
 
@@ -78,19 +94,19 @@
 		</view>
 
 		<view class="classify-box bg-white flex justify-around">
-			<view class="cla-item text-center" v-for="(item,index) in options" :key="index"
-				@tap="toPage(index,item.page)">
-				<image v-if="index===1" src="/static/pifa/2.png" mode="widthFix"></image>
-				<image v-else-if="index===4" src="/static/pifa/5.jpg" mode="widthFix"></image>
-				<image v-else :src="IMAGE_URL+kingCoinList[index].url" mode="widthFix"></image>
-				<view class="cla-txt">{{item.text}}</view>
+			<view class="cla-item text-center" v-for="(item,index) in kingCoinList" :key="index"
+				@tap="toPage(item.data[0].KingName.name)">
+				<!-- <image v-if="index===1" src="/static/pifa/2.png" mode="widthFix"></image>
+				<image v-else-if="index===4" src="/static/pifa/5.jpg" mode="widthFix"></image> -->
+				<image :src="IMAGE_URL+item.data[0].url" mode="widthFix"></image>
+				<view class="cla-txt">{{item.data[0].name}}</view>
 			</view>
 		</view>
 
 
 
 		<!-- 四张海报活动入口 -->
-		<view class="ad-box">
+		<view class="ad-box" v-if="!isPifa">
 			<view class="ad-item" v-if="IMAGE_URL+posts.a.logoUrl">
 				<image :src="IMAGE_URL+posts.a.logoUrl" style="width: 100%;" mode="widthFix"
 					@click="toWebview(posts.a.website)"></image>
@@ -111,11 +127,37 @@
 			</view>
 		</view>
 
+		<view class="ad-box" v-else>
+			<view class="ad-item" v-if="IMAGE_URL+posts.a.logoUrl">
+				<image :src="IMAGE_URL+posts.a.logoUrl" style="width: 100%;" mode="widthFix"
+					@click="toWebview(posts.a.website)"></image>
+			</view>
+			<view class="flex justify-between" style="margin: 10rpx 0;">
+				<view class="ad-item flex-sub" style="margin-right: 10rpx;">
+					<image :src="IMAGE_URL+posts.b.logoUrl" style="width: 100%;" mode="widthFix"
+						@click="toWebview(posts.b.website)"></image>
+				</view>
+
+				<view class="ad-item flex-sub">
+					<image :src="IMAGE_URL+posts.c.logoUrl" style="height: 145rpx;" mode="heightFix"
+						@click="toWebview(posts.c.website)"></image>
+					<view style="height: 10rpx;"></view>
+					<image :src="IMAGE_URL+posts.d.logoUrl" style="height: 145rpx;" mode="heightFix"
+						@click="toWebview(posts.d.website)"></image>
+				</view>
+			</view>
+			<!-- <view class="ad-item">
+				<image :src="IMAGE_URL+posts.d.logoUrl" style="width: 100%;" mode="widthFix"
+					@click="toWebview(posts.d.website)"></image>
+			</view> -->
+		</view>
+
 
 		<!-- 首页推荐商品列表 -->
 		<view class="recommend-box" v-if="promotion.length!=0">
 			<view class="flex justify-center" style="padding: 20rpx 0;">
-				<image :src="IMAGE_URL+'/wxapp/rec1.png'" style="width: 232rpx;" mode="widthFix"></image>
+				<image v-if="isPifa" :src="IMAGE_URL+'/wxapp/rec2.png'" style="width: 232rpx;" mode="widthFix"></image>
+				<image v-else :src="IMAGE_URL+'/wxapp/rec1.png'" style="width: 232rpx;" mode="widthFix"></image>
 			</view>
 
 			<!-- 活动时间段导航  u-sticky为吸顶-->
@@ -133,7 +175,9 @@
 
 			<!-- 商品列表组件 -->
 			<template v-if="goodsList.length!=0">
-				<goods-list :goodsList="goodsList" :hideShareBtn="roleLevel==500" @shareBtn='shareBtn'></goods-list>
+				<goods-list v-if="!isPifa" :goodsList="goodsList" :hideShareBtn="roleLevel==500" @shareBtn='shareBtn'>
+				</goods-list>
+				<wholesale-grid-goods v-else :goodsList="goodsList"></wholesale-grid-goods>
 				<u-loadmore status="nomore" margin-bottom="40" />
 			</template>
 		</view>
@@ -149,7 +193,8 @@
 				</view>
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" @tap="copyLink">
-						<image class="share-icon" :src="IMAGE_URL+'/wxapp/uni-program/share_link.png'" mode="widthFix"></image>
+						<image class="share-icon" :src="IMAGE_URL+'/wxapp/uni-program/share_link.png'" mode="widthFix">
+						</image>
 						<view class="txt">复制链接</view>
 					</button>
 				</view>
@@ -167,13 +212,15 @@
 
 <script>
 	// let calendar = require('@/utils/calendar.js');
-	import * as bytedesk from '@/components/bytedesk_kefu/js/api/bytedesk.js'
 	import {
 		calendar
 	} from '@/utils/calendar.js'
 	export default {
 		data() {
 			return {
+				isPifa: false,
+				textColor: '',
+				animationData: {},
 				onShareData: {},
 				TabCur: -1, //选中的时段
 				nowIndex: -1, //当前的时段
@@ -182,75 +229,8 @@
 				keyword: "",
 				swipers: [],
 				options: [],
-				workGroupWid:"2021042017495732a907d876a3d41d580bb50d7b6a1ccf1",
+				workGroupWid: "2021042017495732a907d876a3d41d580bb50d7b6a1ccf1",
 				// 使用getKingCoinList()返回的icon
-				options1: [{
-						text: "瑞库制品",
-						page: "/pages/hotRanking/hotRanking?fromView=ruiku",
-						icon: this.IMAGE_URL + "/wxapp/index06.png"
-					},
-					{
-						text: "家居生活",
-						page: "/pages/hotRanking/hotRanking?fromView=jiaju",
-						icon: this.IMAGE_URL + "/wxapp/index07.png"
-					},
-					{
-						text: "数码家电",
-						page: "/pages/hotRanking/hotRanking?fromView=shuma",
-						icon: this.IMAGE_URL + "/wxapp/index08.png"
-					},
-					{
-						text: "热销榜单",
-						page: "/pages/hotRanking/hotRanking?fromView=rexiao",
-						icon: this.IMAGE_URL + "/wxapp/index04.png"
-					},
-					{
-						text: "全部分类",
-						page: "/pages/classify/classify",
-						icon: this.IMAGE_URL + "/wxapp/index05.png"
-					},
-				],
-				options2: [
-					// {
-					// 	text: "我的权益",
-					// 	page: "/pages/myEquity/myEquity",
-					// 	icon: this.IMAGE_URL + "/index01.png"
-					// },
-
-					// {
-					// 	text: "发现生活",
-					// 	page: "/pages/find/find",
-					// 	icon: this.IMAGE_URL + "/index03.png"
-					// }, {
-					// 	text: "一键邀请",
-					// 	icon: this.IMAGE_URL + "/index02.png"
-					// },
-					{
-						text: "京东优选",
-						page: "/pages/classify/classify?channel=jingdong",
-						icon: this.IMAGE_URL + "/wxapp/index01.png"
-					},
-
-					{
-						text: "高佣特推",
-						page: "/pages/ranking/ranking?fromView=gaoyong",
-						icon: this.IMAGE_URL + "/wxapp/index03.png"
-					}, {
-						text: "特惠专区",
-						page: "/pages/ranking/ranking?fromView=tehui",
-						icon: this.IMAGE_URL + "/wxapp/index02.png"
-					},
-					{
-						text: "热销榜单",
-						page: "/pages/ranking/ranking?fromView=rexiao",
-						icon: this.IMAGE_URL + "/wxapp/index04.png"
-					},
-					{
-						text: "全部分类",
-						page: "/pages/classify/classify",
-						icon: this.IMAGE_URL + "/wxapp/index05.png"
-					},
-				],
 				kingCoinList: null,
 				posts: null,
 				IMAGE_URL: this.IMAGE_URL,
@@ -290,6 +270,7 @@
 		onLoad() {
 			// uni.getStorageSync("userInfo").id
 			console.log('onload')
+			this.isPifa = this.$store.state.isPifa
 			let pages = getCurrentPages() // 获取加载的页面
 			let currentPage = pages[pages.length - 1] // 获取当前页面的对象
 			let url = currentPage.route // 当前页面url
@@ -306,33 +287,74 @@
 			if (uni.getStorageSync("userInfo").roleLevel) {
 				this.roleLevel = uni.getStorageSync("userInfo").roleLevel
 			}
-			if (this.roleLevel !== 500) {
-				this.options = this.options1
-			} else {
-				this.options = this.options2
-			}
 			this.getSwiper()
 			this.getCateList()
 			this.getPost()
 			this.getActivity()
 			this.getKingCoinList()
-			this.initKeFu()
+
+
 		},
 		methods: {
-			initKeFu() {
-				// 初始化客服
-				let subDomain = '202104201749561'
-				let appKey = '94dd8ec3-31d9-4327-9a97-8d1de4349e87'
-				//bytedesk.init(subDomain, appKey);
-				if(uni.getStorageSync("userInfo").nickname!=null){
-					console.log(uni.getStorageSync("userInfo").nickname);
-					
-					bytedesk.initWithUsernameAndNickname(uni.getStorageSync("userInfo").nickname,
-					uni.getStorageSync("userInfo").nickname,subDomain, appKey);
-				}
-				
-			},
 			// 子组件分享按钮 获取分享内容 打开分享面板
+
+			changeBtn() {
+
+				var animation = uni.createAnimation({
+					duration: 300,
+					timingFunction: 'ease',
+				})
+
+				this.animation = animation
+				if (!this.isPifa) {
+					animation.translateX(45).step()
+				} else {
+					animation.translateX(0).step()
+				}
+
+				this.isPifa = !this.isPifa
+				if (this.isPifa) {
+					console.log('true')
+					uni.setTabBarItem({
+							index: 3,
+							text: '进货单',
+							iconPath: 'static/tabbar/tabbar_p_car.png',
+							selectedIconPath: 'static/tabbar/tabbar_p_car_select.png',
+						}),
+						uni.setTabBarItem({
+							index: 0,
+							text: '特批',
+							iconPath: 'static/tabbar/tabbar_p_home.png',
+							selectedIconPath: 'static/tabbar/tabbar_p_home_select.png',
+						})
+
+				} else {
+					console.log('false')
+					uni.setTabBarItem({
+							index: 0,
+							iconPath: "static/tabbar/sale.png",
+							selectedIconPath: "static/tabbar/sale_.png",
+							text: "优选"
+						}),
+					uni.setTabBarItem({
+						index: 3,
+						text: '购物车',
+						iconPath: "static/tabbar/cart.png",
+						selectedIconPath: "static/tabbar/cart_.png",
+					})
+				}
+
+				this.$store.commit('setIsPiFa', this.isPifa)
+
+				this.animationData = animation.export()
+				console.log(this.$store.state.isPifa);
+				uni.startPullDownRefresh()
+				this.getSwiper()
+				this.getPost()
+				this.getKingCoinList()
+				this.getActivity()
+			},
+
 			shareBtn(data) {
 				this.isShow = true
 				this.onShareData = data
@@ -444,51 +466,64 @@
 			changeSwiper(e) {
 				let index = e.detail.current
 				this.bgImage = this.swipers[index].url
+				this.textColor = this.swipers[index].color
 			},
 			// 获取轮播图
 			getSwiper() {
-				this.$u.post('/api/v1/diamond_show/list').then(res => {
+				this.$u.post('/api/v1/diamond_show/list', {
+					is_sale: this.isPifa,
+				}).then(res => {
 					// console.log(res.data);
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
 					}
 					this.swipers = res.data.data
-					console.log(res)
+					//console.log(res)
 					this.swipers.map(item => {
 						item.url = this.IMAGE_URL + item.url
 					})
 					this.bgImage = this.swipers[0].url
+					this.textColor = this.swipers[0].color
 				});
 			},
 			getKingCoinList() {
-				this.$u.post('/api/v2/app/aku_school/king_coin_list').then(res => {
-		
+				this.$u.post('/api/v2/app/aku_school/king_coin_list_new', {
+					is_sale: this.isPifa,
+				}).then(res => {
+
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
 					}
 					this.kingCoinList = res.data.data
-					if (this.roleLevel !== 500) {
-						this.kingCoinList = this.kingCoinList.slice(4, 9)
-					}
+
+					// if (this.roleLevel !== 500) {
+					// 	this.kingCoinList = this.kingCoinList.slice(4, 9)
+					// }
+					this.kingCoinList = this.kingCoinList.slice(0, 5)
+					console.log(this.kingCoinList)
 				});
 			},
 			// 获取三个特卖入口图片
 			getPost() {
-				this.$u.post('/api/v1/activity/list/query').then(res => {
-					// console.log(res.data);
+				this.$u.post('/api/v1/activity/list/query', {
+					is_sale: this.isPifa,
+				}).then(res => {
+
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
 					}
 					this.posts = res.data.data
-					console.log(res)
+					console.log(this.posts)
 				});
 			},
 			// 获取活动时间段
 			getActivity() {
-				this.$u.post('/api/v1/goods/list/promotion').then(res => {
+				this.$u.post('/api/v1/goods/list/promotion', {
+					is_sale: this.isPifa,
+				}).then(res => {
 					// console.log(res.data);
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
@@ -614,11 +649,13 @@
 			// 获取首页抢购活动商品列表
 			getGoodsList() {
 				this.$u.post('/api/v1/goods/list/promotion/goods', {
-					TimeItemID: this.promotionId,user_id:uni.getStorageSync("userInfo").id
+					TimeItemID: this.promotionId,
+					user_id: uni.getStorageSync("userInfo").id,
+					is_sale: this.isPifa,
 				}).then(res => {
 					uni.stopPullDownRefresh()
 					if (res.data.code == "FAIL") {
-						// this.$u.toast(res.data.msg);
+						// this.$u.toast(res.data.msg) 	;
 						return
 					}
 					this.goodsList = res.data.data.goodsList
@@ -633,31 +670,6 @@
 				let H = timestr.split(" ")[1].split(":")[0]
 				let M = timestr.split(" ")[1].split(":")[1]
 				return H + ":" + M
-			},
-			startChat () {
-			  // console.log('start chat')
-			  
-			  if (!uni.getStorageSync("auth").token) {
-			  	this.$u.toast("游客无法使用该功能，请登录");
-			  	let pages = getCurrentPages();
-			  	let currPage = null;
-			  	if (pages.length) {
-			  		currPage = pages[pages.length - 1];
-			  	}
-			  	console.log(currPage)
-			  	let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
-			  	this.$store.commit('setUrl', url)
-			  	setTimeout(() => {
-			  		uni.navigateTo({
-			  			url: "../login/login"
-			  		})
-			  	}, 1000)
-			  }else{
-				 uni.navigateTo({
-				 	url: '../../components/bytedesk_kefu/chat-kf?wid=' + this.workGroupWid + '&type=workGroup&aid=&title=联系客服'
-				 }); 
-			  }
-			
 			},
 
 			// 扫码
@@ -726,7 +738,7 @@
 			},
 			//跳转商品分类页
 			toClassify(index, id) {
-				if (id) {		
+				if (id) {
 					uni.navigateTo({
 						url: "/pages/classify/classify?index=" + index + '&id=' + id
 					})
@@ -736,41 +748,68 @@
 					})
 				}
 			},
-			toPage(idx, url) {
-				if (this.roleLevel == 500) {
-					uni.navigateTo({
-						url: url
-					})
-				} else {
-					switch (idx) {
-						case 0:
-							uni.navigateTo({
-								url: url
-							})
-							return;
-						case 1:
-							uni.navigateTo({
-								url: url
-							})
-							return;
-						case 2:
-							// this.isShow = true
-							// break;
-							uni.navigateTo({
-								url: url
-							})
-							return;
-						case 3:
-							uni.navigateTo({
-								url: url
-							})
-							return;
-						default:
-							break;
-					}
-					uni.navigateTo({
-						url: url
-					})
+			toPage(name) {
+				console.log(name)
+				switch (name) {
+					case '生活服务':
+						uni.navigateTo({
+							url: "/pages/classify/classify",
+						})
+						return;
+					case '京东优选':
+						uni.navigateTo({
+							url: "/pages/classify/classify?channel=jingdong"
+						})
+						return;
+					case '一键邀请':
+						return;
+					case '热销榜单':
+						uni.navigateTo({
+							url: "/pages/hotRanking/hotRanking?fromView=rexiao",
+						})
+						return;
+					case '进口专区':
+						return;
+					case '特惠专区':
+						uni.navigateTo({
+							url: "/pages/ranking/ranking?fromView=tehui",
+						})
+						return;
+					case '高额返补':
+						uni.navigateTo({
+							url: "/pages/ranking/ranking?fromView=gaoyong",
+						})
+						return;
+					case 'VIP权益':
+						uni.navigateTo({
+							url: "/pages/vip/vipBuy",
+						})
+						return;
+					case '阿库学院':
+
+						return;
+					case '家居生活':
+						uni.navigateTo({
+							url: "/pages/hotRanking/hotRanking?fromView=jiaju",
+						})
+						return;
+					case '数码家电':
+						uni.navigateTo({
+							url: "/pages/hotRanking/hotRanking?fromView=shuma",
+						})
+						return;
+					case '全部分类':
+						uni.navigateTo({
+							url: "/pages/classify/classify",
+						})
+						return;
+					case '批发商城':
+						uni.navigateTo({
+							url: "/pages/classify/classify",
+						})
+						return;
+					default:
+						break;
 				}
 			},
 			//跳转搜索页面

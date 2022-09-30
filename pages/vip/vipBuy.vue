@@ -134,7 +134,7 @@
 		methods: {
 			async initData() {
 				this.vipList = (await this.$u.post("/api/v2/app/vip/goods")).data.data
-				this.vipIsUsed = (await this.$u.post("/api/v2/app/vip/is_used")).data.data.is_used
+				this.vipIsUsed = (await this.$u.post("/api/v2/app/vip/is_used")).data.data.is_used	
 				if (this.vipIsUsed) {
 					this.vipSel = 0
 				}

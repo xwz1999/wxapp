@@ -15,6 +15,11 @@ import orderGoods from 'components/orderGoods.vue'
 import largeImageList from 'components/largeImageList.vue'
 import tipModel from 'components/userTipModel.vue'
 import Progress from 'components/Progress.vue'
+import wholesaleGoods from 'components/wholesaleGoods.vue'
+import wholesaleGridGoods from 'components/wholesaleGridGoods.vue'
+
+Vue.component('wholesale-goods', wholesaleGoods)
+Vue.component('wholesale-grid-goods', wholesaleGridGoods)
 Vue.component('Progress', Progress)
 Vue.component('tip-model', tipModel)
 Vue.component('goods-list', goodsList)

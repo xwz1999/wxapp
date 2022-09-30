@@ -14,6 +14,7 @@ const store = new Vuex.Store({
 		url: null, // 跳转到登录页面时原地址
 		roleLevel: 500, //用户等级默认设置会员
 		isLogin: false,
+		isPifa: false,
 		userBrief:{}//
 	},
 	mutations: {
@@ -24,6 +25,9 @@ const store = new Vuex.Store({
 			} else {
 				state.isLogin = false
 			}
+		},
+		setIsPiFa(state,val) {
+			state.isPifa = val
 		},
 		setRoleLevel(state, val) {
 			state.roleLevel = val

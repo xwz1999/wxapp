@@ -252,7 +252,7 @@
         {
             "path" : "pages/cart/cart",
             "style" : {
-                "navigationBarTitleText" : "购物车",
+                "navigationBarTitleText" : "",
                 "enablePullDownRefresh" : false
             }
         },
@@ -336,7 +336,7 @@
 		},
 	 */
     "subPackages" : [
-        {
+		{
             "root" : "packageA",
             "pages" : [
                 {
@@ -893,8 +893,59 @@
                 
                 }
             ]
-        }
-    ],
+        },
+		{
+			"root":"package_pifa",
+			"pages":[
+				{
+				    "path" : "pifaGoodsDetail/pifaGoodsDetail",
+				    "style" : {
+				      "navigationBarTitleText" : "",
+				      "enablePullDownRefresh" : false,
+				      "navigationStyle" : "custom"
+				    }
+				}
+			    
+                ,{
+                    "path" : "advanceDeposit/advanceDeposit",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "预存款",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "depositDetail/depositDetail",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "交易明细",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "deposit/deposit",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "预存款充值",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "depositRecord/depositRecord",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "充值记录",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
+		}
+    
+	],
     "globalStyle" : {
         "navigationBarTextStyle" : "black",
         "navigationBarTitleText" : "",

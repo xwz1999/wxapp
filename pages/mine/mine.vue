@@ -170,42 +170,94 @@
 			<scroll-view class="flex-sub" scroll-y="true" style="height: 0;" :refresher-threshold="100"
 				:refresher-enabled='refresherEnabled' @refresherpulling="onPulling" @refresherrefresh="onRefresh"
 				@refresherrestore="onRestore" @refresherabort="onAbort" :refresher-triggered="triggered">
-				<!-- banlance-background.png -->
+
 				<view class="info-container">
-					<view v-if="roleLevel==1||roleLevel==2||roleLevel==10" @tap="withdraw2" class="balance-box2"
-						:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/banlanceBackground.png)'">
-						<view class="balance2">
-							<view class="balance21">
-								<text style="font-size: 14px;">可提现金额：</text><text v-if="info.balance!=0"
-									style="font-size: 12px;">¥</text><text>{{info.balance}}</text>
+
+					<view v-if="!isPifa">
+						<view v-if="roleLevel==1||roleLevel==2||roleLevel==10" @tap="withdraw2" class="balance-box2"
+							:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/banlanceBackground.png)'">
+							<view class="balance2">
+								<view class="balance21">
+									<text style="font-size: 14px;">可提现金额：</text><text v-if="info.balance!=0"
+										style="font-size: 12px;">¥</text><text>{{info.balance}}</text>
+								</view>
+								<view class="warn2">
+									每月10日、25日审核提现申请
+								</view>
 							</view>
-							<view class="warn2">
-								每月10日、25日审核提现申请
+							<image :src="IMAGE_URL + '/wxapp/mine/ic_user_withdrawal.png'" style="width: 64rpx;"
+								mode="widthFix">
+							</image>
+							<!-- <button class="withdraw2" size="mini" @tap="withdraw2">立即提现</button> -->
+						</view>
+						<view v-if="roleLevel==1||roleLevel==2||roleLevel==10" class="box bg-white"
+							style="border-radius: 0 0 10px 10px;margin: 0 15px 10px;">
+							<!-- <navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;"> -->
+							<navigator :hover-class="false" class="subtitle flex justify-between"
+								style="border: 0;padding: 10rpx 20rpx;">
+								<view>累计总收益
+									<!-- 	<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text><text
+										class="text-gray cuIcon-question"
+										style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
+										@tap.stop="tipModel(true,'totalEarning')"></text> -->
+								</view>
+								<view class="flex more">
+									<text
+										style="font-size: 34rpx;color: #333333;line-height:80rpx;">{{profit.Total|toFixed(2)}}</text>
+									<text class="cuIcon-right"></text>
+								</view>
+							</navigator>
+						</view>
+					</view>
+
+					<view v-else>
+						<view  style="display: flex;padding: 20rpx;width: 100%;justify-content: space-between;">
+							<view @tap="deposit"
+								:style="'background-image: url('+IMAGE_URL+'/wxapp/mine/user_storage_bg.png);width: 100%;background-size: cover;height:150rpx;border-radius: 20rpx;display: flex;align-items: center;justify-content: space-between;padding:0 30rpx'">
+								<view style="display: flex;flex-direction: column;">
+
+									<text style="color: #FFDEAA;font-size: 24rpx;">
+										¥
+										<text style="color: #FFDEAA;font-size: 32rpx;">
+											{{(info.deposit).toFixed(2)}}
+										</text>
+									</text>
+									<view style="height: 20rpx;"></view>
+									<view style="color: #FFDEAA;font-size: 20rpx;">
+										预存款金额
+									</view>
+								</view>
+								<image :src="IMAGE_URL + '/wxapp/mine/ic_user_storage.png'" style="width: 64rpx;"
+									mode="widthFix">
+								</image>
+								
+							</view>
+							<view style="width: 30rpx;"></view>
+							<view @tap="withdraw2"
+								:style="'background-image: url('+IMAGE_URL+'/wxapp/mine/user_withdrawal_bg.png);width: 100%;background-size: cover;height:150rpx;border-radius: 20rpx;display: flex;align-items: center;justify-content: space-between;padding:0 30rpx'">
+								<view style="display: flex;flex-direction: column;">
+									<text style="color: #FFDEAA;font-size: 24rpx;">
+										¥
+										<text style="color: #FFDEAA;font-size: 32rpx;">
+											{{(info.balance).toFixed(2)}}
+										</text>
+									</text>
+									<view style="height: 20rpx;"></view>
+									<view style="color: #FFDEAA;font-size: 20rpx;">
+										可提现金额
+									</view>
+								</view>
+								<image :src="IMAGE_URL + '/wxapp/mine/ic_user_withdrawal.png'" style="width: 64rpx;"
+									mode="widthFix">
+								</image>
+								
 							</view>
 						</view>
-						<image :src="IMAGE_URL + '/wxapp/mine/ic_user_withdrawal.png'" style="width: 64rpx;"
-							mode="widthFix">
-						</image>
-						<!-- <button class="withdraw2" size="mini" @tap="withdraw2">立即提现</button> -->
 					</view>
-					<view v-if="roleLevel==1||roleLevel==2||roleLevel==10" class="box bg-white"
-						style="border-radius: 0 0 10px 10px;margin: 0 15px 10px;">
-						<!-- <navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;"> -->
-						<navigator :hover-class="false" class="subtitle flex justify-between"
-							style="border: 0;padding: 10rpx 20rpx;">
-							<view>累计总收益
-								<!-- 	<text style="font-size: 20rpx;font-weight: normal;padding-left: 5rpx;">(瑞币)</text><text
-									class="text-gray cuIcon-question"
-									style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
-									@tap.stop="tipModel(true,'totalEarning')"></text> -->
-							</view>
-							<view class="flex more">
-								<text
-									style="font-size: 34rpx;color: #333333;line-height:80rpx;">{{profit.Total|toFixed(2)}}</text>
-								<text class="cuIcon-right"></text>
-							</view>
-						</navigator>
-					</view>
+
+
+
+
 					<view>
 						<!-- 		<view v-if="roleLevel==1||roleLevel==2" class="box bg-white">
 							<view class="subtitle flex justify-between">
@@ -249,172 +301,228 @@
 								</view>
 							</view>
 						</view> -->
-						<view v-if="roleLevel==1||roleLevel==2" class="box bg-white">
-							<view class="subtitle flex justify-between">
-								<view class="flex align-center">
-									<image :src="IMAGE_URL + '/wxapp/mine/t02.png'" style="width: 64rpx;"
-										mode="widthFix">
-									</image>
-									<view>分享补贴 <text class="text-gray "
-											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
+						<view v-if="!isPifa">
+							<view v-if="roleLevel==1||roleLevel==2" class="box bg-white">
+								<view class="subtitle flex justify-between">
+									<view class="flex align-center">
+										<image :src="IMAGE_URL + '/wxapp/mine/t02.png'" style="width: 64rpx;"
+											mode="widthFix">
+										</image>
+										<view>分享补贴 <text class="text-gray "
+												style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
+										</view>
+										<!-- 	<view>分享补贴 <text class="text-gray cuIcon-question"
+												style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
+												@tap.stop="tipModel(true,'guide')"></text></view> -->
+							
 									</view>
-									<!-- 	<view>分享补贴 <text class="text-gray cuIcon-question"
-											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"
-											@tap.stop="tipModel(true,'guide')"></text></view> -->
-
+									<!-- <view class="flex more" v-if="1">查看明细<text class="cuIcon-right"></text></view> -->
 								</view>
-								<!-- <view class="flex more" v-if="1">查看明细<text class="cuIcon-right"></text></view> -->
+								<view class="money-box flex justify-between align-center">
+									<view :data-incomeType="3" @click="inComeDetail">
+										<view class="txt" style="margin-bottom: 20rpx;">累计未到账收益</view>
+										<view class="num">
+											{{profit.EAmount2||0}}
+										</view>
+									</view>
+									<view :data-incomeType="3" @click="inComeDetail">
+										<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+										<view class="num">
+											{{profit.ECount2||0}}
+										</view>
+									</view>
+									<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
+									</view>
+									<view :data-incomeType="9" @click="inComeDetail">
+										<view class="txt" style="margin-bottom: 20rpx;">累计已到账收益</view>
+										<view class="num">{{profit.Amount2||0}}</view>
+									</view>
+									<view :data-incomeType="9" @click="inComeDetail">
+										<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+										<view class="num">{{profit.Count2||0}}</view>
+									</view>
+								</view>
 							</view>
-							<view class="money-box flex justify-between align-center">
-								<view :data-incomeType="3" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">累计未到账收益</view>
-									<view class="num">
-										{{profit.EAmount2||0}}
+							<view v-if="roleLevel==1||roleLevel==2" class="box bg-white">
+								<view class="subtitle flex justify-between">
+									<view class="flex align-center">
+										<image :src="IMAGE_URL + '/wxapp/mine/t03.png'" style="width: 64rpx;"
+											mode="widthFix">
+										</image>
+										<view>开店补贴 <text class="text-gray "
+												style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
+										</view>
+									</view>
+									<!-- 		<navigator url="/packageA/myIncome/shopSubsidy" :hover-class="false" class="flex more">
+										图表分析<text class="cuIcon-right"></text>
+									</navigator> -->
+								</view>
+								<view class="money-box flex justify-between align-center">
+									<view :data-incomeType="5">
+										<view class="txt" style="margin-bottom: 20rpx;">累计未到账收益</view>
+										<view class="num">
+											{{profit.EAmount4||0}}
+										</view>
+									</view>
+									<view :data-incomeType="5">
+										<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+										<view class="num">{{profit.ECount4||0}}
+										</view>
+									</view>
+									<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
+									</view>
+									<view :data-incomeType="11">
+										<view class="txt" style="margin-bottom: 20rpx;">累计已到账收益</view>
+										<view class="num">{{profit.Amount4||0}}</view>
+									</view>
+									<view :data-incomeType="11">
+										<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+										<view class="num">{{profit.Count4||0}}</view>
 									</view>
 								</view>
-								<view :data-incomeType="3" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">
-										{{profit.ECount2||0}}
+							</view>
+							<view v-if="roleLevel==10" class="box bg-white">
+								<view class="subtitle flex justify-between">
+									<view class="flex align-center">
+										<image :src="IMAGE_URL + '/wxapp/mine/t01.png'" style="width: 64rpx;"
+											mode="widthFix">
+										</image>
+										<view>店铺收益 <text class="text-gray "
+												style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
+										</view>
+									</view>
+							
+									<!-- <navigator url="/packageA/myIncome/purchase"  :hover-class="false" class="flex more"> -->
+									<navigator url="/packageA/partnerIncome/partnerIncome?name=店铺收益" v-if="1"
+										:hover-class="false" class="flex more">
+										图表分析<text class="cuIcon-right"></text>
+									</navigator>
+								</view>
+								<view class="money-box flex justify-between align-center">
+									<view :data-incomeType="1" @click="inComeDetail">
+										<view class="txt" style="margin-bottom: 20rpx;">未到账收益</view>
+										<view class="num">
+											{{profit.EAmount5||0}}
+										</view>
+									</view>
+									<view :data-incomeType="1" @click="inComeDetail">
+										<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+										<view class="num">
+											{{profit.ECount5||0}}
+										</view>
+									</view>
+									<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
+									</view>
+									<view :data-incomeType="7" @click="inComeDetail">
+										<view class="txt" style="margin-bottom: 20rpx;">已到账收益</view>
+										<view class="num">{{profit.Amount5||0}}
+										</view>
+									</view>
+									<view :data-incomeType="7" @click="inComeDetail">
+										<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+										<view class="num">{{profit.Count5||0}}
+										</view>
 									</view>
 								</view>
-								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
+							</view>
+							
+							
+							<view v-if="roleLevel==10" class="box bg-white">
+								<view class="subtitle flex justify-between">
+									<view class="flex align-center">
+										<image :src="IMAGE_URL + '/wxapp/mine/t02.png'" style="width: 64rpx;"
+											mode="widthFix">
+										</image>
+										<view>分享收益 <text class="text-gray "
+												style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
+										</view>
+										<!-- @tap.stop="tipModel(true,'purchase')"></text></view> -->
+									</view>
+							
+									<!-- <navigator url="/packageA/myIncome/purchase"  :hover-class="false" class="flex more"> -->
+							
+									<navigator url="/packageA/partnerIncome/partnerIncome?name=分享收益" v-if="1"
+										:hover-class="false" class="flex more">
+										图表分析<text class="cuIcon-right"></text>
+									</navigator>
 								</view>
-								<view :data-incomeType="9" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">累计已到账收益</view>
-									<view class="num">{{profit.Amount2||0}}</view>
-								</view>
-								<view :data-incomeType="9" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">{{profit.Count2||0}}</view>
+								<view class="money-box flex justify-between align-center">
+									<view :data-incomeType="1" @click="inComeDetail">
+										<view class="txt" style="margin-bottom: 20rpx;">未到账收益</view>
+										<view class="num">
+											{{profit.EAmount6||0}}
+										</view>
+									</view>
+									<view :data-incomeType="1" @click="inComeDetail">
+										<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+										<view class="num">
+											{{profit.ECount6||0}}
+										</view>
+									</view>
+									<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
+									</view>
+									<view :data-incomeType="7" @click="inComeDetail">
+										<view class="txt" style="margin-bottom: 20rpx;">已到账收益</view>
+										<view class="num">{{profit.Amount6||0}}
+										</view>
+									</view>
+									<view :data-incomeType="7" @click="inComeDetail">
+										<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+										<view class="num">{{profit.Count6||0}}
+										</view>
+									</view>
 								</view>
 							</view>
 						</view>
-						<view v-if="roleLevel==1||roleLevel==2" class="box bg-white">
-							<view class="subtitle flex justify-between">
-								<view class="flex align-center">
-									<image :src="IMAGE_URL + '/wxapp/mine/t03.png'" style="width: 64rpx;"
-										mode="widthFix">
-									</image>
-									<view>开店补贴 <text class="text-gray "
-											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
+						<view v-else>
+							<view class="bg-white">
+								<!-- <navigator url="../totalEarnings/totalEarnings" class="subtitle flex justify-between" style="border: 0;padding: 10rpx 20rpx;"> -->
+								<view :hover-class="false" class="subtitle flex justify-between"
+									style="padding: 10rpx 20rpx;border-bottom:  2upx solid #eee;">
+									<view style="display: flex;align-items: center;font-size: 34rpx;color: #333333;font-weight: bold;">批发总额
 									</view>
-								</view>
-								<!-- 		<navigator url="/packageA/myIncome/shopSubsidy" :hover-class="false" class="flex more">
-									图表分析<text class="cuIcon-right"></text>
-								</navigator> -->
-							</view>
-							<view class="money-box flex justify-between align-center">
-								<view :data-incomeType="5">
-									<view class="txt" style="margin-bottom: 20rpx;">累计未到账收益</view>
-									<view class="num">
-										{{profit.EAmount4||0}}
-									</view>
-								</view>
-								<view :data-incomeType="5">
-									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">{{profit.ECount4||0}}
-									</view>
-								</view>
-								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
-								</view>
-								<view :data-incomeType="11">
-									<view class="txt" style="margin-bottom: 20rpx;">累计已到账收益</view>
-									<view class="num">{{profit.Amount4||0}}</view>
-								</view>
-								<view :data-incomeType="11">
-									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">{{profit.Count4||0}}</view>
-								</view>
-							</view>
-						</view>
-						<view v-if="roleLevel==10" class="box bg-white">
-							<view class="subtitle flex justify-between">
-								<view class="flex align-center">
-									<image :src="IMAGE_URL + '/wxapp/mine/t01.png'" style="width: 64rpx;"
-										mode="widthFix">
-									</image>
-									<view>店铺收益 <text class="text-gray "
-											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
-									</view>
-								</view>
-
-								<!-- <navigator url="/packageA/myIncome/purchase"  :hover-class="false" class="flex more"> -->
-									<navigator url="/packageA/partnerIncome/partnerIncome?name=店铺收益" v-if="1" :hover-class="false" class="flex more">
-									图表分析<text class="cuIcon-right"></text>
-								</navigator>
-							</view>
-							<view class="money-box flex justify-between align-center">
-								<view :data-incomeType="1" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">未到账收益</view>
-									<view class="num">
-										{{profit.EAmount5||0}}
-									</view>
-								</view>
-								<view :data-incomeType="1" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">
-										{{profit.ECount5||0}}
-									</view>
-								</view>
-								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
-								</view>
-								<view :data-incomeType="7" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">已到账收益</view>
-									<view class="num">{{profit.Amount5||0}}
-									</view>
-								</view>
-								<view :data-incomeType="7" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">{{profit.Count5||0}}
+									<view class="flex more">
+										<text
+											style="font-size: 34rpx;color: #333333;line-height:80rpx;">{{(profit.TotalSale).toFixed(2)}}</text>
+										
 									</view>
 								</view>
 							</view>
-						</view>
-
-
-						<view v-if="roleLevel==10" class="box bg-white">
-							<view class="subtitle flex justify-between">
-								<view class="flex align-center">
-									<image :src="IMAGE_URL + '/wxapp/mine/t02.png'" style="width: 64rpx;"
-										mode="widthFix">
-									</image>
-									<view>分享收益 <text class="text-gray "
-											style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
+							<view  class="box bg-white ">
+								<view class="subtitle flex justify-between">
+									<view class="flex align-center">
+										<image :src="IMAGE_URL + '/wxapp/mine/t01.png'" style="width: 64rpx;"
+											mode="widthFix">
+										</image>
+										<view>批发报表 <text class="text-gray "
+												style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
+										</view>
 									</view>
-									<!-- @tap.stop="tipModel(true,'purchase')"></text></view> -->
+									<!-- 		<navigator url="/packageA/myIncome/shopSubsidy" :hover-class="false" class="flex more">
+										图表分析<text class="cuIcon-right"></text>
+									</navigator> -->
 								</view>
-
-								<!-- <navigator url="/packageA/myIncome/purchase"  :hover-class="false" class="flex more"> -->
-								
-								<navigator url="/packageA/partnerIncome/partnerIncome?name=分享收益" v-if="1" :hover-class="false"
-									class="flex more">
-									图表分析<text class="cuIcon-right"></text>
-								</navigator>
-							</view>
-							<view class="money-box flex justify-between align-center">
-								<view :data-incomeType="1" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">未到账收益</view>
-									<view class="num">
-										{{profit.EAmount6||0}}
+								<view class="money-box flex justify-between align-center">
+									<view :data-incomeType="5">
+										<view class="txt" style="margin-bottom: 20rpx;">本月批发额</view>
+										<view class="num">
+											{{profit.monthSale||0}}
+										</view>
 									</view>
-								</view>
-								<view :data-incomeType="1" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">
-										{{profit.ECount6||0}}
+									<view :data-incomeType="5">
+										<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+										<view class="num">{{profit.monthCount||0}}
+										</view>
 									</view>
-								</view>
-								<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
-								</view>
-								<view :data-incomeType="7" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">已到账收益</view>
-									<view class="num">{{profit.Amount6||0}}
+									<view class="" style="width: 3rpx;height: 58rpx; margin: 0 34rpx; background: #EEEEEE;">
 									</view>
-								</view>
-								<view :data-incomeType="7" @click="inComeDetail">
-									<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
-									<view class="num">{{profit.Count6||0}}
+									<view :data-incomeType="11">
+										<view class="txt" style="margin-bottom: 20rpx;">本年批发额</view>
+										<view class="num">{{profit.yearSale||0}}</view>
+									</view>
+									<view :data-incomeType="11">
+										<view class="txt" style="margin-bottom: 20rpx;">订单数</view>
+										<view class="num">{{profit.yearCount||0}}</view>
 									</view>
 								</view>
 							</view>
@@ -456,32 +564,73 @@
 						</view>
 					</view>
 					 -->
-					<view class="box bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
-						<navigator url="/pages/orders/orders" hover-class="none" class="subtitle flex justify-between">
+					<view class="box bg-white" >
+						<navigator v-if="!isPifa" url="/pages/orders/orders" hover-class="none" class="subtitle flex justify-between">
 							<view>订单中心
 								<!-- <text style="font-weight: normal;font-size: 26rpx;">(自购)</text> -->
 							</view>
 							<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
 						</navigator>
+						
+						<navigator v-else url="/pages/orders/orders" hover-class="none" class="subtitle flex justify-between">
+							<view>批发订单
+								<!-- <text style="font-weight: normal;font-size: 26rpx;">(自购)</text> -->
+							</view>
+							<view class="flex more">全部订单<text class="cuIcon-right"></text></view>
+						</navigator>
+						
+						
 						<view class="order-con flex justify-around">
-							<view class="order-item flex flex-direction align-center"
-								v-for="(item,index) in orderStatus" :key="index" @tap="toOrders(index)">
-								<image :src="item.icon" style="height: 56rpx;margin-bottom: 10rpx;width: auto;"
+							
+							<view v-if="!isPifa" class="order-con flex justify-around">
+								<view class="order-item flex flex-direction align-center "
+									v-for="(item,index) in orderStatus" :key="index" @tap="toOrders(index)">
+									<image :src="item.icon" style="height: 56rpx;margin-bottom: 10rpx;width: auto;"
+										mode="heightFix"></image>
+									<view style="font-size: 24rpx;color: #666;">{{item.text}}</view>
+									<view class="order-count" v-if="item.count">{{item.count}}</view>
+								</view>
+							</view>
+						
+							<view v-else class="order-con flex justify-around">
+								<view  class="order-item flex flex-direction align-center " style="width: 160rpx;"
+									v-for="(item,index) in pifaOrderStatus" :key="index" @tap="toOrders(index)">
+									<image :src="item.icon" style="height: 76rpx;margin-bottom: 10rpx;width: auto;"
+										mode="heightFix"></image>
+									<view style="font-size: 24rpx;color: #666;">{{item.text}}</view>
+									<view class="order-count" v-if="item.count">{{item.count}}</view>
+								</view>
+							</view>
+						
+						</view>
+					</view>
+					
+					<view class="box bg-white">
+						<view class="subtitle">我的服务</view>
+						<view v-if="!isPifa" class=" flex justify-around " >
+							
+							<view v-for="(item,index) in otherOptions"
+								class="other-item flex-sub flex flex-direction justify-between align-center"
+								@tap="toPage(item.page)">
+								<image :src="item.icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;"
 									mode="heightFix"></image>
-								<view style="font-size: 24rpx;color: #666;">{{item.text}}</view>
-								<view class="order-count" v-if="item.count">{{item.count}}</view>
+								<view>{{item.text}}</view>
+							</view>
+						</view>
+						<view v-else class="box flex justify-around bg-white" >
+							
+							<view v-for="(item,index) in pifaOtherOptions"
+								class="other-item flex-sub flex flex-direction justify-between align-center"
+								@tap="toPage(item.page)">
+								<image :src="item.icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;"
+									mode="heightFix"></image>
+								<view>{{item.text}}</view>
 							</view>
 						</view>
 					</view>
-					<view class="box flex justify-around bg-white" style="border-radius: 20rpx; margin:20rpx 20rpx;">
-						<view v-for="(item,index) in otherOptions"
-							class="other-item flex-sub flex flex-direction justify-between align-center"
-							@tap="toPage(item.page)">
-							<image :src="item.icon" style="height: 50rpx;width: auto;margin-bottom: 10rpx;"
-								mode="heightFix"></image>
-							<view>{{item.text}}</view>
-						</view>
-					</view>
+	
+					
+			
 				</view>
 
 				<!-- </view> -->
@@ -523,6 +672,7 @@
 </template>
 
 <script>
+	import * as bytedesk from '@/components/bytedesk_kefu/js/api/bytedesk.js'
 	export default {
 		data() {
 			return {
@@ -574,6 +724,23 @@
 						text: "售后/退货"
 					}
 				],
+				pifaOrderStatus: [{
+						icon: this.IMAGE_URL + "/wxapp/mine/iw_pending.png",
+						text: "待处理"
+					},
+					{
+						icon: this.IMAGE_URL + "/wxapp/mine/iw_unpayment.png",
+						text: "待付款"
+					},
+					{
+						icon: this.IMAGE_URL + "/wxapp/mine/iw_shipped.png",
+						text: "待发货"
+					},
+					{
+						icon: this.IMAGE_URL + "/wxapp/mine/iw_received.png",
+						text: "待收货"
+					}
+				],
 				otherOptions: [{
 						icon: this.IMAGE_URL + "/wxapp/uni-program/address.png",
 						text: "地址",
@@ -585,9 +752,25 @@
 						page: '/packageA/myCollect/myCollect'
 					},
 					{
-						icon: this.IMAGE_URL + "/wxapp/uni-program/cooperation.png",
-						text: "商务合作",
-						page: "/packageA/cooperation/cooperation"
+						icon: this.IMAGE_URL + "/wxapp/uni-program/ic_lxkf.png",
+						text: "客服",
+						page: "kefu"
+					},
+					{
+						icon: this.IMAGE_URL + "/wxapp/uni-program/setting.png",
+						text: "设置",
+						page: "/packageA/settings/settings"
+					}
+				],
+				pifaOtherOptions: [{
+						icon: this.IMAGE_URL + "/wxapp/uni-program/address.png",
+						text: "地址",
+						page: "/packageA/address/index"
+					},
+					{
+						icon: this.IMAGE_URL + "/wxapp/uni-program/ic_lxkf.png",
+						text: "客服",
+						page: "kefu"
 					},
 					{
 						icon: this.IMAGE_URL + "/wxapp/uni-program/setting.png",
@@ -609,6 +792,7 @@
 					historyIncome: 0,
 					orderNum: 0
 				},
+				isPifa: false,
 			};
 		},
 		created() {
@@ -620,12 +804,15 @@
 			this.checkDate = new Date();
 		},
 		onLoad() {
+
 			this.isLogin = this.$store.state.isLogin
+
 			if (this.isLogin) {
 				this.getUserInfo()
 				// this.getTotalEarning()
 				// this.welfare()
 			}
+			this.initKeFu()
 		},
 		onShow() {
 			if (this.isLogin) {
@@ -634,8 +821,22 @@
 				this.myIncome()
 				// this.check()
 			}
+			this.isPifa = this.$store.state.isPifa
 		},
 		methods: {
+			initKeFu() {
+				// 初始化客服
+				let subDomain = '202104201749561'
+				let appKey = '94dd8ec3-31d9-4327-9a97-8d1de4349e87'
+				//bytedesk.init(subDomain, appKey);
+				if (uni.getStorageSync("userInfo").nickname != null) {
+					console.log(uni.getStorageSync("userInfo").nickname);
+
+					bytedesk.initWithUsernameAndNickname(uni.getStorageSync("userInfo").nickname,
+						uni.getStorageSync("userInfo").nickname, subDomain, appKey);
+				}
+
+			},
 
 			//下拉过程的函数
 			onPulling(e) {},
@@ -780,11 +981,14 @@
 				// 				})
 			},
 			withdraw2() {
-				// uni.navigateTo({
-				// 	url: "/packageA/withdraw/withdraw"
-				// })
 				uni.navigateTo({
 					url: "/packageA/withdrawHome/withdrawHome?isEnterprise" + this.isEnterprise
+				})
+			},
+			
+			deposit(){
+				uni.navigateTo({
+					url: "/package_pifa/advanceDeposit/advanceDeposit?isEnterprise" + this.isEnterprise
 				})
 			},
 			toMineShopPage(url) {
@@ -855,15 +1059,16 @@
 					uni.setStorageSync("userId", res.data.data.identifier)
 					console.log(uni.getStorageSync("userId"))
 					this.roleLevel = this.info.level
-					this.isOffline = this.info.isOffline
-					this.isEnterprise = this.info.isEnterprise
+					this.isOffline = this.info.is_offline
+					this.isEnterprise = this.info.is_enterprise
 
 					this.$store.commit('setUserBrief', this.info)
 
 					console.log('this.info.balance', this.info.balance)
 					uni.setStorageSync("myLevel", res.data.data.level)
 					this.bgImage = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'mineBg',
-						this.isEnterprise)
+						this.isOffline)
+
 					this.role = this.$options.filters['roleFilter'](this.roleLevel, 'txt')
 					this.iconPic = this.IMAGE_URL + this.$options.filters['roleFilter'](this.roleLevel, 'badge')
 					this.$store.commit('setRoleLevel', this.roleLevel);
@@ -871,6 +1076,9 @@
 					this.orderStatus[0].count = this.info.orderCenter.waitPay
 					this.orderStatus[1].count = this.info.orderCenter.waitSend
 					this.orderStatus[2].count = this.info.orderCenter.waitRecv
+					console.log('this.roleLevel', this.roleLevel)
+					console.log('this.isOffline', this.isOffline)
+					console.log('this.bgImage', this.bgImage)
 					// this.orderStatus[4].count = this.info.orderCenter.afterSales
 				});
 			},
@@ -912,9 +1120,34 @@
 				})
 			},
 			toPage(page) {
-				uni.navigateTo({
-					url: page
-				})
+				if (page == 'kefu') {
+
+					if (!uni.getStorageSync("auth").token) {
+						this.$u.toast("游客无法使用该功能，请登录");
+						let pages = getCurrentPages();
+						let currPage = null;
+						if (pages.length) {
+							currPage = pages[pages.length - 1];
+						}
+						console.log(currPage)
+						let url = '/' + currPage.route + '?id=' + currPage.options.id + '&type=share'
+						this.$store.commit('setUrl', url)
+						setTimeout(() => {
+							uni.navigateTo({
+								url: "../login/login"
+							})
+						}, 1000)
+					} else {
+						uni.navigateTo({
+							url: '../../components/bytedesk_kefu/chat-kf?wid=' + this.workGroupWid +
+								'&type=workGroup&aid=&title=联系客服'
+						});
+					}
+				} else {
+					uni.navigateTo({
+						url: page
+					})
+				}
 			},
 			toOrders(index) {
 				let type

@@ -27,11 +27,18 @@
 		
 		<!-- 商品列表 -->
 		<scroll-view v-else class="flex-sub" scroll-y="true" style="height: 0;" @scrolltolower="getGoodsList">
-			<view class="goods-box">
+			<view class="goods-box" v-if="!isPifa">
 				<!-- 单行排列方式 -->
 				<goods-list v-if="isBlock" :goodsList="goodsList"></goods-list>
 				<!-- 缩略图排列方式 -->
 				<large-image-list v-else :goodsList="goodsList"></large-image-list>
+			</view>
+			
+			<view class="goods-box" v-else>
+				<!-- 单行排列方式 -->
+				<wholesale-goods v-if="isBlock" :goodsList="goodsList"></wholesale-goods>
+				<!-- 缩略图排列方式 -->
+				<wholesale-grid-goods v-else :goodsList="goodsList"></wholesale-grid-goods>
 			</view>
 			<u-loadmore :status="loadStatus" margin-bottom="40" />
 		</scroll-view>
@@ -58,7 +65,8 @@
 				requestUrl:"",
 				order:"",
 				isBlock:true,
-				isNull:false
+				isNull:false,
+				isPifa:false,
 			};
 		},
 		components:{
@@ -70,7 +78,7 @@
 			// 进来默认按照综合降序排序
 			this.requestUrl = "/api/v1/goods/comprehensive/list"
 			this.order="desc"
-			
+			this.isPifa = this.$store.state.isPifa
 			//点击品牌进来的
 			if (options.brandId) {
 				this.brandId = parseInt(options.brandId)
@@ -135,7 +143,8 @@
 				let sendData = {
 					order: this.order,
 					page: this.page,
-					user_id: uni.getStorageSync("userInfo").id
+					user_id: uni.getStorageSync("userInfo").id,
+					is_sale: this.$store.state.isPifa
 				}
 				this.page++
 				if (this.brandId) {
