@@ -1,6 +1,6 @@
 <template name="smallVideos">
 	<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="getVideos" :refresher-threshold="100" :refresher-enabled='refresherEnabled'
-		 @refresherpulling="onPulling" @refresherrefresh="onRefresh" @refresherrestore="onRestore" @refresherabort="onAbort"
+ @refresherrefresh="onRefresh" @refresherrestore="onRestore" @refresherabort="onAbort"
 		 :refresher-triggered="triggered">
 		<view class="null flex flex-direction justify-center align-center" v-if="isNull" style="height: 70vh;width: 100vw;">
 			<image :src="IMAGE_URL + '/wxapp/null05.png'"  style="width: 300rpx;" mode="widthFix"></image>
@@ -75,9 +75,6 @@
 			this.getVideos()
 		},
 		methods: {
-			//下拉过程的函数
-			onPulling(e) {
-			},
 			//松手后执行下拉事件的函数
 			onRefresh() {
 				console.log('onRefresh')

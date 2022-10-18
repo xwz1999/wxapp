@@ -22,8 +22,9 @@
         {
             "path" : "pages/information/information",
             "style" : {
-                "navigationBarTitleText" : "消息",
-                "enablePullDownRefresh" : false
+                "navigationBarTitleText" : "",
+                "enablePullDownRefresh" : false,
+				"navigationBarBackgroundColor" : "#f6f6f6"
             }
         },
         // {
@@ -324,6 +325,16 @@
 		        // "navigationBarTextStyle":"#000"
 		    }
 		}
+        ,{
+            "path" : "pages/vipPush/vipPush",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"navigationStyle" : "custom"
+            }
+            
+        }
     ],
     // 分包配置项(由于小程序代码包大小限制，需要分包)
     /**
@@ -939,6 +950,109 @@
                 {
                     "navigationBarTitleText": "充值记录",
                     "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "pifaConfirmOrder/pifaConfirmOrder",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "pifaOrderDetail/pifaOrderDetail",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                
+                ,{
+                    "path" : "pifaPaySuccess/pifaPaySuccess",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "pifaOrders/pifaOrders",
+                    "style" :                                                                                    
+                {
+                   "navigationBarTitleText" : "",
+                   "enablePullDownRefresh" : false,
+                   "navigationStyle" : "custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pifaOrderPay/pifaOrderPay",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "taxpayerWithDraw/taxpayerWithDraw",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "申请提现",
+                    "enablePullDownRefresh": false,
+					"navigationBarBackgroundColor" : "#3A3842",
+					"navigationBarTextStyle" : "white"
+					
+                }
+                
+                }
+                ,{
+                    "path" : "taxpayerWithDrawSecond/taxpayerWithDrawSecond",
+                    "style" :                                                                                    
+                {
+                   "navigationBarTitleText": "申请提现",
+                   "enablePullDownRefresh": false,
+                   "navigationBarBackgroundColor" : "#3A3842",
+                   "navigationBarTextStyle" : "white"
+                }
+                
+                }
+                ,{
+                    "path" : "taxpayerWithDrawThird/taxpayerWithDrawThird",
+                    "style" :                                                                                    
+                {
+                   "navigationBarTitleText": "申请提现",
+                   "enablePullDownRefresh": false,
+                   "navigationBarBackgroundColor" : "#3A3842",
+                   "navigationBarTextStyle" : "white"
+                }
+                
+                }
+                ,{
+                    "path" : "taxpayerWithDrawRecord/taxpayerWithDrawRecord",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "提现记录",
+                    "enablePullDownRefresh": false,
+					"navigationBarBackgroundColor" : "#F6F6F6"
+					
+                }
+                
+                }
+                ,{
+                    "path" : "taxpayerWithDrawResult/taxpayerWithDrawResult",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "申请提现",
+                    "enablePullDownRefresh": false,
+                    "navigationBarBackgroundColor" : "#3A3842",
+                    "navigationBarTextStyle" : "white"
                 }
                 
                 }

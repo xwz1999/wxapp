@@ -65,19 +65,40 @@
 		},
 		methods: {
 			toWithdraw() {
-				uni.navigateTo({
-					url: "/packageA/withdraw/withdraw"
-				})
+				
+		
+				if(isEnterprise){
+					uni.navigateTo({
+						url: "/package_pifa/taxpayerWithDraw/taxpayerWithDraw"
+					})
+				}else{
+					uni.navigateTo({
+						url: "/packageA/withdraw/withdraw"
+					})
+				}
+				
+				
+				
 			},
 			toWithdrawDetail() {
 				uni.navigateTo({
 					url: "/packageA/withdrawDetail/withdrawDetail"
 				})
 			},
+			
 			toWithdrawRecord() {
-				uni.navigateTo({
-					url: "/packageA/withdrawRecord/withdrawRecord"
-				})
+				if(!this.isEnterprise){
+					uni.navigateTo({
+						url: "/package_pifa/taxpayerWithDrawRecord/taxpayerWithDrawRecord"
+					})
+				}else{
+					uni.navigateTo({
+						url: "/packageA/withdrawRecord/withdrawRecord"
+					})
+				}
+				
+				
+				
 			},
 		}
 	}

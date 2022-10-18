@@ -292,12 +292,32 @@
 			this.getPost()
 			this.getActivity()
 			this.getKingCoinList()
-
+			this.getUserInfo()
 
 		},
 		methods: {
 			// 子组件分享按钮 获取分享内容 打开分享面板
+			getUserInfo() {
+				this.$u.post('/api/v1/users/profile/my_info', {
+					userId: uni.getStorageSync("userInfo").id
+				}).then(res => {
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					
+					let info = res.data.data
+					if (!info) {
+						return
+					}
+					console.log(res.data.data)
+					uni.setStorageSync("userId", res.data.data.identifier)
+					
+					console.log(uni.getStorageSync("userId"))
+					this.$store.commit('setUserBrief', info)
 
+				});
+			},
 			changeBtn() {
 
 				var animation = uni.createAnimation({
@@ -772,12 +792,12 @@
 						return;
 					case '特惠专区':
 						uni.navigateTo({
-							url: "/pages/ranking/ranking?fromView=tehui",
+							url: "/pages/hotRanking/hotRanking?fromView=tehui",
 						})
 						return;
 					case '高额返补':
 						uni.navigateTo({
-							url: "/pages/ranking/ranking?fromView=gaoyong",
+							url: "/pages/hotRanking/hotRanking?fromView=gaoyong",
 						})
 						return;
 					case 'VIP权益':

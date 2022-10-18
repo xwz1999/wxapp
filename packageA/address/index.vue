@@ -78,21 +78,41 @@
 				})
 			},
 			//更新预览订单的地址信息
-			upDateOrder(id) {
-				this.$u.post('/api/v1/order_preview/addr/update', {
-					userId: uni.getStorageSync("userInfo").id,
-					orderId: this.preOrderMsg.id,
-					addressId: id
-				}).then(res => {
-					console.log(res.data);
-					if (res.data.code == "FAIL") {
-						this.$u.toast(res.data.msg);
-						return
-					}
-					let preOrderMsg = res.data.data
-					this.$store.commit('updatePreOrderMsg', preOrderMsg)
-					uni.navigateBack()
-				});
+			upDateOrder(id,item) {
+				console.log(item);
+				if(this.fromPage==="pifaConfirmOrder"){
+					this.$u.post('/api/v2/app/order/update', {
+						preview_id: this.preOrderMsg.preview_id,
+						address_id: id,
+						buyer_message:uni.getStorageSync("buyMessage"),
+					}).then(res => {
+						console.log(res.data);
+						if (res.data.code == "FAIL") {
+							this.$u.toast(res.data.msg);
+							return
+						}
+						let preOrderMsg = this.preOrderMsg
+						preOrderMsg.Addr = item
+						this.$store.commit('updatePreOrderMsg', preOrderMsg)
+						uni.navigateBack()
+					});
+				}else{
+					this.$u.post('/api/v1/order_preview/addr/update', {
+						userId: uni.getStorageSync("userInfo").id,
+						orderId: this.preOrderMsg.id,
+						addressId: id
+					}).then(res => {
+						console.log(res.data);
+						if (res.data.code == "FAIL") {
+							this.$u.toast(res.data.msg);
+							return
+						}
+						let preOrderMsg = res.data.data
+						this.$store.commit('updatePreOrderMsg', preOrderMsg)
+						uni.navigateBack()
+					});
+				}
+
 			},
 			chooseAddress(item) {
 				if (this.fromPage === "goodsDetail") {
@@ -111,10 +131,10 @@
 					getCurrentPages()[getCurrentPages().length - 2].$vm.selectedAddress=item
 					uni.navigateBack();
 					return
-				} else if (this.fromPage != "confirmOrder") {
+				} else if (this.fromPage != "confirmOrder"&&this.fromPage != "pifaConfirmOrder") {
 					return
 				}
-				this.upDateOrder(item.id)
+				this.upDateOrder(item.id,item)
 			},
 			setDefault(index, id) {
 				uni.showModal({

@@ -51,7 +51,7 @@
 									</view>
 								</view>
 
-							
+
 								<view class="box bg-white">
 									<view class="item flex justify-between" @tap="specModel(true)">
 										<view class="span">规格</view>
@@ -60,12 +60,14 @@
 									</view>
 									<!-- 	<picker class="" :value="selectedRegion" :range="regionPicker" mode="multiSelector"
 										@columnchange="columnchange" @change="selectedRegionChange"> -->
-									<view v-if="needStock" class="item flex justify-between" @click="defaultAddressMakeFun">
+									<view v-if="needStock" class="item flex justify-between"
+										@click="defaultAddressMakeFun">
 										<view class="span">地址</view>
 										<view v-if="selectedAddress" class="text-hidden flex-sub txt">
 											<!-- {{selectedAddress.province}}-{{selectedAddress.city}}-{{selectedAddress.district}} -->
 											{{selectedAddress.province}}-{{selectedAddress.city}}-{{selectedAddress.district}}
-											<text v-if="jcookStockState===1" style="margin-left: 5px;">有货</text>
+											<text v-if="jcookStockState==null" style="margin-left: 5px;"></text>
+											<text v-else-if="jcookStockState===1" style="margin-left: 5px;">有货</text>
 											<text v-else style="margin-left: 5px;">无货</text>
 										</view>
 										<view v-else class="text-hidden flex-sub txt">请填写默认地址</view>
@@ -73,7 +75,7 @@
 									</view>
 
 								</view>
-					
+
 								<view class="box bg-white" v-if="goodsDetail.isImport && goodsDetail.storehouse">
 									<view class="item flex justify-between">
 										<view class="span">送至</view>
@@ -225,17 +227,15 @@
 								<view class="" style="height: 100rpx;"></view>
 								<view class="detail-bottom bg-white shadow flex justify-between align-center">
 									<view class="flex text-center flex-sub justify-around">
-										<view @tap="gotoCart()"
-											style="width: 100rpx;text-align: center;">
-										<!-- 	<image :src="IMAGE_URL+'/wxapp/uni-program/wholesale_car.png'"
+										<view @tap="gotoCart()" style="width: 100rpx;text-align: center;">
+											<!-- 	<image :src="IMAGE_URL+'/wxapp/uni-program/wholesale_car.png'"
 												mode="widthFix" style="width: 48rpx;height:48rpx;"></image> -->
-												<text class="cuIcon-cartfill" style="font-size: 48rpx;"></text>
+											<text class="cuIcon-cartfill" style="font-size: 48rpx;"></text>
 											<!-- <text class="cuIcon-badge"
 												v-if="shoppingTrolleyCount>0">{{shoppingTrolleyCount}}</text> -->
 											<view style="font-size: 20rpx;">进货单</view>
 										</view>
-										<view @tap="backHome()"
-											style="width: 100rpx;text-align: center;">
+										<view @tap="backHome()" style="width: 100rpx;text-align: center;">
 											<text class="cuIcon-home" style="font-size: 48rpx;"></text>
 											<view style="font-size: 20rpx;">批发首页</view>
 										</view>
@@ -245,7 +245,7 @@
 											<view class="flex-sub cannot-buy">该商品已售罄</view>
 										</template>
 										<template v-else>
-									
+
 											<button v-if="isLogin" class="btn-item left-btn" @tap="toBuy">
 												<view>加入进货单</view>
 											</button>
@@ -351,7 +351,7 @@
 
 					</view>
 				</view>
-				
+
 			</view>
 			<view class="tip-btn text-center text-white">
 				<view @tap="parameterModel(false)">完成</view>
@@ -392,7 +392,8 @@
 								@tap="checkSku(index1)"></text>
 							<view style="width: 20rpx;"></view>
 
-							<view style="width: 100%; display: flex;align-items: center;flex-direction: row;background-color: #f6f6f6;padding: 20rpx;border-radius: 5rpx;justify-content: space-between;">
+							<view
+								style="width: 100%; display: flex;align-items: center;flex-direction: row;background-color: #f6f6f6;padding: 20rpx;border-radius: 5rpx;justify-content: space-between;">
 								<view style="display: flex;flex-direction: column;">
 									<text style="color: #666666;font-size: 24rpx;">规格：{{sku.name}}</text>
 
@@ -406,7 +407,8 @@
 								</view>
 								<view>
 									<u-number-box v-model="sku.selectNum" disabled-input=true :min="sku.min"
-										:step="sku.limit" :input-width="72" :size="24" bg-color=#fff @change="changeNum(sku.selectNum,sku.skuChecked)">
+										:step="sku.limit" :input-width="72" :size="24" bg-color=#fff
+										@change="changeNum(sku.selectNum,sku.skuChecked)">
 									</u-number-box>
 								</view>
 
@@ -416,7 +418,7 @@
 						</view>
 					</view>
 				</view>
-	
+
 				<view class="goods-num-box flex align-center justify-between" v-if="checkedSkuMsg!=null">
 					<view style="color: #666666;font-size: 24rpx;">已选{{checkedSkuMsg.selectNum}}件</view>
 					<view style="color: #111111;font-size: 24rpx;">商品金额：
@@ -558,12 +560,18 @@
 				originPrice: '',
 				price: '',
 				min: 0,
-				needStock:false,
+				needStock: true,
 			}
 		},
 		components: {
 			dynamics
 		},
+		onShow() {
+			if (this.needStock && this.sku_id != 0&&!this.selectedAddress) {
+				console.log('获取地址后刷新')
+				this.jcookStockCheck()
+			}
+		}, 
 		onLoad(options) {
 			// var num = uni.getStorageSync('num');
 			// console.log('数量',num)
@@ -635,28 +643,28 @@
 			console.log(uni.getStorageSync("userInfo").id)
 		},
 		methods: {
-			
-			
-			
-			backHome(){
+
+
+
+			backHome() {
 				uni.switchTab({
-					url:'/pages/index/index'
+					url: '/pages/index/index'
 				})
 			},
-			
-			gotoCart(){
+
+			gotoCart() {
 				uni.switchTab({
-					url:'/pages/cart/cart'
+					url: '/pages/cart/cart'
 				})
 			},
-			
-			changeNum(num,select) {
+
+			changeNum(num, select) {
 				console.log(num)
-				if(this.checkedSkuMsg!=null&&select){
+				if (this.checkedSkuMsg != null && select) {
 					this.checkedSkuMsg.selectNum = num
 					this.$forceUpdate()
 				}
-				
+
 			},
 
 			checkSku(index) {
@@ -675,6 +683,9 @@
 					this.checkedSkuMsg = null;
 					this.checkedSku = "请选择规格"
 					this.sku_id = 0
+				}
+				if (this.needStock && this.sku_id != 0) {
+					this.jcookStockCheck()
 				}
 
 				this.$forceUpdate()
@@ -820,6 +831,7 @@
 					quantity: 1
 				}
 				this.$u.post("/api/v2/app/jcook/stock", param).then(res => {
+					console.log(res)
 					if (res.data.msg === '该商品不需要调用') {
 						this.jcookStockState = 1
 					} else {
@@ -900,10 +912,7 @@
 				// this.showTip = false
 			},
 			toBuy() {
-				this.$u.toast(this.goodsDetail.sku[0].coupon + '元优惠券已领取')
 				this.specModel(true)
-
-
 				if (!uni.getStorageSync("auth").token) {
 					this.$u.toast("游客无法使用该功能，请登录");
 					let pages = getCurrentPages();
@@ -923,7 +932,18 @@
 
 			},
 			specModel(flag) {
-				this.showSpecs = flag
+				if (this.needStock) {
+					if (!this.selectedAddress) {
+
+						this.defaultAddressMakeFun()
+						this.$u.toast("请先选择地址");
+					} else {
+						this.showSpecs = flag
+					}
+				} else {
+					this.showSpecs = flag
+				}
+
 			},
 			// 获取商品详情信息
 			getGoodsDetail() {
@@ -1007,7 +1027,7 @@
 				this.skuStoreCount = this.goodsDetail.sku[0].inventory
 				this.checkedSku = "请选择规格"
 				this.miniSku = this.goodsDetail.sku[0]
-				
+
 				var minPrice = this.goodsDetail.price.min.sale_price
 				var maxPrice = this.goodsDetail.price.max.sale_price
 
@@ -1066,12 +1086,13 @@
 						this.miniSku = this.goodsDetail.sku[i]
 					}
 				}
-				
-				if(this.goodsDetail.vendorId==1800||this.goodsDetail.vendorId==2000||this.goodsDetail.vendorId==3000){
+
+				if (this.goodsDetail.vendorId == 1800 || this.goodsDetail.vendorId == 2000 || this.goodsDetail.vendorId ==
+					3000) {
 					this.needStock = true
 				}
 				console.log(this.miniSku)
-		
+
 			},
 
 
@@ -1094,22 +1115,20 @@
 
 			//添加购物车 判断是否登录
 			addcart() {
-			
+
 				if (uni.getStorageSync("auth").token) {
 					console.log(this.sku_id)
 					console.log(this.checkedSkuMsg)
-					if (this.checkedSkuMsg==null) {
+					if (this.checkedSkuMsg == null) {
 						this.$u.toast("请选择商品规格")
 						return
 					}
 					this.$u.post('/api/v2/app/shop_cart/add', {
 						user_id: uni.getStorageSync("userInfo").id,
-						sku_list:[
-							{
-								sku_id:this.sku_id,
-								quantity:this.checkedSkuMsg.selectNum
-							}
-						]
+						sku_list: [{
+							sku_id: this.sku_id,
+							quantity: this.checkedSkuMsg.selectNum
+						}]
 					}).then(res => {
 						console.log(res.data);
 						if (res.data.code == "FAIL") {
@@ -1144,35 +1163,47 @@
 			},
 			//创建预购单 判断是否登录
 			createOrder() {
+				let roleLevel = this.$store.state.userBrief.level
+				let isOffline = this.$store.state.userBrief.is_offline
+				let isEnterprise = this.$store.state.userBrief.is_enterprise
+				if(!((roleLevel==2&&isOffline)||(roleLevel==10))){
+					uni.showModal({
+						title: '提示',
+						content: '批发下单需开通VIP店铺',
+						success: (res) => {
+							if (res.confirm) {
+								console.log('用户点击确定');
+								uni.redirectTo({
+									url: "/pages/vip/vipBuy"
+								})
+							} else if (res.cancel) {
+								console.log('用户点击取消');
+							}
+						}
+					});
+					return
+				}
 				if (!this.sku_id) {
+					
 					this.$u.toast("请选择商品规格")
 					return
-				} else if (this.jcookStockState != 1) {
-					this.$u.toast("当前无货")
-					if (this.sku_id != '' && !this.selectedAddress) {
-						this.$u.toast("请先选择地址")
-						setTimeout(() => {
-							uni.navigateTo({
-								url: '/packageA/address/index?fromPage=goodsDetail'
-							})
-						}, 500)
-
-						return
-					}
+				} else {
+					if (this.needStock) { //需要判断是否有货的商品类型
+						if(this.jcookStockState != 1){
+							this.$u.toast("当前无货")
+							return
+						}
+					} 
 				}
-				// if (!this.sku_id) {
-				// 	this.$u.toast("请选择商品规格")
-				// 	return
-				// } else if (this.jcookStockState != 1) {
-				// 	this.$u.toast("当前无货")
-				// 	return
-				// }
+				
+				var skuList = [{
+					"sku_id": this.sku_id,
+					"quantity": this.checkedSkuMsg.selectNum
+				}]
 				let sendData = {
-					UserID: uni.getStorageSync("userInfo").id,
-					SkuID: this.sku_id,
-					SkuName: this.selectName.join('+'),
-					Quantity: this.buyNum,
-					// addressId:this.selectedAddress.id
+					user_id: uni.getStorageSync("userInfo").id,
+					sku_list:skuList,
+					channel:0
 				}
 				if (uni.getStorageSync("auth").token) {
 					if (this.parentId) {
@@ -1184,19 +1215,19 @@
 					}
 					// 此时创建普通订单预览
 					console.log(sendData);
-					this.$u.post('/api/v1/order_preview/create', sendData).then(res => {
+					this.$u.post('/api/v2/app/order/preview', sendData).then(res => {
 						if (res.data.code == "FAIL") {
 							this.$u.toast(res.data.msg);
 							return
 						}
 						let preViewMsg = res.data.data
-						preViewMsg.isImport = this.goodsDetail.isImport
+						
 						this.$store.commit('updatePreOrderMsg', preViewMsg);
 
 						console.log("updatePreOrderMsg", res.data.data)
-						// return
+						
 						uni.navigateTo({
-							url: "/pages/confirmOrder/confirmOrder"
+							url: "/package_pifa/pifaConfirmOrder/pifaConfirmOrder"
 						})
 						this.specModel(false)
 					});

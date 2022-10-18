@@ -10,7 +10,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="records-box bg-white">
+		<view v-else class="records-box bg-white">
 			<view class="records-item flex justify-between align-center" v-for="(item,index) in records" :key="index" @tap="toDetail(item.id)">
 				<view class="text-black">
 					<view style="font-size: 32rpx;color: #333333;">充值 ￥{{item.amount}}
@@ -83,7 +83,15 @@
 						this.$u.toast(res.data.msg);
 						return
 					}
-					this.records =  res.data.data
+					let list = res.data.data.list
+					if (list.length < this.limit) {
+						this.stopLoad = true
+						this.loadStatus = "nomore"
+							this.records.push(...list)
+							return
+					}
+					this.records.push(...list)
+					console.log(this.records)
 				});
 			}
 		}

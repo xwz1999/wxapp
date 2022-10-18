@@ -12,6 +12,7 @@ Vue.prototype.$store = store
 //全局注册自定义组件
 import goodsList from 'components/goodsList.vue'
 import orderGoods from 'components/orderGoods.vue'
+import wholesaleOrderGoods from 'components/wholesaleOrderGoods.vue'
 import largeImageList from 'components/largeImageList.vue'
 import tipModel from 'components/userTipModel.vue'
 import Progress from 'components/Progress.vue'
@@ -24,6 +25,7 @@ Vue.component('Progress', Progress)
 Vue.component('tip-model', tipModel)
 Vue.component('goods-list', goodsList)
 Vue.component('order-goods', orderGoods)
+Vue.component('wholesale-order-goods', wholesaleOrderGoods)
 Vue.component('large-image-list', largeImageList)
 // 测试域名
 Vue.prototype.BASE_URL = "https://testapi.reecook.cn"

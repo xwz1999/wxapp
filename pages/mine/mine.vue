@@ -204,7 +204,7 @@
 								<view class="flex more">
 									<text
 										style="font-size: 34rpx;color: #333333;line-height:80rpx;">{{profit.Total|toFixed(2)}}</text>
-									<text class="cuIcon-right"></text>
+									<!-- <text class="cuIcon-right"></text> -->
 								</view>
 							</navigator>
 						</view>
@@ -572,7 +572,7 @@
 							<view class="flex more">查看明细<text class="cuIcon-right"></text></view>
 						</navigator>
 						
-						<navigator v-else url="/pages/orders/orders" hover-class="none" class="subtitle flex justify-between">
+						<navigator v-else url="../../package_pifa/pifaOrders/pifaOrders" hover-class="none" class="subtitle flex justify-between">
 							<view>批发订单
 								<!-- <text style="font-weight: normal;font-size: 26rpx;">(自购)</text> -->
 							</view>
@@ -595,7 +595,7 @@
 							<view v-else class="order-con flex justify-around">
 								<view  class="order-item flex flex-direction align-center " style="width: 160rpx;"
 									v-for="(item,index) in pifaOrderStatus" :key="index" @tap="toOrders(index)">
-									<image :src="item.icon" style="height: 76rpx;margin-bottom: 10rpx;width: auto;"
+									<image :src="item.icon" style="height: 70rpx;margin-bottom: 10rpx;width: auto;"
 										mode="heightFix"></image>
 									<view style="font-size: 24rpx;color: #666;">{{item.text}}</view>
 									<view class="order-count" v-if="item.count">{{item.count}}</view>
@@ -603,6 +603,20 @@
 							</view>
 						
 						</view>
+					</view>
+					
+					
+					<view class="box bg-white" style="padding: 20rpx;display: flex;align-items: center;" @tap="toPush()">
+						<image :src="IMAGE_URL+'/wxapp/withdraw/user_extension_bg.png'" style = "width:100%" mode="widthFix" >
+						</image>
+						<view style="position: absolute;display: flex;flex-direction: column;left: 60rpx;margin-bottom: 70rpx;">
+							<view style="color: #D5101A;font-size: 32rpx;">VIP店推广<text style="color: #D5101A;font-size: 24rpx;opacity: 0.5;margin-left: 20rpx;">0元创业·轻松赚</text></view>
+							
+						</view>
+						<view style="position: absolute;display: flex;flex-direction: column;left: 60rpx;margin-top: 70rpx;">
+							<view style="padding: 8rpx 16rpx;background-color: #E21830;color: #fff;min-width: 50rpx;border-radius: 10rpx;">立即推广 ></view>
+						</view>
+						
 					</view>
 					
 					<view class="box bg-white">
@@ -676,6 +690,7 @@
 	export default {
 		data() {
 			return {
+				workGroupWid: "2021042017495732a907d876a3d41d580bb50d7b6a1ccf1",
 				// 开启下拉
 				refresherEnabled: true,
 				//
@@ -985,7 +1000,11 @@
 					url: "/packageA/withdrawHome/withdrawHome?isEnterprise" + this.isEnterprise
 				})
 			},
-			
+			toPush(){
+				uni.navigateTo({
+					url: "/pages/vipPush/vipPush"
+				})
+			},
 			deposit(){
 				uni.navigateTo({
 					url: "/package_pifa/advanceDeposit/advanceDeposit?isEnterprise" + this.isEnterprise
