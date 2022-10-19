@@ -498,9 +498,10 @@
 												style="font-size: 24rpx;font-weight: 400; padding-left: 8rpx;"></text>
 										</view>
 									</view>
-									<!-- 		<navigator url="/packageA/myIncome/shopSubsidy" :hover-class="false" class="flex more">
-										图表分析<text class="cuIcon-right"></text>
-									</navigator> -->
+											<navigator url="/package_pifa/pifaTable/pifaTable" :hover-class="false" class="flex more">
+												<view style="width: 100rpx;background-color: transparent;"><text class="cuIcon-right" style="position: absolute;right: 20rpx;"></text></view>
+										
+									</navigator>
 								</view>
 								<view class="money-box flex justify-between align-center">
 									<view :data-incomeType="5">
@@ -606,7 +607,7 @@
 					</view>
 					
 					
-					<view class="box bg-white" style="padding: 20rpx;display: flex;align-items: center;" @tap="toPush()">
+					<view v-if="roleLevel==10" class="box bg-white" style="padding: 20rpx;display: flex;align-items: center;" @tap="toPush()">
 						<image :src="IMAGE_URL+'/wxapp/withdraw/user_extension_bg.png'" style = "width:100%" mode="widthFix" >
 						</image>
 						<view style="position: absolute;display: flex;flex-direction: column;left: 60rpx;margin-bottom: 70rpx;">

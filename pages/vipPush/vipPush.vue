@@ -14,10 +14,11 @@
 							</view>
 							<view style="width: 32rpx;"></view>
 							<view>
-								<text style="color: #D5101A;font-size: 40rpx;font-weight: bold;">6</text>
+								<text style="color: #D5101A;font-size: 40rpx;font-weight: bold;">{{count}}</text>
 							</view>
 							<view style="margin-left: 200rpx;">
-								<view style="padding: 8rpx 16rpx;background-color: #E21830;color: #fff;min-width: 50rpx;border-radius:5rpx;">推广 ></view>
+								<view style="padding: 8rpx 16rpx;background-color: #E21830;color: #fff;min-width: 50rpx;border-radius:5rpx;">推广></view>
+								<button plain="true" open-type="share" style="position: absolute;left: 300rpx;right: 0;top:0;background-color: transparent;color: transparent;border:0">11</button>
 							</view>
 						</view>
 						<image :src="IMAGE_URL+'/wxapp/withdraw/vip_push_line.png'" style="width: 80%;margin-left:32rpx;margin-right: 50rpx;" mode="widthFix"></image>
@@ -27,7 +28,7 @@
 							</view>
 							<view style="width: 32rpx;"></view>
 							<view style="">
-								<text style="color: #D5101A;font-size: 40rpx;font-weight: bold;">¥40000</text>
+								<text style="color: #D5101A;font-size: 40rpx;font-weight: bold;">¥{{amount|toFixed(2)}}</text>
 							</view>
 						</view>
 					</view>
@@ -37,7 +38,7 @@
 
 			</view>
 			
-			<view style="display: flex;flex-direction: column;background-color: #fff;border-radius: 20rpx;position: absolute;top: 400rpx;z-index: 10;"> 
+			<view style="display: flex;flex-direction: column;background-color: #fff;border-radius: 20rpx;position: absolute;top: 400rpx;z-index: 10;width: 100%;height: 100%;"> 
 				
 					<view class="time-box flex justify-between">
 				
@@ -50,9 +51,9 @@
 				
 				
 				
-				<scroll-view scroll-y="true" style="height: 0;" class="flex-sub" refresher-enabled="true" enable-flex="true"
+				<scroll-view scroll-y="true" style="height: 0;width: 100%;padding: 0 24rpx;" class="flex-sub" refresher-enabled="true" enable-flex="true"
 					@refresherrestore="onRestore" @refresherrefresh="onRefresh" :refresher-triggered="triggered">
-					<view v-if="balanceList.length==0">
+					<view v-if="profitList.length==0">
 						<view class="flex flex-direction  align-center" style="width: 100vw;height:80vh;">
 							<image :src="IMAGE_URL+'/wxapp/null01.png'" style="width: 300rpx;margin-top: 200rpx;"
 								mode="widthFix"></image>
@@ -60,33 +61,44 @@
 							</view>
 						</view>
 					</view>
+					<view style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;background-color: #F6F6F6;padding:24rpx;">
+						<view style="width: 200rpx;">
+							<text style="color: #333;font-size: 28rpx;">用户昵称</text>
+						</view>
+						<view style="width: 260rpx;">
+							<text style="color: #333;font-size: 28rpx;">手机号</text>
+						</view>
+						<view style="width: 200rpx;">
+							<text style="color: #333;font-size: 28rpx;">权益卡</text>
+						</view>
+						<view style="width: 190rpx;">
+							<text style="color: #333;font-size: 28rpx;">金额</text>
+						</view>
+					
+					</view>
 					<view class="item"
 						style="display: flex;flex-direction: column;padding-top: 32rpx;padding-left: 24rpx;padding-right: 24rpx;"
-						v-for="item in balanceList">
-						<view style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-								<view style="display: flex;flex-direction: row;align-items: center;">
-									<image :src="getImage(item.kind)" style="width: 88rpx;height: 88rpx;" mode="widthFix">
-									</image>
-									<view style="width: 24rpx;"></view>
-									<view style="display: flex;flex-direction: column;">
-										<view>
-											<text>
-												{{_getTitle(item.kind)}}
-											</text>
-											<text>{{item.orderId!=0?item.orderId:""}}</text>
-										</view>
-										<view style="height:20rpx;"></view>
-										<text>{{item.createdAt}}</text>
-									</view>
+						v-for="item in profitList">
+							<view style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+								<view style="width: 200rpx;background-color: white;">
+									<text style="color: #666;font-size: 24rpx;">{{item.name}}</text>
 								</view>
-								<text v-if="item.amount>0" style="color: #D5101A;font-size: 32rpx;margin-right: 24rpx;">{{item.amount>0?('+'+item.amount):item.amount}}</text>
-								<text v-else style="color: #333333;font-size: 32rpx;margin-right: 24rpx;">{{item.amount>0?('+'+item.amount):item.amount}}</text>
+								<view style="width: 260rpx;background-color: white;">
+									<text style="color: #666;font-size: 24rpx;">{{item.mobile}}</text>
+								</view>
+								<view style="width: 200rpx;background-color: white;">
+									<text style="color: #666;font-size: 24rpx;">{{item.int}}</text>
+								</view>
+								<view style="width: 190rpx;background-color: white">
+									<text style="color: #666;font-size: 24rpx;">¥{{item.amount|toFixed(2)}}</text>
+								</view>
+							
 							</view>
 						<view
-							style="background-color: #eee;height: 1rpx;width: 100%;margin-top: 32rpx;margin-left: 100rpx;">
+							style="background-color: #eee;height: 1rpx;margin-top: 32rpx;">
 						</view>
 					</view>
-					<u-loadmore :status="loadStatus" margin-top="10" margin-bottom="20"/>
+				
 				</scroll-view>
 				
 			</view>
@@ -107,19 +119,21 @@
 				IMAGE_URL: this.IMAGE_URL,
 				triggered: false,
 				isEnterprise: false,
-				balanceDetail: null,
+				
 				end_time: "",
 				time: '',
 		
-				balanceList: [],
+				profitList: [],
 				deposit:0,
 				allDeposit:0,
-				end:'',
 				start:'',
 				loadStatus:'loadmore',
 				stopLoad: false,
 				page: 0,
 				limit:10,
+				userIncomeDataModel:null,
+				count:0,
+				amount:0,
 			}
 		},
 		onLoad(option) {
@@ -138,6 +152,28 @@
 			this.getDetail()
 		},
 		methods: {
+			onShareAppMessage(res) {
+				let shareObj = {
+					title: "瑞库客VIP店铺权益卡｜尊享底价批发，每天低至一块钱！",
+					path: 'pages/vip/vipBuy?type=share&invite='+ this.$store.state.invitationNo,
+					imageUrl: this.IMAGE_URL+'/wxapp/withdraw/share_bg.jpg',
+				}
+				console.log(shareObj)
+				return shareObj
+			},
+			getBenefit() {
+				this.$u.post('/api/v2/app/user/profit', {
+				}).then(res => {
+					if (res.data.code == "FAIL") {
+						this.$u.toast(res.data.msg);
+						return
+					}
+					this.userIncomeDataModel = res.data.data
+					this.count = this.userIncomeDataModel.count10
+					this.amount = this.userIncomeDataModel.amount10
+					console.log(this.userIncomeDataModel)
+				});
+			},
 			onRefresh() {
 				if (this._freshing) return;
 				this.triggered = 'restore';
@@ -147,9 +183,10 @@
 				}, 1000)
 				this.page  = 0
 				this.stopLoad = false
-				this.balanceList = []
-				
+				this.profitList = []
+				this.getBenefit()
 				this.getDetail()
+				
 			
 			},
 			//开始结束下拉的函数
@@ -185,19 +222,9 @@
 				if (M < 10) {
 					M = '0' + M
 				}
-				this.start = Y + "-" + M + "-"+D+"T00:00:00.000"
-				
-				let Y1 = today.getFullYear()
-				let D1 = '01'
-				let M1 = today.getMonth() + 2
-				if (M1 === 1) {
-					M1 = 12
-					Y1 = Y1 - 1
-				}
-				if (M1 < 10) {
-					M1 = '0' + M1
-				}
-				this.end = Y1 + "-" + M1 + "-"+D1+"T00:00:00.000"
+				this.start = Y + "-" + M 
+				console.log(this.start)
+		
 				
 			},
 			chooseTime(e) {
@@ -216,37 +243,11 @@
 				if (M < 10) {
 					M = '0' + M
 				}
-				this.start = Y + "-" + M + "-"+D+"T00:00:00.000"
+				this.start = Y + "-" + M 
 				console.log(this.start)
 				
-				let Y1 = day.getFullYear()
-				let D1 = '01'
-				let M1 = day.getMonth() + 2
-				if (M1 === 1) {
-					M1 = 12
-					Y1 = Y1 - 1
-				}
-				if (M1 < 10) {
-					M1 = '0' + M1
-				}
-				this.end = Y1 + "-" + M1 + "-"+D1+"T00:00:00.000"
-				console.log(this.end)
+		
 				this.onRefresh()
-			},
-			toWithdraw() {
-				uni.navigateTo({
-					url: "/packageA/withdraw/withdraw"
-				})
-			},
-			toWithdrawDetail() {
-				uni.navigateTo({
-					url: "/packageA/withdrawDetail/withdrawDetail"
-				})
-			},
-			toWithdrawRecord() {
-				uni.navigateTo({
-					url: "/packageA/withdrawRecord/withdrawRecord"
-				})
 			},
 			getDetail() {
 	
@@ -255,55 +256,44 @@
 				}
 				this.loadStatus = "loading"
 				this.page++
-				this.$u.post('/api/v2/app/company/record/list', {
-					page: this.page,
-					limit: this.limit,
-					start: this.start,
-					end:this.end,
-					kind:this.statusNum
+				this.$u.post('/api/v2/app/user/profit/card', {
+					date:this.start
 				}).then(res => {
+					console.log(res.data)
 					if (res.data.code == "FAIL") {
 						this.$u.toast(res.data.msg);
 						return
 					}
-					let list = res.data.data.list
-					if (list.length < this.limit) {
-						this.stopLoad = true
-						this.loadStatus = "nomore"
-							this.balanceList.push(...list)
-							return
+					if(res.data.data!=null){
+						this.profitList = res.data.data
 					}
-					this.balanceList.push(...list)
-					console.log(this.balanceList)
+					// this.profitList = [
+					// 	{
+					// 		name:"cc",
+					// 		mobile:"15938093845",
+					// 		int:'月卡',
+					// 		amount:890
+					// 	},
+					// 	{
+					// 		name:"bb",
+					// 		mobile:"15938093845",
+					// 		int:'季卡',
+					// 		amount:1890
+					// 	},
+					// 	{
+					// 		name:"bb",
+					// 		mobile:"15938093845",
+					// 		int:'年卡',
+					// 		amount:2890
+					// 	}
+					// ]
+					
+
+					console.log(this.profitList)
 				});
 			},
 
-			_getTitle(type) {
-				switch (type) {
-					case 1:
-						return '订单支付';
-					case 2:
-						return '订单取消';
-					case 3:
-						return '预存款充值';
-					default:
-						return '订单支付';
 
-				}
-			},
-
-			getImage(type) {
-				switch (type) {
-					case 1:
-						return this.IMAGE_URL + '/wxapp/mine/ic_recharge_order_pay.png';
-					case 2:
-						return this.IMAGE_URL + '/wxapp/mine/ic_recharge_order_cancle.png';
-					case 3:
-						return this.IMAGE_URL + '/wxapp/mine/ic_recharge_f.png';
-					default:
-						return this.IMAGE_URL + '/wxapp/mine/ic_recharge_order_pay.png';
-				}
-			}
 		}
 	}
 </script>
@@ -375,6 +365,6 @@
 
 	.item {
 		background-color: white;
-		
+		width: 100%;
 	}
 </style>

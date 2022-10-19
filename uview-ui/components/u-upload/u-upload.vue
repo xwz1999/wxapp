@@ -19,7 +19,8 @@
 					opacity:0.7
 				}"
 			>
-				<u-icon class="u-icon" :name="delIcon" style="padding-left:40rpx" size="30rpx" :color="delColor"></u-icon>
+				<u-icon  v-if="padding" class="u-icon" :name="delIcon" style="padding-left:40rpx" size="30rpx" :color="delColor"></u-icon>
+				<u-icon  v-else class="u-icon" :name="delIcon" style="padding-left:0rpx" size="30rpx" :color="delColor"></u-icon>
 			</view>
 			<u-line-progress
 				v-if="showProgress && item.progress > 0 && !item.error"
@@ -44,7 +45,8 @@
 					height: $u.addUnit(height)
 				}"
 			>
-				<u-icon name="plus"  class="u-add-btn" style="padding-left:40rpx"  size="40" ></u-icon>
+				<u-icon v-if="padding" name="plus"  class="u-add-btn"  style="padding-left:40rpx"  size="40" ></u-icon>
+				<u-icon v-else name="plus"  class="u-add-btn"  style="padding-left:0rpx"  size="40" ></u-icon>
 				<view class="u-add-tips">{{ uploadText }}</view>
 			</view>
 		</view>
@@ -97,6 +99,10 @@ export default {
 		//是否显示组件自带的图片预览功能
 		showUploadList: {
 			type: Boolean,
+			default: true
+		},
+		padding:{
+			type:Boolean,
 			default: true
 		},
 		// 后端地址

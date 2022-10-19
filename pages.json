@@ -936,15 +936,6 @@
                 
                 }
                 ,{
-                    "path" : "deposit/deposit",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "预存款充值",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
                     "path" : "depositRecord/depositRecord",
                     "style" :                                                                                    
                 {
@@ -1050,6 +1041,80 @@
                     "style" :                                                                                    
                 {
                     "navigationBarTitleText": "申请提现",
+                    "enablePullDownRefresh": false,
+                    "navigationBarBackgroundColor" : "#3A3842",
+                    "navigationBarTextStyle" : "white"
+                }
+                
+                }
+                ,{
+                    "path" : "pifaTable/pifaTable",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false,
+					"navigationStyle" : "custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pifaTableMonth/pifaTableMonth",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false,
+					"navigationStyle" : "custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pifaTableDay/pifaTableDay",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false,
+					"navigationStyle" : "custom"
+                }
+                
+                }
+                ,{
+                    "path" : "depositRecharge/depositRecharge",
+                    "style" :                                                                                    
+                {
+                   "navigationBarTitleText": "预存款充值",
+                   "enablePullDownRefresh": false,
+                   "navigationBarBackgroundColor" : "#3A3842",
+                   "navigationBarTextStyle" : "white"
+                }
+                
+                }
+                ,{
+                    "path" : "depositRechargeSecond/depositRechargeSecond",
+                    "style" :                                                                                    
+                {
+					"navigationBarTitleText": "预存款充值",
+                   "enablePullDownRefresh": false,
+                   "navigationBarBackgroundColor" : "#3A3842",
+                   "navigationBarTextStyle" : "white"
+                }
+                
+                }
+                ,{
+                    "path" : "depositRechargeThird/depositRechargeThird",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "预存款充值",
+                    "enablePullDownRefresh": false,
+                    "navigationBarBackgroundColor" : "#3A3842",
+                    "navigationBarTextStyle" : "white"
+                }
+                
+                }
+                ,{
+                    "path" : "depositRechargeResult/depositRechargeResult",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "预存款充值",
                     "enablePullDownRefresh": false,
                     "navigationBarBackgroundColor" : "#3A3842",
                     "navigationBarTextStyle" : "white"

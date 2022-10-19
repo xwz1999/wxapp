@@ -66,7 +66,7 @@
 		methods: {
 			toDeposit() {
 				uni.navigateTo({
-					url: "/package_pifa/deposit/deposit"
+					url: "/package_pifa/depositRecharge/depositRecharge"
 				})
 			},
 			toDepositDetail() {

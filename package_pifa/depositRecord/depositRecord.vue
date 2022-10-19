@@ -11,14 +11,15 @@
 			</view>
 		</view>
 		<view v-else class="records-box bg-white">
-			<view class="records-item flex justify-between align-center" v-for="(item,index) in records" :key="index" @tap="toDetail(item.id)">
+			<view class="records-item flex justify-between align-center" v-for="(item,index) in records" :key="index" @tap="toDetail(item)">
 				<view class="text-black">
 					<view style="font-size: 32rpx;color: #333333;">充值 ￥{{item.amount}}
 					</view>
 					<!-- <view style="font-size: 24rpx;color: #333333;">税费{{item.tax_fee}}元,实际到帐
 						<text style="font-size: 24rpx;color: #D5101A;">{{item.actual_amount}}元</text>
 					</view> -->
-					<view style="font-size: 24rpx;color: #AAAAAA;">{{item.created_at}}</view>
+					<view style="height: 10rpx;"></view>
+					<view style="font-size: 24rpx;color: #AAAAAA;">{{getText(item.created_at)}}</view>
 				</view>
 				<view class="">{{item.state==1?'待审核':item.state==2?'充值成功':item.state==99?'已驳回':''}}<text class="cuIcon-right"></text>	
 				</view>
@@ -47,6 +48,13 @@
 			this._freshing = false;
 		},
 		methods:{
+			getText(time){
+				let time1 = time.split('T')[0]
+				let time2 = time.split('T')[1].split('+')[0]
+				let str  = time1+' '+time2
+				console.log(str)
+				return str
+			},
 			onRefresh() {
 				if (this._freshing) return;
 				this.triggered = 'restore';
@@ -63,10 +71,23 @@
 			onRestore() {
 				this.triggered = 'restore'; // 关闭动画
 			},
-			toDetail(id){
-				// uni.navigateTo({
-				// 	url:"/packageA/withdrawResult/withdrawResult?id="+id
-				// })
+			toDetail(item){
+				if(item.state!=1){
+					uni.navigateTo({
+						url: "/package_pifa/depositRechargeResult/depositRechargeResult?amount=" +
+							item.amount +'&time=' + item.created_at + '&licenseImages=' + item.attach 
+							+ '&applyTime=' + item.applyTime+ '&state=' + item.state + '&reason=' + item.reason
+							
+					})
+				}else{
+					uni.navigateTo({
+						url: "/package_pifa/depositRechargeResult/depositRechargeResult?amount=" +
+							item.amount +'&time=' + item.created_at + '&licenseImages=' + item.attach 
+							+ '&state=' + item.state + '&reason=' + item.reason
+							
+					})
+				}
+				
 			},
 			getRecords(){
 				if (this.stopLoad) {
@@ -74,7 +95,7 @@
 				}
 				this.loadStatus = "loading"
 				this.page++
-				this.$u.post('/api/v2/company/deposit/list', {
+				this.$u.post('/api/v2/app/company/deposit/list', {
 					page:this.page,
 					limit: this.limit,
 				}).then(res => {
