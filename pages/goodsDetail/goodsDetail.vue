@@ -31,7 +31,7 @@
 									</swiper> -->
 									<!-- 		<view class="dots-box"><text style="font-size: 32rpx;">{{current+1}}</text>/{{goodsDetail.mainPhotos.length}}</view> -->
 								</view>
-								<view class="banner-con bg-img"
+								<view v-if="miniSku!=null" class="banner-con bg-img"
 									:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/goods_price_view_bg.png)'">
 									<view class="pic-con">
 										<view class="flex quan-top">
@@ -52,20 +52,28 @@
 													~{{goodsDetail.price.max.discountPrice}}
 												</template> -->
 											</text>
-
-											<view style="padding-left: 20rpx;padding-right: 20rpx;margin-left: 20rpx;"
+											
+											<view v-if="miniSku.commission>0" style="padding-left: 20rpx;padding-right: 20rpx;margin-left: 20rpx;"
 												:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/goods_price_bg.png);background-size: 100% 100%;'">
 												<text
 													style="color: #ED3D19;font-size: 28rpx;padding-top: 2rpx;">分享赚¥{{miniSku.commission}}</text>
 											</view>
+											
 
 										</view>
-
-										<view class="price-box" style="font-size: 28rpx;padding-left: 20rpx;"
-											:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/goods_price_detail_bg.png);background-size: 100% 100%;'">
-											<text
-												style="color: #ffffff;font-size: 24rpx;">折后价={{miniSku.originalPrice}}(官方指导价)-¥{{miniSku.coupon}}(优惠券)-¥{{miniSku.commission}}(折扣额)</text>
-										</view>
+										
+											<view v-if="miniSku.commission>0" class="price-box" style="font-size: 28rpx;padding-left: 20rpx;"
+												:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/goods_price_detail_bg.png);background-size: 100% 100%;'">
+												<text
+													style="color: #ffffff;font-size: 24rpx;">折后价={{miniSku.originalPrice}}(官方指导价)-¥{{miniSku.coupon}}(优惠券)-¥{{miniSku.commission}}(折扣额)</text>
+											</view>
+											<view v-else class="price-box" style="font-size: 28rpx;padding-left: 20rpx;"
+												:style="'background-image: url('+IMAGE_URL+'/wxapp/uni-program/goods_price_detail_bg.png);background-size: 100% 100%;'">
+												<text
+													style="color: #ffffff;font-size: 24rpx;">折后价={{miniSku.originalPrice}}(官方指导价)-¥{{miniSku.coupon}}(优惠券)</text>
+											</view>
+									
+									
 									</view>
 								</view>
 
@@ -704,7 +712,7 @@
 					detail: "",
 				},
 				shoppingTrolleyCount: 0,
-				miniSku:{}
+				miniSku:null
 			}
 		},
 		components: {
@@ -1344,11 +1352,12 @@
 			},
 			checkItem() {
 				let option = this.goodsDetail.attributes
+				
 				let result = [] //定义数组储存被选中的值
 				for (let i in option) {
 					result[i] = this.selectArr[i] ? this.selectArr[i] : '';
 				}
-				console.log(option)
+				
 				for (let i in option) {
 					let last = result[i]; //把选中的值存放到字符串last去
 					for (let k in option[i].children) {
@@ -1356,10 +1365,13 @@
 						//赋值，存在直接覆盖，不存在往里面添加id
 						option[i].children[k].isShow = this.isMay(result);
 						//在数据里面添加字段isShow来判断是否可以选择
-						
+						console.log(result)
 						for(var j in this.goodsDetail.sku){///没有库存的商品提前过滤
 							for(var l in result){
-								if(result[l]!=''&&this.goodsDetail.sku[j].combineId.indexOf(result[l])>=0&&this.goodsDetail.sku[j].inventory<=0){
+								if((this.goodsDetail.attributes.length>=2&&this.goodsDetail.sku[j].combineId.indexOf(',')<0)){
+									option[i].children[k].isShow = false;
+								}
+								if((result[l]!=''&&this.goodsDetail.sku[j].combineId.indexOf(result[l])>=0&&this.goodsDetail.sku[j].inventory<=0)){
 									option[i].children[k].isShow = false;
 								}
 							}
@@ -1367,7 +1379,6 @@
 					}
 					result[i] = last; //还原，目的是记录点下去那个值，避免下一次执行循环时被覆盖
 				}
-				//console.log(result)
 
 				if (this.shopItemInfo[result]) {
 					this.checkedSkuMsg = this.shopItemInfo[result]
@@ -1379,20 +1390,19 @@
 				this.$forceUpdate(); //重绘
 			},
 			isMay(result) {
-				// console.log('shopItemInfo', this.shopItemInfo)
-				// console.log('result', result)
-			
+				console.log(this.shopItemInfo)
+				console.log(result)
 				 //匹配选中的数据的库存，若不为空返回true反之返回false
 				for (var i in result) {
 					if (result[i] == '') {
 						return true; //如果数组里有为空的值，那直接返回true
 					}
 				}
-				//console.log(this.shopItemInfo[result])
+				
 				if (!this.shopItemInfo[result]) {
 					return false
 				}
-				return this.shopItemInfo[result].inventory == 0 ? false : true;
+				return this.shopItemInfo[result].inventory <= 0 ? false : true;
 			},
 			chooseAddress(e) {
 				console.log(e)
