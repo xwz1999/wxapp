@@ -392,13 +392,17 @@
 										</view>
 										<view class="">
 										</view>
-										<view class="detail-pics">
+										
+										<rich-text v-if="htmlStr!=''" :nodes="formatRichText(htmlStr)"></rich-text>
+										
+										<view v-if="htmlStr==''" class="detail-pics">
 											<u-lazy-load threshold="-100"
 												:image="(item.url).substr(0,4)==='http'?item.url:(IMAGE_URL+item.url)"
 												v-for="(item,index) in pictures" :key="index" :index="index"
 												:loading-img="IMAGE_URL + '/wxapp/null05.png'"
 												:error-img="IMAGE_URL + '/wxapp/null05.png'"></u-lazy-load>
 										</view>
+										
 										<view class="detail-pics brandLastImg" v-if="brandLastImg">
 											<u-lazy-load threshold="-100" :image="brandLastImg" :index="index"
 												:loading-img="IMAGE_URL + '/wxapp/null05.png'"
@@ -445,7 +449,7 @@
 												</view> -->
 												<u-icon name="share-square" size="10"></u-icon>分享
 											</button>
-											<button v-else-if="isLogin" class="btn-item left-btn" open-type="share">
+											<button v-else-if="isLogin" class="btn-item left-btn" @tap="showShare()">
 												<view>分享</view>
 											</button>
 											<button v-else class="btn-item left-btn" @tap="goLogin">
@@ -602,7 +606,7 @@
 		</u-popup>
 
 		<!-- 分享弹出框 -->
-		<u-popup v-model="isShow" mode="bottom" border-radius="15">
+		<u-popup v-model="isShowShare" mode="bottom" border-radius="15">
 			<view class="share-box flex justify-between">
 				<view class="flex-sub flex justify-center">
 					<button class="flex flex-direction justify-center align-center" open-type="share">
@@ -712,7 +716,9 @@
 					detail: "",
 				},
 				shoppingTrolleyCount: 0,
-				miniSku:null
+				miniSku:null,
+				isShowShare:false,
+				htmlStr:''
 			}
 		},
 		components: {
@@ -789,7 +795,9 @@
 			console.log(uni.getStorageSync("userInfo").id)
 		},
 		methods: {
-		
+			showShare(){
+				this.isShowShare = true
+			},
 			startChat () {
 				console.log(this.miniSku)
 				console.log(this.miniSku.code)
@@ -991,7 +999,7 @@
 				})
 			},
 			hideModel() {
-				this.isShow = false
+				this.isShowShare = false
 			},
 			// 复制链接
 			copyLink() {
@@ -1007,7 +1015,9 @@
 			},
 			// 分享海报
 			postShare() {
+				uni.setStorageSync("postGoods",this.goodsDetail)
 				uni.navigateTo({
+					//url: '/packageA/postShare/postShare?goodsDetail='+ encodeURIComponent(JSON.stringify(this.goodsDetail))
 					url: '/packageA/postShare/postShare'
 				})
 			},
@@ -1069,6 +1079,7 @@
 				// this.showTip = false
 			},
 			toBuy() {
+			
 				this.$u.toast(this.goodsDetail.sku[0].coupon + '元优惠券已领取')
 				this.specModel(true)
 
@@ -1205,11 +1216,28 @@
 						return
 					}
 					this.pictures = res.data.data.list
+					this.htmlStr = res.data.data.content
+					console.log(this.htmlStr)
 				});
 
 			},
 
-
+			formatRichText(html) { //控制小程序中图片大小
+                let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
+                    match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
+                    match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
+                    match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
+                    return match;
+                });
+                // newContent = newContent.replace(/style="[^"]+"/gi, function(match, capture) {
+                //     match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
+                //     return match;
+                // });
+                // newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+                newContent = newContent.replace(/\<img/gi,
+                    '<img style="max-width:90%;height:auto;display:inline-block;margin:10rpx auto;"');
+                return newContent;
+            },
 			//添加购物车 判断是否登录
 			addcart() {
 				if (uni.getStorageSync("auth").token) {
@@ -1480,6 +1508,7 @@
 			}
 		},
 		onShareAppMessage(res) {
+			that.hideModel()
 			let shareObj = {
 				title: "我在买" + this.goodsDetail.goodsName + ",快来看看吧！",
 				path: '/pages/goodsDetail/goodsDetail?id=' + this.id + "&type=share&invite=" + this.$store.state

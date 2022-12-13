@@ -473,6 +473,7 @@
 						return
 					}
 					this.weatherMsg = JSON.parse(res.data.data)
+					uni.setStorageSync("weatherMsg",this.weatherMsg);
 					this.$set(this.weatherMsg, 'date', this.weatherMsg.date.replace(/-/g, '.'))
 					// 日期转农历格式
 					let cur_date = this.weatherMsg.date.split('.')

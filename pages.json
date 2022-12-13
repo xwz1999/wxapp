@@ -24,7 +24,7 @@
             "style" : {
                 "navigationBarTitleText" : "",
                 "enablePullDownRefresh" : false,
-				"navigationBarBackgroundColor" : "#f6f6f6"
+                "navigationBarBackgroundColor" : "#f6f6f6"
             }
         },
         // {
@@ -317,23 +317,21 @@
                 "navigationStyle" : "custom"
             }
         },
-		{
-		    "path": "components/bytedesk_kefu/chat-kf",
-		    "style": {
-		        "navigationBarTitleText": ""
-		        // "navigationBarBackgroundColor":"#fff",
-		        // "navigationBarTextStyle":"#000"
-		    }
-		}
-        ,{
-            "path" : "pages/vipPush/vipPush",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false,
-				"navigationStyle" : "custom"
+        {
+            "path" : "components/bytedesk_kefu/chat-kf",
+            "style" : {
+                "navigationBarTitleText" : ""
             }
-            
+        },
+        // "navigationBarBackgroundColor":"#fff",
+        // "navigationBarTextStyle":"#000"
+        {
+            "path" : "pages/vipPush/vipPush",
+            "style" : {
+                "navigationBarTitleText" : "",
+                "enablePullDownRefresh" : false,
+                "navigationStyle" : "custom"
+            }
         }
     ],
     // 分包配置项(由于小程序代码包大小限制，需要分包)
@@ -347,7 +345,7 @@
 		},
 	 */
     "subPackages" : [
-		{
+        {
             "root" : "packageA",
             "pages" : [
                 {
@@ -491,8 +489,9 @@
                 {
                     "path" : "postShare/postShare",
                     "style" : {
-                        "navigationBarTitleText" : "我的权益",
-                        "enablePullDownRefresh" : false
+                        "navigationBarTitleText" : "海报分享",
+                        "enablePullDownRefresh" : false,
+                        "backgroundColor" : "#F8F7F8"
                     }
                 },
                 {
@@ -866,36 +865,37 @@
                         "navigationBarTitleText" : "余额提现",
                         "enablePullDownRefresh" : false
                     }
-                }
-                ,{
+                },
+                {
                     "path" : "withdrawDetail/withdrawDetail",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "余额明细",
+                        "enablePullDownRefresh" : false
+                    }
+                },
                 {
-                    "navigationBarTitleText": "余额明细",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
                     "path" : "withdraw/withdrawRule",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "税费规则",
+                        "enablePullDownRefresh" : false
+                    }
+                },
                 {
-                    "navigationBarTitleText": "税费规则",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
                     "path" : "partnerIncome/partnerIncome",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "",
+                        "enablePullDownRefresh" : false
+                    }
+                },
                 {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
+                    "path" : "partnerIncome/partnerIncomMonth",
+                    "style" : {
+                        "navigationBarTitleText" : "",
+                        "enablePullDownRefresh" : false
+                    }
                 }
                 ,{
-                    "path" : "partnerIncome/partnerIncomMonth",
+                    "path" : "postResult/postResult",
                     "style" :                                                                                    
                 {
                     "navigationBarTitleText": "",
@@ -905,226 +905,181 @@
                 }
             ]
         },
-		{
-			"root":"package_pifa",
-			"pages":[
-				{
-				    "path" : "pifaGoodsDetail/pifaGoodsDetail",
-				    "style" : {
-				      "navigationBarTitleText" : "",
-				      "enablePullDownRefresh" : false,
-				      "navigationStyle" : "custom"
-				    }
-				}
-			    
-                ,{
+        {
+            "root" : "package_pifa",
+            "pages" : [
+                {
+                    "path" : "pifaGoodsDetail/pifaGoodsDetail",
+                    "style" : {
+                        "navigationBarTitleText" : "",
+                        "enablePullDownRefresh" : false,
+                        "navigationStyle" : "custom"
+                    }
+                },
+                {
                     "path" : "advanceDeposit/advanceDeposit",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "预存款",
+                        "enablePullDownRefresh" : false
+                    }
+                },
                 {
-                    "navigationBarTitleText": "预存款",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
                     "path" : "depositDetail/depositDetail",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "交易明细",
+                        "enablePullDownRefresh" : false
+                    }
+                },
                 {
-                    "navigationBarTitleText": "交易明细",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
                     "path" : "depositRecord/depositRecord",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "充值记录",
+                        "enablePullDownRefresh" : false
+                    }
+                },
                 {
-                    "navigationBarTitleText": "充值记录",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
                     "path" : "pifaConfirmOrder/pifaConfirmOrder",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "",
+                        "enablePullDownRefresh" : false
+                    }
+                },
                 {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
                     "path" : "pifaOrderDetail/pifaOrderDetail",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "",
+                        "enablePullDownRefresh" : false
+                    }
+                },
                 {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                
-                ,{
                     "path" : "pifaPaySuccess/pifaPaySuccess",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "",
+                        "enablePullDownRefresh" : false
+                    }
+                },
                 {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
                     "path" : "pifaOrders/pifaOrders",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "",
+                        "enablePullDownRefresh" : false,
+                        "navigationStyle" : "custom"
+                    }
+                },
                 {
-                   "navigationBarTitleText" : "",
-                   "enablePullDownRefresh" : false,
-                   "navigationStyle" : "custom"
-                }
-                
-                }
-                ,{
                     "path" : "pifaOrderPay/pifaOrderPay",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "",
+                        "enablePullDownRefresh" : false
+                    }
+                },
                 {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
                     "path" : "taxpayerWithDraw/taxpayerWithDraw",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "申请提现",
+                        "enablePullDownRefresh" : false,
+                        "navigationBarBackgroundColor" : "#3A3842",
+                        "navigationBarTextStyle" : "white"
+                    }
+                },
                 {
-                    "navigationBarTitleText": "申请提现",
-                    "enablePullDownRefresh": false,
-					"navigationBarBackgroundColor" : "#3A3842",
-					"navigationBarTextStyle" : "white"
-					
-                }
-                
-                }
-                ,{
                     "path" : "taxpayerWithDrawSecond/taxpayerWithDrawSecond",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "申请提现",
+                        "enablePullDownRefresh" : false,
+                        "navigationBarBackgroundColor" : "#3A3842",
+                        "navigationBarTextStyle" : "white"
+                    }
+                },
                 {
-                   "navigationBarTitleText": "申请提现",
-                   "enablePullDownRefresh": false,
-                   "navigationBarBackgroundColor" : "#3A3842",
-                   "navigationBarTextStyle" : "white"
-                }
-                
-                }
-                ,{
                     "path" : "taxpayerWithDrawThird/taxpayerWithDrawThird",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "申请提现",
+                        "enablePullDownRefresh" : false,
+                        "navigationBarBackgroundColor" : "#3A3842",
+                        "navigationBarTextStyle" : "white"
+                    }
+                },
                 {
-                   "navigationBarTitleText": "申请提现",
-                   "enablePullDownRefresh": false,
-                   "navigationBarBackgroundColor" : "#3A3842",
-                   "navigationBarTextStyle" : "white"
-                }
-                
-                }
-                ,{
                     "path" : "taxpayerWithDrawRecord/taxpayerWithDrawRecord",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "提现记录",
+                        "enablePullDownRefresh" : false,
+                        "navigationBarBackgroundColor" : "#F6F6F6"
+                    }
+                },
                 {
-                    "navigationBarTitleText": "提现记录",
-                    "enablePullDownRefresh": false,
-					"navigationBarBackgroundColor" : "#F6F6F6"
-					
-                }
-                
-                }
-                ,{
                     "path" : "taxpayerWithDrawResult/taxpayerWithDrawResult",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "申请提现",
+                        "enablePullDownRefresh" : false,
+                        "navigationBarBackgroundColor" : "#3A3842",
+                        "navigationBarTextStyle" : "white"
+                    }
+                },
                 {
-                    "navigationBarTitleText": "申请提现",
-                    "enablePullDownRefresh": false,
-                    "navigationBarBackgroundColor" : "#3A3842",
-                    "navigationBarTextStyle" : "white"
-                }
-                
-                }
-                ,{
                     "path" : "pifaTable/pifaTable",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "",
+                        "enablePullDownRefresh" : false,
+                        "navigationStyle" : "custom"
+                    }
+                },
                 {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false,
-					"navigationStyle" : "custom"
-                }
-                
-                }
-                ,{
                     "path" : "pifaTableMonth/pifaTableMonth",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "",
+                        "enablePullDownRefresh" : false,
+                        "navigationStyle" : "custom"
+                    }
+                },
                 {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false,
-					"navigationStyle" : "custom"
-                }
-                
-                }
-                ,{
                     "path" : "pifaTableDay/pifaTableDay",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "",
+                        "enablePullDownRefresh" : false,
+                        "navigationStyle" : "custom"
+                    }
+                },
                 {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false,
-					"navigationStyle" : "custom"
-                }
-                
-                }
-                ,{
                     "path" : "depositRecharge/depositRecharge",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "预存款充值",
+                        "enablePullDownRefresh" : false,
+                        "navigationBarBackgroundColor" : "#3A3842",
+                        "navigationBarTextStyle" : "white"
+                    }
+                },
                 {
-                   "navigationBarTitleText": "预存款充值",
-                   "enablePullDownRefresh": false,
-                   "navigationBarBackgroundColor" : "#3A3842",
-                   "navigationBarTextStyle" : "white"
-                }
-                
-                }
-                ,{
                     "path" : "depositRechargeSecond/depositRechargeSecond",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "预存款充值",
+                        "enablePullDownRefresh" : false,
+                        "navigationBarBackgroundColor" : "#3A3842",
+                        "navigationBarTextStyle" : "white"
+                    }
+                },
                 {
-					"navigationBarTitleText": "预存款充值",
-                   "enablePullDownRefresh": false,
-                   "navigationBarBackgroundColor" : "#3A3842",
-                   "navigationBarTextStyle" : "white"
-                }
-                
-                }
-                ,{
                     "path" : "depositRechargeThird/depositRechargeThird",
-                    "style" :                                                                                    
+                    "style" : {
+                        "navigationBarTitleText" : "预存款充值",
+                        "enablePullDownRefresh" : false,
+                        "navigationBarBackgroundColor" : "#3A3842",
+                        "navigationBarTextStyle" : "white"
+                    }
+                },
                 {
-                    "navigationBarTitleText": "预存款充值",
-                    "enablePullDownRefresh": false,
-                    "navigationBarBackgroundColor" : "#3A3842",
-                    "navigationBarTextStyle" : "white"
-                }
-                
-                }
-                ,{
                     "path" : "depositRechargeResult/depositRechargeResult",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "预存款充值",
-                    "enablePullDownRefresh": false,
-                    "navigationBarBackgroundColor" : "#3A3842",
-                    "navigationBarTextStyle" : "white"
-                }
-                
+                    "style" : {
+                        "navigationBarTitleText" : "预存款充值",
+                        "enablePullDownRefresh" : false,
+                        "navigationBarBackgroundColor" : "#3A3842",
+                        "navigationBarTextStyle" : "white"
+                    }
                 }
             ]
-		}
-    
-	],
+        }
+    ],
     "globalStyle" : {
         "navigationBarTextStyle" : "black",
         "navigationBarTitleText" : "",
@@ -1167,6 +1122,17 @@
                 "iconPath" : "static/tabbar/mine.png",
                 "selectedIconPath" : "static/tabbar/mine_.png",
                 "text" : "我的"
+            }
+        ]
+    },
+    "condition" : {
+        //模式配置，仅开发期间生效
+        "current" : 0, //当前激活的模式(list 的索引项)
+        "list" : [
+            {
+                "name" : "", //模式名称
+                "path" : "", //启动页面，必选
+                "query" : "" //启动参数，在页面的onLoad函数里面得到
             }
         ]
     }
