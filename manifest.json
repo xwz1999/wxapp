@@ -35,6 +35,8 @@
         "appid" : "wxf95835be72b5373c",
         "setting" : {
             "urlCheck" : true,
+            "es6" : true,
+            "postcss" : true,
             "minified" : true
         },
         "usingComponents" : true,
@@ -42,7 +44,8 @@
             "scope.userLocation" : {
                 "desc" : "你的位置信息将用于小程序位置接口的效果展示"
             }
-        }
+        },
+        "requiredPrivateInfos" : [ "getLocation", "chooseLocation" ]
     },
     "mp-alipay" : {
         "usingComponents" : true

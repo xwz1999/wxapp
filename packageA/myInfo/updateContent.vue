@@ -1,7 +1,10 @@
 <template>
 	<view class="">
 		<view class="flex justify-between align-start bg-white" style="margin: 25rpx;padding: 20rpx;">
-			<textarea class="flex-sub textarea" v-model="content" />
+			<textarea v-if="!isNew" class="flex-sub textarea" v-model="content" />
+			
+			<input v-if="isNew" type="nickname" class="weui-input" placeholder="请输入昵称" v-model="content" />
+			
 			<text class="cuIcon-roundclosefill" @tap="clearContent"></text>
 		</view>
 		<view style="margin: 0 25rpx;">
@@ -16,13 +19,30 @@
 			return{
 				type:"",
 				content:"",
-				userInfo:{}
+				userInfo:{},
+				isNew:false,
 			}
 		},
 		onLoad(options) {
 			this.type= options.type
 			this.content = options.content
 			this.userInfo = uni.getStorageSync("userInfo")
+			let that = this
+			uni.getSystemInfo({
+				complete() {
+					
+				},
+				success(res) {	
+					console.log(res.hostSDKVersion)
+					
+					if(res.hostSDKVersion>='2.21.2'){
+						that.isNew = true
+					}
+				},
+				fail() {
+					
+				}
+			})
 		},
 		methods:{
 			clearContent(){

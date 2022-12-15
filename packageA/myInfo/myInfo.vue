@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="top-box flex justify-between align-center bg-white" @tap="chooseImage">
+		<button v-if="isNew" class="top-box flex justify-between align-center bg-white" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
 			<view class="">头像</view>
 			<view class="flex align-center right">
 				<view class="avatar">
@@ -8,7 +8,19 @@
 				</view>
 				<text class="cuIcon-right"></text>
 			</view>
-		</view>
+		</button>
+		<View v-if="!isNew" class="top-box flex justify-between align-center bg-white" @tap="chooseImage">
+			<view class="">头像</view>
+			<view class="flex align-center right">
+				<view class="avatar">
+					<u-lazy-load threshold="-100" :image="IMAGE_URL+info.headImgUrl" :index="index" height="120" border-radius="60" :loading-img="IMAGE_URL + '/wxapp/null05.png'"  :error-img="IMAGE_URL + '/wxapp/null05.png'"  img-mode="aspectFill"></u-lazy-load>
+				</view>
+				<text class="cuIcon-right"></text>
+			</view>
+		</View>
+		
+		
+		
 		<view class="bg-white">
 			<view class="item bg-white flex justify-between align-center" @tap="toChangeInfo('nickname',info.nickname)">
 				<view class="">昵称</view>
@@ -76,8 +88,30 @@
 				info: {},
 				identifier:null,
 				sex:["男","女"],
-				defaultSex:0
+				defaultSex:0,
+				isNew:false,
+				avatarUrl:'',
+				
 			};
+		},
+		onLoad() {
+			console.log(this.isNew)
+			let that = this
+			uni.getSystemInfo({
+				complete() {
+					
+				},
+				success(res) {	
+					console.log(res.hostSDKVersion)
+					
+					if(res.hostSDKVersion>='2.21.2'){
+						that.isNew = true
+					}
+				},
+				fail() {
+					
+				}
+			})
 		},
 		onShow() {
 			this.info = uni.getStorageSync("userInfo")
@@ -151,6 +185,13 @@
 					url:"/packageA/realname/realname"
 				})
 			},
+			
+			  onChooseAvatar(e) {
+				this.avatarUrl =  e.detail.avatarUrl
+				console.log(e)
+				this.uploadPic(this.avatarUrl)
+			  },
+			
 			//选择图片
 			chooseImage() {
 				uni.showActionSheet({

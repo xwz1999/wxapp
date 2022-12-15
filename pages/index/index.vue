@@ -456,8 +456,20 @@
 									this.getWeather()
 								}
 
+							},
+							fail: (res) => {
+								console.log(res)
+							},
+							complete: (res) => {
+								console.log(res)
 							}
 						});
+					},
+					fail: (res) => {
+						console.log(res)
+					},
+					complete: (res) => {
+						console.log(res)
 					}
 				});
 			},

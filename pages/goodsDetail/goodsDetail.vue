@@ -393,11 +393,18 @@
 										<view class="">
 										</view>
 										
-										<rich-text v-if="htmlStr!=''" :nodes="formatRichText(htmlStr)"></rich-text>
+										<view v-if="htmlStr!=''" class="detail-pics">
+											<u-lazy-load threshold="-100"
+												:image="htmlCover(item)"
+												v-for="(item,index) in pictures" :key="index" :index="index"
+												:loading-img="IMAGE_URL + '/wxapp/null05.png'"
+												:error-img="IMAGE_URL + '/wxapp/null05.png'"></u-lazy-load>
+										</view>
+										
 										
 										<view v-if="htmlStr==''" class="detail-pics">
 											<u-lazy-load threshold="-100"
-												:image="(item.url).substr(0,4)==='http'?item.url:(IMAGE_URL+item.url)"
+												:image="judgeCover(item.url)"
 												v-for="(item,index) in pictures" :key="index" :index="index"
 												:loading-img="IMAGE_URL + '/wxapp/null05.png'"
 												:error-img="IMAGE_URL + '/wxapp/null05.png'"></u-lazy-load>
@@ -1204,6 +1211,21 @@
 				// console.log(this.shopItemInfo)
 				this.checkItem();
 			},
+			
+			htmlCover(val) {
+				console.log(val)
+				if(!val){
+					return
+				}
+				let arr = val.split('/')
+				if (arr[0] === 'https:') {
+					return val
+				}else if(arr[0] === 'http:'){
+					var result = val.replace('http','https')
+					return  result
+				}
+				return 'https:' + val
+			},
 
 			//获取商品详情图片
 			getPictures() {
@@ -1215,29 +1237,74 @@
 						this.$u.toast(res.data.msg);
 						return
 					}
-					this.pictures = res.data.data.list
-					this.htmlStr = res.data.data.content
-					console.log(this.htmlStr)
+					
+					if(res.data.data.content!=''&&res.data.data.content!=null){
+						this.htmlStr = res.data.data.content
+						var srcReg = /src\b\s*=\s*[\'\"]?([^\'\"]*)[\'\"]?/g
+						var regExp2 = /background[^;"]+url\(([^\)]+)\)./g
+						
+						
+						
+						var bg = /background-image:[ ]?url\(['"]?(.*?\.(?:png|jpg|jpeg|gif))/g
+						var imgReg = /<img.*?(?:\>|\/>)/g
+						 
+						
+						var result = res.data.data.content
+						var resultNo = this.$u.trim(result,'all')
+		
+						var imgList = resultNo.match(imgReg)
+						
+						if(imgList!=null){
+							console.log(imgList)
+							
+							for(var i=0;i<imgList.length;i++){
+								var item = imgList[i].match(srcReg)
+								this.pictures.push(this.htmlCover(item[0].replace('src=', '').replace(/\"/g,'')))
+							}
+						}
+						
+						
+						
+						var backgroundList = resultNo.match(bg)
+						
+						if(backgroundList!=null){
+							console.log(backgroundList)
+							
+							for(var i=0;i<backgroundList.length;i++){
+								var item = backgroundList[i]
+								this.pictures.push(this.htmlCover(item.replace('background-image:url(', '')))
+							}
+						}
+						
+				
+						
+					}else{
+						this.pictures = res.data.data.list
+					}
+					
+					
 				});
 
 			},
 
-			formatRichText(html) { //控制小程序中图片大小
-                let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
-                    match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
-                    match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
-                    match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
-                    return match;
-                });
-                // newContent = newContent.replace(/style="[^"]+"/gi, function(match, capture) {
-                //     match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
-                //     return match;
-                // });
-                // newContent = newContent.replace(/<br[^>]*\/>/gi, '');
-                newContent = newContent.replace(/\<img/gi,
-                    '<img style="max-width:90%;height:auto;display:inline-block;margin:10rpx auto;"');
-                return newContent;
-            },
+			// formatRichText(html) { //控制小程序中图片大小
+			// 	console.log(html)
+			
+   //              let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
+   //                  match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
+   //                  match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
+   //                  match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
+   //                  return match;
+   //              });
+   //              // newContent = newContent.replace(/style="[^"]+"/gi, function(match, capture) {
+   //              //     match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
+   //              //     return match;
+   //              // });
+   //              // newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+   //              newContent = newContent.replace(/\<img/gi,
+   //                  '<img style="max-width:90%;height:auto;display:inline-block;margin:10rpx auto;"');
+   //              return newContent;
+   //          },
 			//添加购物车 判断是否登录
 			addcart() {
 				if (uni.getStorageSync("auth").token) {
@@ -1393,7 +1460,6 @@
 						//赋值，存在直接覆盖，不存在往里面添加id
 						option[i].children[k].isShow = this.isMay(result);
 						//在数据里面添加字段isShow来判断是否可以选择
-						console.log(result)
 						for(var j in this.goodsDetail.sku){///没有库存的商品提前过滤
 							for(var l in result){
 								if((this.goodsDetail.attributes.length>=2&&this.goodsDetail.sku[j].combineId.indexOf(',')<0)){
@@ -1418,8 +1484,6 @@
 				this.$forceUpdate(); //重绘
 			},
 			isMay(result) {
-				console.log(this.shopItemInfo)
-				console.log(result)
 				 //匹配选中的数据的库存，若不为空返回true反之返回false
 				for (var i in result) {
 					if (result[i] == '') {
@@ -1508,7 +1572,7 @@
 			}
 		},
 		onShareAppMessage(res) {
-			that.hideModel()
+			this.hideModel()
 			let shareObj = {
 				title: "我在买" + this.goodsDetail.goodsName + ",快来看看吧！",
 				path: '/pages/goodsDetail/goodsDetail?id=' + this.id + "&type=share&invite=" + this.$store.state

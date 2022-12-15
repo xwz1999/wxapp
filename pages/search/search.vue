@@ -2,7 +2,7 @@
 	<view class="flex flex-direction" style="height: 100%;">
 		
 		<!-- 搜索导航栏 -->
-		<u-navbar>
+		<u-navbar :custom-back='back' >
 			<view class="slot-wrap">
 				<view class="search-wrap">
 					<!-- 如果使用u-search组件，必须要给v-model绑定一个变量 -->
@@ -67,6 +67,7 @@
 				isBlock:true,
 				isNull:false,
 				isPifa:false,
+				type:''
 			};
 		},
 		components:{
@@ -75,6 +76,7 @@
 		},
 		onLoad(options) {
 			console.log(options)
+			wx.hideShareMenu()
 			// 进来默认按照综合降序排序
 			this.requestUrl = "/api/v1/goods/comprehensive/list"
 			this.order="desc"
@@ -93,11 +95,23 @@
 			if (options.channel && options.channel == 'jingdong') {
 				this.channel = options.channel
 				}
+				if (options.type) {
+					this.type = options.type
+				}
 			this.getGoodsList()
 		},
 		methods: {
 			changePlain(){
 				this.isBlock = !this.isBlock
+			},
+			back() {
+				if (this.type == "share") {
+					uni.switchTab({
+						url: "/pages/index/index"
+					})
+				} else {
+					uni.navigateBack()
+				}
 			},
 			chooseItem(i) {
 				if (i == 0) {

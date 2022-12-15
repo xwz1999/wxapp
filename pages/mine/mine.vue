@@ -1,6 +1,5 @@
 <template>
 	<view class="">
-		<view @tap="pushAPP()">跳转app</view>
 		<view v-if="isLogin" class="flex flex-direction" style="height: 100vh;width:100vw;">
 			<u-navbar v-if="roleLevel!=10&&!(roleLevel==2&&isOffline)" :is-back="false" title="   "
 				:border-bottom='false' :background="background"></u-navbar>

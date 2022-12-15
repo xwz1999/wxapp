@@ -121,25 +121,25 @@
 				<view class="total-msg flex justify-end text-black"
 					style="line-height: 80rpx;border-top:1rpx solid #EEEEEE;">
 					<view style="margin-right: 20rpx;">共{{goodsTotal.totalNumber}}件商品</view>
-					<view>合计{{goodsTotal.totalPrice | toFixed(2)}}元</view>
+					<view>合计{{orderDetail.goodsTotalAmount - orderDetail.coinTotalAmount | toFixed(2)}}元</view>
 				</view>
 			</view>
 			<view class="pay-msg bg-white">
 				<view class="item flex justify-between">
 					<view class="">商品金额</view>
-					<view class="">￥{{orderDetail.goodsTotalAmount | toFixed(2)}}</view>
+					<view class="">￥{{orderDetail.goodsTotalAmount - orderDetail.coinTotalAmount | toFixed(2)}}</view>
 				</view>
 				<view class="more-con" :class="isShow?'showMore':''">
 					<view class="item flex justify-between">
 						<view class="">运费</view>
 						<view class="">+￥{{orderDetail.expressTotalFee | toFixed(2)}}</view>
 					</view>
-					<view class="item flex justify-between">
+		<!-- 			<view class="item flex justify-between">
 						<view class="">优惠券</view>
 						<view class="">
 							-￥{{(orderDetail.universeCouponTotalAmount+orderDetail.brandCouponTotalAmount) | toFixed(2)}}
 						</view>
-					</view>
+					</view> -->
 			<!-- 		<view class="item flex justify-between">
 						<view class="">省</view>
 						<view class="">瑞币抵扣</view>
@@ -690,7 +690,7 @@
 		}
 
 		.showMore {
-			height: 180rpx;
+			height: 100rpx;
 			transition: 0.4s;
 		}
 
