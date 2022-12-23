@@ -113,7 +113,16 @@
 								</view>
 								<!-- 文字消息 -->
 								<view v-if="is_type_text(message)" class="bubble" @longtap="longtap(message)">
-									<rich-text :nodes="message.content"></rich-text>
+									<!-- <rich-text :nodes="message.content"></rich-text> -->
+									<view class="flex-column-start" style="color: #2fa39b;">
+										<rich-text :nodes="replaceFace(message.content)" style="color: black;font-size: 25rpx; margin-top:20rpx;margin-bottom:10rpx;"></rich-text>
+										<hr class="hr-solid" v-if="message.content.length > 0 && message.answers && message.answers.length > 0">
+										<view class="flex-row-start  padding-top-sm" v-for="(item, index) in message.answers" :key="index">
+											<text @click="queryAnswer(item)" style="margin-top: 20rpx;">
+												{{ item.question }}
+											</text>
+										</view>
+									</view>
 								</view>
 								<!-- 事件消息 -->
 								<view v-if="is_type_event(message)" class="bubble">
@@ -1362,101 +1371,93 @@
 				}
 			},
 			// 
-			dealWithThread(response) {
-				// console.log('')
-				let message = response.data;
-				if (response.status_code === 200) {
-					//
-					// if (this.isManulRequestThread || this.loadHistory === '0') {
+		dealWithThread (response) {
+			// console.log('')
+			let message = response.data;
+			if (response.status_code === 200) {
+				//
+				// if (this.isManulRequestThread || this.loadHistory === '0') {
 					this.pushToMessageArray(message);
-					// }
-					// // 1. 保存thread
-					this.thread = message.thread;
-					// // 设置当前为人工客服
-					this.isRobot = false;
-					// // 防止会话超时自动关闭，重新标记本地打开会话
-					this.isThreadClosed = false;
-					// // 显示商品信息
-					// this.appendCommodityInfo()
-				} else if (response.status_code === 201) {
-					// message.content = '继续之前会话';
-					// if (this.isManulRequestThread || this.loadHistory === '0') {
+				// }
+				// // 1. 保存thread
+				this.thread = message.thread;
+				// // 设置当前为人工客服
+				this.isRobot = false;
+				this.robotUser = message.user
+				// // 防止会话超时自动关闭，重新标记本地打开会话
+				this.isThreadClosed = false;
+				// // 显示商品信息
+				// this.appendCommodityInfo()
+			} else if (response.status_code === 201) {
+				// message.content = '继续之前会话';
+				// if (this.isManulRequestThread || this.loadHistory === '0') {
 					this.pushToMessageArray(message);
-					// }
-					// // 1. 保存thread
-					this.thread = message.thread;
-					// // 设置当前为人工客服
-					this.isRobot = false;
-					// // 防止会话超时自动关闭，重新标记本地打开会话
-					this.isThreadClosed = false;
-					// // 显示商品信息
-					// this.appendCommodityInfo()
-				} else if (response.status_code === 202) {
-					// 排队
-					this.pushToMessageArray(message);
-					// // 1. 保存thread
-					this.thread = message.thread;
-					// 是否正在排队
-					this.isQueuing = true
-					//
-				} else if (response.status_code === 203) {
-					// 当前非工作时间，请自助查询或留言
-					this.pushToMessageArray(message);
-					this.leaveMessageTip = message.content;
-					// 		// 1. 保存thread
-					this.thread = message.thread;
-					// 		// 显示留言界面
-					this.switchLeaveMessage();
-				} else if (response.status_code === 204) {
-					// 当前无客服在线，请自助查询或留言
-					this.pushToMessageArray(message);
-					this.leaveMessageTip = message.content;
-					// // 1. 保存thread
-					this.thread = message.thread;
-					// // 显示留言界面
-					this.switchLeaveMessage();
-				} else if (response.status_code === 205) {
-					// 插入业务路由，相当于咨询前提问问卷（选择 或 填写表单）
-					this.pushToMessageArray(message);
-					// // 1. 保存thread
-					this.thread = message.thread;
-				} else if (response.status_code === 206) {
-					// 返回机器人初始欢迎语 + 欢迎问题列表
-					// if (this.isManulRequestThread || this.loadHistory === '0') {
-					// 	this.pushToMessageArray(message);
-					// }
-					// 1. 保存thread
-					// this.thread = message.thread;
-					// 返回机器人初始欢迎语 + 欢迎问题列表
-					this.pushToMessageArray(message);
-					// 1. 保存thread
-					this.thread = message.thread;
-					// 2. 设置当前状态为机器人问答
-					this.isRobot = true;
-					this.robotUser = message.user
-					//
-				} else if (response.status_code === -1) {
-					this.login();
-				} else if (response.status_code === -2) {
-					// sid 或 wid 错误
-					// this.$message.error('siteId或者工作组id错误');
-					uni.showToast({
-						title: response.message,
-						icon: 'none',
-						duration: 2000
-					});
-				} else if (response.status_code === -3) {
-					// alert('您已经被禁言')
-					uni.showToast({
-						title: response.message,
-						icon: 'none',
-						duration: 2000
-					});
-				}
-				this.scrollToBottom();
-				// // 建立长连接
-				this.byteDeskConnect();
-			},
+				// }
+				// // 1. 保存thread
+				this.thread = message.thread;
+				// // 设置当前为人工客服
+				this.isRobot = false;
+				this.robotUser = message.user
+				// // 防止会话超时自动关闭，重新标记本地打开会话
+				this.isThreadClosed = false;
+				// // 显示商品信息
+				// this.appendCommodityInfo()
+			} else if (response.status_code === 202) {
+				// 排队
+				this.pushToMessageArray(message);
+				// // 1. 保存thread
+				this.thread = message.thread;
+				//
+			} else if (response.status_code === 203) {
+				// 当前非工作时间，请自助查询或留言
+				this.pushToMessageArray(message);
+				this.leaveMessageTip = message.content;
+		// 		// 1. 保存thread
+				this.thread = message.thread;
+		// 		// 显示留言界面
+				this.switchLeaveMessage();
+			} else if (response.status_code === 204) {
+				// 当前无客服在线，请自助查询或留言
+				this.pushToMessageArray(message);
+				this.leaveMessageTip = message.content;
+				// // 1. 保存thread
+				this.thread = message.thread;
+				// // 显示留言界面
+				this.switchLeaveMessage();
+			} else if (response.status_code === 205) {
+				// 插入业务路由，相当于咨询前提问问卷（选择 或 填写表单）
+				this.pushToMessageArray(message);
+				// // 1. 保存thread
+				this.thread = message.thread;
+			} else if (response.status_code === 206) {
+				// 返回机器人初始欢迎语 + 欢迎问题列表
+				// if (this.isManulRequestThread || this.loadHistory === '0') {
+				// 	this.pushToMessageArray(message);
+				// }
+				// 1. 保存thread
+				// this.thread = message.thread;
+				// 返回机器人初始欢迎语 + 欢迎问题列表
+				this.pushToMessageArray(message);
+				// 1. 保存thread
+				this.thread = message.thread;
+				// 2. 设置当前状态为机器人问答
+				this.isRobot = true;
+				this.robotUser = message.user
+				//
+			} else if (response.status_code === -1) {
+				this.login();
+			} else if (response.status_code === -2) {
+				// sid 或 wid 错误
+				// this.$message.error('siteId或者工作组id错误');
+				uni.showToast({ title: response.message, icon:'none', duration: 2000 });
+			} else if (response.status_code === -3) {
+				// alert('您已经被禁言')
+				uni.showToast({ title: response.message, icon:'none', duration: 2000 });
+			}
+			this.scrollToBottom();
+			// // 建立长连接
+			this.byteDeskConnect();
+		},
 			// 留言页面
 			switchLeaveMessage() {
 				uni.redirectTo({
